@@ -1,0 +1,296 @@
+NVIdb 0.4.0.9001 - (2021-04-07)
+--------------------------
+
+New features:
+
+- exclude_from_PJSdata excludes samples commonly excluded, i.e. samples from abroad and samples registered as quality assurance.
+
+- standardize_PJSdata standardizes PJSdata as extraced from PJS when using RODBC. The unnecessary columns konkl_provenr and vet_distriktnr are removed, the column names are standardized using standardize_columns,  numeric variables are transformed to numbers, date variables are transformed to date format, character variables are trimmed for leading and trailing spaces, the variables saksnr and, if possible, fagnr are generated, test data, i.e. saker with ansvarlig_seksjon in c("14", "99") are deleted.
+
+- build_query_one_disease replaces build_selection_PJS_one_disease. The year argument now accepts a year range and analytt accepts both analytter with or without sublevels.
+
+- build_query_hensikt replaces build_selection_PJS_hensikt. The year argument now accepts a year range and hensikt accepts hensikter with sublevels.
+
+- build_sql_select_year builds the code to select one or a range of years.
+
+- build_sql_select_code builds the code to select by hierarchical codes in PJS, one or many with or without sublevels.
+
+
+Other changes:
+
+- The package is made dependent on the package NVIconfig. NVIconfig is not imported automatically when installing NVIdb and you need to install it manually from GitHub.
+
+BREAKING CHANGES:
+
+- The data argument in standardize_columns should now also be used for csv-file. Removed the argument csvfile from standardize_columns.
+
+- build_selection_PJS_one_disease is replaced by build_query_one_disease
+
+- build_selection_PJS_hensikt is replaced by build_query_hensikt
+
+
+NVIdb 0.4.0 - (2021-02-13)
+--------------------------
+
+New features:
+
+- build_selection_PJS_one_disease generates code for selection of all PJS data for one disease based on analytt (disease and agent) and specific hensikter and metoder in one year.
+
+- build_selection_PJS_hensikt generates code for selection of all PJS data for one or more hensikt in one year.
+
+- choose_PJS_levels makes a new data frame that includes the columns from the given PJS-levels in a data frame with PJS data. The column names in the data frame must have standardized name as when using standardize_columns. The function is currently made ready for the levels c("sak", "prove", "delprove", "undersokelse", "resultat", "konklusjon") as read from PJS using the view v2_sak_m_res.
+
+- read_sonetilhorighet reads the file sonetilhorighet.txt with produktion zones and geo-coordinates for aquaculture sites.
+
+- add_lokalitet adds produktion zones and/or geo coordinates for aquaculture sites based on aquaculture site number.
+
+Bug fixes:
+
+- read_Prodtilskudd now accepts both character and numeric input to Pkode_year
+
+- standardize_columns now translates all combinations of lower and upper case ae, oe, and aa to Norwegian characters for column labels
+
+- standardize_columns, property = colorder is not stopping even if no column standard is given. Exclude = FALSE is corrected.
+
+
+NVIdb 0.3.0 - (2020-11-14)
+--------------------------
+
+New features:
+
+- new predefined paths is available through set_dir_NVI
+
+- standardize_columns: standardize_columns is now able to generate standard labels (property = "collabels" in Norwegian (language = "no") or Englsh (language = "en"). For column names that are not translated to English yet, the Norwegian column labe will be given. Standard column widths for Excel (property = "colwidths_Excel) for use when generating Excel sheets with openxlsx. Standard column order (property = "colorder") to sort columns in data frames. The parameter exclude = FALSE will exclude columns with information of sort order to fast make standard Excel sheets.
+
+- all add-functions includes the parameter overwrite. The parameter overwrite = TRUE/FALSE is included for the case that a column already exist in the data frame and one want to replace the column with new content. The position = "keep" is used to keep the column at the same position as the original column in the data frame. The add-functions are add_kommune_fylke, add_MT_omrader, add_PJS_code_description, add_poststed and add_produsent.
+
+- read_prodnr_2_coordinates: Reads file with coordinates. The coordinates can be merged into a data frame by using add_produsent.
+
+Bug fixes:
+
+- read_Prodtilskudd: The function don't give an error message in the case that JSON - files has been read into the source directory, but UTF8 files have not yet been generated.
+
+
+NVIdb 0.2.2 - (2020-11-04)
+--------------------------
+
+Bug fixes:
+
+- read_Prodtilskudd: parameter Pkode_month = "last" is now accepted for all input to Pkode_year.
+
+
+NVIdb 0.2.1 - (2020-11-04)
+--------------------------
+
+Bug fixes:
+
+- set_dir_NVI: predefined path to OKprogrammer was corrected.
+
+
+NVIdb 0.2.0 - (2020-11-03)
+--------------------------
+
+New features:
+
+- read_leveransereg: reads Leveranseregister for slakt into a data frame
+
+- the parameter position = c("first", "left", "right", "last") was included for the functions add_produsent, add_MT_omrader and add_PJS_code_description, and is thereby included for all add-functions.
+
+Bug fixes:
+
+- login, login_by_input, and login_by_credentials now accept the name of the data base service as athe only parameter and finds the remaining parameters for all predefined data base services, not only PJS. Currently the data base services c("PJS", "EOS", "sea_sites", "fallvilt") have predefined parameters.
+
+- read_Prodtilskudd: removed warning when two or more months where given as input to pkode_month =.
+
+- standardize_columns: corrected input for property = "colnames" to be in accordance with help
+
+- read_Pkode_2_text: corrected reading of Telledato so it is read as character
+
+BREAKING CHANGES:
+
+- Removed the wrapper functions login_sea_sites, login_by_input_sea_sites, login_by_credentials_sea_sites, and set_credentials_sea_sites as the functions were not used. The functions are replaced by login("sea_sites"), login_by_input("sea_sites"), login_by_credentials("sea_sites"), and set_credentials("sea_sites").
+
+
+NVIdb 0.1.7 - (2020-10-12)
+--------------------------
+
+Bug fixes:
+
+- add_kommune_fylke: In v0.1.5 an error was introduced if fylke and fylke only was added to fylkenr. Now the values of fylke is correct inserted in stead of missing values.
+
+
+NVIdb 0.1.6 - (2020-10-07)
+--------------------------
+
+New features:
+
+- standardize_columns: function to transform variable names in database tables into standardized column names in data frames. It also can make a named vector to be used in colclasses = when reading a csv-file.
+
+Bug fixes:
+
+- add_kommune_fylke: There was an error if gjeldende_komnr was renamed to komnr. This was a bug affecting all add-functions. The add-functions now accept changing the name of new variables to the code variable in the translation table.
+
+Vignettes:
+
+- provided vignette on how to "Contribute to NVIdb"
+
+
+NVIdb 0.1.5 - (2020-08-28)
+--------------------------
+
+New features:
+
+- login, login_by_input and login_by_credentials now accepts dbservice as the only parameter for database services where the connection parameters have been predefined. This means that login_by_credentials("PJS") will do the same as login_by_credentials_PJS.
+
+- included predefined parameters for connecting to the database for fallvilt transferred from Naturdata
+
+Bug fixes:
+
+- login: if parameter input dbservice was given with upper case letters, one would always be asked for credentials even if the credentials were stored in the user profile. The dbservice parameter now accepts both lower and upper case letters.
+
+- read_poststed: ensured that column postnr and komnr is read as character, not number
+
+- add_kommune_fylke duplicated rows when translating from fylkenr to gjeldende_fylkenr. Ensured translation to only valid gjeldende_fylkenr.
+
+
+NVIdb 0.1.4 - (2020-08-20)
+--------------------------
+
+Bug fixes:
+
+- read_Prodtilskudd: fixed error introduced in v-0.1.3 when correcting for column names in the source files that had been changed.
+
+
+NVIdb 0.1.3 - (2020-08-19)
+--------------------------
+
+New features:
+
+- introduced copy_poststed and read_poststed to manage translation table for poststed.
+
+- introduced add_poststed to translate postnr to poststed and komnr.
+
+- introduced copy_Prodtilskudd to copy the latest versions of the Prodtilskudd register for selected years ans months.
+
+Bug fixes:
+
+- read_Prodtilskudd: fixed error because the column names in the source files had been changed.
+
+
+NVIdb 0.1.2 - (2020-08-10)
+--------------------------
+
+New features:
+
+- read_Prodtilskudd includs the option "last" for the parameter Pkode_month to select the last Produksjonstilskuddsregister.
+
+
+NVIdb 0.1.1 - (2020-07-10)
+--------------------------
+
+New features:
+
+- Included translation for metode and seksjon in add_PJS_code_description.
+
+Bug fixes:
+
+- Removed get_PAT, set_PAT and remove_PAT from NAMESPACE.
+
+
+NVIdb 0.1.0 - (2020-07-09)
+--------------------------
+
+New features:
+
+- Introduced read_prodnr_2_current_prodnr that reads the translation table Prodnr2GjeldendeProdnr.csv.
+
+- Improved add_produsent so that when no current produsentnr is found for the original produsentnr,
+  the original produsentnr is imputed for current produsentnr.
+
+- Introduced read_Pkode_2_text and copy_Pkode_2_text to manage the register with translation table
+  for Produksjonstilskuddskoder.
+
+- Introduced read_kommune_fylke and copy_kommune_fylke to manage the register with translation tables from
+  kommunenr to kommune, fylke and current kommune and fylke.
+
+- Impoved add_kommune_fylke to translate from kommunenr to kommune, fylke and current kommune and fylke.
+
+- Included the parameter positiion = c("front", "left", "right", "last") in the functions add_kommune_fylke
+  and add_MT_omrader for better control of column position for new columns.
+
+
+Other changes:
+
+- Standardised add_kommune_fylke by introducing the parameters code_column and new_column as in other
+  add-functions.
+
+BREAKING CHANGES:
+
+- Removed the parameters code_colname and current_code_colname from add_kommune_fylke.
+
+- Changed column names for produsentnummer from Produsentnr to prodnr and kommunenr to komnr.
+
+
+NVIdb 0.0.1 - (2020-06-10)
+--------------------------
+
+New features:
+
+- set_dir_NVI sets the correct path to the directories for Produsentregisteret, Produksjonstilskudd,
+  Leveranseregisteret og GrunndataLand.
+
+Other changes:
+
+- Changed dependency of R from R >= 3.5.2 to R >= 3.4.0.
+
+
+NVIdb 0.0.0.9004 - (2020-04-27)
+--------------------------
+
+New features:
+
+- add_PJS_code_description now accept vectors and can translate more than one PJS-variable at a time.
+
+- add_MT_omrader, read_MT_omrader and copy_MT_omrader are function for managing translation of komnr to
+  MT_avdeling and MT_region in dataframes.
+
+- read_Prodtilskudd reads Prodtilskudd from 2019.
+
+
+NVIdb 0.0.0.9003 - (2020-03-31)
+--------------------------
+
+BREAKING CHANGES:
+
+- Changed function name from add_current_komnr to add_kommune_fylke. The functionality hasn`t changed yet.
+
+
+NVIdb 0.0.0.9002 - (2020-03-25)
+--------------------------
+
+BREAKING CHANGES:
+
+- Changed function names for connecting to the database sea sites at Azyre. Changed from seacites to sea_sites for
+  the functions login_sea_sites, login_by_credentials_sea_sites, login_by_input_sea_sites and set_credentials_sea_sites.
+
+
+NVIdb 0.0.0.9001 - (2020-03-25)
+--------------------------
+
+New features:
+
+- Included functions to connect to the database seacites at Azyre. These are wrappers for set_credentials and login.
+
+Bug fixes:
+
+- Included import of package getPass. This is necessary for login_by_input to work.
+
+
+NVIdb 0.0.0.9000 - (2020-03-19)
+
+First release:
+  - The package comprises functions for managing credentials and login (including wrappers for PJS and EOS).
+
+  - functions for translating PJS-codes to descriptive text.
+
+  - functions to translate kommunenr to current kommunenr.
