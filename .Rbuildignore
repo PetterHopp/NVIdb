@@ -1,0 +1,16 @@
+^data-raw$
+^NVIdb\.Rproj$
+^\.Rproj\.user$
+^notes$
+^nosync$
+^build.R
+^install.R
+^style.R
+^CONTRIBUTING.md
+^README.md
+^doc$
+^Meta$
+^NVIdb.Rcheck\vign_test$
+^\.git$
+^\.gitignore$
+^\.Rhistory$
