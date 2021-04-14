@@ -32,22 +32,22 @@
 
 build_sql_select_year <- function(year, varname, db = "PJS") {
   # ARGUMENT CHECKING ----
-
+  
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-
+  
   # Perform checks
   checkmate::assert_integerish(year, lower = 1990, upper = as.numeric(format(Sys.Date(), "%Y")), min.len = 1, add = checks)
   checkmate::assert_character(varname, add = checks)
   checkmate::assert_choice(db, choices = c("PJS"), add = checks)
-
+  
   # Report check-results
   checkmate::reportAssertions(checks)
-
+  
   # CLEAN YEAR INPUT ----
   # Ensure that year vector have unique values and are ordered
   year <- unique(year[order(year)])
-
+  
   # GENERATE SQL STRING ----
   # set equal if only one year
   if (length(year) == 1) {
@@ -99,47 +99,55 @@ build_sql_select_year <- function(year, varname, db = "PJS") {
 #'
 
 build_sql_select_code <- function(values, varname, db = "PJS") {
-
+  
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-
+  
   # Perform checks
   checkmate::assert_character(values, null.ok = TRUE, add = checks)
   checkmate::assert_character(varname, add = checks)
   checkmate::assert_choice(db, choices = c("PJS"), add = checks)
-
+  
   # Report check-results
   checkmate::reportAssertions(checks)
-
-
+  
+  
   # GENERATE SQL STRING ----
-
   # Generate empty string if values are NULL
-  # if (length(values) == 1 && (trimws(values) == "" | is.na(values)) || is.null(values)) {
   select_code <- ""
-  # } else {
-
-  # use "in" in sql string for values where sub-codes shall not be included
-  if (length(grep("%", values, invert = TRUE)) > 0) {
-    select_code <- paste0(varname, " in ('", paste(grep("%", values, value = TRUE, invert = TRUE), collapse = "', '"), "')")
-  }
-
-  # use "like" in sql string for values where sub-codes shall be included
-  values <- grep("%", values, value = TRUE, invert = FALSE)
-  if (length(values) > 0) {
-    for (i in 1:length(values)) {
-      if (select_code != "") {
-        select_code <- paste(select_code, "OR")
-      } # else {
-      # select_code <- ""
-      # }
-      # select_code <- paste(select_code, match.call()[1], varname, "LIKE", values[i])
-      select_code <- paste(select_code, varname, "LIKE", paste0("'", values[i], "'"))
-
+  if (!is.null(values) && 
+      !is.na(values) && 
+      ((length(values) == 1 & trimws(values) != "") | length(values) > 1)) {
+    #   select_code <- ""
+    # } else {
+    
+    # use "=" in sql string for values where sub-codes shall not be included when one code
+    if (length(grep("%", values, invert = TRUE)) == 1) {
+      select_code <- paste0(varname, " = '", grep("%", values, value = TRUE, invert = TRUE), "'")
     }
+    
+    # use "IN" in sql string for values where sub-codes shall not be included when more than one code
+    if (length(grep("%", values, invert = TRUE)) > 1) {
+      select_code <- paste0(varname, " IN ('", paste(grep("%", values, value = TRUE, invert = TRUE), collapse = "', '"), "')")
+    }
+    
+    # use "like" in sql string for values where sub-codes shall be included
+    values <- grep("%", values, value = TRUE, invert = FALSE)
+    if (length(values) > 0) {
+      for (i in 1:length(values)) {
+        if (select_code != "") {
+          select_code <- paste(select_code, "OR")
+        } # else {
+        # select_code <- ""
+        # }
+        # select_code <- paste(select_code, match.call()[1], varname, "LIKE", values[i])
+        select_code <- paste(select_code, varname, "LIKE", paste0("'", values[i], "'"))
+        
+      }
+    }
+    }
+    return(select_code)
   }
-  # }
-  return(select_code)
-}
-
+  
+  
