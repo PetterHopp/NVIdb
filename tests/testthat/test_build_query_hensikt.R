@@ -9,7 +9,7 @@ test_that("build query hensikt", {
 
   correct_result <-  paste("SELECT *",
                            "FROM v2_sak_m_res",
-                           "WHERE aar = 2020 AND ( hensiktkode in ('0200102') )")
+                           "WHERE aar = 2020 AND ( hensiktkode = '0200102' )")
 
   expect_equivalent(query["selection_v2_sak_m_res"], correct_result)
 
@@ -20,7 +20,7 @@ test_that("build query hensikt", {
                            "ON (v_sakskonklusjon.aar = sak.aar AND",
                                "v_sakskonklusjon.ansvarlig_seksjon = sak.ansvarlig_seksjon AND",
                                "v_sakskonklusjon.innsendelsesnummer = sak.innsendelsesnummer)",
-                           "WHERE sak.aar = 2020 AND ( sak.hensiktkode in ('0200102') )")
+                           "WHERE sak.aar = 2020 AND ( sak.hensiktkode = '0200102' )")
 
   expect_equivalent(query["selection_sakskonklusjon"], correct_result)
 
@@ -30,7 +30,7 @@ test_that("build query hensikt", {
 
   correct_result <-  paste("SELECT *",
                            "FROM v2_sak_m_res",
-                           "WHERE aar = 2020 AND ( hensiktkode in ('0200135', '0200142') )")
+                           "WHERE aar = 2020 AND ( hensiktkode IN ('0200135', '0200142') )")
 
   expect_equivalent(query["selection_v2_sak_m_res"], correct_result)
 
@@ -41,7 +41,7 @@ test_that("build query hensikt", {
                            "ON (v_sakskonklusjon.aar = sak.aar AND",
                            "v_sakskonklusjon.ansvarlig_seksjon = sak.ansvarlig_seksjon AND",
                            "v_sakskonklusjon.innsendelsesnummer = sak.innsendelsesnummer)",
-                           "WHERE sak.aar = 2020 AND ( sak.hensiktkode in ('0200135', '0200142') )")
+                           "WHERE sak.aar = 2020 AND ( sak.hensiktkode IN ('0200135', '0200142') )")
 
   expect_equivalent(query["selection_sakskonklusjon"], correct_result)
 
