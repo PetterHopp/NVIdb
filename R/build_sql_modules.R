@@ -20,14 +20,12 @@
 #' @rdname build_sql_modules
 #'
 #' @examples
-#' \dontrun{
 #' # SQL-select module for selecting year from PJS
 #' build_sql_select_year(year = 2020)
 #'
-#' build_sql_select_year(year = c(2020, 2021))
+#' build_sql_select_year(year = c(2019, 2021))
 #'
-#' build_sql_select_year(year = c(2020:2021))
-#' }
+#' build_sql_select_year(year = c(2019:2021))
 #'
 
 build_sql_select_year <- function(year, varname, db = "PJS") {
@@ -112,13 +110,14 @@ build_sql_select_code <- function(values, varname, db = "PJS") {
   # Report check-results
   checkmate::reportAssertions(checks)
   
+  # Removes NA to avoid problems with CMD check and generating sql string
+  values <- subset(values, !is.na(values))
   
   # GENERATE SQL STRING ----
   # Generate empty string if values are NULL
   select_code <- ""
   if (!is.null(values) && 
-      !is.na(values) && 
-      ((length(values) == 1 & trimws(values) != "") | length(values) > 1)) {
+      (length(values) > 1 || length(values) == 1 & trimws(values[1]) != "")) {
     #   select_code <- ""
     # } else {
     
@@ -146,8 +145,7 @@ build_sql_select_code <- function(values, varname, db = "PJS") {
         
       }
     }
-    }
-    return(select_code)
   }
-  
-  
+  return(select_code)
+}
+
