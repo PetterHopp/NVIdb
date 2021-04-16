@@ -5,10 +5,9 @@ New features:
 
 -
 
+Bug fixes:
 
-Other changes:
-
-- 
+- Corrected selection of PJS-codes in queries in the case that only codes without subcodes where included.
 
 
 NVIdb 0.5.1 - (2021-04-08)
