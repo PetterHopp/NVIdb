@@ -21,11 +21,11 @@
 #'
 #' @examples
 #' # SQL-select module for selecting year from PJS
-#' build_sql_select_year(year = 2020)
+#' build_sql_select_year(year = 2020, varname = aar)
 #'
-#' build_sql_select_year(year = c(2019, 2021))
+#' build_sql_select_year(year = c(2019, 2021), varname = aar)
 #'
-#' build_sql_select_year(year = c(2019:2021))
+#' build_sql_select_year(year = c(2019:2021), varname = aar)
 #'
 
 build_sql_select_year <- function(year, varname, db = "PJS") {
@@ -86,32 +86,35 @@ build_sql_select_year <- function(year, varname, db = "PJS") {
 #' @rdname build_sql_modules
 #'
 #' @examples
-#' \dontrun{
-#' # SQL-select module for selecting year from PJS
-#' build_sql_select_code(year = 2020)
-#'
-#' build_sql_select_code(year = c(2020, 2021))
-#'
-#' build_sql_select_code(year = c(2020:2021))
-#' }
+#' # SQL-select module for selecting hensiktkode from PJS
+#' build_sql_select_code(values = "0100101", varname = "hensiktkode", db = "PJS") 
+#' 
+#' build_sql_select_code(values = "0100101%", varname = "hensiktkode", db = "PJS") 
+#' 
+#' build_sql_select_code(values = c("0100101", "0100101007", "0100102%", "0100202%"), 
+#'                       varname = "hensiktkode", 
+#'                       db = "PJS") 
 #'
 
 build_sql_select_code <- function(values, varname, db = "PJS") {
+  
+  # cleaning values argument before argument checking
+  values <- trimws(values)
   
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
   
   # Perform checks
-  checkmate::assert_character(values, null.ok = TRUE, add = checks)
+  checkmate::assert_character(values, null.ok = TRUE, any.missing = FALSE, min.chars = 1, add = checks)
   checkmate::assert_character(varname, add = checks)
   checkmate::assert_choice(db, choices = c("PJS"), add = checks)
   
   # Report check-results
   checkmate::reportAssertions(checks)
   
-  # Removes NA to avoid problems with CMD check and generating sql string
-  values <- subset(values, !is.na(values))
+  # # Removes NA to avoid problems with CMD check and generating sql string
+  # values <- subset(values, !is.na(values))
   
   # GENERATE SQL STRING ----
   # Generate empty string if values are NULL
@@ -146,6 +149,7 @@ build_sql_select_code <- function(values, varname, db = "PJS") {
       }
     }
   }
-  return(select_code)
+  # Removes leading space if only sub-codes are included
+  return(trimws(select_code))
 }
 
