@@ -25,6 +25,11 @@ There are also functions to use these registers to translate variables with code
   - old produsentnr into current produsentnr
 New functionality is continuously added, please check the NEWs.
 
+## Contributing to NVIdb
+
+There are several ways you can contribute to the development of *NVIdb*: reporting a bug, fixing documentation errors, contributing new code, or commenting on issues/pull requests. Note that the majority of these activities do not require you to be proficient in R. 
+
+Please note that the `NVIdb` project is released with a [Contributor Code of  Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
 
 # Package installation and update
 

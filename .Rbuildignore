@@ -14,3 +14,4 @@
 ^\.git$
 ^\.gitignore$
 ^\.Rhistory$
+^CODE_OF_CONDUCT\.md$
