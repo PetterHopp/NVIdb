@@ -20,13 +20,13 @@ test_that("build_sql_select_code", {
   expect_equivalent(query, "hensiktkode = '0100101'")
   
   query <- build_sql_select_code(values = "0100101%", varname = "hensiktkode", db = "PJS") 
-  expect_equivalent(query, "hensiktkode LIKE '0100101%'")
+  expect_equivalent(query, " hensiktkode LIKE '0100101%'")
   
   query <- build_sql_select_code(values = c("0100101", "0100102"), varname = "hensiktkode", db = "PJS") 
   expect_equivalent(query, "hensiktkode IN ('0100101', '0100102')")
   
   query <- build_sql_select_code(values = c("0100101%", "0100102%"), varname = "hensiktkode", db = "PJS") 
-  expect_equivalent(query, "hensiktkode LIKE '0100101%' OR hensiktkode LIKE '0100102%'")
+  expect_equivalent(query, " hensiktkode LIKE '0100101%' OR hensiktkode LIKE '0100102%'")
   
   query <- build_sql_select_code(values = c("0100101", "0100102%"), varname = "hensiktkode", db = "PJS") 
   expect_equivalent(query, "hensiktkode = '0100101' OR hensiktkode LIKE '0100102%'")
