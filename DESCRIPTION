@@ -19,8 +19,9 @@ Description: The Norwegian Veterinary Institute has several internal databases a
     package comprises four categories of functions: 
     1) Manage credentials (i.e. password and username), 
     2) Login functions for database services, 
-    3) Read, copy and update different in-house data registers,
-    4) Translate codes into descriptions.
+    3) Read, copy and update different in-house data registers, 
+    4) Translate codes into descriptions. 
+    NVIdb is dependant of NVIconfig which has to be installed manually from GitHub.
 URL: https://github.com/NorwegianVeterinaryInstitute/NVIdb
 BugReports: https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues
 Depends: R (>= 3.5.0)
