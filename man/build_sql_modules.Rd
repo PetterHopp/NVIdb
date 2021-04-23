@@ -37,23 +37,19 @@ The function builds the SQL syntax to select one or more consequtive years from 
 The function builds the SQL syntax to select one or more codes for one variable from PJS.
 }
 \examples{
-\dontrun{
 # SQL-select module for selecting year from PJS
-build_sql_select_year(year = 2020)
+build_sql_select_year(year = 2020, varname = "aar")
 
-build_sql_select_year(year = c(2020, 2021))
+build_sql_select_year(year = c(2019, 2021), varname = "aar")
 
-build_sql_select_year(year = c(2020:2021))
-}
+build_sql_select_year(year = c(2019:2021), varname = "aar")
 
-\dontrun{
-# SQL-select module for selecting year from PJS
-build_sql_select_code(year = 2020)
+# SQL-select module for selecting hensiktkode from PJS#' 
+build_sql_select_code(values = "0100101", varname = "hensiktkode", db = "PJS") 
 
-build_sql_select_code(year = c(2020, 2021))
+build_sql_select_code(values = "0100101\%", varname = "hensiktkode", db = "PJS") 
 
-build_sql_select_code(year = c(2020:2021))
-}
+build_sql_select_code(values = c("0100101", "0100102\%"), varname = "hensiktkode", db = "PJS") 
 
 }
 \author{
