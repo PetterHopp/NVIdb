@@ -1,15 +1,11 @@
-NVIdb 0.5.1.9001 - (2021-04-##)
+NVIdb 0.5.2 - (2021-04-24)
 --------------------------
-
-New features:
-
--
 
 Bug fixes:
 
-- Corrected selection of PJS-codes in queries in the case that only codes without subcodes where included.
+- The selection statement when selecing PJS-codes, for example hensiktkode, is now correct also in he case that only codes with sub-levels are included.
 
-- Corrected add_kommune_fylke so that Møre og Romsdal and Nordland are added correctly to fylkenr 15 and 18, respectively, in the case that gjeldende_fylkenr and gjeldende_fylke were added to fylkenr
+- Corrected add_kommune_fylke so that Møre og Romsdal and Nordland are added correctly to fylkenr 15 and 18, respectively, in the case that gjeldende_fylkenr and/or gjeldende_fylke are added to fylkenr
 
 
 NVIdb 0.5.1 - (2021-04-08)
