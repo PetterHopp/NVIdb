@@ -2,7 +2,7 @@
 
 Thank you for taking interest in contributing to *NVIdb*. 
 
-There are four ways you can contribute to the development of *NVIdb*: reporting a bug, fixing documentation errors, contributing new code, or commenting on issues/pull requests. Note that the majority of these activities do not require you to be proficient in R.
+There are several ways you can contribute to the development of *NVIdb*: reporting a bug, fixing documentation errors, contributing new code, or commenting on issues/pull requests. Note that the majority of these activities do not require you to be proficient in R.
 
 All new code or documentation must be approved by @PetterHopp. 
 
@@ -106,16 +106,21 @@ If you want to contribute code, you are welcome to do so. Please try to adhere t
 
 *   You should add yourself as a contributor to the `DESCRIPTION`.
 
-*   If you can, also write a test. *NVIdb* uses [testthat](https://cran.r-project.org/package=testthat) for tests.
-
-*   If you're adding new parameters or a new function, you'll also need
+*   If you're adding a new function or new arguments to an existing function, you'll also need
     to document them. *NVIdb* uses [roxygen2](https://cran.r-project.org/package=roxygen2), with
 [Markdown syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/markdown.html),
 for documentation. Make sure to re-run `devtools::document()` on the code before submitting. 
+
+*   *NVIdb* uses functions from [checkmate](https://CRAN.R-project.org/package=checkmate) package  for argument checking. Adding argument checking for new functions and/or arguments will be highly appreciated.
     
+*   If you can, also write a test. *NVIdb* uses [testthat](https://cran.r-project.org/package=testthat) for tests.
+
 *   Also run `devtools::check()` to make sure your function doesn't imply downstream errors or warnings. 
 
-
+### Code of Conduct
+  
+  Please note that the NVIdb project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+  
 ### References
 Based on [CONTRIBUTING to poppr](https://github.com/grunwaldlab/poppr/blob/main/CONTRIBUTING.md) by @zkamvar and [CONTRIBUTING to dittodb](https://raw.githubusercontent.com/ropensci/dittodb/main/CONTRIBUTING.mdd) by @jonkeane.
 

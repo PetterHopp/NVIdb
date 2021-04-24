@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 Thank you for taking interest in contributing to *NVIdb*. 
 
-There are four ways you can contribute to the development of *NVIdb*: reporting a bug, fixing documentation errors, contributing new code, or commenting on issues/pull requests. Note that the majority of these activities do not require you to be proficient in R.
+There are several ways you can contribute to the development of *NVIdb*: reporting a bug, fixing documentation errors, contributing new code, or commenting on issues/pull requests. Note that the majority of these activities do not require you to be proficient in R.
 
 All new code or documentation must be approved by @PetterHopp. 
 
@@ -28,7 +28,8 @@ All are welcome to comment on issues or pull requests regardless if they are dir
 
 ### Raising an Issue / Reporting a Bug
 
-The issue tracker is for both Bug Reports and Feature Requests. If you think you have found a bug, you can raise an issue by going to [`https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues`](https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues) and submit a reproducible example. 
+The issue tracker is for both Bug Reports and Feature Requests. If you think you
+have found a bug, you can raise an issue by going to [`https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues`](https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues) and submit a reproducible example. 
 
 Here are some guidelines to help make the process go smoothly:
 
@@ -56,7 +57,10 @@ You can check this against the versions reported at [`https://r-project.org`](ht
 
 #### Make sure your problem is reproducible and minimal
 
-When filing an issue, the most important thing is to include a minimal reproducible example to ensure that the maintainers will be able to verify the problem, and then figure out how to fix it. There are three things you need to include to make your example reproducible: required packages, data, code.
+When filing an issue, the most important thing is to include a minimal 
+reproducible example to ensure that the maintainers will be able to verify the 
+problem, and then figure out how to fix it. There are three things you need to 
+include to make your example reproducible: required packages, data, code.
 
 1.  **Packages** should be loaded at the top of the script, so it's easy to
     see which ones the example needs.
@@ -69,7 +73,8 @@ When filing an issue, the most important thing is to include a minimal reproduci
        2. Copy the output
        3. In my reproducible script, type `mtcars <- ` then paste.
        
-    For large datasets, please include a subset of the dataset that is sufficient to reproduce the problem.
+    For large datasets, please include a subset of the dataset that is sufficient
+    to reproduce the problem.
   
 1.  Spend a little bit of time ensuring that your **code** is easy for others to
     read:
@@ -85,14 +90,25 @@ When filing an issue, the most important thing is to include a minimal reproduci
 
 ### Updating Documentation
 
-If you see a spelling error, grammatical error or you have a better way of phrasing an error message, vignette entry, or manual page, feel free to contribute. Getting help with this is really appreciated!
+If you see a spelling error, grammatical error or you have a better way of 
+phrasing an error message, vignette entry, or manual page, feel free to 
+contribute. Getting help with this is really appreciated!
 
-All functions are documented using [roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) comments above the functions themselves. If you want to edit documentation, please make the changes there and make sure you include the roxygen comment (`#'`) in front of your additions.  
+All functions are documented using [roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) comments above the functions themselves. If you want to edit documentation, 
+please make the changes there and make sure you include the roxygen comment 
+(`#'`) in front of your additions.  
 
 
 #### If you are not experienced with git/GitHub
 
-You can make changes directly on GitHub by clicking the little pencil icon in the top right corner of the file when you view it on GitHub When you do that, GitHub will create a copy of the *NVIdb* repository in your account so you can edit the file. When you are done editing the file, you may click on "Propose File Change" at the bottom of the page (You can also add a short commit message or leave the entries blank). From there, you will be taken the form to create a Pull Request, where you can review your changes and click "Create Pull Request". Details can be found here: [`https://help.github.com/articles/editing-files-in-another-user-s-repository/`](https://help.github.com/articles/editing-files-in-another-user-s-repository/).
+You can make changes directly on GitHub by clicking the little pencil icon in 
+the top right corner of the file when you view it on GitHub When you do that, 
+GitHub will create a copy of the *NVIdb* repository in your account so you can 
+edit the file. When you are done editing the file, you may click on "Propose 
+File Change" at the bottom of the page (You can also add a short commit message 
+or leave the entries blank). From there, you will be taken the form to create a 
+Pull Request, where you can review your changes and click "Create Pull Request". 
+Details can be found here: [`https://help.github.com/articles/editing-files-in-another-user-s-repository/`](https://help.github.com/articles/editing-files-in-another-user-s-repository/).
 
 
 #### If you are experienced with git/GitHub
@@ -110,23 +126,31 @@ You can make changes directly on GitHub by clicking the little pencil icon in th
 
 ### Contributing New Code
 
-If you want to contribute code, you are welcome to do so. Please try to adhere to some principles and style convention used in *NVIdb*. 
+If you want to contribute code, you are welcome to do so. Please try to adhere 
+to some principles and style convention used in *NVIdb*. 
 
-*   I try to limit the number of package dependencies for *NVIdb*. Use of base commands is much appreciated. If you want to write code in `dplyr`-style, you may consider using the package [poorman](https://cran.r-project.org/package=poorman).
+*   I try to limit the number of package dependencies for *NVIdb*. Use of base 
+commands is much appreciated. If you want to write code in `dplyr`-style, you 
+may consider using the package [poorman](https://cran.r-project.org/package=poorman).
 
-*   New code should generally follow the tidyverse [style guide](http://style.tidyverse.org). I recommend to use the [styler](https://CRAN.R-project.org/package=styler) package to apply spaces: `styler::style_file(filename, scope = "spaces")`. Please don't restyle code that has nothing to do with your pull request.
+*   New code should generally follow the tidyverse [style guide](http://style.tidyverse.org). 
+I recommend to use the [styler](https://CRAN.R-project.org/package=styler) 
+package to apply spaces: `styler::style_file(filename, scope = "spaces")`. 
+Please don't restyle code that has nothing to do with your pull request.
 
 *   You should add a bullet point to `NEWS.md` motivating the change.
 
 *   You should add yourself as a contributor to the `DESCRIPTION`.
 
-*   If you can, also write a test. *NVIdb* uses [testthat](https://cran.r-project.org/package=testthat) for tests.
-
-*   If you're adding new parameters or a new function, you'll also need
+*   If you're adding a new function or new arguments to an existing function, you'll also need
     to document them. *NVIdb* uses [roxygen2](https://cran.r-project.org/package=roxygen2), with
 [Markdown syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/markdown.html),
 for documentation. Make sure to re-run `devtools::document()` on the code before submitting. 
+
+*   *NVIdb* uses functions from [checkmate](https://CRAN.R-project.org/package=checkmate) package  for argument checking. Adding argument checking for new functions and/or arguments will be highly appreciated.
     
+*   If you can, also write a test. *NVIdb* uses [testthat](https://cran.r-project.org/package=testthat) for tests.
+
 *   Also run `devtools::check()` to make sure your function doesn't imply downstream errors or warnings. 
 
 
@@ -138,11 +162,13 @@ The start of commit messages should be one of the following:
 *   feat: A new feature
 *   fix: A bug fix
 *   doc: Documentation only changes
-*   style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+*   style: Changes that do not affect the meaning of the code (white-space, 
+formatting, missing semi-colons, etc)
 *   refactor: A code change that neither fixes a bug or adds a feature
 *   perf: A code change that improves performance
 *   test: Adding missing tests
-*   chore: Changes to the build process or auxiliary tools and libraries such as documentation generation
+*   chore: Changes to the build process or auxiliary tools and libraries such as
+documentation generation
 
 Do not capitalize the first letter.
 

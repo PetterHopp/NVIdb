@@ -41,66 +41,37 @@
 #'
 
 build_query_one_disease <- function(year, analytt, hensikt = NULL, metode = NULL, db = "PJS") {
-
+  
   # Argument checking
-
+  
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-
+  
   # Perform checks
   checkmate::assert_integerish(year, lower = 1990, upper = as.numeric(format(Sys.Date(), "%Y")), min.len = 1, add = checks)
   checkmate::assert_character(analytt, min.chars = 2, add = checks)
   checkmate::assert_character(hensikt, null.ok = TRUE, add = checks)
   checkmate::assert_character(metode,  min.chars = 6, null.ok = TRUE, add = checks)
   checkmate::assert_choice(db, choices = c("PJS"), add = checks)
-
+  
   # Report check-results
   checkmate::reportAssertions(checks)
-
-
+  
+  
   select_year <- NVIdb::build_sql_select_year(year = year, varname = "aar")
-
+  
   select_hensikt <- NVIdb::build_sql_select_code(values = hensikt, varname = "hensiktkode")
   if (nchar(select_hensikt) > 0) {select_hensikt <- paste(select_hensikt, "OR")}
-
+  
   # Select metodekode
   select_metode <- NVIdb::build_sql_select_code(values = metode, varname = "metodekode")
   if (nchar(select_metode) > 0) {select_metode <- paste(select_metode, "OR")}
-
+  
   select_konkl_analytt <- NVIdb::build_sql_select_code(values = analytt, varname = "konkl_analyttkode")
-
+  
   select_res_analytt <- NVIdb::build_sql_select_code(values = analytt, varname = "analyttkode_funn")
-
-  #   # Select hensiktkode
-  # if (length(hensikt) == 1 && (trimws(hensikt) == "" | is.na(hensikt)) || is.null(hensikt)) {
-  #   select_hensikt <- ""
-  # } else {
-  #   select_hensikt <- paste0("hensiktkode in ('", paste(hensikt, collapse = "', '"), "') OR ")
-  # }
-
-
-  # if (length(metode) == 1 && (trimws(metode) == "" | is.na(metode)) || is.null(metode)) {
-  #   select_metode <- ""
-  # } else {
-  #   select_metode <- paste0("metodekode in ('", paste(metode, collapse = "', '"), "') OR ")
-  # }
-
-  # # Select resultat- and konklusjonsanalytter
-  # if (length(disease_analytt) == 1 && (trimws(disease_analytt) == "" | is.na(disease_analytt)) || is.null(disease_analytt)) {
-  #   select_analytt <- paste0("analyttkode_funn like '", agent_analytt, "%' OR ",
-  #                            "konkl_analyttkode like '", agent_analytt, "%'")
-  # } else {
-  #   if (length(agent_analytt) == 1 && (trimws(agent_analytt) == "" | is.na(agent_analytt)) || is.null(agent_analytt)) {
-  #     select_analytt <- paste0("analyttkode_funn = '", disease_analytt, "' OR ",
-  #                              "konkl_analyttkode = '", disease_analytt, "'")
-  #   } else {
-  #     select_analytt <- paste0("analyttkode_funn like '", agent_analytt, "%' OR ",
-  #                              "analyttkode_funn = '", disease_analytt, "' OR ",
-  #                              "konkl_analyttkode like '", agent_analytt, "%' OR ",
-  #                              "konkl_analyttkode = '", disease_analytt, "'")
-  #   }
-  # }
-
+  
+  # Build query
   selection_v2_sak_m_res <- paste("SELECT * FROM v2_sak_m_res",
                                   "WHERE", select_year , "AND",
                                   "(",
@@ -109,21 +80,16 @@ build_query_one_disease <- function(year, analytt, hensikt = NULL, metode = NULL
                                   select_konkl_analytt, "OR",
                                   select_res_analytt,
                                   ")" )
-
-  # if (length(disease_analytt) == 1 && (trimws(disease_analytt) == "" | is.na(disease_analytt)) || is.null(disease_analytt)) {
-  #   select_analytt <- paste0("analyttkode like '", agent_analytt, "%'")
-  # } else {
-  #   if (length(agent_analytt) == 1 && (trimws(agent_analytt) == "" | is.na(agent_analytt)) || is.null(agent_analytt)) {
-  #     select_analytt <- paste0("analyttkode = '", disease_analytt, "'")
-  #   } else {
-  #     select_analytt <- paste0("analyttkode like '", agent_analytt, "%' OR ",
-  #                              "analyttkode = '", disease_analytt, "'")
-  #   }
-  # }
+  
+  # # Remove double spaces from string 
+  selection_v2_sak_m_res <- gsub(' +', ' ', selection_v2_sak_m_res)
+  
+  
   select_year <- NVIdb::build_sql_select_year(year = year, varname = "sak.aar")
-
+  
   select_analytt <- NVIdb::build_sql_select_code(values = analytt, varname = "analyttkode")
-
+  
+  # Build query
   selection_sakskonklusjon <- paste("SELECT v_sakskonklusjon.*,",
                                     "sak.mottatt_dato, sak.uttaksdato, sak.sak_avsluttet, sak.hensiktkode,",
                                     "sak.eier_lokalitetstype, sak.eier_lokalitetnr",
@@ -135,10 +101,13 @@ build_query_one_disease <- function(year, analytt, hensikt = NULL, metode = NULL
                                     "WHERE", select_year, "AND (",
                                     select_analytt,
                                     ")")
-
+  
+  # # Remove double spaces from string 
+  selection_sakskonklusjon <- gsub(" +", " ", selection_sakskonklusjon)
+  
   select_statement <- list("selection_v2_sak_m_res" = selection_v2_sak_m_res,
                            "selection_sakskonklusjon" = selection_sakskonklusjon)
-
+  
   return(select_statement)
 }
 
