@@ -35,8 +35,13 @@ build_sql_select_year <- function(year, varname, db = "PJS") {
   checks <- checkmate::makeAssertCollection()
   
   # Perform checks
-  checkmate::assert_integerish(year, lower = 1990, upper = as.numeric(format(Sys.Date(), "%Y")), min.len = 1, add = checks)
-  checkmate::assert_character(varname, add = checks)
+  checkmate::assert_integerish(year, 
+                               lower = 1990, 
+                               upper = as.numeric(format(Sys.Date(), "%Y")), 
+                               min.len = 1, 
+                               any.missing = FALSE, 
+                               add = checks)
+  checkmate::assert_character(varname, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
   checkmate::assert_choice(db, choices = c("PJS"), add = checks)
   
   # Report check-results
