@@ -27,7 +27,8 @@ devtools::test()
 devtools::build(binary = FALSE, manual = TRUE, vignettes = TRUE)
 
 version <- packageVersion("NVIdb", lib.loc = paste0(getwd(),"/.."))
-devtools::check_built(path = paste0("../NVIdb_", version, ".tar.gz"), manual = TRUE)
+# devtools::check_built(path = paste0("../NVIdb_", version, ".tar.gz"), manual = TRUE)
+devtools::check_built(path = paste0("../NVIdb_", version, ".tar.gz"), args = c("--no-tests"), manual = TRUE)
 
 # Extensive checking of package. Is done after build. Creates PDF-manual
 # system("R CMD check --ignore-vignettes ../NVIdb")

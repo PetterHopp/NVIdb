@@ -112,7 +112,7 @@ add_kommune_fylke <- function(data,
   code_2_new <- unique(translation_table[, c(unname(code_column), unname(new_column))])
 
   if (code_column == "fylkenr") {
-    code_2_new <- merge(code_2_new, translation_table[, c(new_column, "komnr")], by = c(new_column))
+    code_2_new <- merge(code_2_new, translation_table[, c("fylkenr", new_column, "komnr")], by = c("fylkenr", new_column))
     code_2_new <- stats::aggregate(stats::as.formula(paste("komnr", "~", paste(c(code_column, new_column), collapse = " + "))), data = code_2_new, FUN = length)
 
     # For fylkenr, select the fylke where most kommuner is within the fylke. This to avoid fylkenr to be translated to fylker
