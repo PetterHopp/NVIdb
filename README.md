@@ -91,7 +91,7 @@ New functionality is continuously added, please check the NEWs.
 Copyright 2021 Norwegian Veterinary Institute
 
 Licensed under the BSD 3-Clause License (the "License"); 
-you may use `NVIdb` in compliance with the [License](https://github.com/NorwegianVeterinaryInstitute/NVIdb/LICENSE).
+you may use `NVIdb` in compliance with the [License](https://github.com/NorwegianVeterinaryInstitute/NVIdb/blob/main/LICENSE).
 
 # Contributing
 
