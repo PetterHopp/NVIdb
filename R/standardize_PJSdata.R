@@ -57,7 +57,7 @@ standardize_PJSdata <- function(PJSdata, dbsource = "v2_sak_m_res") {
 
   # Change to date for date-variables
   # Done before trimming character variables to reduce variables that needs to be trimmed
-  cols_2_modify <- intersect(colnames(PJSdata), c("mottatt", "uttatt", "avsluttet",
+  cols_2_modify <- intersect(colnames(PJSdata), c("mottatt", "uttatt", "avsluttet", "sak_forst_avsluttet",
                                                   "uttatt_parprove", "mottatt_parprove",
                                                   "und_godkjent", "und_avsluttet"))
   PJSdata[,cols_2_modify] <- lapply(PJSdata[,cols_2_modify], as.Date, format = "%d.%m.%y")
