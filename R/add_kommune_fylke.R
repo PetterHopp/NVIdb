@@ -118,13 +118,13 @@ add_kommune_fylke <- function(data,
     # For fylkenr, select the fylke where most kommuner is within the fylke. This to avoid fylkenr to be translated to fylker
     # where one or a few kommuner has been relocated.
     code_2_new <- code_2_new %>%
-      poorman::rename(antall = komnr) %>%
-      poorman::distinct() %>%
-      poorman::group_by(fylkenr) %>%
-      poorman::mutate(maxantall = max(antall)) %>%
-      poorman::ungroup() %>%
-      poorman::filter(maxantall == antall) %>%
-      poorman::select(-antall, -maxantall)
+      dplyr::rename(antall = komnr) %>%
+      dplyr::distinct() %>%
+      dplyr::group_by(fylkenr) %>%
+      dplyr::mutate(maxantall = max(antall)) %>%
+      dplyr::ungroup() %>%
+      dplyr::filter(maxantall == antall) %>%
+      dplyr::select(-antall, -maxantall)
 
   }
 
