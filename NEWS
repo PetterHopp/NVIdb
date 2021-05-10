@@ -1,3 +1,11 @@
+NVIdb 0.5.4 - (2021-05-10)
+--------------------------
+
+Bug fixes:
+
+- standardize_columns now accepts arguments for property written with both lower and upper case.
+
+
 NVIdb 0.5.3 - (2021-05-07)
 --------------------------
 

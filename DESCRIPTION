@@ -1,7 +1,7 @@
 Package: NVIdb
 Title: Facilitating use of Norwegian Veterinary Institute's databases
-Version: 0.5.3
-Date: 2021-05-07
+Version: 0.5.4
+Date: 2021-05-10
 Authors@R: 
   c(person(given = "Petter",
            family = "Hopp",
