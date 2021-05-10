@@ -106,6 +106,8 @@ standardize_columns <- function(data,
   # Report check-results
   checkmate::reportAssertions(checks)
 
+  property <- tolower(property)
+  
   # # Error handling
   # # 1. property is not given
   # property <- tolower(property)
@@ -328,7 +330,7 @@ standardize_columns <- function(data,
     # New column with standard column names¨
     colwidths <- merge(colwidths, standard, by.x = "V1", by.y = "colname", all.x = TRUE)
     # Impute with snake case of column name in case standard column name isn't defined
-    colwidths[which(is.na(colwidths$colwidth)), "colwidth"] <- 10.78
+    colwidths[which(is.na(colwidths$colwidth)), "colwidth"] <- 10.71
 
     # Sorts data in original order
     colwidths <- colwidths[order(colwidths$original_sort_order), ]
