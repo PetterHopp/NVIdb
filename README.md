@@ -50,7 +50,7 @@ remotes::install_github("NorwegianVeterinaryInstitute/NVIdb",
 In order to install (or update) the `NVIconfig` package, run the following code:
 
 ``` r
-remotes::install_github("NorwegianVeterinaryInstitute/NVIdb", 
+remotes::install_github("NorwegianVeterinaryInstitute/NVIconfig", 
 	auth_token = "PAT",
 	upgrade = FALSE, 
 	build = TRUE,
