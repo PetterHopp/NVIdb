@@ -125,6 +125,9 @@ add_kommune_fylke <- function(data,
       dplyr::ungroup() %>%
       dplyr::filter(maxantall == antall) %>%
       dplyr::select(-antall, -maxantall)
+    
+    # Removes tibble in case it makes trouble later
+    code_2_new <- as.data.frame(code_2_new)
 
   }
 
