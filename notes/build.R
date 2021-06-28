@@ -15,6 +15,13 @@ library(withr)
 # Should be run before git push when documentation for functions have been changed
 devtools::document()
 
+# For updating CONTRIBUTE.md when the vignette has been updated.
+rmarkdown::render(input = paste0("./vignettes/Contribute_to_", pkg, ".Rmd"), 
+                  output_format = "md_document",
+                  output_file = "CONTRIBUTING.md",
+                  output_dir = "./")
+
+
 # Alternative for creating the PDF-manual. The manual is not put in the correct directory
 # system(paste(shQuote(file.path(R.home("bin"), "R")),
 #              "CMD",
@@ -23,6 +30,7 @@ devtools::document()
 # file.copy(from = "NVIdb.pdf", to = "./vignettes", overwrite = TRUE)
 # file.remove(".Rd2pdf16372")
 # file.remove("NVIdb.pdf")
+# check .install_extras
 
 # Run tests included in ./tests.
 devtools::test()
