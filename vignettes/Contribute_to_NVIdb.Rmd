@@ -1,10 +1,15 @@
 ---
 title: "Contribute to NVIdb"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Contribute to NVIdb}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: 
+  html_document:
+    standalone: true
+    smart: true
+    normalize: true
+    highlight: tango
+    self-contained: true
+    theme: cerulean
+  md_document:
+    variant: markdown_github
 ---
 
 ```{r, include = FALSE}
