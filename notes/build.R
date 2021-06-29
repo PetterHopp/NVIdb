@@ -20,7 +20,8 @@ rmarkdown::render(input = paste0("./vignettes/Contribute_to_", pkg, ".Rmd"),
                   output_format = "md_document",
                   output_file = "CONTRIBUTING.md",
                   output_dir = "./")
-
+header <- paste0("# Contribute to ", pkg, "\n")
+writeLines(c(header,readLines("./CONTRIBUTING.md")),"./CONTRIBUTING.md")
 
 # Alternative for creating the PDF-manual. The manual is not put in the correct directory
 # system(paste(shQuote(file.path(R.home("bin"), "R")),
