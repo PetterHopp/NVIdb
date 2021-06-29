@@ -1,16 +1,16 @@
 ---
 title: "Contribute to NVIdb"
 output: 
-  html_document:
-    standalone: true
-    smart: true
-    normalize: true
-    highlight: tango
-    self-contained: true
-    theme: cerulean
-  md_document:
-    variant: markdown_github
+  rmarkdown::html_vignette:
+    keep_md: true
+md_document:
+  variant: markdown_github
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Contribute to NVIdb}
+  %\VignetteEncoding{UTF-8}
 ---
+
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
