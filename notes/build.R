@@ -16,7 +16,7 @@ library(withr)
 devtools::document()
 
 # For updating CONTRIBUTE.md when the vignette has been updated.
-rmarkdown::render(input = paste0("./vignettes/Contribute_to_", pkg, ".Rmd"), 
+rmarkdown::render(input = paste0("./vignettes/Contribute_to_", pkg, ".Rmd"),
                   output_format = "md_document",
                   output_file = "CONTRIBUTING.md",
                   output_dir = "./")
