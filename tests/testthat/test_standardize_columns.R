@@ -108,41 +108,68 @@ test_that("colClasses for csv-files", {
 })
 
 
-# test_that("Standardize colwidths for Excel", {
-#   # Generate data frame with column names for table that should be exported to Excel
-#   # Example with selection of samples collected in herds
-#   df <- cbind("aar" = "2021", "rapport" = "Brucellose hos geit, utvalgsliste",
-#               "mt_regionnr" = "M22000", "mt_region" = " Region Øst ",
-#               "mt_avdelingnr" = " M22110", "mt_avdeling" = " Glåmdal og Østerdal ",
-#               "eier_lokalitetnr" = "34343434", "eier_lokalitet" = "Gårdsbruk", "postnr" = "2560", "poststed" = " ALVDAL ",
-#               "ant_prover" = 30)
-#
+test_that("Standardize colwidths for Excel", {
+# skip if no connection to 'FAG' have been established
+skip_if_not(dir.exists(set_dir_NVI("FAG")))
+
+PJStest <- readRDS(file.path(".", "PJS_testdata.rds"))
+# PJStest <- readRDS("./tests/testthat/PJS_testdata.rds")
+
 #   # Make a vector with correct column names after translation
-#   correct_result <- c(5, 10.78, 12.5, 16, 13, 33, 12, 30, 8, 15, 8.5)
-#
-#   # Compare Add fylke, current fylkenr and current fylke with correct result
-#   expect_equal(standardize_columns(data = df, dbsource = "geit_brucella_utvalg",
-#                                                 property = "colwidths_Excel"),
-#                    correct_result)
-#
-#   # Generate data frame with column names for table that should be exported to Excel
-#   # Example with selection of samples collected at slaughterhouses
-#   df <- cbind("mt_regionnr" = "M25000", "mt_region" = "Region Nord",
-#               "mt_avdelingnr" = "M25150", "mt_avdeling" = "Finnmark",
-#               "eier_lokalitetnr" = "802", "eier_lokalitet" = "NORTURA SA AVD. FINNMARK/KARASJOK",
-#               "ant_prover" = 30)
-#
-#
-#   # Make a vector with correct column names after translation
-#   correct_result <- c(12.5, 16, 13, 33, 7, 35, 8.5)
-#
-#   # Compare Add fylke, current fylkenr and current fylke with correct result
-#   expect_identical(standardize_columns(data = df, dbsource = "sau_brucella_slakteri",
-#                                                 property = "colwidths_Excel"),
-#                    correct_result)
-#
-# })
-#
+correct_result <- c(5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.71, 10.71,
+                    10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                    10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                    10.71, 11.00, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                    10.71, 10.71, 10.71, 11.00, 10.71, 8.00, 10.71, 10.71, 10.71, 10.71,
+                    10.71, 10.71, 10.71, 10.71, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71,
+                    10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                    10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                    10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                    10.71, 10.71, 10.71, 10.71, 10.71)
+
+  expect_equal(standardize_columns(data = PJStest, property = "colwidths_Excel"),
+                   correct_result)
+
+  
+  # Standardisere kolonnenavn
+  PJStest <- standardize_columns(data = PJStest, property = "colnames")
+  
+  #   # Make a vector with correct column names after translation
+  correct_result <- c(5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.00, 10.00, 10.00,
+                      10.00, 10.71, 10.71, 5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      5.00, 11.00, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.00, 10.00, 11.00, 10.71, 8.00, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 10.71, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      8.00, 10.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 10.71, 10.71)
+  
+  expect_equal(standardize_columns(data = PJStest, property = "colwidths_Excel"),
+               correct_result)
+  
+  # Transforms to tibble before checking
+  PJStest <- tibble::as_tibble(PJStest)
+  
+  #   # Make a vector with correct column names after translation
+  correct_result <- c(5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.00, 10.00, 10.00,
+                      10.00, 10.71, 10.71, 5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      5.00, 11.00, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.00, 10.00, 11.00, 10.71, 8.00, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 10.71, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      8.00, 10.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 10.71, 10.71)
+  
+  expect_equal(standardize_columns(data = PJStest, property = "colwidths_Excel"),
+               correct_result)
+  
+  
+})
+
 
 test_that("Standardize English collabels", {
 
