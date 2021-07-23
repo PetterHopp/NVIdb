@@ -18,9 +18,9 @@ login_by_credentials <- function(dbservice,
   
   # Identify if NVIconfig are installed and parameters for dbservice exists. 
   # Produce extra message in case parameters are lacking
-  x_msg <- NVIcheckmate::check_package(X = "NVIconfig")
+  x_msg <- NVIcheckmate::check_package(x = "NVIconfig")
   if (x_msg == TRUE) {
-    x_msg <- NVIcheckmate::check_choice_anycase(x = dbservice, choices = NVIconfig:::dbconnect$dbservice)
+    x_msg <- NVIcheckmate::check_choice_character(x = dbservice, choices = NVIconfig:::dbconnect$dbservice, ignore.case = TRUE)
     if (x_msg != TRUE) {
       x_msg <- "and predifined parameters for dbservice don't exist in the installed version of NVIconfig"
     }
