@@ -4,6 +4,7 @@ NVIdb 0.5.5 - (2021-##-##)
 Other changes:
 
 - The vignette "Contribute to NVIdb" have been updated.
+- Improved argument checking of add_poststed, login_by_credentials
 
 
 NVIdb 0.5.4 - (2021-05-10)
