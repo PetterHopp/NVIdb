@@ -47,19 +47,18 @@
 #' # NULL
 set_credentials <- function(dbservice) {
 
+  # ARGUMENT CHECKING dbservice ----
+  checkmate::assert_character(x = dbservice, min.chars = 1, len = 1, any.missing = FALSE)
+  
   # Removes previously set credentials for the database service
   remove_credentials(dbservice)
 
   # Open window for input of username to the given dbservice
   username <- svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbservice))$res
 
-  # Identifies the spelling of service with regard to lower and upper case
-  # This is used in set-statement below to ensure correct spelling when assigning User ID and Password
-  #   in the case that the username and password is reset
-  # if(is.element(tolower(dbservice), tolower(keyring::key_list()[,1]))) {
-  #   dbservice <- keyring::key_list()[which(tolower(keyring::key_list()[,1])==tolower(dbservice)),1]
-  # }
-
+  # ARGUMENT CHECKING username ----
+  checkmate::assert_character(x = username, min.chars = 1, len = 1, any.missing = FALSE)
+  
   # Open window for input of password to the given dbservice and saves username and password in user's profile
   keyring::key_set(service = dbservice, username = username)
 }
@@ -70,11 +69,9 @@ set_credentials <- function(dbservice) {
 #' @rdname set_credentials
 
 set_credentials_PJS <- function() {
-  # Set database service to EOS
-  dbservice <- "PJS"
-
   # General function to input username and password for a database service
-  set_credentials(dbservice)
+  # Set database service to PJS
+  set_credentials(dbservice = "PJS")
 }
 
 
@@ -83,10 +80,8 @@ set_credentials_PJS <- function() {
 #' @rdname set_credentials
 
 set_credentials_EOS <- function() {
-  # Set database service to EOS
-  dbservice <- "EOS"
-
   # General function to input username and password for a database service
-  set_credentials(dbservice)
+  # Set database service to EOS
+  set_credentials(dbservice = "EOS")
 }
 
