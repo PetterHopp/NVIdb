@@ -41,6 +41,10 @@
 
 set_PAT <- function(service) {
 
+  
+  # ARGUMENT CHECKING service ----
+  checkmate::assert_character(x = service, min.chars = 1, len = 1, any.missing = FALSE)
+  
   # Removes previously set PAT for the database service
   remove_PAT(service)
 
