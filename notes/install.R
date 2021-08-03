@@ -4,6 +4,10 @@
 
 pkg <- "NVIdb"
 
+Rlibrary <- R.home()
+
+library(withr)
+
 # DETACH PACKAGE ----
 # The package must be detached to install it.
 if(pkg %in% (.packages())){
