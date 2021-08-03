@@ -4,12 +4,25 @@
 # - assert_add_functions
 #
 #
-# assert_add_function <- function(data = data,
-#                                 translation_table = translation_table,
-#                                 code_column = code_column,
-#                                 new_column = new_column,
-#                                 position = position,
-#                                 overwrite = overwrite) {
+#' @title Collection of assertions for add_functions 
+#' @description Collection of assertions used in standard add_functions. 
+#'
+#' @details All add functions except one, have the same arguments and the 
+#'     assertion can be standardized. 
+#'
+#' @param data Argument to the add-function to be asserted. 
+#' @param translation_table Argument to the add-function to be asserted. 
+#' @param code_column Argument to the add-function to be asserted. 
+#' @param new_column Argument to the add-function to be asserted. 
+#' @param position Argument to the add-function to be asserted. 
+#' @param overwrite Argument to the add-function to be asserted. 
+#'
+#' @return \code{TRUE } if none of the assertions failed. If any of the assertions 
+#'     failed, one or more error messages are returned. 
+#'
+#' @author Petter Hopp Petter.Hopp@@vetinst.no
+#' @keywords internal
+#'
   assert_add_function <- function(data,
                                   translation_table,
                                   code_column,
