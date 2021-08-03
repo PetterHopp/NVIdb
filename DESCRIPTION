@@ -51,6 +51,7 @@ Suggests:
     spelling, 
     styler,
     testthat,
+    tibble,
     withr
 VignetteBuilder: knitr
 Language: en-GB
