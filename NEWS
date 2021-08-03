@@ -4,7 +4,7 @@ NVIdb 0.5.5 - (2021-##-##)
 Other changes:
 
 - The vignette "Contribute to NVIdb" have been updated.
-- Improved argument checking of add_poststed, login_by_credentials
+- Improved argument checking of add_poststed, add_kommune_fylke, add_MT_omrader, add_produsent, add_lokalitet, set_credentials, remove_credentials, login_by_credentials
 
 
 NVIdb 0.5.4 - (2021-05-10)
