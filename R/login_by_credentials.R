@@ -7,7 +7,7 @@ login_by_credentials <- function(dbservice,
                                  dbserver = NULL,
                                  dbport = NULL,
                                  dbprotocol = NULL) {
-
+  
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
@@ -16,33 +16,53 @@ login_by_credentials <- function(dbservice,
   # dbservice
   checkmate::assert_character(dbservice, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
   
-  # Identify if NVIconfig are installed and parameters for dbservice exists. 
-  # Produce extra message in case parameters are lacking
-  x_msg <- NVIcheckmate::check_package(x = "NVIconfig")
-  if (x_msg == TRUE) {
-    x_msg <- NVIcheckmate::check_choice_character(x = dbservice, choices = NVIconfig:::dbconnect$dbservice, ignore.case = TRUE)
-    if (x_msg != TRUE) {
-      x_msg <- "and predifined parameters for dbservice don't exist in the installed version of NVIconfig"
+  
+  # Identifies if predefined connection parameters are needed
+  if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) {
+    # Identify if NVIconfig are installed and parameters for dbservice exists. 
+    NVIcheckmate::assert_package(x = "NVIconfig", 
+                                 comment = paste0("Parameters for logging into the database '",
+                                                  dbservice, 
+                                                  "' is lacking and NVIconfig with predefined parameters is not installed"),
+                                 add = checks)
+    
+    if (isTRUE(NVIcheckmate::check_package(x = "NVIconfig"))) {
+      NVIcheckmate::assert_choice_character(x = dbservice, choices = NVIconfig:::dbconnect$dbservice, ignore.case = TRUE,
+                                            comment = paste0("Predefined parameters for logging into the database '",
+                                                             dbservice, 
+                                                             "' is not available in your version of NVIconfig"),
+                                            add = checks)
+      
+      # Uses the predefined parameters only for parameters with NULL-value
+      connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
+      if (is.null(dbdriver))   {dbdriver   <- connect[, "dbdriver"]}
+      if (is.null(db))         {db         <- connect[, "db"]}
+      if (is.null(dbserver))   {dbserver   <- connect[, "dbserver"]}
+      if (is.null(dbport))     {dbport     <- connect[, "dbport"]}
+      if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
     }
   }
   
-  # if predefined connection parameters don't exist for dbservice
-  # TO DO: include possibility for extra message in assert_character 
-  if (x_msg != TRUE) {
-  # dbdriver
-  checkmate::assert_character(dbdriver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
-  # db
-  checkmate::assert_character(db, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
-  # dbserver
-  checkmate::assert_character(dbserver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
-  # dbport
-  checkmate::assert_character(dbport, len = 1, any.missing = FALSE, add = checks)
-  # dbprotocol
-  checkmate::assert_character(dbprotocol, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
-  }
+  # # Produce extra message in case parameters are lacking
+  # x_msg <- NVIcheckmate::check_package(x = "NVIconfig")
+  # 
+  # # if predefined connection parameters don't exist for dbservice
+  # # TO DO: include possibility for extra message in assert_character 
+  # if (x_msg != TRUE) {
+    # dbdriver
+    checkmate::assert_character(dbdriver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+    # db
+    checkmate::assert_character(db, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+    # dbserver
+    checkmate::assert_character(dbserver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+    # dbport
+    checkmate::assert_character(dbport, len = 1, any.missing = FALSE, add = checks)
+    # dbprotocol
+    checkmate::assert_character(dbprotocol, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # }
   
   # credentials
-  NVIcheckmate::assert_credentials(dbservice)
+  NVIcheckmate::assert_credentials(dbservice, add = checks)
   
   # Report check-results
   checkmate::reportAssertions(checks)
@@ -69,22 +89,11 @@ login_by_credentials <- function(dbservice,
   #              dbservice,
   #              "are missing and predefined parameters are not available"))
   # }
-
-  # Identifies connection parameters for predefined dbservices
-  # Uses the predefined parameters only for parameters with NULL-value
-  if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) {
-    connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
-    if (is.null(dbdriver))   {dbdriver   <- connect[, "dbdriver"]}
-    if (is.null(db))         {db         <- connect[, "db"]}
-    if (is.null(dbserver))   {dbserver   <- connect[, "dbserver"]}
-    if (is.null(dbport))     {dbport     <- connect[, "dbport"]}
-    if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
-  }
-
+  
   # Identifies the spelling of service with regard to lower and upper case
   # This is used in Connect-statement below to ensure correct spelling when fetching User ID and Password
   dbservice <- keyring::key_list()[which(tolower(keyring::key_list()[, 1]) == tolower(dbservice)), 1]
-
+  
   # Connects to journal_rapp using ODBC
   odbcConnection <- RODBC::odbcDriverConnect(paste0("DRIVER=", dbdriver,
                                                     ";Database=", db,
@@ -93,7 +102,7 @@ login_by_credentials <- function(dbservice,
                                                     ";PROTOCOL=", dbprotocol,
                                                     ";UID=", as.character(keyring::key_list(dbservice)[2]),
                                                     ";PWD=", keyring::key_get(dbservice, as.character(keyring::key_list(dbservice)[2]))))
-
+  
   return(odbcConnection)
 }
 
@@ -104,12 +113,25 @@ login_by_credentials <- function(dbservice,
 #' @rdname login
 
 login_by_credentials_PJS <- function() {
-
-  # ARGUMENT CHECKING 
-  # performed in login_by_credentials
-
+  
+  # ARGUMENT CHECKING ----
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+  
+  
+  # Identify if NVIconfig are installed. 
+  NVIcheckmate::assert_package(x = "NVIconfig", add = checks)
+  
+  
+  # credentials
+  NVIcheckmate::assert_credentials(x = "PJS" , add = checks)
+  
+  # Report check-results
+  checkmate::reportAssertions(checks)
+  
+  
   odbcConnection <- NVIdb::login_by_credentials(dbservice = "PJS")
-
+  
   return(odbcConnection)
 }
 
@@ -119,12 +141,25 @@ login_by_credentials_PJS <- function() {
 #' @rdname login
 
 login_by_credentials_EOS <- function() {
-
-  # ARGUMENT CHECKING 
-  # performed in login_by_credentials
+  
+  # ARGUMENT CHECKING ----
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+  
+  
+  # Identify if NVIconfig are installed. 
+  NVIcheckmate::assert_package(x = "NVIconfig", add = checks)
+  
+  
+  # credentials
+  NVIcheckmate::assert_credentials(x = "EOS", add = checks)
+  
+  # Report check-results
+  checkmate::reportAssertions(checks)
   
   odbcConnection <- NVIdb::login_by_credentials(dbservice = "EOS")
-
+  
   return(odbcConnection)
 }
+
 
