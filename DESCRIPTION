@@ -40,7 +40,8 @@ Imports:
     poorman (>= 0.2.3),
     RODBC,
     snakecase,
-    svDialogs
+    svDialogs,
+    NVIcheckmate
 RoxygenNote: 7.1.1
 Suggests:
     devtools,
@@ -53,5 +54,6 @@ Suggests:
     testthat,
     tibble,
     withr
+Remotes: NorwegianVeterinaryInstitute/NVIcheckmate
 VignetteBuilder: knitr
 Language: en-GB
