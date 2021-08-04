@@ -18,24 +18,25 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-# see https://stackoverflow.com/questions/44685485/specifying-multiple-simultaneous-output-formats-in-knitr-new
-# several output formats
 ```
 
 Thank you for considering contributing to `NVIdb`. 
 
-`NVIdb` is one of several packages assembled under the name `NVIverse`. `NVIverse` is a collection of R-packages with tools to facilitate data management and data reporting at the Norwegian Veterinary Institute (NVI). 
+`NVIdb` is one of several packages assembled under the name `NVIverse`, a collection of R-packages with tools to 
+facilitate data management and data reporting at the Norwegian Veterinary Institute (NVI). 
 
 ###  NVIverse packages
 ```{r echo = FALSE, resuls = 'asis'}
 NVIverse <- as.data.frame(rbind(c("NVIconfig", "Private",
-                                  "Configuration information necessary for some functions in NVIverse"),
+                                  "Configuration information necessary for some NVIverse functions"),
                                 c("NVIdb", "Public",
                                   "Tools to facilitate the use of NVI's databases"),
                                 c("NVIpretty",  "Public",
                                   "Tools to make R-output pretty in accord with NVI's graphical profile"),
                                 c("NVIbatch",  "Public",
                                   "Tools to facilitate the running of R-scripts in batch mode at NVI"),
+                                c("NVIcheckmate",  "Public",
+                                  "Extension of checkmate with additional functions for argument checking for use in NVIverse functions"),
                                 c("OKplan",  "Public",
                                   "Tools to facilitate the planning of surveillance programmes for the NFSA"),
                                 c("OKcheck",  "Public",
@@ -49,7 +50,7 @@ There are several ways you can contribute to this project: ask a question, propo
 
 ### Ask a question
 
-Using `NVIdb` and need help? Browse the package help to see if you can find a solution. Still stuck? Post your question in R-forum at workplace or contact the package maintainer by [email](mailto:petter.hopp@vetinst.no).
+Using `NVIdb` and need help? Browse the package help to see if you can find a solution. Still problems? Post your question in R-forum at workplace or contact the package maintainer by [email](mailto:petter.hopp@vetinst.no).
 
 ### Propose an idea 
 
@@ -62,7 +63,7 @@ See below if you want to contribute code for your idea as well.
 
 ### Report a bug 
 
-Using `NVIdb` and discovered a bug? That's annoying! Don't let others have the same experience and report it as an [issue on GitHub](https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues/new) so we can fix it. A good bug report makes it easier for us to do so, so please include:
+Using `NVIdb` and discovered a bug? Don't let others have the same experience and report it as an [issue on GitHub](https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues/new) so we can fix it. A good bug report makes it easier for us to do so, so please include:
 
 * Any details about your local setup that might be helpful in troubleshooting.
 * Detailed steps to reproduce the bug.
@@ -104,7 +105,7 @@ Please don't restyle code that has nothing to do with your pull request.
 [Markdown syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/markdown.html),
 for documentation. Make sure to re-run `devtools::document()` on the code before submitting. 
 
-*   `NVIverse`-packages use the assert-functions from [`checkmate`](https://CRAN.R-project.org/package=checkmate) package  for argument checking. Adding argument checking for new functions and/or arguments will be highly appreciated.
+*   `NVIverse`-packages use the assert-functions from [`checkmate`](https://CRAN.R-project.org/package=checkmate) package  for argument checking as well as some additional assert_functions in [`NVIcheckmate`](https://github.com/NorwegianVeterinaryInstitute/NVIcheckmate). Adding argument checking for new functions and/or arguments will be highly appreciated.
     
 *   If you can, also write a test. `NVIverse`-packages use [`testthat`](https://cran.r-project.org/package=testthat) for tests.
 
@@ -135,4 +136,3 @@ Please note that this project is released with a
 
 ## References
 This document is adapted from a [template](https://gist.github.com/peterdesmet/e90a1b0dc17af6c12daf6e8b2f044e7c) by @peterdesmet .
-
