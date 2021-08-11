@@ -1,18 +1,28 @@
 ---
-title: "Contribute to NVIdb"
 output: 
   rmarkdown::html_vignette:
     keep_md: true
 md_document:
   variant: markdown_github
+  
+params:
+  NVIpkg: "NVIdb"
+title: "Contribute to `r params$NVIpkg`"
+
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Contribute to NVIdb}
-  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{`r paste("Contribute to", params$NVIpkg)`}
+  %\VignetteEncoding
+  
 ---
 
 
 ```{r, include = FALSE}
+NVIpkg <- params$NVIpkg
+NVIpkg_inline <- paste0("`", NVIpkg, "`")
+NVIpkg_code <- "/tree/main/R"
+# pkg_name <- NVIpkg_inline
+# pkg_name <- "`NVIcheckmate`"
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -20,10 +30,9 @@ knitr::opts_chunk$set(
 
 ```
 
-Thank you for considering contributing to `NVIdb`. 
+Thank you for considering contributing to `r NVIpkg_inline`. 
 
-`NVIdb` is one of several packages assembled under the name `NVIverse`, a collection of R-packages with tools to 
-facilitate data management and data reporting at the Norwegian Veterinary Institute (NVI). 
+`r NVIpkg_inline` is one of several packages assembled under the name `NVIverse`, a collection of R-packages with tools to facilitate data management and data reporting at the Norwegian Veterinary Institute (NVI). 
 
 ###  NVIverse packages
 ```{r echo = FALSE, resuls = 'asis'}
@@ -50,11 +59,11 @@ There are several ways you can contribute to this project: ask a question, propo
 
 ### Ask a question
 
-Using `NVIdb` and need help? Browse the package help to see if you can find a solution. Still problems? Post your question in R-forum at workplace or contact the package maintainer by [email](mailto:petter.hopp@vetinst.no).
+Using `r NVIpkg_inline` and need help? Browse the package help to see if you can find a solution. Still problems? Post your question in R-forum at workplace or contact the package maintainer by [email](mailto:petter.hopp@vetinst.no).
 
 ### Propose an idea 
 
-Have an idea for a new `NVIdb` feature? Take a look at the `NVIdb` help and [issue list](https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues) to see if it isn't included or suggested yet. If not, suggest your idea as an [issue on GitHub](https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues/new). While we can't promise to implement your idea, it helps to:
+Have an idea for a new `r NVIpkg_inline` feature? Take a look at the `r NVIpkg_inline` help and `r paste0("[issue list](https://github.com/NorwegianVeterinaryInstitute/",NVIpkg, "/issues)")` to see if it isn't included or suggested yet. If not, suggest your idea as an `r paste0("[issue on GitHub](https://github.com/NorwegianVeterinaryInstitute/",NVIpkg, "/issues/new)")`. While we can't promise to implement your idea, it helps to:
 
 * Explain in detail how it would work.
 * Keep the scope as narrow as possible.
@@ -63,7 +72,7 @@ See below if you want to contribute code for your idea as well.
 
 ### Report a bug 
 
-Using `NVIdb` and discovered a bug? Don't let others have the same experience and report it as an [issue on GitHub](https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues/new) so we can fix it. A good bug report makes it easier for us to do so, so please include:
+Using `r NVIpkg_inline` and discovered a bug? Don't let others have the same experience and report it as an `r paste0("[issue on GitHub](https://github.com/NorwegianVeterinaryInstitute/",NVIpkg, "/issues/new)")` so we can fix it. A good bug report makes it easier for us to do so, so please include:
 
 * Any details about your local setup that might be helpful in troubleshooting.
 * Detailed steps to reproduce the bug.
@@ -74,13 +83,13 @@ Noticed a typo on the function help? Think a function could use a better example
 
 Functions are described as comments near their code and translated to documentation using [`roxygen2`](https://klutometis.github.io/roxygen/). If you want to improve a function description:
 
-1. Go to `R/` directory in the [code repository](https://github.com/NorwegianVeterinaryInstitute/NVIdb/tree/main/R).
+1. Go to `R/` directory in the `r paste0("[code repository](https://github.com/NorwegianVeterinaryInstitute/",NVIpkg, NVIpkg_code,")")`.
 2. Look for the file with the name of the function.
 3. [Propose a file change](https://help.github.com/articles/editing-files-in-another-user-s-repository/) to update the function documentation in the roxygen comments (starting with `#'`).
 
 ### Contribute code 
 
-Care to fix bugs or implement new functionality for our_package? Great! Have a look at the [issue list](https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues) and leave a comment on the things you want to work on. See also the development guidelines below.
+Care to fix bugs or implement new functionality for our_package? Great! Have a look at the `r paste0("[issue list](https://github.com/NorwegianVeterinaryInstitute/",NVIpkg, "/issues)")` and leave a comment on the things you want to work on. See also the development guidelines below.
 
 
 ## Development guidelines
@@ -88,7 +97,7 @@ Care to fix bugs or implement new functionality for our_package? Great! Have a l
 If you want to contribute code, you are welcome to do so. Please try to adhere 
 to some principles and style convention used for `NVIverse`-packages. 
 
-*   Please limit the number of package dependencies for `NVIdb`. The use of base 
+*   Please limit the number of package dependencies for `r NVIpkg_inline`. The use of base 
 functions is much appreciated. 
 
 *   New code should generally follow the tidyverse [style guide](http://style.tidyverse.org). 
