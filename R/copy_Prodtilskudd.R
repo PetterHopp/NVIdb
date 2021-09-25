@@ -9,6 +9,7 @@ copy_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
+  
   # Perform checks
   # from_path
   checkmate::assert_character(from_path, len = 1, min.chars = 1, add = checks)
@@ -24,16 +25,18 @@ copy_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
     checkmate::assert_directory_exists(to_path, access = "r", add = checks)
   }
   checkmate::assert_subset(Pkode_month, choices = c("both", "last", "01", "03", "05", "07", "10", "12"), add = checks)
-  # Report check-results
-  checkmate::reportAssertions(checks)
-
-  checkmate::assert(checkmate::check_integerish(as.numeric(Pkode_year[which(!grepl('[:alpha:]', Pkode_year))]),
+  NVIcheckmate::assert(checkmate::check_integerish(as.numeric(Pkode_year[which(!grepl('[:alpha:]', Pkode_year))]),
                                                 lower = 1995,
                                                 upper = as.numeric(format(Sys.Date(), "%Y")),
                                                 any.missing = FALSE,
                                                 unique = TRUE),
                     # checkmate::check_character(Pkode_year, min.chars = 4, min.len = 1, any.missing = FALSE),
-                    checkmate::check_choice(Pkode_year, choices = c("last")))
+                    checkmate::check_choice(Pkode_year, choices = c("last")),
+                    add = checks)
+  
+  # Report check-results
+  checkmate::reportAssertions(checks)
+
 
 
   # # READ IN ALL FILES IN THE DIRECTORY AND MAKE A LIST OF THE SELECTED VERSIONS OF EXTRACTS FROM PKODEREGISTERET ----
