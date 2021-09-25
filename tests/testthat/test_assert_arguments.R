@@ -24,11 +24,11 @@ test_that("assert_add_function by add_poststed", {
   
   expect_error(add_poststed(data = poststeder, translation_table = poststed, code_column = c("postnr"="Postnr"),
                             new_column = "poststed", position = "first", overwrite = FALSE),
-               regexp = "in the translation table, but 'Postnr' is not a column name in" )
-  
+               regexp = "Variable 'unname\\(code_column)': Must be a subset of set " )
+
   expect_error(add_poststed(data = poststeder, translation_table = poststed, code_column = c("Postnr"="postnr"),
                             new_column = "poststed", position = "last", overwrite = FALSE),
-               regexp = "the data, but 'Postnr' is not a column in the data. You" )
+               regexp = "Variable 'names\\(code_column)': Must be a subset of set \\{postnr}" )
   
   expect_error(add_poststed(data = poststeder, translation_table = poststed, code_column = c("postnr"="postnr"),
                             new_column = c("poststed" = "Poststed"), position = "left", overwrite = FALSE),
@@ -38,7 +38,7 @@ test_that("assert_add_function by add_poststed", {
                              new_column = c("poststed" = "poststed"), position = "right", overwrite = FALSE)
   expect_error(add_poststed(data = poststeder, translation_table = poststed, code_column = c("postnr"="postnr"),
                             new_column = c("poststed" = "poststed"), position = "left", overwrite = FALSE),
-               regexp = "Either give new column name\\(s) for the column\\(s) called 'poststed' or specify overwrite = TRUE" )
+               regexp = "Variable 'names\\(new_column)': Must be disjunct from \\(poststed). The column name\\(s): 'poststed'" )
   
   expect_error(add_poststed(data = poststeder, translation_table = poststed, code_column = c("postnr"="postnr"),
                             new_column = c("postnr" = "poststed"), position = "left", overwrite = FALSE),
