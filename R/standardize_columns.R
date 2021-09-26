@@ -97,7 +97,8 @@ standardize_columns <- function(data,
 
   checkmate::assert_data_frame(standards, null.ok = TRUE, add = checks)
 
-  checkmate::assert_subset(tolower(property), choices = c("colnames", "colclasses", "collabels", "colwidths_excel", "colorder"), add = checks)
+  checkmate::assert_subset(tolower(property), choices = c("colnames", "colclasses", "collabels", "colwidths_excel",
+                                                          "colwidths_DT", "colorder"), add = checks)
 
   checkmate::assert_subset(language, choices = c("no", "en"), add = checks)
 
@@ -107,14 +108,8 @@ standardize_columns <- function(data,
   checkmate::reportAssertions(checks)
 
   property <- tolower(property)
+  dbsource <- tolower(dbsource)
   
-  # # Error handling
-  # # 1. property is not given
-  # property <- tolower(property)
-  # if (is.null(property) | !property %in% c("colnames", "colclasses", "collabels", "colwidths_excel", "colorder")) {
-  #   stop("'property = ' must be one of c('colnames', 'colclasses', 'collabels', 'colwidths_Excel', 'colorder')")
-  # }
-
   # Reading column standards from a csv-file based on in an Excel file
   if (is.null(standards)) {
     column_standards <- utils::read.csv2(file = paste0(NVIdb::set_dir_NVI("ProgrammeringR"),"standardization/column_standards.csv"),
@@ -340,13 +335,13 @@ standardize_columns <- function(data,
 
     # Return data frame with standardized column names
     return(colwidths)
-
   }
+
   # STANDARDIZE COLUMN ORDER ----
   if (property == "colorder") {
 
     if (!dbsource %in% column_standards[which(!is.na(column_standards$colorder)), "table_db"]) {
-      warning("No sorting done as column order is not known for this table. Please update column_standards or us another dbsource")
+      warning("No sorting done as column order is not known for this table. Please update column_standards or use another dbsource")
     } else {
       # Generate data frame with the column names in one column named V1
       columnorder <- as.data.frame(matrix(colnames(data), ncol = 1))

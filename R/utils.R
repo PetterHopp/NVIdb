@@ -25,7 +25,7 @@
 #' \dontrun{
 #' copy_file_if_updated(filename, from_path, to_path)
 #' }
-#' @noRd
+#' @keywords internal
 
 copy_file_if_updated <- function(filename, from_path, to_path) {
 
@@ -92,13 +92,7 @@ copy_file_if_updated <- function(filename, from_path, to_path) {
 #' @return A data.frame with a new column with the translated value. The new column is placed to the right of the old column.
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #'
-#' @examples
-#' \dontrun{
-#'
-#' }
-#' @noRd
-
-
+#' @keywords internal
 
 add_new_column <- function(data,
                            ID_column,
@@ -263,9 +257,7 @@ add_new_column <- function(data,
 #' \dontrun{
 #' read_csv_file(filename, from_path, columnclasses, fileencoding)
 #' }
-#' @noRd
-
-
+#' @keywords internal
 
 read_csv_file <- function(filename, from_path, options = NULL) {
 
@@ -317,7 +309,7 @@ read_csv_file <- function(filename, from_path, options = NULL) {
 #' new_columns <- c("name11" = "column1", "name2" = "column2", "column3")
 #'   new_columns <- set_name_vector(new_columns)
 #' }
-#' @noRd
+#' @keywords internal
 
 # Function that ensure that all elements in a vector are named
 # For elements that aren't named, the vector value are used as name
@@ -393,7 +385,7 @@ find_n_th_word <- function(x, position) {strsplit(x, " ")[[1]][position]}
 #'                                       Pkode_year = Pkode_year,
 #'                                       Pkode_month = Pkode_month)
 #' }
-#' @noRd
+#' @keywords internal
 
 ###   ----
 

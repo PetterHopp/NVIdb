@@ -1,6 +1,6 @@
-context("MT-omrader")
 library(NVIdb)
 library(testthat)
+context("MT-omrader")
 
 # Assigns temporary dir to td
 td <- tempdir()

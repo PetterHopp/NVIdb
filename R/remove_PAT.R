@@ -3,7 +3,11 @@
 
 remove_PAT <- function(service) {
 
-# Checks if there are registered PAT for the database service
+  # ARGUMENT CHECKING ----
+  checkmate::assert_character(x = service, min.chars = 1, len = 1, any.missing = FALSE)
+  
+  # REMOVE ALL EXISTING CREDENTIALS FOR service
+  # Checks if there are registered PAT for the database service
   # Removes the service until no more service are registered
   while (is.element(tolower(service), tolower(keyring::key_list()[,1]))) {
   # Identifies the spelling of service with regard to lower and upper case

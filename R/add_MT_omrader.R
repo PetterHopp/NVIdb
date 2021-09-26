@@ -93,25 +93,20 @@ add_MT_omrader <- function(data,
   code_column <- set_name_vector(code_column)
   new_column <- set_name_vector(new_column)
 
-  # ERROR check
-  # error:
-  if (names(code_column) %in% names(new_column)) {
-    # issue error if names already exists
-    stop(paste0("You cannot give the new column the same name as the code_column '", names(code_column), "' in the data frame '", deparse(substitute(data)), "`."))
-  }
-
-  # check_exist_colname(df_name = deparse(substitute(data)), df_columns = colnames(data), new_column = new_column, overwrite = overwrite)
-  if (length(intersect(colnames(data), names(new_column))) > 0 & overwrite == FALSE) {
-    # issue error if names already exists
-    stop(paste(paste0("The column name(s): '", intersect(colnames(data), names(new_column)), "' already exist in '", deparse(substitute(data)), "`."),
-               paste0("Either give new column name(s) for the column(s) called '", intersect(colnames(data), names(new_column)), "' or"),
-               "Specify overwrite = TRUE to replace values in the existing column(s) with new content.", sep = "\n"))
-  }
-
+  # ARGUMENT CHECKING ----
+  assert_add_function(data = data,
+                      translation_table = translation_table,
+                      code_column = code_column,
+                      new_column = new_column,
+                      position = position,
+                      overwrite = overwrite)
+  
+  # PREPARE TRANSLATION TABLE ----
   # Makes the translation table with code_column and new_column. unique() is necessary to avoid duplicate
   # rows when code_column is not "komnr"
   code_2_new <- unique(translation_table[, c(unname(code_column), unname(new_column))])
 
+  # ADD NEW COLUMN(S) ----
   # Set up of parameters for the internal function add_new_column(). names() is used to select the column names
   # in the input data and unname() is used to select the column names in the translation table. n_columns_at_once
   # is the number of new columns that should be added.
