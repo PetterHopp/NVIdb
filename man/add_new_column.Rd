@@ -52,11 +52,6 @@ Add a new column with content based on a column in the dataset. The column is tr
 
     The function is internal and can only be called from NVIdb-functions
 }
-\examples{
-\dontrun{
-
-}
-}
 \author{
 Petter Hopp Petter.Hopp@vetinst.no
 }
