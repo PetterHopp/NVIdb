@@ -1,126 +1,198 @@
-# Contributing to *NVIdb*
+# Contribute to NVIdb
 
-Thank you for taking interest in contributing to *NVIdb*. 
+Thank you for considering contributing to `NVIdb`.
 
-There are several ways you can contribute to the development of *NVIdb*: reporting a bug, fixing documentation errors, contributing new code, or commenting on issues/pull requests. Note that the majority of these activities do not require you to be proficient in R.
+`NVIdb` is one of several packages assembled under the name `NVIverse`.
+`NVIverse` is a collection of R-packages with tools to facilitate data
+management and data reporting at the Norwegian Veterinary Institute
+(NVI).
 
-All new code or documentation must be approved by @PetterHopp. 
+### NVIverse packages
 
+<table>
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 8%" />
+<col style="width: 80%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Package</th>
+<th style="text-align: left;">Status</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">NVIconfig</td>
+<td style="text-align: left;">Private</td>
+<td style="text-align: left;">Configuration information necessary for some functions in NVIverse</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NVIdb</td>
+<td style="text-align: left;">Public</td>
+<td style="text-align: left;">Tools to facilitate the use of NVI’s databases</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NVIpretty</td>
+<td style="text-align: left;">Public</td>
+<td style="text-align: left;">Tools to make R-output pretty in accord with NVI’s graphical profile</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NVIbatch</td>
+<td style="text-align: left;">Public</td>
+<td style="text-align: left;">Tools to facilitate the running of R-scripts in batch mode at NVI</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OKplan</td>
+<td style="text-align: left;">Public</td>
+<td style="text-align: left;">Tools to facilitate the planning of surveillance programmes for the NFSA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OKcheck</td>
+<td style="text-align: left;">Public</td>
+<td style="text-align: left;">Tools to facilitate checking of data from national surveillance programmes</td>
+</tr>
+</tbody>
+</table>
 
-### Commenting on Issues / Pull Requests
+How you can contribute
+----------------------
 
-All are welcome to comment on issues or pull requests regardless if they are directly involved in creating them or maintaining *NVIdb*.
+There are several ways you can contribute to this project: ask a
+question, propose an idea, report a bug, improve the documentation, or
+contribute code.
 
+### Ask a question
 
-### Raising an Issue / Reporting a Bug
+Using `NVIdb` and need help? Browse the package help to see if you can
+find a solution. Still stuck? Post your question in R-forum at workplace
+or contact the package maintainer by
+[email](mailto:petter.hopp@vetinst.no).
 
-The issue tracker is for both Bug Reports and Feature Requests. If you think you have found a bug, you can raise an issue by going to <https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues> and submit a reproducible example. 
+### Propose an idea
 
-Here are some guidelines to help make the process go smoothly:
+Have an idea for a new `NVIdb` feature? Take a look at the `NVIdb` help
+and [issue
+list](https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues) to
+see if it isn’t included or suggested yet. If not, suggest your idea as
+an [issue on
+GitHub](https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues/new).
+While we can’t promise to implement your idea, it helps to:
 
+-   Explain in detail how it would work.
+-   Keep the scope as narrow as possible.
 
-#### Ensure your R version and NVIdb version are up-to-date.
+See below if you want to contribute code for your idea as well.
 
-To check your versions of R and NVIdb, you can run the following code
+### Report a bug
 
-```r
-R.version.string
-packageVersion("NVIdb")
-```
+Using `NVIdb` and discovered a bug? That’s annoying! Don’t let others
+have the same experience and report it as an [issue on
+GitHub](https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues/new)
+so we can fix it. A good bug report makes it easier for us to do so, so
+please include:
 
-Your output will look something like this:
+-   Any details about your local setup that might be helpful in
+    troubleshooting.
+-   Detailed steps to reproduce the bug.
 
-```r
-R.version.string
-#> [1] "R version 4.0.2 (2020-06-22)"
-packageVersion("NVIdb")
-#> [1] '0.1.6'
-```
+### Improve the documentation
 
-You can check this against the versions reported at <https://r-project.org> and in the [DESCRIPTION](https://github.com/NorwegianVeterinaryInstitute/NVIdb/blob/master/DESCRIPTION) for *NVIdb*.
+Noticed a typo on the function help? Think a function could use a better
+example? Good documentation makes all the difference, so your help to
+improve it is very welcome!
 
+Functions are described as comments near their code and translated to
+documentation using [`roxygen2`](https://klutometis.github.io/roxygen/).
+If you want to improve a function description:
 
-#### Make sure your problem is reproducible and minimal
+1.  Go to `R/` directory in the [code
+    repository](https://github.com/NorwegianVeterinaryInstitute/NVIdb/tree/main/R).
+2.  Look for the file with the name of the function.
+3.  [Propose a file
+    change](https://help.github.com/articles/editing-files-in-another-user-s-repository/)
+    to update the function documentation in the roxygen comments
+    (starting with `#'`).
 
-When filing an issue, the most important thing is to include a minimal reproducible example to ensure that the maintainers will be able to verify the problem, and then figure out how to fix it. There are three things you need to include to make your example reproducible: required packages, data, code.
+### Contribute code
 
-1.  **Packages** should be loaded at the top of the script, so it's easy to
-    see which ones the example needs.
+Care to fix bugs or implement new functionality for our\_package? Great!
+Have a look at the [issue
+list](https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues) and
+leave a comment on the things you want to work on. See also the
+development guidelines below.
 
-1.  The easiest way to include **data** is to use `dput()` to generate the R code 
-    to recreate it. For example, to recreate the `mtcars` dataset in R,
-    I'd perform the following steps:
-  
-       1. Run `dput(mtcars)` in R
-       2. Copy the output
-       3. In my reproducible script, type `mtcars <- ` then paste.
-       
-    For large datasets, please include a subset of the dataset that is sufficient to reproduce the problem.
-  
-1.  Spend a little bit of time ensuring that your **code** is easy for others to
-    read:
-  
-    * make sure you've used spaces and your variable names are concise, but
-      informative
-  
-    * use comments to indicate where your problem lies
-  
-    * do your best to remove everything that is not related to the problem.  
-     The shorter your code is, the easier it is to understand.
-     
+Development guidelines
+----------------------
 
-### Updating Documentation
+If you want to contribute code, you are welcome to do so. Please try to
+adhere to some principles and style convention used for
+`NVIverse`-packages.
 
-If you see a spelling error, grammatical error or you have a better way of phrasing an error message, vignette entry, or manual page, feel free to contribute. Getting help with this is really appreciated!
+-   Please limit the number of package dependencies for `NVIdb`. The use
+    of base functions is much appreciated.
 
-All functions are documented using [roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) comments above the functions themselves. If you want to edit documentation, please make the changes there and make sure you include the roxygen comment (`#'`) in front of your additions.  
+-   New code should generally follow the tidyverse [style
+    guide](http://style.tidyverse.org). I recommend to use the
+    [`styler`](https://CRAN.R-project.org/package=styler) package to
+    apply spaces: `styler::style_file(filename, scope = "spaces")`.
+    Please don’t restyle code that has nothing to do with your pull
+    request.
 
+-   You should add a bullet point to `NEWS.md` motivating the change.
 
-#### If you are not experienced with git/github
+-   You should add yourself as a contributor to the `DESCRIPTION`.
 
-You can make changes directly on github by clicking the little pencil icon in the top right corner of the file when you view it on github. When you do that, github will create a copy of the *NVIdb* repository in your account so you can edit the file. When you are done editing the file, you may click on "Propose File Change" at the bottom of the page (You can also add a short commit message or leave the entries blank). From there, you will be taken the form to create a Pull Request, where you can review your changes and click "Create Pull Request". Details can be found here: <https://help.github.com/articles/editing-files-in-another-user-s-repository/>.
+-   If you’re adding a new function or new arguments to an existing
+    function, you’ll also need to document them. `NVIverse`-packages use
+    [`roxygen2`](https://cran.r-project.org/package=roxygen2), with
+    [Markdown
+    syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/markdown.html),
+    for documentation. Make sure to re-run `devtools::document()` on the
+    code before submitting.
 
+-   `NVIverse`-packages use the assert-functions from
+    [`checkmate`](https://CRAN.R-project.org/package=checkmate) package
+    for argument checking. Adding argument checking for new functions
+    and/or arguments will be highly appreciated.
 
-#### If you are experienced with git/github
+-   If you can, also write a test. `NVIverse`-packages use
+    [`testthat`](https://cran.r-project.org/package=testthat) for tests.
 
-1.  fork NVIdb to your github account
+-   Also run `devtools::check()` to make sure your function doesn’t
+    imply downstream errors or warnings.
 
-1.  clone NVIdb to your desktop 
+### Git commit standards
 
-1.  create a new branch from main and push/sync to your repository
+We follow the commit message style guide maintained within the
+angular.js project.
 
-1.  make and commit your changes
+The start of commit messages should be one of the following:
 
-1.  update the documentation with roxygen2
+-   feat: A new feature
+-   fix: A bug fix
+-   doc: Documentation only changes
+-   style: Changes that do not affect the meaning of the code
+    (white-space, formatting, missing semi-colons, etc)
+-   refactor: A code change that neither fixes a bug or adds a feature
+-   perf: A code change that improves performance
+-   test: Adding missing tests
+-   chore: Changes to the build process or auxiliary tools and libraries
+    such as documentation generation
 
+Do not capitalize the first letter.
 
-### Contributing New Code
+Code of conduct
+---------------
 
-If you want to contribute code, you are welcome to do so. Please try to adhere to some principles and style convention used in *NVIdb*. 
+Please note that this project is released with a [Contributor Code of
+Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
+By participating to this project, you agree to abide by its terms.
 
-*   I try to limit the number of package dependencies for *NVIdb*. Use of base commands is much appreciated. If you want to write code in `dplyr`-style, you may consider using the package [poorman](https://cran.r-project.org/package=poorman).
+References
+----------
 
-*   New code should generally follow the tidyverse [style guide](http://style.tidyverse.org). I recommend to use the [styler](https://CRAN.R-project.org/package=styler) package to apply spaces: `styler::style_file(filename, scope = "spaces")`. Please don't restyle code that has nothing to do with your pull request.
-
-*   You should add a bullet point to `NEWS.md` motivating the change.
-
-*   You should add yourself as a contributor to the `DESCRIPTION`.
-
-*   If you're adding a new function or new arguments to an existing function, you'll also need
-    to document them. *NVIdb* uses [roxygen2](https://cran.r-project.org/package=roxygen2), with
-[Markdown syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/markdown.html),
-for documentation. Make sure to re-run `devtools::document()` on the code before submitting. 
-
-*   *NVIdb* uses functions from [checkmate](https://CRAN.R-project.org/package=checkmate) package  for argument checking. Adding argument checking for new functions and/or arguments will be highly appreciated.
-    
-*   If you can, also write a test. *NVIdb* uses [testthat](https://cran.r-project.org/package=testthat) for tests.
-
-*   Also run `devtools::check()` to make sure your function doesn't imply downstream errors or warnings. 
-
-### Code of Conduct
-  
-  Please note that the NVIdb project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
-  
-### References
-Based on [CONTRIBUTING to poppr](https://github.com/grunwaldlab/poppr/blob/main/CONTRIBUTING.md) by @zkamvar and [CONTRIBUTING to dittodb](https://raw.githubusercontent.com/ropensci/dittodb/main/CONTRIBUTING.mdd) by @jonkeane.
-
+This document is adapted from a
+[template](https://gist.github.com/peterdesmet/e90a1b0dc17af6c12daf6e8b2f044e7c)
+by @peterdesmet .
