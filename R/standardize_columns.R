@@ -97,7 +97,8 @@ standardize_columns <- function(data,
 
   checkmate::assert_data_frame(standards, null.ok = TRUE, add = checks)
 
-  checkmate::assert_subset(tolower(property), choices = c("colnames", "colclasses", "collabels", "colwidths_excel", "colorder"), add = checks)
+  checkmate::assert_subset(tolower(property), choices = c("colnames", "colclasses", "collabels", "colwidths_excel",
+                                                          "colwidths_DT", "colorder"), add = checks)
 
   checkmate::assert_subset(language, choices = c("no", "en"), add = checks)
 
@@ -106,16 +107,12 @@ standardize_columns <- function(data,
   # Report check-results
   checkmate::reportAssertions(checks)
 
-  # # Error handling
-  # # 1. property is not given
-  # property <- tolower(property)
-  # if (is.null(property) | !property %in% c("colnames", "colclasses", "collabels", "colwidths_excel", "colorder")) {
-  #   stop("'property = ' must be one of c('colnames', 'colclasses', 'collabels', 'colwidths_Excel', 'colorder')")
-  # }
-
+  property <- tolower(property)
+  dbsource <- tolower(dbsource)
+  
   # Reading column standards from a csv-file based on in an Excel file
   if (is.null(standards)) {
-    column_standards <- utils::read.csv2(file = paste0(set_dir_NVI("ProgrammeringR"),"standardization/column_standards.csv"),
+    column_standards <- utils::read.csv2(file = paste0(NVIdb::set_dir_NVI("ProgrammeringR"),"standardization/column_standards.csv"),
                                          fileEncoding = "UTF-8")
   } else {
     column_standards <- standards
@@ -131,10 +128,10 @@ standardize_columns <- function(data,
 
     standard <- column_standards %>%
       # Filter to include only information for relevant column names and with property information
-      poorman::filter(colname_db %in% columnnames$V1) %>%
-      poorman::filter(!is.na(colname)) %>%
-      poorman::select(table_db, colname_db, colname) %>%
-      poorman::distinct()
+      dplyr::filter(colname_db %in% columnnames$V1) %>%
+      dplyr::filter(!is.na(colname)) %>%
+      dplyr::select(table_db, colname_db, colname) %>%
+      dplyr::distinct()
 
     # Keep information on relevant table name and combine information for all other tables
     standard[which(standard$table_db != dbsource), "table_db"] <- NA
@@ -143,12 +140,12 @@ standardize_columns <- function(data,
     if (dim(standard)[1] > 0) {
       standard <- standard %>%
         # Identify column names with only one suggested column width
-        poorman::add_count(colname_db, name = "n") %>%
-        poorman::ungroup() %>%
+        dplyr::add_count(colname_db, name = "n") %>%
+        dplyr::ungroup() %>%
         # Select column width either if only one suggested or for the current table
-        poorman::filter(n == 1 | table_db == dbsource & n > 1) %>%
-        poorman::select(colname_db, colname) %>%
-        poorman::distinct()
+        dplyr::filter(n == 1 | table_db == dbsource & n > 1) %>%
+        dplyr::select(colname_db, colname) %>%
+        dplyr::distinct()
     }
 
     # # Standardize column names
@@ -218,10 +215,10 @@ standardize_columns <- function(data,
     # Standard labels in Norwegian is always generated as is used to impute missing labels in other languages
     standard <- column_standards %>%
       # Filter to include only information for relevant column names and with property information
-      poorman::filter(colname %in% collabels$V1) %>%
-      poorman::filter(!is.na(label_1_no)) %>%
-      poorman::select(table_db, colname, label_1_no) %>%
-      poorman::distinct()
+      dplyr::filter(colname %in% collabels$V1) %>%
+      dplyr::filter(!is.na(label_1_no)) %>%
+      dplyr::select(table_db, colname, label_1_no) %>%
+      dplyr::distinct()
 
     # Keep information on relevant table name and combine information for all other tables
     standard[which(standard$table_db != dbsource), "table_db"] <- NA
@@ -230,21 +227,21 @@ standardize_columns <- function(data,
     if (dim(standard)[1] > 0) {
       standard <- standard %>%
         # Identify column names with only one suggested column width
-        poorman::add_count(colname, name = "n") %>%
-        poorman::ungroup() %>%
+        dplyr::add_count(colname, name = "n") %>%
+        dplyr::ungroup() %>%
         # Select column width either if only one suggested or for the current table
-        poorman::filter(n == 1 | table_db == dbsource & n > 1) %>%
-        poorman::select(colname = colname, label = label_1_no) %>%
-        poorman::distinct()
+        dplyr::filter(n == 1 | table_db == dbsource & n > 1) %>%
+        dplyr::select(colname = colname, label = label_1_no) %>%
+        dplyr::distinct()
     }
 
     ## English column labels ----
     if (language == "en") {
       standard_en <- column_standards %>%
-        poorman::filter(colname %in% collabels$V1) %>%
-        poorman::filter(!is.na(label_1_en)) %>%
-        poorman::select(table_db, colname, label_1_en) %>%
-        poorman::distinct()
+        dplyr::filter(colname %in% collabels$V1) %>%
+        dplyr::filter(!is.na(label_1_en)) %>%
+        dplyr::select(table_db, colname, label_1_en) %>%
+        dplyr::distinct()
 
       # Keep information on relevant table name and combine information for all other tables
       standard_en[which(standard_en$table_db != dbsource), "table_db"] <- NA
@@ -253,18 +250,18 @@ standardize_columns <- function(data,
       if (dim(standard_en)[1] > 0) {
         standard_en <- standard_en %>%
           # Identify column names with only one suggested column width
-          poorman::add_count(colname, name = "n") %>%
-          poorman::ungroup() %>%
-          poorman::filter(n == 1 | table_db == dbsource & n > 1) %>%
-          poorman::select(colname, label_1_en) %>%
-          poorman::distinct()
+          dplyr::add_count(colname, name = "n") %>%
+          dplyr::ungroup() %>%
+          dplyr::filter(n == 1 | table_db == dbsource & n > 1) %>%
+          dplyr::select(colname, label_1_en) %>%
+          dplyr::distinct()
       }
 
       # Impute missing labels with Norwegian labels
       standard <- standard_en %>%
-        poorman::full_join(standard, by = c("colname" = "colname")) %>%
-        poorman::mutate(label = poorman::coalesce(label_1_en, label)) %>%
-        poorman::select(colname, label)
+        dplyr::full_join(standard, by = c("colname" = "colname")) %>%
+        dplyr::mutate(label = dplyr::coalesce(label_1_en, label)) %>%
+        dplyr::select(colname, label)
     }
 
     ## Impute Sentence case for those without defined label ----¨
@@ -302,13 +299,13 @@ standardize_columns <- function(data,
     # Standardize colwidths
     standard <- column_standards %>%
       # Filter to include only information for relevant column names and with property information
-      poorman::filter(colname %in% colwidths$V1) %>%
-      poorman::filter(!is.na(colwidth_Excel)) %>%
-      poorman::select(table_db = table_db, colname = colname, colwidth = colwidth_Excel)
+      dplyr::filter(colname %in% colwidths$V1) %>%
+      dplyr::filter(!is.na(colwidth_Excel)) %>%
+      dplyr::select(table_db = table_db, colname = colname, colwidth = colwidth_Excel)
     # uses which below as there seem to be a bug so that case_when doesn't work properly within a function
-    # poorman::mutate(table_db = poorman::case_when(table_db == "dbsource" ~ table_db,
+    # dplyr::mutate(table_db = dplyr::case_when(table_db == "dbsource" ~ table_db,
     #                                               TRUE ~ as.character(NA))) %>%
-    # poorman::distinct()
+    # dplyr::distinct()
     # Keep information on relevant table name and combine information for all other tables
     standard[which(standard$table_db != dbsource), "table_db"] <- NA
     standard <- unique(standard)
@@ -317,18 +314,18 @@ standardize_columns <- function(data,
     if (dim(standard)[1] > 0) {
       standard <- standard %>%
         # Identify column names with only one suggested column width
-        poorman::add_count(colname, name = "n") %>%
-        poorman::ungroup() %>%
+        dplyr::add_count(colname, name = "n") %>%
+        dplyr::ungroup() %>%
         # Select column width either if only one suggested or for the current table
-        poorman::filter(n == 1 | table_db == dbsource & n > 1) %>%
-        poorman::select(colname, colwidth) %>%
-        poorman::distinct()
+        dplyr::filter(n == 1 | table_db == dbsource & n > 1) %>%
+        dplyr::select(colname, colwidth) %>%
+        dplyr::distinct()
     }
 
     # New column with standard column names¨
     colwidths <- merge(colwidths, standard, by.x = "V1", by.y = "colname", all.x = TRUE)
     # Impute with snake case of column name in case standard column name isn't defined
-    colwidths[which(is.na(colwidths$colwidth)), "colwidth"] <- 10.78
+    colwidths[which(is.na(colwidths$colwidth)), "colwidth"] <- 10.71
 
     # Sorts data in original order
     colwidths <- colwidths[order(colwidths$original_sort_order), ]
@@ -338,13 +335,13 @@ standardize_columns <- function(data,
 
     # Return data frame with standardized column names
     return(colwidths)
-
   }
+
   # STANDARDIZE COLUMN ORDER ----
   if (property == "colorder") {
 
     if (!dbsource %in% column_standards[which(!is.na(column_standards$colorder)), "table_db"]) {
-      warning("No sorting done as column order is not known for this table. Please update column_standards or us another dbsource")
+      warning("No sorting done as column order is not known for this table. Please update column_standards or use another dbsource")
     } else {
       # Generate data frame with the column names in one column named V1
       columnorder <- as.data.frame(matrix(colnames(data), ncol = 1))
@@ -356,17 +353,17 @@ standardize_columns <- function(data,
       # Standard labels in Norwegian is always generated as is used to impute missing labels in other languages
       standard <- column_standards %>%
         # Filter to include only information for relevant column names and with property information
-        poorman::filter(table_db == dbsource) %>%
-        poorman::filter(colname %in% columnorder$V1) %>%
-        poorman::filter(!is.na(colorder)) %>%
-        poorman::select(colname, colorder) %>%
-        poorman::distinct() %>%
+        dplyr::filter(table_db == dbsource) %>%
+        dplyr::filter(colname %in% columnorder$V1) %>%
+        dplyr::filter(!is.na(colorder)) %>%
+        dplyr::select(colname, colorder) %>%
+        dplyr::distinct() %>%
         # removes colorders with more than suggested position
-        poorman::add_count(colname, name = "n") %>%
-        poorman::filter(n == 1) %>%
-        poorman::select(colname, colorder)
+        dplyr::add_count(colname, name = "n") %>%
+        dplyr::filter(n == 1) %>%
+        dplyr::select(colname, colorder)
       # Sort according to first column, replaced by order
-      # poorman::arrange(colorder)
+      # dplyr::arrange(colorder)
 
       standard <- standard[order(standard$colorder),]
 

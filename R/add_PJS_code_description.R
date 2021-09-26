@@ -11,20 +11,24 @@
 #'     The function uses a premade translation table (PJS_codes_2_text.csv) that normally is updated every night from PJS.
 #'
 #'     Currently, the translation table has PJS-codes and the corresponding description for the following PJS variable types:
-#'     hensikt,
-#'     utbrudd,
-#'     art,
-#'     artrase,
-#'     driftsform,
-#'     provetype,
-#'     provemateriale,
-#'     kjonn,
-#'     forbehandling,
-#'     fysiologisk_stadium,
-#'     metode,
-#'     kjennelse,
-#'     analytt,
-#'     seksjon.
+#' \itemize{
+#'   \item hensikt
+#'   \item utbrudd
+#'   \item registertype (categories for locations and addresses)
+#'   \item seksjon
+#'   \item art (species and breed codes to species name)
+#'   \item artrase (species and breed codes to species or breed name)
+#'   \item driftsform
+#'   \item provetype
+#'   \item provemateriale
+#'   \item kjonn
+#'   \item forbehandling
+#'   \item fysiologisk_stadium
+#'   \item metode
+#'   \item konkl_type
+#'   \item kjennelse
+#'   \item analytt.
+#' }
 #'
 #'     \code{position =} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
 #'     placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the

@@ -91,22 +91,31 @@ add_kommune_fylke <- function(data,
   code_column <- set_name_vector(code_column)
   new_column <- set_name_vector(new_column)
 
-  # ERROR check
-  # error:
-  if (names(code_column) %in% names(new_column)) {
-    # issue error if names already exists
-    stop(paste0("You cannot give the new column the same name as the code_column '", names(code_column), "' in the data frame '", deparse(substitute(data)), "`."))
-  }
+  # ARGUMENT CHECKING ----
+  assert_add_function(data = data,
+                      translation_table = translation_table,
+                      code_column = code_column,
+                      new_column = new_column,
+                      position = position,
+                      overwrite = overwrite)
+  
+  # # ERROR check
+  # # error:
+  # if (names(code_column) %in% names(new_column)) {
+  #   # issue error if names already exists
+  #   stop(paste0("You cannot give the new column the same name as the code_column '", names(code_column), "' in the data frame '", deparse(substitute(data)), "`."))
+  # }
+  # 
+  # # check_exist_colname(df_name = deparse(substitute(data)), df_columns = colnames(data), new_column = new_column, overwrite = overwrite)
+  # if (length(intersect(colnames(data), names(new_column))) > 0 & overwrite == FALSE) {
+  #   # issue error if names already exists
+  #   stop(paste(paste0("The column name(s): '", intersect(colnames(data), names(new_column)), "' already exist in '", deparse(substitute(data)), "`."),
+  #              paste0("Either give new column name(s) for the column(s) called '", intersect(colnames(data), names(new_column)), "' or"),
+  #              "Specify overwrite = TRUE to replace values in the existing column(s) with new content.", sep = "\n"))
+  # }
+  # 
 
-  # check_exist_colname(df_name = deparse(substitute(data)), df_columns = colnames(data), new_column = new_column, overwrite = overwrite)
-  if (length(intersect(colnames(data), names(new_column))) > 0 & overwrite == FALSE) {
-    # issue error if names already exists
-    stop(paste(paste0("The column name(s): '", intersect(colnames(data), names(new_column)), "' already exist in '", deparse(substitute(data)), "`."),
-               paste0("Either give new column name(s) for the column(s) called '", intersect(colnames(data), names(new_column)), "' or"),
-               "Specify overwrite = TRUE to replace values in the existing column(s) with new content.", sep = "\n"))
-  }
-
-
+  # PREPARE TRANSLATION TABLE ----
   # Makes the translation table with code_column and new_column. unique() is necessary to avoid duplicate
   # rows when code_column is not "komnr"
   code_2_new <- unique(translation_table[, c(unname(code_column), unname(new_column))])
@@ -118,16 +127,20 @@ add_kommune_fylke <- function(data,
     # For fylkenr, select the fylke where most kommuner is within the fylke. This to avoid fylkenr to be translated to fylker
     # where one or a few kommuner has been relocated.
     code_2_new <- code_2_new %>%
-      poorman::rename(antall = komnr) %>%
-      poorman::distinct() %>%
-      poorman::group_by(fylkenr) %>%
-      poorman::mutate(maxantall = max(antall)) %>%
-      poorman::ungroup() %>%
-      poorman::filter(maxantall == antall) %>%
-      poorman::select(-antall, -maxantall)
+      dplyr::rename(antall = komnr) %>%
+      dplyr::distinct() %>%
+      dplyr::group_by(fylkenr) %>%
+      dplyr::mutate(maxantall = max(antall)) %>%
+      dplyr::ungroup() %>%
+      dplyr::filter(maxantall == antall) %>%
+      dplyr::select(-antall, -maxantall)
+    
+    # Removes tibble in case it makes trouble later
+    code_2_new <- as.data.frame(code_2_new)
 
   }
 
+  # ADD NEW COLUMN(S) ----
   # Set up of parameters for the internal function add_new_column(). names() is used to select the column names
   # in the input data and unname() is used to select the column names in the translation table. n_columns_at_once
   # is the number of new columns that should be added.

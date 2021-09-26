@@ -1,6 +1,6 @@
-context("kommune_fylke")
 library(NVIdb)
 library(testthat)
+context("kommune_fylke")
 
 # Assigns temporary dir to td
 td <- tempdir()

@@ -8,10 +8,9 @@
 ^style.R
 ^CONTRIBUTING.md
 ^README.md
-^doc$
 ^Meta$
 ^NVIdb.Rcheck\vign_test$
 ^\.git$
 ^\.gitignore$
 ^\.Rhistory$
-^CODE_OF_CONDUCT\.md$
+^CODE_OF_CONDUCT\.md

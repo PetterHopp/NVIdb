@@ -1,6 +1,6 @@
-context("poststed")
 library(NVIdb)
 library(testthat)
+context("poststed")
 
 # Assigns temporary dir to td
 td <- tempdir()
@@ -96,7 +96,4 @@ test_that("Correct result when using overwrite and keep", {
 
 
 })
-
-
-
 
