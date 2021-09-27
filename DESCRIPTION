@@ -41,7 +41,7 @@ Imports:
     RODBC,
     snakecase,
     svDialogs,
-    NVIcheckmate
+    NVIcheckmate (>= 0.3.0)
 RoxygenNote: 7.1.1
 Suggests:
     devtools,
