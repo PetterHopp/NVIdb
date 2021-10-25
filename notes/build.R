@@ -9,7 +9,7 @@ Rlibrary <- R.home()
 
 library(devtools)
 library(roxygen2)
-library(withr)
+# library(withr)
 
 # Creates new help files
 # Should be run before git push when documentation for functions have been changed

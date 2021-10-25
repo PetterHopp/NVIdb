@@ -2,18 +2,17 @@
 
 Thank you for considering contributing to `NVIdb`.
 
-`NVIdb` is one of several packages assembled under the name `NVIverse`.
-`NVIverse` is a collection of R-packages with tools to facilitate data
-management and data reporting at the Norwegian Veterinary Institute
-(NVI).
+`NVIdb` is one of several packages assembled under the name `NVIverse`,
+a collection of R-packages with tools to facilitate data management and
+data reporting at the Norwegian Veterinary Institute (NVI).
 
 ### NVIverse packages
 
 <table>
 <colgroup>
 <col style="width: 10%" />
-<col style="width: 8%" />
-<col style="width: 80%" />
+<col style="width: 6%" />
+<col style="width: 82%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -26,7 +25,7 @@ management and data reporting at the Norwegian Veterinary Institute
 <tr class="odd">
 <td style="text-align: left;">NVIconfig</td>
 <td style="text-align: left;">Private</td>
-<td style="text-align: left;">Configuration information necessary for some functions in NVIverse</td>
+<td style="text-align: left;">Configuration information necessary for some NVIverse functions</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">NVIdb</td>
@@ -44,11 +43,16 @@ management and data reporting at the Norwegian Veterinary Institute
 <td style="text-align: left;">Tools to facilitate the running of R-scripts in batch mode at NVI</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">NVIcheckmate</td>
+<td style="text-align: left;">Public</td>
+<td style="text-align: left;">Extension of checkmate with additional functions for argument checking for use in NVIverse functions</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">OKplan</td>
 <td style="text-align: left;">Public</td>
 <td style="text-align: left;">Tools to facilitate the planning of surveillance programmes for the NFSA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">OKcheck</td>
 <td style="text-align: left;">Public</td>
 <td style="text-align: left;">Tools to facilitate checking of data from national surveillance programmes</td>
@@ -66,8 +70,8 @@ contribute code.
 ### Ask a question
 
 Using `NVIdb` and need help? Browse the package help to see if you can
-find a solution. Still stuck? Post your question in R-forum at workplace
-or contact the package maintainer by
+find a solution. Still problems? Post your question in R-forum at
+workplace or contact the package maintainer by
 [email](mailto:petter.hopp@vetinst.no).
 
 ### Propose an idea
@@ -87,8 +91,8 @@ See below if you want to contribute code for your idea as well.
 
 ### Report a bug
 
-Using `NVIdb` and discovered a bug? That’s annoying! Don’t let others
-have the same experience and report it as an [issue on
+Using `NVIdb` and discovered a bug? Don’t let others have the same
+experience and report it as an [issue on
 GitHub](https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues/new)
 so we can fix it. A good bug report makes it easier for us to do so, so
 please include:
@@ -154,8 +158,11 @@ adhere to some principles and style convention used for
 
 -   `NVIverse`-packages use the assert-functions from
     [`checkmate`](https://CRAN.R-project.org/package=checkmate) package
-    for argument checking. Adding argument checking for new functions
-    and/or arguments will be highly appreciated.
+    for argument checking as well as some additional assert\_functions
+    in
+    [`NVIcheckmate`](https://github.com/NorwegianVeterinaryInstitute/NVIcheckmate).
+    Adding argument checking for new functions and/or arguments will be
+    highly appreciated.
 
 -   If you can, also write a test. `NVIverse`-packages use
     [`testthat`](https://cran.r-project.org/package=testthat) for tests.

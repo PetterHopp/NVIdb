@@ -1,6 +1,5 @@
 library(NVIdb)
 library(testthat)
-context("standardize_columns")
 
 test_that("Standardize colnames from PJS", {
   # Generate data frame with selected column names from V1_SAK_M_RES_EIER
@@ -211,7 +210,7 @@ test_that("Column order", {
                             property = "colorder")
 
   # Make a vector with correct column names after translation
-  correct_result <- c("soknadaar", "gjeldende_prodnr8", "orgnr", "fjorfe", "prodnr10", "prodnr8", "komnr", "kommune")
+  correct_result <- c("soknadaar", "komnr", "gjeldende_prodnr8", "prodnr8", "prodnr10", "orgnr", "fjorfe", "kommune")
 
   # Compare Add fylke, current fylkenr and current fylke with correct result
   expect_identical(colnames(df), correct_result)
@@ -221,7 +220,7 @@ test_that("Column order", {
                             property = "colorder",
                             exclude = TRUE)
 
-  correct_result <- c("soknadaar", "gjeldende_prodnr8", "orgnr", "fjorfe")
+  correct_result <- c("soknadaar", "komnr", "gjeldende_prodnr8", "prodnr8", "prodnr10", "orgnr", "fjorfe")
 
   # Compare Add fylke, current fylkenr and current fylke with correct result
   expect_identical(colnames(df), correct_result)

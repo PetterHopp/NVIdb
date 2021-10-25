@@ -1,7 +1,7 @@
 Package: NVIdb
 Title: Facilitating use of Norwegian Veterinary Institute's databases
-Version: 0.5.4
-Date: 2021-05-10
+Version: 0.6.0
+Date: 2021-09-26
 Authors@R: 
   c(person(given = "Petter",
            family = "Hopp",
@@ -40,7 +40,8 @@ Imports:
     poorman (>= 0.2.3),
     RODBC,
     snakecase,
-    svDialogs
+    svDialogs,
+    NVIcheckmate (>= 0.3.0)
 RoxygenNote: 7.1.1
 Suggests:
     devtools,
@@ -51,6 +52,8 @@ Suggests:
     spelling, 
     styler,
     testthat,
+    tibble,
     withr
+Remotes: NorwegianVeterinaryInstitute/NVIcheckmate
 VignetteBuilder: knitr
 Language: en-GB

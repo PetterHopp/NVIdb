@@ -1,5 +1,10 @@
-NVIdb 0.5.5 - (2021-##-##)
+NVIdb 0.6.0 - (2021-09-26)
 --------------------------
+
+New features:
+
+- Improved argument checking of add_poststed, add_kommune_fylke, add_MT_omrader, add_produsent, add_lokalitet, set_credentials, remove_credentials, login_by_credentials
+
 
 Other changes:
 
