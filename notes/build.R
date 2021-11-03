@@ -28,7 +28,7 @@ writeLines(c(header,readLines("./CONTRIBUTING.md")),"./CONTRIBUTING.md")
 #              "CMD",
 #              "Rd2pdf",
 #              paste0("../", pkg)))
-# file.copy(from = "NVIdb.pdf", to = "./vignettes", overwrite = TRUE)
+# file.copy(from = paste0(pkg, ".pdf"), to = "./vignettes", overwrite = TRUE)
 # file.remove(".Rd2pdf16372")
 # file.remove("NVIdb.pdf")
 # check .install_extras
