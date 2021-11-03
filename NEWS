@@ -10,6 +10,8 @@ Other changes:
 
 - Help for standardize_PJSdata is improved and styled.
 
+- Improved argument checking of add_PJS_code_description
+
 
 NVIdb 0.6.0 - (2021-09-26)
 --------------------------

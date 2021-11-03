@@ -107,21 +107,77 @@ add_PJS_code_description <- function(data,
                                      overwrite = FALSE) {
 
 
-  # ERROR check
-  # error:
-  if (length(intersect(code_colname, new_column)) > 0) {
-    # issue error if names already exists
-    stop(paste0("You cannot give the new column the same name as the code_colname '", code_colname, "' in the data frame '", deparse(substitute(data)), "`."))
+  # ARGUMENT CHECKING ----
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+  
+  # Perform checks
+  # data
+  checkmate::assert_data_frame(data, add = checks)
+  # translation_table
+  checkmate::assert_data_frame(translation_table, add = checks)
+  # PJS_variable_type
+  checkmate::assert_subset(PJS_variable_type,
+                             choices = unique(translation_table$type),
+                             add = checks)
+  # code_colname
+  checkmate::assert_vector(code_colname, any.missing = FALSE, min.len = 1, add = checks)
+  NVIcheckmate::assert_names(code_colname, 
+                             type = "named", 
+                             subset.of = colnames(data), 
+                             comment = paste0("The code_colname must be a column in the data",
+                                              # deparse(substitute(data)),
+                                              ", but '",
+                                              base::setdiff(code_colname, colnames(data)), 
+                                              "' is not a column in the data"),
+                             add = checks)
+  # new_column
+  checkmate::assert_vector(new_column, any.missing = FALSE, min.len = 1, add = checks)
+  if (isFALSE(overwrite)) {
+    NVIcheckmate::assert_names(new_column, 
+                               type = "named", 
+                               disjunct.from = setdiff(colnames(data), code_colname),
+                               comment = paste0("The column name(s): '",
+                                                intersect(colnames(data), new_column),
+                                                "' already exist in '",
+                                                deparse(substitute(data)),
+                                                "`. Either give new column name(s) for the column(s) called '", 
+                                                intersect(colnames(data), new_column),
+                                                "' or specify overwrite = TRUE to replace values in the existing column(s) with new content"),
+                               add = checks)
   }
-
-  # check_exist_colname(df_name = deparse(substitute(data)), df_columns = colnames(data), new_column = new_column, overwrite = overwrite)
-  if (length(intersect(colnames(data), new_column)) > 0 & overwrite == FALSE) {
-    # issue error if names already exists
-    stop(paste(paste0("The column name(s): '", intersect(colnames(data), names(new_column)), "' already exist in '", deparse(substitute(data)), "`."),
-               paste0("Either give new column name(s) for the column(s) called '", intersect(colnames(data), names(new_column)), "' or"),
-               "Specify overwrite = TRUE to replace values in the existing column(s) with new content.", sep = "\n"))
-  }
-
+  NVIcheckmate::assert_names(new_column, 
+                             type = "named", 
+                             disjunct.from = code_colname, 
+                             comment = paste0("You cannot give any of the new column(s) the same name as the code_colname '",
+                                              code_colname,
+                                              "' in the data" #,
+                                              # deparse(substitute(data)), "`"
+                             ),
+                             add = checks)
+  # position
+  NVIcheckmate::assert_subset_character(x = unique(position), choices = c("first", "left", "right", "last", "keep"), add = checks)
+  # overwrite
+  checkmate::assert_logical(overwrite, any.missing = FALSE, len = 1, add = checks)
+  
+  # Report check-results
+  checkmate::reportAssertions(checks)
+  
+  # # ERROR check
+  # # error:
+  # if (length(intersect(code_colname, new_column)) > 0) {
+  #   # issue error if names already exists
+  #   stop(paste0("You cannot give the new column the same name as the code_colname '", code_colname, "' in the data frame '", deparse(substitute(data)), "`."))
+  # }
+  # 
+  # # check_exist_colname(df_name = deparse(substitute(data)), df_columns = colnames(data), new_column = new_column, overwrite = overwrite)
+  # if (length(intersect(colnames(data), new_column)) > 0 & overwrite == FALSE) {
+  #   # issue error if names already exists
+  #   stop(paste(paste0("The column name(s): '", intersect(colnames(data), names(new_column)), "' already exist in '", deparse(substitute(data)), "`."),
+  #              paste0("Either give new column name(s) for the column(s) called '", intersect(colnames(data), names(new_column)), "' or"),
+  #              "Specify overwrite = TRUE to replace values in the existing column(s) with new content.", sep = "\n"))
+  # }
+  # 
 
   # Transforms position to a vector with the same length as number of PJS-variables to be translated
   if (length(position) == 1 & length(PJS_variable_type) > 1) {position <- rep(position, length(PJS_variable_type))}
