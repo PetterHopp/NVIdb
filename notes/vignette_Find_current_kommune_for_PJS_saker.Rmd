@@ -1,0 +1,78 @@
+---
+title: "Find current kommune for PJS-saker"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Find current kommune for PJS-saker}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+### Registration of geographical information in PJS and related register
+Information on animal diseases will often be summarised on geographical units like kommune. Here is a description how to assign the current kommune to data in PJS.
+
+Data on origin of the sample is in the variables for eier_lokalitet. The following information is found in PJS: eier_lokalitets_type, eier_lokalitetnr, kommunenr, and coordinates. In this variable both the owner or the location can be entered. If the owners address and the location differ, the location should have preference, however this is not always done.
+The eier_lokalitet_type and eier_lokalitetnr is the ID for the registration in the address regiter. Here additional information can be found like navn, address, and postnr and poststed, kommune and coordinates (for some types). The address don't keep historical information, so if a person moves from one place to another, the address and postnr wil be updated accordingly. This is usually not a problem as the egister for such entries is so bad, that the person will probably be reregistered with the new address.
+
+There are different types of eier and locations and this differ in the accuaracy of the geographical information. In Table 1 the different eier_lokalitets_types is given with the geographical information they have.
+PROD
+LOK
+TILF
+AUT
+EGGP
+MEI
+FIRM
+VILT
+VET
+KOMM
+POST
+FYLK
+LAND
+REIN
+RBD
+UKJE
+TEMP
+properties: coordinates, kommune, postnr, , none, number of registrations 2015-2019.
+in the For fish locations and Produsenter the coordinates of the location can usually be found, for other types 
+
+### Changes in kommune structure
+Fusions, but also fisoins. Very often when there have been fusions small parts of one or more of the municipalities have been fisonated to another kommune. Such adjustments have been performed ## since 1998.Usually there are smaller part f the municipality involved. IN 
+
+Table
+Year number fisonsted, fusionated, adjustment between two kommuner, fusion but one kommune adjusted. Number of fusions and number of kommuner involved.
+Change in kommuneID due to changing fylke.
+
+### Principles for assigning current kommune
+
+#### Using coordinates
+Although this will be the most accurate method, this procedure does not describe a method for this. 
+
+
+#### Using id for produsenter
+This can only be applied for produsenter. There are separate translation tables for produsenter for the change in kommunenr. Thereby produsenter can be moved correctly also when kommune grenser have been changed
+
+#### Using id for kommuner
+
+#### Uning kommunenr
+
+
+#### Using postnr
+
+
+#### using address
+
+
+#### registrations not possible to allocate to kommune
+
+
+### R-script transforming kommune to current kommune for terrestrial PJS-data for 2019
+
+
+### References
+
