@@ -3,8 +3,8 @@
 ## SET UP R-ENVIRONMENT ----
 # Attach packages
 library(NVIbatch)
-use_pkg(pkg = c("RODBC", "compareDF"))
-use_NVIverse(pkg = "NVIdb")
+use_pkg(pkg = c("RODBC"))
+use_NVIverse(pkg = c("NVIdb"))
 
 # Global variables
 
