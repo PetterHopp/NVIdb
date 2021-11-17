@@ -77,6 +77,10 @@ Export of data from PJS will produce dataframes in which many columns have coded
     to the right of the column with codes.
 
     The function uses a premade translation table (PJS_codes_2_text.csv) that normally is updated every night from PJS.
+    \code{add_PJS_code_description} uses a premade translation table (PJS_codes_2_text.csv). These data need to be loaded by 
+    \code{read_PJS_code_registers} before running \code{add_PJS_code_description}, see example. "PJS_codes_2_text.csv" is 
+    normally updated every night from PJS.
+
 
     Currently, the translation table has PJS-codes and the corresponding description for the following PJS variable types:
 \itemize{
