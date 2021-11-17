@@ -12,6 +12,8 @@ Other changes:
 
 - Improved argument checking of add_PJS_code_description
 
+- Improved help for add_poststed, add_MT_omrader, and add_PJS_code_description
+
 
 NVIdb 0.6.0 - (2021-09-26)
 --------------------------
