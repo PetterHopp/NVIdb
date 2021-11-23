@@ -6,13 +6,20 @@ New features:
 - 
 
 
+Bug fixes:
+
+- read_leveransereg now correctly reads numeric values with comma as decimal separator.
+
+
 Other changes:
 
 - Help for standardize_PJSdata is improved and styled.
 
-- Improved argument checking of add_PJS_code_description
+- Improved argument checking of add_PJS_code_description.
 
-- Improved help for add_poststed, add_MT_omrader, and add_PJS_code_description
+- Improved help for add_poststed, add_MT_omrader, and add_PJS_code_description.
+
+- README and the vignette "Contribute_to_NVIdb" are updated.
 
 
 NVIdb 0.6.0 - (2021-09-26)
