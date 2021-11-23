@@ -7,7 +7,8 @@
 ^install.R
 ^style.R
 ^CONTRIBUTING.md
-^README.md
+^README\.md
+^README\.Rmd
 ^Meta$
 ^NVIdb.Rcheck\vign_test$
 ^\.git$
