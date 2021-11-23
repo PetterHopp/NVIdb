@@ -249,6 +249,7 @@ add_new_column <- function(data,
 #' @param from_path Path for the source file
 #' @param columnclasses Predefine format (numeric or character) of the variables
 #' @param fileencoding usually UTF-8
+#' @param \dots	Other arguments to be passed to \code{data.table::fread}.
 
 #' @return A data.frame with the data from the source file.
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
@@ -259,7 +260,7 @@ add_new_column <- function(data,
 #' }
 #' @keywords internal
 
-read_csv_file <- function(filename, from_path, options = NULL) {
+read_csv_file <- function(filename, from_path, options = NULL, ...) {
 
   # Check if from_path ends in "/". If not, "/" is added.
   if (!endsWith(from_path, "/")) { from_path <- paste0(from_path, "/") }
@@ -279,7 +280,8 @@ read_csv_file <- function(filename, from_path, options = NULL) {
                              colClasses = options$colClasses,
                              encoding = options$fileEncoding,
                              stringsAsFactors = options$stringsAsFactors,
-                             showProgress = FALSE)
+                             showProgress = FALSE,
+                             ...)
     }
   }
 
