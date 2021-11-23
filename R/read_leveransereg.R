@@ -46,5 +46,6 @@ read_leveransereg <- function(filename,
   # Read leveranseregisteret
   levreg <- read_csv_file(filename = filename,
                           from_path = from_path,
-                          options = list(colClasses = colclasses, fileEncoding = "UTF-8"))
+                          options = list(colClasses = colclasses, fileEncoding = "UTF-8"),
+                          dec = ",")
 }
