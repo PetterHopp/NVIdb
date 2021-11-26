@@ -80,9 +80,9 @@ standardize_columns <- function(data,
                                 property,
                                 language = "no",
                                 exclude = FALSE) {
-
+  
   # TO DO: replace reading column standards with including column standards in sysdata for the package.
-
+  
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
@@ -92,21 +92,22 @@ standardize_columns <- function(data,
   } else {
     checkmate::assert_data_frame(data)
   }
-
-  checkmate::assert_character(dbsource, len = 1, min.chars = 1, add = checks)
-
+  
+  if (tolower(property) != "colclasses") {
+    checkmate::assert_character(dbsource, len = 1, min.chars = 1, add = checks)
+  }
   checkmate::assert_data_frame(standards, null.ok = TRUE, add = checks)
-
+  
   checkmate::assert_subset(tolower(property), choices = c("colnames", "colclasses", "collabels", "colwidths_excel",
                                                           "colwidths_DT", "colorder"), add = checks)
-
+  
   checkmate::assert_subset(language, choices = c("no", "en"), add = checks)
-
+  
   checkmate::assert_logical(exclude, add = checks)
-
+  
   # Report check-results
   checkmate::reportAssertions(checks)
-
+  
   property <- tolower(property)
   dbsource <- tolower(dbsource)
   
@@ -117,7 +118,7 @@ standardize_columns <- function(data,
   } else {
     column_standards <- standards
   }
-
+  
   # CHANGE DATABASE VARIABLE NAMES INTO STANDARD COLUMN NAMES FOR USE IN DATA FRAMES ----
   if (property == "colnames") {
     # Generate data frame with the column names in one column named V1
@@ -125,18 +126,18 @@ standardize_columns <- function(data,
     # Generate column with original order of column names
     #  Necessary to avoid change in order when using merge
     columnnames$original_sort_order <- seq_len(nrow(columnnames))
-
+    
     standard <- column_standards %>%
       # Filter to include only information for relevant column names and with property information
       dplyr::filter(colname_db %in% columnnames$V1) %>%
       dplyr::filter(!is.na(colname)) %>%
       dplyr::select(table_db, colname_db, colname) %>%
       dplyr::distinct()
-
+    
     # Keep information on relevant table name and combine information for all other tables
     standard[which(standard$table_db != dbsource), "table_db"] <- NA
     standard <- unique(standard)
-
+    
     if (dim(standard)[1] > 0) {
       standard <- standard %>%
         # Identify column names with only one suggested column width
@@ -147,7 +148,7 @@ standardize_columns <- function(data,
         dplyr::select(colname_db, colname) %>%
         dplyr::distinct()
     }
-
+    
     # # Standardize column names
     # if (dbsource %in% column_standards[which(column_standards$unique_colnames == 0), "table_db"]) {
     #   stand_columnnames <- unique(column_standards[which(column_standards$unique_colnames == 0 & column_standards$table_db == dbsource),
@@ -160,33 +161,33 @@ standardize_columns <- function(data,
     # }
     #
     # stand_columnnames <- unique(column_standards[which(column_standards$unique_colnames == 1), c("colname_db", "colname")])
-
-
+    
+    
     # New column with standard column names
     columnnames <- merge(columnnames, standard, by.x = "V1", by.y = "colname_db", all.x = TRUE)
     # Impute with snake case of column name in case standard column name isn't defined
     columnnames[which(is.na(columnnames$colname)), "colname"] <-
       snakecase::to_snake_case(columnnames[which(is.na(columnnames$colname)), "V1"], transliterations = c("danish", "Latin-ASCII"))
-
+    
     # Sorts data in original order
     columnnames <- columnnames[order(columnnames$original_sort_order), ]
-
+    
     # vector with new column names
     columnnames <- columnnames[, "colname"]
-
+    
     # Change source db column names to standard column names
     colnames(data) <- columnnames
-
+    
     # Return data frame with standardized column names
     return(data)
   }
-
+  
   # READ FIRST LINE OF CSV-FILE, IDENTIFY COLUMN CLASSES AND PRODUCE A NAMED VECTOR FOR THE colclasses PARAMETER ----
   if (property == "colclasses") {
-
+    
     # Read standard colclasses for database variable names
     stand_character <- unique(column_standards[which(!is.na(column_standards$colclasses)), c("colname_db", "colclasses")])
-
+    
     # Identifies columns that can look like numbers but should be treated as characters, usually because of leading zero
     # Read first line of csv-file
     colcharacter <- utils::read.csv2(file = data, header = FALSE, nrow = 1, fileEncoding = "UTF-8")
@@ -194,15 +195,15 @@ standardize_columns <- function(data,
     colcharacter <- as.data.frame(matrix(colcharacter, ncol = 1))
     # Merge (inner join) to identify variable names with colclass definition
     colcharacter <- merge(stand_character, colcharacter, by.x = "colname_db", by.y = "V1")
-
+    
     # Make a named vector for the colclasses parameter in read.csv2
     colcharacters <- colcharacter[, "colclasses"]
     names(colcharacters) <- colcharacter[, "colname_db"]
-
+    
     # Return a named vector
     return(colcharacters)
   }
-
+  
   # STANDARDIZE COLLABELS ----
   if (property == "collabels") {
     # Generate data frame with the column names in one column named V1
@@ -210,7 +211,7 @@ standardize_columns <- function(data,
     # Generate column with original order of column names
     #  Necessary to avoid change in order when using merge
     collabels$original_sort_order <- seq_len(nrow(collabels))
-
+    
     ## Norwegian column labels ----
     # Standard labels in Norwegian is always generated as is used to impute missing labels in other languages
     standard <- column_standards %>%
@@ -219,11 +220,11 @@ standardize_columns <- function(data,
       dplyr::filter(!is.na(label_1_no)) %>%
       dplyr::select(table_db, colname, label_1_no) %>%
       dplyr::distinct()
-
+    
     # Keep information on relevant table name and combine information for all other tables
     standard[which(standard$table_db != dbsource), "table_db"] <- NA
     standard <- unique(standard)
-
+    
     if (dim(standard)[1] > 0) {
       standard <- standard %>%
         # Identify column names with only one suggested column width
@@ -234,7 +235,7 @@ standardize_columns <- function(data,
         dplyr::select(colname = colname, label = label_1_no) %>%
         dplyr::distinct()
     }
-
+    
     ## English column labels ----
     if (language == "en") {
       standard_en <- column_standards %>%
@@ -242,11 +243,11 @@ standardize_columns <- function(data,
         dplyr::filter(!is.na(label_1_en)) %>%
         dplyr::select(table_db, colname, label_1_en) %>%
         dplyr::distinct()
-
+      
       # Keep information on relevant table name and combine information for all other tables
       standard_en[which(standard_en$table_db != dbsource), "table_db"] <- NA
       standard_en <- unique(standard_en)
-
+      
       if (dim(standard_en)[1] > 0) {
         standard_en <- standard_en %>%
           # Identify column names with only one suggested column width
@@ -256,14 +257,14 @@ standardize_columns <- function(data,
           dplyr::select(colname, label_1_en) %>%
           dplyr::distinct()
       }
-
+      
       # Impute missing labels with Norwegian labels
       standard <- standard_en %>%
         dplyr::full_join(standard, by = c("colname" = "colname")) %>%
         dplyr::mutate(label = dplyr::coalesce(label_1_en, label)) %>%
         dplyr::select(colname, label)
     }
-
+    
     ## Impute Sentence case for those without defined label ----¨
     collabels <- merge(collabels, standard, by.x = "V1", by.y = "colname", all.x = TRUE)
     # Impute with Sentence case of column name in case standard column name isn't defined
@@ -272,19 +273,19 @@ standardize_columns <- function(data,
                                   transliterations = c("aa" = "\u00e5", "Aa" = "\u00e5", "AA" = "\u00e5", "aA" = "\u00e5",
                                                        "oe" = "\u00f8", "Oe" = "\u00f8", "OE" = "\u00f8", "oE" = "\u00f8",
                                                        "ae" = "\u00e6", "Ae" = "\u00e6", "AE" = "\u00e6", "aE" = "\u00e6"))
-
+    
     ## Make vector with column labels
     # Sorts data in original order
     collabels <- collabels[order(collabels$original_sort_order), ]
-
+    
     # vector with column labels
     collabels <- collabels[, "label"]
-
+    
     # Return data frame with standardized column names
     return(collabels)
-
+    
   }
-
+  
   # STANDARDIZE COLUMN WIDTHS FOR EXCEL ----
   if (property == "colwidths_excel") {
     # Generate data frame with the column names in one column named V1
@@ -292,10 +293,10 @@ standardize_columns <- function(data,
     # Generate column with original order of column names
     #  Necessary to avoid change in order when using merge
     colwidths$original_sort_order <- seq_len(nrow(colwidths))
-
+    
     # column_standards$dbsource <- dbsource
     # print(head(column_standards))
-
+    
     # Standardize colwidths
     standard <- column_standards %>%
       # Filter to include only information for relevant column names and with property information
@@ -309,7 +310,7 @@ standardize_columns <- function(data,
     # Keep information on relevant table name and combine information for all other tables
     standard[which(standard$table_db != dbsource), "table_db"] <- NA
     standard <- unique(standard)
-
+    
     # if there are information on column widths
     if (dim(standard)[1] > 0) {
       standard <- standard %>%
@@ -321,25 +322,25 @@ standardize_columns <- function(data,
         dplyr::select(colname, colwidth) %>%
         dplyr::distinct()
     }
-
+    
     # New column with standard column names¨
     colwidths <- merge(colwidths, standard, by.x = "V1", by.y = "colname", all.x = TRUE)
     # Impute with snake case of column name in case standard column name isn't defined
     colwidths[which(is.na(colwidths$colwidth)), "colwidth"] <- 10.71
-
+    
     # Sorts data in original order
     colwidths <- colwidths[order(colwidths$original_sort_order), ]
-
+    
     # vector with new column names
     colwidths <- colwidths[, "colwidth"]
-
+    
     # Return data frame with standardized column names
     return(colwidths)
   }
-
+  
   # STANDARDIZE COLUMN ORDER ----
   if (property == "colorder") {
-
+    
     if (!dbsource %in% column_standards[which(!is.na(column_standards$colorder)), "table_db"]) {
       warning("No sorting done as column order is not known for this table. Please update column_standards or use another dbsource")
     } else {
@@ -348,7 +349,7 @@ standardize_columns <- function(data,
       # Generate column with original order of column names
       #  Necessary to avoid change in order when using merge
       columnorder$original_sort_order <- seq_len(nrow(columnorder))
-
+      
       ## Norwegian column labels ----
       # Standard labels in Norwegian is always generated as is used to impute missing labels in other languages
       standard <- column_standards %>%
@@ -364,9 +365,9 @@ standardize_columns <- function(data,
         dplyr::select(colname, colorder)
       # Sort according to first column, replaced by order
       # dplyr::arrange(colorder)
-
+      
       standard <- standard[order(standard$colorder),]
-
+      
       # Order in accord with standard.
       # Keep non-ordered columns in last columns if exclude = FALSE
       if (exclude == FALSE) {
@@ -378,14 +379,14 @@ standardize_columns <- function(data,
       if (exclude == TRUE) {
         colorder <- c(standard$colname)
       }
-
+      
       # Change order of columns and eventually exclude non-selected columns
       data <- data[, colorder]
     }
     # Return data frame with standardized column names
     return(data)
   }
-
-
+  
+  
   # LAST PROPERTY ASSIGNED ----
 }
