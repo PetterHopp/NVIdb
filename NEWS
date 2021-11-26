@@ -10,6 +10,8 @@ Bug fixes:
 
 - read_leveransereg now correctly reads numeric values with comma as decimal separator.
 
+- standardize_columns don't get an error when the property = colclasses and the filename has a space.
+
 
 Other changes:
 
