@@ -73,23 +73,16 @@ The `NVIdb` package needs to be attached.
 
     library(NVIdb)
 
-`NVIdb`provides tools to facilitate downloading and processing of data
+`NVIdb` provides tools to facilitate downloading and processing of data
 from the Norwegian Veterinary Institute’s databases, in particular PJS
-and EOS. The package comprises several categories of functions: 1)
-Manage credentials (i.e. password and username), 2) Login functions for
-database services, 3) Select PJS-data, 4) Initial cleaning of PJS-data,
-5) Read, copy and update various in-house data registers, 6) Translate
-codes into descriptions. NVIdb is dependant of NVIconfig which has to be
-installed manually from GitHub.
+and EOS. The package comprises several categories of functions:
 
-The Norwegian Veterinary Institute has several internal databases as
-well as access to data from external databases. `NVIdb` provides
-functions to facilitate downloading and processing of data from such
-databases, in particular PJS and EOS. `NVIdb` comprises five categories
-of functions: 1. Manage credentials (i.e. password and username), 2.
-Login functions for database services, 3. Read, copy and update
-different in-house data registers, 4. Standardization and cleaning of
-PJS-data, 5. Translate codes into descriptions.
+1.  Manage credentials (i.e. password and username),
+2.  Login functions for database services,
+3.  Select PJS-data,
+4.  Initial cleaning of PJS-data,
+5.  Read, copy and update various in-house data registers,
+6.  Translate codes into descriptions.
 
 By combining the functions for managing username and password and the
 login functions, you are able to login to PJS and EOS (and potentially
@@ -106,11 +99,14 @@ avdelinger og regioner), produsentinformasjon
 tables for PJS-codes into descriptive text.
 
 There are also functions to use these registers to translate variables
-with codes into names and others. You can translate - PJS-codes into
-descriptive text, - kommunenr into kommune, fylke, as well as current
-kommunenr, kommune, fylkenr and fylke - kommunenr into Mattilsynets
-avdeling and region - postnr into poststed and poststedets kommunenr -
-old produsentnr into current produsentnr
+with codes into names and others. You can translate
+
+-   PJS-codes into descriptive text,
+-   kommunenr into kommune, fylke, as well as current kommunenr,
+    kommune, fylkenr and fylke
+-   kommunenr into Mattilsynets avdeling and region
+-   postnr into poststed and poststedets kommunenr
+-   old produsentnr into current produsentnr
 
 The list of available functions and datasets can be accessed by typing
 
