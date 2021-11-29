@@ -20,8 +20,8 @@ pkg_path = usethis::proj_path()
 # Creates new help files
 # Should be run before git push when documentation for functions have been changed
 NVIpackager::document_NVIpkg(style = FALSE,
-                             contributing = FALSE,
-                             readme = FALSE,
+                             contributing = TRUE,
+                             readme = TRUE,
                              scope = c("spaces", "line_breaks"))
 
 
