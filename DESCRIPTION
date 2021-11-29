@@ -27,8 +27,6 @@ URL: https://github.com/NorwegianVeterinaryInstitute/NVIdb
 BugReports: https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues
 Depends: R (>= 3.5.0)
 License: BSD_3_clause + file LICENSE
-Encoding: UTF-8
-LazyData: true
 Imports:
     stats,
     utils,
@@ -43,7 +41,6 @@ Imports:
     snakecase,
     svDialogs,
     NVIcheckmate (>= 0.3.0)
-RoxygenNote: 7.1.1
 Suggests:
     devtools,
     knitr,
@@ -54,7 +51,12 @@ Suggests:
     styler,
     testthat,
     tibble,
-    withr
-Remotes: NorwegianVeterinaryInstitute/NVIcheckmate
-VignetteBuilder: knitr
+    NVIpackager
+Remotes: 
+    NorwegianVeterinaryInstitute/NVIcheckmate,
+    NorwegianVeterinaryInstitute/NVIpackager
+LazyData: true
+Encoding: UTF-8
 Language: en-GB
+RoxygenNote: 7.1.1
+VignetteBuilder: knitr
