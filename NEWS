@@ -1,16 +1,16 @@
-NVIdb 0.6.0.9001 - (2021-##-##)
+NVIdb 0.7.0 - (2021-12-15)
 --------------------------
-
-New features:
-
-- 
-
 
 Bug fixes:
 
 - read_leveransereg now correctly reads numeric values with comma as decimal separator.
 
 - standardize_columns don't get an error when the property = colclasses and the filename has a space.
+
+
+BREAKING CHANGES:
+
+- NVIdb is must have NVIconfig v0.3.0
 
 
 Other changes:
