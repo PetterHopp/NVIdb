@@ -41,7 +41,7 @@ check_package <- function(x, version = NULL) {
 .onAttach <- function(libname, pkgname){
 
   # check if "NVIconfig" is installed
-  msg <- check_package(x = "NVIconfig", version = "0.2.0")
+  msg <- check_package(x = "NVIconfig", version = "0.3.0")
 
   # Print a startup message if not required version is installed
   if (msg != TRUE) {
