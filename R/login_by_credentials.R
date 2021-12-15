@@ -27,14 +27,14 @@ login_by_credentials <- function(dbservice,
                                  add = checks)
     
     if (isTRUE(NVIcheckmate::check_package(x = "NVIconfig"))) {
-      NVIcheckmate::assert_choice_character(x = dbservice, choices = NVIconfig::dbconnect$dbservice, ignore.case = TRUE,
+      NVIcheckmate::assert_choice_character(x = dbservice, choices = NVIconfig:::dbconnect$dbservice, ignore.case = TRUE,
                                             comment = paste0("Predefined parameters for logging into the database '",
                                                              dbservice, 
                                                              "' is not available in your version of NVIconfig"),
                                             add = checks)
       
       # Uses the predefined parameters only for parameters with NULL-value
-      connect <- NVIconfig::dbconnect[tolower(dbservice), ]
+      connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
       if (is.null(dbdriver))   {dbdriver   <- connect[, "dbdriver"]}
       if (is.null(db))         {db         <- connect[, "db"]}
       if (is.null(dbserver))   {dbserver   <- connect[, "dbserver"]}
@@ -84,7 +84,7 @@ login_by_credentials <- function(dbservice,
   # 
   # # 3. Parameters for db-connection is missing
   # if ((is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) &
-  #     !tolower(dbservice) %in% tolower(NVIconfig::dbconnect$dbservice)) {
+  #     !tolower(dbservice) %in% tolower(NVIconfig:::dbconnect$dbservice)) {
   #   stop(paste("Parameters for connection to",
   #              dbservice,
   #              "are missing and predefined parameters are not available"))
