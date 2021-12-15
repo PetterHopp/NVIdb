@@ -7,7 +7,7 @@ test_that("Preset paths exists", {
   # skip if no connection to 'FAG' have been established
   skip_if_not(dir.exists(set_dir_NVI("FAG")))
 
-  for (i in names(NVIconfig:::path_NVI)) {
+  for (i in names(NVIconfig::path_NVI)) {
     expect_true(dir.exists(set_dir_NVI(i)))
   }
 
