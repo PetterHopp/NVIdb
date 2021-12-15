@@ -14,7 +14,9 @@
 #'
 #'     \code{property = "colclasses"} will generate a named vector with the column classes for variables that may not be read correct when importing
 #'     data from a csv-file. This applies for example to numbers with leading zero that must be imported as character. This vector can be used as a
-#'     parameter for \code{colClasses = }.
+#'     parameter for \code{colClasses = }. 
+#'     
+#'     The default fileEncoding is assumed to be "UTF-8". If another encoding one must give an additional argument like \code{fileEncoding = "latin"}.
 #'
 #'     \code{property = "collabels"} will generate a vector with column labels that can be used to replace the column names in the header of the data
 #'     table. The column names are not changed automatiacally but can be changed by using a colname statement (see help). If no standard column label
@@ -39,6 +41,7 @@
 #' @param property Property of the column that should be standardized, currently c("colnames", "colclasses", "collabels", "colwidths_Excel", "colorder").
 #' @param language Language for labels. Valid input are c("no", "en")
 #' @param exclude Used in combination with \code{property = "colorder"}. \code{exclude = TRUE} excludes all columns with no predefinedcolorder.
+#' @param \dots	Other arguments to be passed read.csv2 when \code{property = "colclasses"}.
 #'
 #' @return \code{property = "colnames"}. A data frame with standard column names.
 #'
@@ -79,7 +82,8 @@ standardize_columns <- function(data,
                                 standards = NULL,
                                 property,
                                 language = "no",
-                                exclude = FALSE) {
+                                exclude = FALSE,
+                                ...) {
   
   # TO DO: replace reading column standards with including column standards in sysdata for the package.
   
@@ -93,9 +97,12 @@ standardize_columns <- function(data,
     checkmate::assert_data_frame(data)
   }
   
-  if (tolower(property) != "colclasses") {
-    checkmate::assert_character(dbsource, len = 1, min.chars = 1, add = checks)
+  # if dbsource is a vector with length more than one, e.g a filename made by paste
+  if (tolower(property) == "colclasses") {
+    dbsource <- dbsource[1]
   }
+  checkmate::assert_character(dbsource, len = 1, min.chars = 1, add = checks)
+  
   checkmate::assert_data_frame(standards, null.ok = TRUE, add = checks)
   
   checkmate::assert_subset(tolower(property), choices = c("colnames", "colclasses", "collabels", "colwidths_excel",
@@ -190,7 +197,8 @@ standardize_columns <- function(data,
     
     # Identifies columns that can look like numbers but should be treated as characters, usually because of leading zero
     # Read first line of csv-file
-    colcharacter <- utils::read.csv2(file = data, header = FALSE, nrow = 1, fileEncoding = "UTF-8")
+    if (!exists("fileEncoding")) {fileEncoding <- "UTF-8"}
+    colcharacter <- utils::read.csv2(file = data, header = FALSE, nrow = 1, fileEncoding = fileEncoding)
     # Transform the header into a data frame with one column
     colcharacter <- as.data.frame(matrix(colcharacter, ncol = 1))
     # Merge (inner join) to identify variable names with colclass definition
