@@ -31,13 +31,13 @@ set_dir_NVI <- function(datasource) {
   # ERROR checking
   # Check function input
   datasource <- trimws(tolower(datasource))
-  if (!datasource %in% tolower(names(NVIconfig:::path_NVI))) {
+  if (!datasource %in% tolower(names(NVIconfig::path_NVI))) {
     stop(paste0(datasource, " is not a valid input for datasource.","\n",
-               "Valid inputs are (case insensitive): ", paste(names (NVIconfig:::path_NVI), collapse = ", "),"."))
+               "Valid inputs are (case insensitive): ", paste(names (NVIconfig::path_NVI), collapse = ", "),"."))
   }
 
   # The paths are defined in the package NVIconfig
-  pathname <- unname(NVIconfig:::path_NVI[which(tolower(names(NVIconfig:::path_NVI)) == datasource)])
+  pathname <- unname(NVIconfig::path_NVI[which(tolower(names(NVIconfig::path_NVI)) == datasource)])
 
   return(pathname)
 }
