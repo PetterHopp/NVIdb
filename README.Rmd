@@ -6,6 +6,7 @@ output:
   
 params:
   NVIpkg: "NVIdb"
+  first_copyright_year: "2019"
 ---
 
 ```{r, include = FALSE}

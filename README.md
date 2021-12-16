@@ -108,9 +108,10 @@ with codes into names and others. You can translate
 -   postnr into poststed and poststedets kommunenr
 -   old produsentnr into current produsentnr
 
-The list of available functions and datasets can be accessed by typing
+The full list of all available functions and datasets can be accessed by
+typing
 
-    help(package="NVIdb")
+    help(package = "NVIdb")
 
 Please check the NEWS for information on new features, bug fixes and
 other changes.
@@ -118,7 +119,7 @@ other changes.
 Copyright and license
 ---------------------
 
-Copyright (c) 2021 Norwegian Veterinary Institute.  
+Copyright (c) 2019 - 2021 Norwegian Veterinary Institute.  
 Licensed under the BSD\_3\_clause License. See
 [License](https://github.com/NorwegianVeterinaryInstitute/NVIdb/blob/main/LICENSE)
 for details.
