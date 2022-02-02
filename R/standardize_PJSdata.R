@@ -74,7 +74,7 @@ standardize_PJSdata <- function(PJSdata, dbsource = "v2_sak_m_res") {
   # Generate saksnr and fagnr
   PJSdata$saksnr <- paste(PJSdata$aar, PJSdata$ansvarlig_seksjon, PJSdata$innsendelsenr, sep = "-")
   if ("fagkode" %in% cols_2_modify & "fagnr" %in% cols_2_modify) {
-    PJSdata$fagnr <- paste(PJSdata$aar, PJSdata$ansvarlig_seksjon, PJSdata$fagkode, PJSdata$fagnr, sep = "-")
+    PJSdata$fagnr <- paste(PJSdata$aar, PJSdata$ansvarlig_seksjon, paste0(PJSdata$fagkode, PJSdata$fagnr), sep = "-")
   }
 
   # Delete test data, i.e. saker with ansvarlig_seksjon in c("14", "99")
