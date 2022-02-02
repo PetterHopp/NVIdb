@@ -35,25 +35,27 @@ Imports:
     dplyr,
     getPass,
     keyring,
+    knitr,
     magrittr,
     poorman (>= 0.2.3),
-    RODBC,
-    snakecase,
-    svDialogs,
-    NVIcheckmate (>= 0.3.0)
-Suggests:
-    devtools,
-    knitr,
     remotes,
     rmarkdown,
-    roxygen2,
-    spelling, 
-    styler,
+    RODBC,
+    shiny,
+    snakecase,
+    svDialogs,
+    NVIcheckmate (>= 0.3.0),
+    NVIrpackages
+Suggests:
+    covr,
+    devtools,
+    spelling,
     testthat,
     tibble,
     NVIpackager
 Remotes: 
     NorwegianVeterinaryInstitute/NVIcheckmate,
+    NorwegianVeterinaryInstitute/NVIrpackages,
     NorwegianVeterinaryInstitute/NVIpackager
 LazyData: true
 Encoding: UTF-8
