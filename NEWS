@@ -7,6 +7,8 @@ Bug fixes:
 
 - standardize_columns don't get an error when the property = colclasses and the filename has a space.
 
+- standardize_PJS creates fagnr without a hyphen between fagkode and number.
+
 
 Other changes:
 
