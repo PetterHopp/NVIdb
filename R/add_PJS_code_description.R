@@ -110,7 +110,34 @@ add_PJS_code_description <- function(data,
                                      position = "right",
                                      overwrite = FALSE) {
 
-
+# Generate translation table from PJS-variable name (code_colname) to 
+  # PJS-type and standard variable name for description text (new_column)
+  PJS_types <- as.data.frame(matrix(rbind(c("ansvarlig_seksjon", "seksjon", "ansvarlig_seksjon"),
+                                          c("hensiktkode", "hensikt", "hensikt"),
+                                          c("utbruddnr", "utbrudd", "utbrudd"),
+                                          c("rekvirenttype", "registertype", "rekvirenttypen"),
+                                          c("eier_lokalitettype", "registertype", "eier_lokalitettypen"),
+                                          c("annen_aktortype", "registertype", "annen_aktortypen"),
+                                          c("artkode", "art", "art"),
+                                          c("fysiologisk_stadiumkode", "fysiologisk_stadium", "fysiologisk_stadium"),
+                                          c("kjonn", "kjonn", "kjonnet"),
+                                          c("driftsformkode", "driftsform", "driftsform"),
+                                          c("provetypekode", "provetype", "provetype"),
+                                          c("provematerialekode", "provemateriale", "provemateriale"),
+                                          c("forbehandlingkode", "forbehandling", "forbehandling"),
+                                          c("konkl_type", "konkl_type", "konkl_typen"),
+                                          c("konkl_kjennelsekode", "kjennelse", "konkl_kjennelse"),
+                                          c("konkl_analyttkode", "analytt", "konkl_analytt"),
+                                          c("metodekode", "metode", "metode"),
+                                          c("res_kjennelsekode", "kjennelse", "res_kjennelse"),
+                                          c("res_analyttkode", "analytt", "res_analytt")),
+                                    ncol = 3,
+                                    dimnames = list(NULL, c("code_colname", "type", "new_column"))))
+  if (PJS_variable_type == "auto" | new_column == "auto") {
+    PJS_types_selected <- as.data.frame(code_colname) %>%
+      dplyr::left_join(PJS_types, by = "code_colname") 
+    PJS_types_selected <- subset(PJS_types_selected, !is.na(PJS_types_selected$type))
+  }
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
@@ -120,10 +147,6 @@ add_PJS_code_description <- function(data,
   checkmate::assert_data_frame(data, add = checks)
   # translation_table
   checkmate::assert_data_frame(translation_table, add = checks)
-  # PJS_variable_type
-  checkmate::assert_subset(PJS_variable_type,
-                             choices = unique(translation_table$type),
-                             add = checks)
   # code_colname
   checkmate::assert_vector(code_colname, any.missing = FALSE, min.len = 1, add = checks)
   NVIcheckmate::assert_names(code_colname, 
@@ -135,8 +158,26 @@ add_PJS_code_description <- function(data,
                                               base::setdiff(code_colname, colnames(data)), 
                                               "' is not a column in the data"),
                              add = checks)
+  # auto and PJS_variable_type/new_column
+  if (PJS_variable_type == "auto" | new_column == "auto") {
+  NVIcheckmate::assert_subset_character(code_colname,
+                             choices = unique(PJS_types$code_colname),
+                             comment = paste("when 'PJS_variable_type' or 'new_column' equals 'auto'",
+                                              "the code_colnames must be standardized PJS column names.",
+                                              "You can use NVIdb::standardize_PJSdata to standardize."),
+                             add = checks)
+  }
+  # PJS_variable_type
+  if (PJS_variable_type != "auto") {
+  checkmate::assert_subset(PJS_variable_type,
+                             choices = unique(translation_table$type),
+                             add = checks)
+  }
   # new_column
   checkmate::assert_vector(new_column, any.missing = FALSE, min.len = 1, add = checks)
+  if (new_column == "auto") {
+    new_column <- PJS_types_selected$new_column
+  }
   if (isFALSE(overwrite)) {
     NVIcheckmate::assert_names(new_column, 
                                type = "named", 
@@ -159,6 +200,7 @@ add_PJS_code_description <- function(data,
                                               # deparse(substitute(data)), "`"
                              ),
                              add = checks)
+  
   # position
   NVIcheckmate::assert_subset_character(x = unique(position), choices = c("first", "left", "right", "last", "keep"), add = checks)
   # overwrite
@@ -167,27 +209,18 @@ add_PJS_code_description <- function(data,
   # Report check-results
   checkmate::reportAssertions(checks)
   
-  # # ERROR check
-  # # error:
-  # if (length(intersect(code_colname, new_column)) > 0) {
-  #   # issue error if names already exists
-  #   stop(paste0("You cannot give the new column the same name as the code_colname '", code_colname, "' in the data frame '", deparse(substitute(data)), "`."))
-  # }
-  # 
-  # # check_exist_colname(df_name = deparse(substitute(data)), df_columns = colnames(data), new_column = new_column, overwrite = overwrite)
-  # if (length(intersect(colnames(data), new_column)) > 0 & overwrite == FALSE) {
-  #   # issue error if names already exists
-  #   stop(paste(paste0("The column name(s): '", intersect(colnames(data), names(new_column)), "' already exist in '", deparse(substitute(data)), "`."),
-  #              paste0("Either give new column name(s) for the column(s) called '", intersect(colnames(data), names(new_column)), "' or"),
-  #              "Specify overwrite = TRUE to replace values in the existing column(s) with new content.", sep = "\n"))
-  # }
-  # 
+  # Generates PJS_variable_type if "auto". 
+  # new_column was generated above because the new column names should be checked in the argument checking
+  if (PJS_variable_type == "auto") {
+    PJS_variable_type <- PJS_types_selected$type
+  }
+  
 
   # Transforms position to a vector with the same length as number of PJS-variables to be translated
-  if (length(position) == 1 & length(PJS_variable_type) > 1) {position <- rep(position, length(PJS_variable_type))}
+  if (length(position) == 1 & length(code_colname) > 1) {position <- rep(position, length(code_colname))}
 
   # runs the translation for several PJS-variables at a time if wanted
-  for (i in 1:length(PJS_variable_type)) {
+  for (i in 1:length(code_colname)) {
 
     # Make a subset with only the codes that is relevant for the actual variabel
     code_2_description <- translation_table[base::which(translation_table$type == PJS_variable_type[i]), ]
