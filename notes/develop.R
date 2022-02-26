@@ -7,7 +7,7 @@
 # library(devtools)
 # library(roxygen2)
 library(NVIpackager)
-library(spelling)
+# library(spelling)
 
 # Global variables
 pkg <- stringi::stri_extract_last_words(usethis::proj_path())
