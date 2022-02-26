@@ -60,5 +60,5 @@ Remotes:
 LazyData: true
 Encoding: UTF-8
 Language: en-GB
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 VignetteBuilder: knitr
