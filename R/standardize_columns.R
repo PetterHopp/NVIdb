@@ -54,6 +54,7 @@
 #'     \code{property = "colorder"}. A data frame with column names in predefined order. If exclude = TRUEonly columns withh a defined order is included
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
+#' @importFrom rlang .data
 #' @export
 #' @examples
 #' \dontrun{
@@ -309,8 +310,8 @@ standardize_columns <- function(data,
     standard <- column_standards %>%
       # Filter to include only information for relevant column names and with property information
       dplyr::filter(colname %in% colwidths$V1) %>%
-      dplyr::filter(!is.na(colwidth_Excel)) %>%
-      dplyr::select(table_db = table_db, colname = colname, colwidth = colwidth_Excel)
+      dplyr::filter(!is.na(.data$colwidth_Excel)) %>%
+      dplyr::select(table_db = table_db, colname = colname, colwidth = .data$colwidth_Excel)
     # uses which below as there seem to be a bug so that case_when doesn't work properly within a function
     # dplyr::mutate(table_db = dplyr::case_when(table_db == "dbsource" ~ table_db,
     #                                               TRUE ~ as.character(NA))) %>%
