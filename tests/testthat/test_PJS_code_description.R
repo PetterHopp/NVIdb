@@ -159,38 +159,16 @@ test_that("Translate codes using 'auto'", {
                                         rbind(c("metodekode" = "010001"), c("metodekode" = "010002")),
                                         rbind(c("metode" = "Obduksjon/organundersøkelse"), c("metode" = "Histopatologi")),
                                         rbind(c("ansvarlig_seksjon" = "01"), c("ansvarlig_seksjon" = "02")),
-                                        rbind(c("seksjon" = "Bakteriologi - Fisk og dyr"), c("seksjon" = "Virologi"))))
+                                        rbind(c("ansvarlig_seksjon_navn" = "Bakteriologi - Fisk og dyr"), c("ansvarlig_seksjon_navn" = "Virologi"))))
   
   testdata <- add_PJS_code_description(testdata,
                                        translation_table = PJS_codes_2_text,
                                        code_colname = c("hensiktkode", "metodekode", "ansvarlig_seksjon"),
                                        PJS_variable_type = c("auto"),
-                                       new_column = c("hensikt", "metode", "seksjon"))
+                                       new_column = c("auto"))
   
   # Compare new and old code descriptions
   expect_identical(testdata, correct_result)
-  
-  testdata <- add_PJS_code_description(testdata,
-                                       translation_table = PJS_codes_2_text,
-                                       code_colname = c("hensiktkode", "metodekode", "ansvarlig_seksjon"),
-                                       PJS_variable_type = c("hensikt", "metode", "seksjon"),
-                                       new_column = c("hensikt", "metode", "seksjon"),
-                                       position = "left",
-                                       overwrite = TRUE)
-  
-  # Compare new and old code descriptions
-  expect_identical(testdata, correct_result[, c("hensikt", "hensiktkode", "metode", "metodekode", "seksjon", "ansvarlig_seksjon")])
-  
-  testdata <- add_PJS_code_description(testdata,
-                                       translation_table = PJS_codes_2_text,
-                                       code_colname = c("hensiktkode", "metodekode", "ansvarlig_seksjon"),
-                                       PJS_variable_type = c("hensikt", "metode", "seksjon"),
-                                       new_column = c("hensikt", "metode", "seksjon"),
-                                       position = c("keep", "first", "last"),
-                                       overwrite = TRUE)
-  
-  # Compare new and old code descriptions
-  expect_identical(testdata, correct_result[, c("metode", "hensikt", "hensiktkode", "metodekode", "ansvarlig_seksjon", "seksjon")])
   
 })
 
