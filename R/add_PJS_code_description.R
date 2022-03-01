@@ -1,28 +1,32 @@
 #' @title Manage translation of PJS-codes to descriptive text
-#' @description Functions to adds a column with descriptive text for a column with PJS-codes in a dataframe with PJS-data.
+#' @description Functions to adds a column with descriptive text for a column with PJS-codes in a data frame with PJS-data.
 #'    In addition there are functions to read and copy an updated version of the PJS code registers.
-#' @details Export of data from PJS will produce dataframes in which many columns have coded data. These need to be translated
+#' @details Export of data from PJS will produce data frames in which many columns have coded data. These need to be translated
 #'     into descriptive text to increase readability.
 #'
 #'     \code{add_PJS_code_description} can be used to translate the codes into descriptive text. In a data.frame with coded values,
-#'     the function can return a data.frame with the descriptive text in a new column. The descriptive text is input in a new column
-#'     to the right of the column with codes.
+#'     the function can return a data frame with the descriptive text in a new column. As default, the descriptive text is input 
+#'     in a new column to the right of the column with codes.
 #'
-#'     The function uses a premade translation table (PJS_codes_2_text.csv) that normally is updated every night from PJS.
-#'     \code{add_PJS_code_description} uses a premade translation table (PJS_codes_2_text.csv). These data need to be loaded by 
-#'     \code{read_PJS_code_registers} before running \code{add_PJS_code_description}, see example. "PJS_codes_2_text.csv" is 
+#'     \code{add_PJS_code_description} uses a premade translation table (PJS_codes_2_text.csv). The data need to be loaded by 
+#'     \code{read_PJS_code_registers} before running \code{add_PJS_code_description}, see example. The file "PJS_codes_2_text.csv" is 
 #'     normally updated every night from PJS.
 #'
-#'
+#' |code colname | PJS variable type | new column|
+#' |-------------|-------------------|-----------|
+#' |hensiktkode  | hensikt           | hensikt   |
+#' |utbruddnr    | utbrudd           | utbrudd   |
+#' 
 #'     Currently, the translation table has PJS-codes and the corresponding description for the following PJS variable types:
 #' \itemize{
 #'   \item hensikt
 #'   \item utbrudd
-#'   \item registertype (categories for locations and addresses)
+#'   \item registertype (categories of locations and addresses)
 #'   \item seksjon
 #'   \item art (species and breed codes to species name)
 #'   \item artrase (species and breed codes to species or breed name)
 #'   \item driftsform
+#'   \item oppstalling
 #'   \item provetype
 #'   \item provemateriale
 #'   \item kjonn
@@ -53,8 +57,8 @@
 #'     \code{copy_PJS_code_registers} copies the file pjsCodeDescriptions.csv to a chosen directory.
 #'
 #'
-#' @param data Dataframe with PJS-data with a column with codes for a PJS-variable
-#' @param translation_table Dataframe with the code and the description for PJS-variables
+#' @param data Data frame with PJS-data with a column with codes for a PJS-variable
+#' @param translation_table Data frame with the code and the description for PJS-variables
 #' @param PJS_variable_type A vector with PJS-variables, for example "hensikt". See details for a list of all PJS-variables included in
 #'     the premade translation table pjscode_2_descriptions.csv. If more than one code should be translated, they can be given in the vector.
 #' @param code_colname The name of the column with codes that should be translated. If several codes should be translated, a vector with the
@@ -64,7 +68,7 @@
 #' @param position position for the new columns, can be one of c("first", "left", "right", "last", "keep"). If several codes should be translated,
 #'     either one value to be applied for all may be given or a vector with specified position for each code to be translated should be given.
 #' @param overwrite When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
-#'     If the new columns already exists and overwrite = FALSE, then an error is issued.
+#'     If the new columns already exists and overwrite = FALSE, an error will be issued.
 #' @param filename Filename of the source file for the translation table for PJS-codes
 #' @param from_path Path for the source translation table for PJS-codes
 #' @param to_path Path for the target translation table for PJS-codes when copying the table
@@ -120,17 +124,18 @@ add_PJS_code_description <- function(data,
                                           c("annen_aktortype", "registertype", "annen_aktortypen"),
                                           c("artkode", "art", "art"),
                                           c("fysiologisk_stadiumkode", "fysiologisk_stadium", "fysiologisk_stadium"),
-                                          c("kjonn", "kjonn", "kjonnet"),
+                                          c("kjonn", "kjonn", "kjonn_navn"),
                                           c("driftsformkode", "driftsform", "driftsform"),
+                                          c("oppstallingkode", "oppstalling", "oppstalling"),
                                           c("provetypekode", "provetype", "provetype"),
                                           c("provematerialekode", "provemateriale", "provemateriale"),
                                           c("forbehandlingkode", "forbehandling", "forbehandling"),
-                                          c("konkl_type", "konkl_type", "konkl_typen"),
+                                          c("konkl_type", "konkl_type", "konkl_type_navn"),
                                           c("konkl_kjennelsekode", "kjennelse", "konkl_kjennelse"),
                                           c("konkl_analyttkode", "analytt", "konkl_analytt"),
                                           c("metodekode", "metode", "metode"),
                                           c("res_kjennelsekode", "kjennelse", "res_kjennelse"),
-                                          c("res_analyttkode", "analytt", "res_analytt")),
+                                          c("res_analyttkode", "analytt", "res_analytt")),   
                                     ncol = 3,
                                     dimnames = list(NULL, c("code_colname", "type", "new_column"))))
   if (PJS_variable_type[1] == "auto" | new_column[1] == "auto") {
