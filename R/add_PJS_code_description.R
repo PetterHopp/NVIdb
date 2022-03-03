@@ -12,32 +12,34 @@
 #'     \code{read_PJS_code_registers} before running \code{add_PJS_code_description}, see example. The file "PJS_codes_2_text.csv" is 
 #'     normally updated every night from PJS.
 #'
-#' |code colname | PJS variable type | new column|
-#' |-------------|-------------------|-----------|
-#' |hensiktkode  | hensikt           | hensikt   |
-#' |utbruddnr    | utbrudd           | utbrudd   |
-#' 
 #'     Currently, the translation table has PJS-codes and the corresponding description for the following PJS variable types:
-#' \itemize{
-#'   \item hensikt
-#'   \item utbrudd
-#'   \item registertype (categories of locations and addresses)
-#'   \item seksjon
-#'   \item art (species and breed codes to species name)
-#'   \item artrase (species and breed codes to species or breed name)
-#'   \item driftsform
-#'   \item oppstalling
-#'   \item provetype
-#'   \item provemateriale
-#'   \item kjonn
-#'   \item forbehandling
-#'   \item fysiologisk_stadium
-#'   \item metode
-#'   \item konkl_type
-#'   \item kjennelse
-#'   \item analytt.
-#' }
 #'
+#' \tabular{llll}{
+#'   \strong{PJS variable type} \tab \strong{code colname} \tab \strong{new column} \tab \strong{remark} \cr
+#'   seksjon \tab ansvarlig_seksjon \tab ansvarlig_seksjon_navn \tab \cr
+#'   hensikt \tab hensiktkode \tab hensikt \tab \cr
+#'   utbrudd \tab utbruddnr \tab utbrudd \tab translates NVI's outbreak number \cr
+#'   registertype \tab rekvirenttype \tab rekvirenttypen \tab categories of locations and addresses \cr
+#'   registertype \tab eier_lokalitettype \tab eier_lokalitettypen \tab categories of locations and addresses \cr
+#'   registertype \tab annen_aktortype \tab annen_aktortypen \tab categories of locations and addresses \cr
+#'   art \tab artkode \tab art \tab species and breed codes to species name \cr
+#'   fysiologisk_stadium \tab fysiologisk_stadiumkode \tab fysiologisk_stadium \tab \cr
+#'   kjonn \tab kjonn \tab kjonn_navn \tab \cr
+#'   driftsform \tab driftsformkode \tab driftsform \tab \cr
+#'   oppstalling \tab oppstallingkode \tab oppstalling \tab \cr
+#'   provetype \tab provetypekode \tab provetype \tab \cr
+#'   provemateriale \tab provematerialekode \tab provemateriale \tab \cr
+#'   forbehandling \tab forbehandlingkode \tab forbehandling \tab \cr
+#'   metode \tab metodekode \tab metode \tab \cr
+#'   konkl_type \tab konkl_type \tab konkl_type_navn \tab \cr
+#'   kjennelse \tab konkl_kjennelsekode \tab konkl_kjennelse \tab \cr
+#'   kjennelse \tab res_kjennelsekode \tab res_kjennelse \tab \cr
+#'   analytt \tab konkl_analyttkode \tab konkl_analytt \tab \cr
+#'   analytt \tab res_analyttkode \tab res_analytt \tab \cr
+#' }
+#' 
+#' In addition artrase (species and breed codes to species or breed name)
+
 #'     \code{position =} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
 #'     placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
 #'     code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
