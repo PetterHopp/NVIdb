@@ -17,6 +17,7 @@
 #' \tabular{llll}{
 #'   \strong{PJS variable type} \tab \strong{code colname} \tab \strong{new column} \tab \strong{remark} \cr
 #'   seksjon \tab ansvarlig_seksjon \tab ansvarlig_seksjon_navn \tab \cr
+#'   seksjon \tab utf_seksjon" \tab utforende_seksjon_navn \tab \cr
 #'   hensikt \tab hensiktkode \tab hensikt \tab \cr
 #'   utbrudd \tab utbruddnr \tab utbrudd \tab translates NVI's outbreak number \cr
 #'   registertype \tab rekvirenttype \tab rekvirenttype_navn \tab categories of locations and addresses \cr
@@ -119,6 +120,7 @@ add_PJS_code_description <- function(data,
   # Generate translation table from PJS-variable name (code_colname) to 
   # PJS-type and standard variable name for description text (new_column)
   PJS_types <- as.data.frame(matrix(rbind(c("ansvarlig_seksjon", "seksjon", "ansvarlig_seksjon_navn"),
+                                          c("utf_seksjon", "seksjon", "utforende_seksjon_navn"),
                                           c("hensiktkode", "hensikt", "hensikt"),
                                           c("utbruddnr", "utbrudd", "utbrudd"),
                                           c("rekvirenttype", "registertype", "rekvirenttype_navn"),
