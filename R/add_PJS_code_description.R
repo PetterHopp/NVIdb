@@ -19,9 +19,9 @@
 #'   seksjon \tab ansvarlig_seksjon \tab ansvarlig_seksjon_navn \tab \cr
 #'   hensikt \tab hensiktkode \tab hensikt \tab \cr
 #'   utbrudd \tab utbruddnr \tab utbrudd \tab translates NVI's outbreak number \cr
-#'   registertype \tab rekvirenttype \tab rekvirenttypen \tab categories of locations and addresses \cr
-#'   registertype \tab eier_lokalitettype \tab eier_lokalitettypen \tab categories of locations and addresses \cr
-#'   registertype \tab annen_aktortype \tab annen_aktortypen \tab categories of locations and addresses \cr
+#'   registertype \tab rekvirenttype \tab rekvirenttype_navn \tab categories of locations and addresses \cr
+#'   registertype \tab eier_lokalitettype \tab eier_lokalitettype_navn \tab categories of locations and addresses \cr
+#'   registertype \tab annen_aktortype \tab annen_aktortype_navn \tab categories of locations and addresses \cr
 #'   art \tab artkode \tab art \tab species and breed codes to species name \cr
 #'   fysiologisk_stadium \tab fysiologisk_stadiumkode \tab fysiologisk_stadium \tab \cr
 #'   kjonn \tab kjonn \tab kjonn_navn \tab \cr
@@ -31,7 +31,7 @@
 #'   provemateriale \tab provematerialekode \tab provemateriale \tab \cr
 #'   forbehandling \tab forbehandlingkode \tab forbehandling \tab \cr
 #'   metode \tab metodekode \tab metode \tab \cr
-#'   konkl_type \tab konkl_type \tab konkl_type_navn \tab \cr
+#'   konkl_type \tab konkl_type_kode \tab konkl_type \tab \cr
 #'   kjennelse \tab konkl_kjennelsekode \tab konkl_kjennelse \tab \cr
 #'   kjennelse \tab res_kjennelsekode \tab res_kjennelse \tab \cr
 #'   analytt \tab konkl_analyttkode \tab konkl_analytt \tab \cr
@@ -132,7 +132,7 @@ add_PJS_code_description <- function(data,
                                           c("provetypekode", "provetype", "provetype"),
                                           c("provematerialekode", "provemateriale", "provemateriale"),
                                           c("forbehandlingkode", "forbehandling", "forbehandling"),
-                                          c("konkl_type", "konkl_type", "konkl_type_navn"),
+                                          c("konkl_type_kode", "konkl_type", "konkl_type"),
                                           c("konkl_kjennelsekode", "kjennelse", "konkl_kjennelse"),
                                           c("konkl_analyttkode", "analytt", "konkl_analytt"),
                                           c("metodekode", "metode", "metode"),
