@@ -29,9 +29,9 @@ read_PJS_codes_2_text(
 )
 }
 \arguments{
-\item{data}{Dataframe with PJS-data with a column with codes for a PJS-variable}
+\item{data}{Data frame with PJS-data with a column with codes for a PJS-variable}
 
-\item{translation_table}{Dataframe with the code and the description for PJS-variables}
+\item{translation_table}{Data frame with the code and the description for PJS-variables}
 
 \item{PJS_variable_type}{A vector with PJS-variables, for example "hensikt". See details for a list of all PJS-variables included in
 the premade translation table pjscode_2_descriptions.csv. If more than one code should be translated, they can be given in the vector.}
@@ -46,7 +46,7 @@ new column names should be given.}
 either one value to be applied for all may be given or a vector with specified position for each code to be translated should be given.}
 
 \item{overwrite}{When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
-If the new columns already exists and overwrite = FALSE, then an error is issued.}
+If the new columns already exists and overwrite = FALSE, an error will be issued.}
 
 \item{filename}{Filename of the source file for the translation table for PJS-codes}
 
@@ -65,43 +65,48 @@ If the new columns already exists and overwrite = FALSE, then an error is issued
     the source file is only copied if it is newer than the target file.
 }
 \description{
-Functions to adds a column with descriptive text for a column with PJS-codes in a dataframe with PJS-data.
+Functions to adds a column with descriptive text for a column with PJS-codes in a data frame with PJS-data.
    In addition there are functions to read and copy an updated version of the PJS code registers.
 }
 \details{
-Export of data from PJS will produce dataframes in which many columns have coded data. These need to be translated
+Export of data from PJS will produce data frames in which many columns have coded data. These need to be translated
     into descriptive text to increase readability.
 
     \code{add_PJS_code_description} can be used to translate the codes into descriptive text. In a data.frame with coded values,
-    the function can return a data.frame with the descriptive text in a new column. The descriptive text is input in a new column
-    to the right of the column with codes.
+    the function can return a data frame with the descriptive text in a new column. As default, the descriptive text is input 
+    in a new column to the right of the column with codes.
 
-    The function uses a premade translation table (PJS_codes_2_text.csv) that normally is updated every night from PJS.
-    \code{add_PJS_code_description} uses a premade translation table (PJS_codes_2_text.csv). These data need to be loaded by 
-    \code{read_PJS_code_registers} before running \code{add_PJS_code_description}, see example. "PJS_codes_2_text.csv" is 
+    \code{add_PJS_code_description} uses a premade translation table (PJS_codes_2_text.csv). The data need to be loaded by 
+    \code{read_PJS_code_registers} before running \code{add_PJS_code_description}, see example. The file "PJS_codes_2_text.csv" is 
     normally updated every night from PJS.
 
-
     Currently, the translation table has PJS-codes and the corresponding description for the following PJS variable types:
-\itemize{
-  \item hensikt
-  \item utbrudd
-  \item registertype (categories for locations and addresses)
-  \item seksjon
-  \item art (species and breed codes to species name)
-  \item artrase (species and breed codes to species or breed name)
-  \item driftsform
-  \item provetype
-  \item provemateriale
-  \item kjonn
-  \item forbehandling
-  \item fysiologisk_stadium
-  \item metode
-  \item konkl_type
-  \item kjennelse
-  \item analytt.
+
+\tabular{llll}{
+  \strong{PJS variable type} \tab \strong{code colname} \tab \strong{new column} \tab \strong{remark} \cr
+  seksjon \tab ansvarlig_seksjon \tab ansvarlig_seksjon_navn \tab \cr
+  hensikt \tab hensiktkode \tab hensikt \tab \cr
+  utbrudd \tab utbruddnr \tab utbrudd \tab translates NVI's outbreak number \cr
+  registertype \tab rekvirenttype \tab rekvirenttypen \tab categories of locations and addresses \cr
+  registertype \tab eier_lokalitettype \tab eier_lokalitettypen \tab categories of locations and addresses \cr
+  registertype \tab annen_aktortype \tab annen_aktortypen \tab categories of locations and addresses \cr
+  art \tab artkode \tab art \tab species and breed codes to species name \cr
+  fysiologisk_stadium \tab fysiologisk_stadiumkode \tab fysiologisk_stadium \tab \cr
+  kjonn \tab kjonn \tab kjonn_navn \tab \cr
+  driftsform \tab driftsformkode \tab driftsform \tab \cr
+  oppstalling \tab oppstallingkode \tab oppstalling \tab \cr
+  provetype \tab provetypekode \tab provetype \tab \cr
+  provemateriale \tab provematerialekode \tab provemateriale \tab \cr
+  forbehandling \tab forbehandlingkode \tab forbehandling \tab \cr
+  metode \tab metodekode \tab metode \tab \cr
+  konkl_type \tab konkl_type \tab konkl_type_navn \tab \cr
+  kjennelse \tab konkl_kjennelsekode \tab konkl_kjennelse \tab \cr
+  kjennelse \tab res_kjennelsekode \tab res_kjennelse \tab \cr
+  analytt \tab konkl_analyttkode \tab konkl_analytt \tab \cr
+  analytt \tab res_analyttkode \tab res_analytt \tab \cr
 }
 
+In addition artrase (species and breed codes to species or breed name)
     \code{position =} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
     placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
     code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
