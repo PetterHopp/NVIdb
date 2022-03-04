@@ -34,13 +34,14 @@ read_PJS_codes_2_text(
 \item{translation_table}{Data frame with the code and the description for PJS-variables}
 
 \item{PJS_variable_type}{A vector with PJS-variables, for example "hensikt". See details for a list of all PJS-variables included in
-the premade translation table pjscode_2_descriptions.csv. If more than one code should be translated, they can be given in the vector.}
+the premade translation table pjscode_2_descriptions.csv. If more than one code should be translated, they can be given in the vector. 
+You may also use "auto", if \code{code_colname} have standardized PJS names only, see details.}
 
 \item{code_colname}{The name of the column with codes that should be translated. If several codes should be translated, a vector with the
 names of the coded variables should be given.}
 
 \item{new_column}{The name of the new column with the text describing the code. If several codes should be translated, a vector with the
-new column names should be given.}
+new column names should be given. You may also use "auto", if \code{code_colname} have standardized PJS names only, see details.}
 
 \item{position}{position for the new columns, can be one of c("first", "left", "right", "last", "keep"). If several codes should be translated,
 either one value to be applied for all may be given or a vector with specified position for each code to be translated should be given.}
@@ -80,17 +81,22 @@ Export of data from PJS will produce data frames in which many columns have code
     \code{read_PJS_code_registers} before running \code{add_PJS_code_description}, see example. The file "PJS_codes_2_text.csv" is 
     normally updated every night from PJS.
 
-    Currently, the translation table has PJS-codes and the corresponding description for the following PJS variable types:
+    Currently, the translation table has PJS-codes and the corresponding description for the PJS variable types given
+    in the first column in the table below. The standardized PJS column name is given in the column "code colname" for 
+    which the "PJS variable type" will translate into descriptive text. The standard new column name is given in the
+    column "new column". 
 
 \tabular{llll}{
   \strong{PJS variable type} \tab \strong{code colname} \tab \strong{new column} \tab \strong{remark} \cr
   seksjon \tab ansvarlig_seksjon \tab ansvarlig_seksjon_navn \tab \cr
+  seksjon \tab utf_seksjon" \tab utforende_seksjon_navn \tab \cr
   hensikt \tab hensiktkode \tab hensikt \tab \cr
   utbrudd \tab utbruddnr \tab utbrudd \tab translates NVI's outbreak number \cr
-  registertype \tab rekvirenttype \tab rekvirenttypen \tab categories of locations and addresses \cr
-  registertype \tab eier_lokalitettype \tab eier_lokalitettypen \tab categories of locations and addresses \cr
-  registertype \tab annen_aktortype \tab annen_aktortypen \tab categories of locations and addresses \cr
+  registertype \tab rekvirenttype \tab rekvirenttype_navn \tab categories of locations and addresses \cr
+  registertype \tab eier_lokalitettype \tab eier_lokalitettype_navn \tab categories of locations and addresses \cr
+  registertype \tab annen_aktortype \tab annen_aktortype_navn \tab categories of locations and addresses \cr
   art \tab artkode \tab art \tab species and breed codes to species name \cr
+  artrase \tab artkode \tab art \tab species and breed codes to species or breed name \cr
   fysiologisk_stadium \tab fysiologisk_stadiumkode \tab fysiologisk_stadium \tab \cr
   kjonn \tab kjonn \tab kjonn_navn \tab \cr
   driftsform \tab driftsformkode \tab driftsform \tab \cr
@@ -99,15 +105,19 @@ Export of data from PJS will produce data frames in which many columns have code
   provemateriale \tab provematerialekode \tab provemateriale \tab \cr
   forbehandling \tab forbehandlingkode \tab forbehandling \tab \cr
   metode \tab metodekode \tab metode \tab \cr
-  konkl_type \tab konkl_type \tab konkl_type_navn \tab \cr
+  konkl_type \tab konkl_type_kode \tab konkl_type \tab \cr
   kjennelse \tab konkl_kjennelsekode \tab konkl_kjennelse \tab \cr
   kjennelse \tab res_kjennelsekode \tab res_kjennelse \tab \cr
   analytt \tab konkl_analyttkode \tab konkl_analytt \tab \cr
   analytt \tab res_analyttkode \tab res_analytt \tab \cr
 }
 
-In addition artrase (species and breed codes to species or breed name)
-    \code{position =} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
+    If \code{code_colname = } is a vector of standardized PJS column names and a subset of "code column" in the table above, you may
+    facilitate coding by setting \code{PJS_variable_type = "auto"} and/or \code{new_colname = "auto"}. Then the \code{PJS_variable_type}
+    will be automatically set according to the table above (for "artkode" \code{PJS_variable_type = "art"} will be chosen). Likewise,
+    the \code{new_column} will be automatically set according to the table above.
+    
+    \code{position =} is used to give the position if the new columns in the data.frame. For \code{position = "right"} the new variables are
     placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
     code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
     data.frame. A special case occurs for \code{position = "keep"} which only has meaning when the new column has the same name as an existing
@@ -140,11 +150,18 @@ PJS_codes_2_text <- read_PJS_codes_2_text("PJS_codes_2_text.csv", "./Data/")
 newdata <- add_PJS_code_description(olddata, PJS_codes_2_text, "art", "artkode", "art")
 
 # Translating hensiktkode into Hensikt and konklusjonkode to Konklusjonskjennelse
-newdata <- add_PJS_code_description(olddata,
+newdata2 <- add_PJS_code_description(olddata,
                                     PJS_codes_2_text,
                                     PJS_variable_type = c("hensikt", "kjennelse"),
                                     code_colname = c("hensiktkode", "konklusjonkode"),
-                                    new_column = c("Hensikt", "Konklusjonskjennelse"))
+                                    new_column = c("hensikt", "konklusjonskjennelse"))
+
+# Translating hensiktkode into hensikt and konklusjonkode to konklusjonskjennelse using "auto"
+newdata3 <- add_PJS_code_description(olddata,
+                                    PJS_codes_2_text,
+                                    PJS_variable_type = c("auto"),
+                                    code_colname = c("artkode", "hensiktkode", "konklusjonkode"),
+                                    new_column = c("auto"))
 }
 
 }
