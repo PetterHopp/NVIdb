@@ -137,9 +137,9 @@ standardize_columns <- function(data,
     
     standard <- column_standards %>%
       # Filter to include only information for relevant column names and with property information
-      dplyr::filter(colname_db %in% columnnames$V1) %>%
-      dplyr::filter(!is.na(colname)) %>%
-      dplyr::select(table_db, colname_db, colname) %>%
+      dplyr::filter(.data$colname_db %in% columnnames$V1) %>%
+      dplyr::filter(!is.na(.data$colname)) %>%
+      dplyr::select(.data$table_db, .data$colname_db, .data$colname) %>%
       dplyr::distinct()
     
     # Keep information on relevant table name and combine information for all other tables
@@ -149,11 +149,11 @@ standardize_columns <- function(data,
     if (dim(standard)[1] > 0) {
       standard <- standard %>%
         # Identify column names with only one suggested column width
-        dplyr::add_count(colname_db, name = "n") %>%
+        dplyr::add_count(.data$colname_db, name = "n") %>%
         dplyr::ungroup() %>%
         # Select column width either if only one suggested or for the current table
-        dplyr::filter(n == 1 | table_db == dbsource & n > 1) %>%
-        dplyr::select(colname_db, colname) %>%
+        dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
+        dplyr::select(.data$colname_db, .data$colname) %>%
         dplyr::distinct()
     }
     
@@ -225,9 +225,9 @@ standardize_columns <- function(data,
     # Standard labels in Norwegian is always generated as is used to impute missing labels in other languages
     standard <- column_standards %>%
       # Filter to include only information for relevant column names and with property information
-      dplyr::filter(colname %in% collabels$V1) %>%
-      dplyr::filter(!is.na(label_1_no)) %>%
-      dplyr::select(table_db, colname, label_1_no) %>%
+      dplyr::filter(.data$colname %in% collabels$V1) %>%
+      dplyr::filter(!is.na(.data$label_1_no)) %>%
+      dplyr::select(.data$table_db, .data$colname, .data$label_1_no) %>%
       dplyr::distinct()
     
     # Keep information on relevant table name and combine information for all other tables
@@ -237,20 +237,20 @@ standardize_columns <- function(data,
     if (dim(standard)[1] > 0) {
       standard <- standard %>%
         # Identify column names with only one suggested column width
-        dplyr::add_count(colname, name = "n") %>%
+        dplyr::add_count(.data$colname, name = "n") %>%
         dplyr::ungroup() %>%
         # Select column width either if only one suggested or for the current table
-        dplyr::filter(n == 1 | table_db == dbsource & n > 1) %>%
-        dplyr::select(colname = colname, label = label_1_no) %>%
+        dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
+        dplyr::select(.data$colname, label = .data$label_1_no) %>%
         dplyr::distinct()
     }
     
     ## English column labels ----
     if (language == "en") {
       standard_en <- column_standards %>%
-        dplyr::filter(colname %in% collabels$V1) %>%
-        dplyr::filter(!is.na(label_1_en)) %>%
-        dplyr::select(table_db, colname, label_1_en) %>%
+        dplyr::filter(.data$colname %in% collabels$V1) %>%
+        dplyr::filter(!is.na(.data$label_1_en)) %>%
+        dplyr::select(.data$table_db, .data$colname, .data$label_1_en) %>%
         dplyr::distinct()
       
       # Keep information on relevant table name and combine information for all other tables
@@ -260,18 +260,18 @@ standardize_columns <- function(data,
       if (dim(standard_en)[1] > 0) {
         standard_en <- standard_en %>%
           # Identify column names with only one suggested column width
-          dplyr::add_count(colname, name = "n") %>%
+          dplyr::add_count(.data$colname, name = "n") %>%
           dplyr::ungroup() %>%
-          dplyr::filter(n == 1 | table_db == dbsource & n > 1) %>%
-          dplyr::select(colname, label_1_en) %>%
+          dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
+          dplyr::select(.data$colname, .data$label_1_en) %>%
           dplyr::distinct()
       }
       
       # Impute missing labels with Norwegian labels
       standard <- standard_en %>%
         dplyr::full_join(standard, by = c("colname" = "colname")) %>%
-        dplyr::mutate(label = dplyr::coalesce(label_1_en, label)) %>%
-        dplyr::select(colname, label)
+        dplyr::mutate(label = dplyr::coalesce(.data$label_1_en, .data$label)) %>%
+        dplyr::select(.data$colname, .data$label)
     }
     
     ## Impute Sentence case for those without defined label ----¨
@@ -309,9 +309,9 @@ standardize_columns <- function(data,
     # Standardize colwidths
     standard <- column_standards %>%
       # Filter to include only information for relevant column names and with property information
-      dplyr::filter(colname %in% colwidths$V1) %>%
+      dplyr::filter(.data$colname %in% colwidths$V1) %>%
       dplyr::filter(!is.na(.data$colwidth_Excel)) %>%
-      dplyr::select(table_db = table_db, colname = colname, colwidth = .data$colwidth_Excel)
+      dplyr::select(.data$table_db, .data$colname, colwidth = .data$colwidth_Excel)
     # uses which below as there seem to be a bug so that case_when doesn't work properly within a function
     # dplyr::mutate(table_db = dplyr::case_when(table_db == "dbsource" ~ table_db,
     #                                               TRUE ~ as.character(NA))) %>%
@@ -324,11 +324,11 @@ standardize_columns <- function(data,
     if (dim(standard)[1] > 0) {
       standard <- standard %>%
         # Identify column names with only one suggested column width
-        dplyr::add_count(colname, name = "n") %>%
+        dplyr::add_count(.data$colname, name = "n") %>%
         dplyr::ungroup() %>%
         # Select column width either if only one suggested or for the current table
-        dplyr::filter(n == 1 | table_db == dbsource & n > 1) %>%
-        dplyr::select(colname, colwidth) %>%
+        dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
+        dplyr::select(.data$colname, .data$colwidth) %>%
         dplyr::distinct()
     }
     
@@ -363,19 +363,17 @@ standardize_columns <- function(data,
       # Standard labels in Norwegian is always generated as is used to impute missing labels in other languages
       standard <- column_standards %>%
         # Filter to include only information for relevant column names and with property information
-        dplyr::filter(table_db == dbsource) %>%
-        dplyr::filter(colname %in% columnorder$V1) %>%
-        dplyr::filter(!is.na(colorder)) %>%
-        dplyr::select(colname, colorder) %>%
+        dplyr::filter(.data$table_db == dbsource) %>%
+        dplyr::filter(.data$colname %in% columnorder$V1) %>%
+        dplyr::filter(!is.na(.data$colorder)) %>%
+        dplyr::select(.data$colname, .data$colorder) %>%
         dplyr::distinct() %>%
         # removes colorders with more than suggested position
-        dplyr::add_count(colname, name = "n") %>%
-        dplyr::filter(n == 1) %>%
-        dplyr::select(colname, colorder)
-      # Sort according to first column, replaced by order
-      # dplyr::arrange(colorder)
-      
-      standard <- standard[order(standard$colorder),]
+        dplyr::add_count(.data$colname, name = "n") %>%
+        dplyr::filter(.data$n == 1) %>%
+        dplyr::select(.data$colname, .data$colorder) %>%
+        # Sort according to first column
+        dplyr::arrange(.data$colorder)
       
       # Order in accord with standard.
       # Keep non-ordered columns in last columns if exclude = FALSE
