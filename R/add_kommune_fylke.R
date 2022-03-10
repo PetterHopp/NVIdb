@@ -57,6 +57,7 @@
 #'     fylkenr to fylke to given directory. If the target file already exists, the source file is copied only when it is newer than the target file.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
+#' @importFrom rlang .data
 #' @export
 #' @examples
 #' \dontrun{
@@ -85,12 +86,12 @@ add_kommune_fylke <- function(data,
                               new_column = c("gjeldende_komnr", "gjeldende_kommune", "gjeldende_fylkenr", "gjeldende_fylke"),
                               position = "right",
                               overwrite = FALSE) {
-
+  
   # Ensure that code_column and new_column are named vectors by using the internal function set_name_vector()
   # Thereby, the following code can assume these to be named vectors
   code_column <- set_name_vector(code_column)
   new_column <- set_name_vector(new_column)
-
+  
   # ARGUMENT CHECKING ----
   assert_add_function(data = data,
                       translation_table = translation_table,
@@ -114,32 +115,32 @@ add_kommune_fylke <- function(data,
   #              "Specify overwrite = TRUE to replace values in the existing column(s) with new content.", sep = "\n"))
   # }
   # 
-
+  
   # PREPARE TRANSLATION TABLE ----
   # Makes the translation table with code_column and new_column. unique() is necessary to avoid duplicate
   # rows when code_column is not "komnr"
   code_2_new <- unique(translation_table[, c(unname(code_column), unname(new_column))])
-
+  
   if (code_column == "fylkenr") {
     code_2_new <- merge(code_2_new, translation_table[, c("fylkenr", new_column, "komnr")], by = c("fylkenr", new_column))
     code_2_new <- stats::aggregate(stats::as.formula(paste("komnr", "~", paste(c(code_column, new_column), collapse = " + "))), data = code_2_new, FUN = length)
-
+    
     # For fylkenr, select the fylke where most kommuner is within the fylke. This to avoid fylkenr to be translated to fylker
     # where one or a few kommuner has been relocated.
     code_2_new <- code_2_new %>%
-      dplyr::rename(antall = komnr) %>%
+      dplyr::rename(antall = .data$komnr) %>%
       dplyr::distinct() %>%
-      dplyr::group_by(fylkenr) %>%
-      dplyr::mutate(maxantall = max(antall)) %>%
+      dplyr::group_by(.data$fylkenr) %>%
+      dplyr::mutate(maxantall = max(.data$antall)) %>%
       dplyr::ungroup() %>%
-      dplyr::filter(maxantall == antall) %>%
-      dplyr::select(-antall, -maxantall)
+      dplyr::filter(.data$maxantall == .data$antall) %>%
+      dplyr::select(-.data$antall, -.data$maxantall)
     
     # Removes tibble in case it makes trouble later
     code_2_new <- as.data.frame(code_2_new)
-
+    
   }
-
+  
   # ADD NEW COLUMN(S) ----
   # Set up of parameters for the internal function add_new_column(). names() is used to select the column names
   # in the input data and unname() is used to select the column names in the translation table. n_columns_at_once
@@ -154,7 +155,7 @@ add_kommune_fylke <- function(data,
                          overwrite = overwrite,
                          n_columns_at_once = length(new_column)
   )
-
-
+  
+  
   return(data)
 }
