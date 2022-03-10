@@ -20,7 +20,7 @@
 #' \tabular{llll}{
 #'   \strong{PJS variable type} \tab \strong{code colname} \tab \strong{new column} \tab \strong{remark} \cr
 #'   seksjon \tab ansvarlig_seksjon \tab ansvarlig_seksjon_navn \tab \cr
-#'   seksjon \tab utf_seksjon" \tab utforende_seksjon_navn \tab \cr
+#'   seksjon \tab utf_seksjon \tab utforende_seksjon_navn \tab \cr
 #'   hensikt \tab hensiktkode \tab hensikt \tab \cr
 #'   utbrudd \tab utbruddnr \tab utbrudd \tab translates NVI's outbreak number \cr
 #'   registertype \tab rekvirenttype \tab rekvirenttype_navn \tab categories of locations and addresses \cr
@@ -36,7 +36,7 @@
 #'   provemateriale \tab provematerialekode \tab provemateriale \tab \cr
 #'   forbehandling \tab forbehandlingkode \tab forbehandling \tab \cr
 #'   metode \tab metodekode \tab metode \tab \cr
-#'   konkl_type \tab konkl_type_kode \tab konkl_type \tab \cr
+#'   konkl_type \tab konkl_typekode \tab konkl_type \tab \cr
 #'   kjennelse \tab konkl_kjennelsekode \tab konkl_kjennelse \tab \cr
 #'   kjennelse \tab res_kjennelsekode \tab res_kjennelse \tab \cr
 #'   analytt \tab konkl_analyttkode \tab konkl_analytt \tab \cr
@@ -149,7 +149,7 @@ add_PJS_code_description <- function(data,
                                           c("provetypekode", "provetype", "provetype"),
                                           c("provematerialekode", "provemateriale", "provemateriale"),
                                           c("forbehandlingkode", "forbehandling", "forbehandling"),
-                                          c("konkl_type_kode", "konkl_type", "konkl_type"),
+                                          c("konkl_typekode", "konkl_type", "konkl_type"),
                                           c("konkl_kjennelsekode", "kjennelse", "konkl_kjennelse"),
                                           c("konkl_analyttkode", "analytt", "konkl_analytt"),
                                           c("metodekode", "metode", "metode"),
