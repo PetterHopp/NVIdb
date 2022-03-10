@@ -24,7 +24,7 @@ test_that("Standardize colnames from PJS", {
                       "uttatt_parprove", "mottatt_parprove", "id_nr", "id_nr_type",
                       "undnr", "metodekode", "und_godkjent", "und_avsluttet",
                       "resnr", "res_analyttkode", "res_kjennelsekode",
-                      "konklnr", "konkl_provenr", "konkl_kjennelsekode", "konkl_analyttkode", "konkl_type",
+                      "konklnr", "konkl_provenr", "konkl_kjennelsekode", "konkl_analyttkode", "konkl_typekode",
                       "eier_lokalitet", "postnr")
 
   # Compare Add fylke, current fylkenr and current fylke with correct result
