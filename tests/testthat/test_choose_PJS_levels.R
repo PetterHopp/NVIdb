@@ -30,7 +30,7 @@ test_that("Choose variables from PJS levels", {
                       "skrottnr", "dyrnr", "provemerknad", "id_nr", "id_nr_type",
                       "stamme", "resirkuleringsanlegg", "salinitet", "temperatur", "dybde",
                       "sjosatt_tid", "vaksine", "vaksine_tid", "fortype", "lengde",
-                      "helsestatuskode", "konklnr", "konkl_kjennelsekode", "konkl_analyttkode", "konkl_type",
+                      "helsestatuskode", "konklnr", "konkl_kjennelsekode", "konkl_analyttkode", "konkl_typekode",
                       "eier_lokalitet", "postnr")
   sak_konkl <- choose_PJS_levels(PJStest, levels = c("sak" , "prove" , "konklusjon"))
 
@@ -75,7 +75,7 @@ test_that("Choose variables from PJS levels", {
   konklusjon <- choose_PJS_levels(PJStest, levels = c("konklusjon"))
   expect_identical(colnames(konklusjon),
                    c("aar", "ansvarlig_seksjon", "innsendelsenr", "provenr", "konklnr",
-                     "konkl_kjennelsekode", "konkl_analyttkode", "konkl_type") )
+                     "konkl_kjennelsekode", "konkl_analyttkode", "konkl_typekode") )
 
 
   delprove <- choose_PJS_levels(PJStest, levels = c("delprove"))
