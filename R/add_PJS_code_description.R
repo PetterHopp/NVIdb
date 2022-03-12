@@ -134,32 +134,32 @@ add_PJS_code_description <- function(data,
   
   # Generate translation table from PJS-variable name (code_colname) to 
   # PJS-type and standard variable name for description text (new_column)
-  PJS_types <- as.data.frame(matrix(rbind(c("ansvarlig_seksjon", "seksjon", "ansvarlig_seksjon_navn"),
-                                          c("utf_seksjon", "seksjon", "utforende_seksjon_navn"),
-                                          c("hensiktkode", "hensikt", "hensikt"),
-                                          c("utbruddnr", "utbrudd", "utbrudd"),
-                                          c("rekvirenttype", "registertype", "rekvirenttype_navn"),
-                                          c("eier_lokalitettype", "registertype", "eier_lokalitettype_navn"),
-                                          c("annen_aktortype", "registertype", "annen_aktortype_navn"),
-                                          c("artkode", "art", "art"),
-                                          c("fysiologisk_stadiumkode", "fysiologisk_stadium", "fysiologisk_stadium"),
-                                          c("kjonn", "kjonn", "kjonn_navn"),
-                                          c("driftsformkode", "driftsform", "driftsform"),
-                                          c("oppstallingkode", "oppstalling", "oppstalling"),
-                                          c("provetypekode", "provetype", "provetype"),
-                                          c("provematerialekode", "provemateriale", "provemateriale"),
-                                          c("forbehandlingkode", "forbehandling", "forbehandling"),
-                                          c("konkl_typekode", "konkl_type", "konkl_type"),
-                                          c("konkl_kjennelsekode", "kjennelse", "konkl_kjennelse"),
-                                          c("konkl_analyttkode", "analytt", "konkl_analytt"),
-                                          c("metodekode", "metode", "metode"),
-                                          c("res_kjennelsekode", "kjennelse", "res_kjennelse"),
-                                          c("res_analyttkode", "analytt", "res_analytt")),   
-                                    ncol = 3,
-                                    dimnames = list(NULL, c("code_colname", "type", "new_column"))))
+  # PJS_types <- as.data.frame(matrix(rbind(c("ansvarlig_seksjon", "seksjon", "ansvarlig_seksjon_navn"),
+  #                                         c("utf_seksjon", "seksjon", "utforende_seksjon_navn"),
+  #                                         c("hensiktkode", "hensikt", "hensikt"),
+  #                                         c("utbruddnr", "utbrudd", "utbrudd"),
+  #                                         c("rekvirenttype", "registertype", "rekvirenttype_navn"),
+  #                                         c("eier_lokalitettype", "registertype", "eier_lokalitettype_navn"),
+  #                                         c("annen_aktortype", "registertype", "annen_aktortype_navn"),
+  #                                         c("artkode", "art", "art"),
+  #                                         c("fysiologisk_stadiumkode", "fysiologisk_stadium", "fysiologisk_stadium"),
+  #                                         c("kjonn", "kjonn", "kjonn_navn"),
+  #                                         c("driftsformkode", "driftsform", "driftsform"),
+  #                                         c("oppstallingkode", "oppstalling", "oppstalling"),
+  #                                         c("provetypekode", "provetype", "provetype"),
+  #                                         c("provematerialekode", "provemateriale", "provemateriale"),
+  #                                         c("forbehandlingkode", "forbehandling", "forbehandling"),
+  #                                         c("konkl_typekode", "konkl_type", "konkl_type"),
+  #                                         c("konkl_kjennelsekode", "kjennelse", "konkl_kjennelse"),
+  #                                         c("konkl_analyttkode", "analytt", "konkl_analytt"),
+  #                                         c("metodekode", "metode", "metode"),
+  #                                         c("res_kjennelsekode", "kjennelse", "res_kjennelse"),
+  #                                         c("res_analyttkode", "analytt", "res_analytt")),   
+  #                                   ncol = 3,
+  #                                   dimnames = list(NULL, c("code_colname", "type", "new_column"))))
   if (PJS_variable_type[1] == "auto" | new_column[1] == "auto") {
     PJS_types_selected <- as.data.frame(code_colname) %>%
-      dplyr::left_join(PJS_types, by = "code_colname") 
+      dplyr::left_join(PJS_code_description_colname, by = "code_colname") 
     PJS_types_selected <- subset(PJS_types_selected, !is.na(PJS_types_selected$type))
   }
   # ARGUMENT CHECKING ----
@@ -185,7 +185,7 @@ add_PJS_code_description <- function(data,
   # auto and PJS_variable_type/new_column
   if (PJS_variable_type[1] == "auto" | new_column[1] == "auto") {
     NVIcheckmate::assert_subset_character(code_colname,
-                                          choices = unique(PJS_types$code_colname),
+                                          choices = unique(PJS_code_description_colname$code_colname),
                                           comment = paste("when 'PJS_variable_type' or 'new_column' equals 'auto'",
                                                           "the code_colnames must be standardized PJS column names.",
                                                           "You can use NVIdb::standardize_PJSdata to standardize."),
