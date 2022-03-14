@@ -71,8 +71,9 @@ Data sources may provide data with postnr. These functions manage translating po
     parameter \code{code_column =} can be input as a named vector. Standard names for the new columns are c("poststed", "komnr"). Likewise, if the
     new columns should be given other names than these, the parameter \code{new_column =} can be input as a named vector, see examples.
 
-    The function uses a premade translation tables that is generated from information in PJS adresseregister. The translation table
-    is updated when we know there is a need.
+    \code{add_poststed} uses a premade translation table (Poststed_UTF8.csv). These data need to be loaded by \code{read_poststed}
+    before running \code{add_poststed}, see example. "Poststed_UTF8.csv" is made based on information in PJS adresseregister.
+    The translation table is updated when we know there is a need.
 
     \code{position =} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
     placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
@@ -100,6 +101,8 @@ poststed <- read_poststed(from_path = "./Data/")
 # Add new column with poststed and komnr
 # The variable postnummer should be translated into poststed and komnr. For poststed
 # the standard name is kept. For komnr the new variable is named postkomnr.
+# Remember to load "poststed" by "read_poststed()" before running "add_poststed", 
+# see above.
 newdata <- add_poststed(olddata,
                         translation_table = poststed,
                         code_column = c("postnummer" = "postnr"),

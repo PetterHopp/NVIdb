@@ -10,7 +10,8 @@ standardize_columns(
   standards = NULL,
   property,
   language = "no",
-  exclude = FALSE
+  exclude = FALSE,
+  ...
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ standardize_columns(
 \item{language}{Language for labels. Valid input are c("no", "en")}
 
 \item{exclude}{Used in combination with \code{property = "colorder"}. \code{exclude = TRUE} excludes all columns with no predefinedcolorder.}
+
+\item{\dots}{Other arguments to be passed read.csv2 when \code{property = "colclasses"}.}
 }
 \value{
 \code{property = "colnames"}. A data frame with standard column names.
@@ -54,7 +57,9 @@ Experimental, the standardization table is under development. This version only 
 
     \code{property = "colclasses"} will generate a named vector with the column classes for variables that may not be read correct when importing
     data from a csv-file. This applies for example to numbers with leading zero that must be imported as character. This vector can be used as a
-    parameter for \code{colClasses = }.
+    parameter for \code{colClasses = }. 
+    
+    The default fileEncoding is assumed to be "UTF-8". If another encoding one must give an additional argument like \code{fileEncoding = "latin"}.
 
     \code{property = "collabels"} will generate a vector with column labels that can be used to replace the column names in the header of the data
     table. The column names are not changed automatiacally but can be changed by using a colname statement (see help). If no standard column label

@@ -7,7 +7,8 @@
 #'     \code{code_column =} can be input as a named vector. Likewise, if the new columns should be given other names than
 #'     c("MT_avdelingnr","MT_avdeling","MT_regionnr","MT_region"), the \code{new_column =} can be input as a named vector, see examples.
 #'
-#'     The function uses a premade translation table (komnr_2_MT_avdeling.csv) that is made based on information in PJS adresseregister.
+#'     \code{add_MT_omrader} uses a premade translation table (komnr_2_MT_avdeling.csv). These data need to be loaded by \code{read_MT_omrader}
+#'     before running \code{add_MT_omrader}, see example. "komnr_2_MT_avdeling.csv" is made based on information in PJS adresseregister.
 #'     The translation table is updated when we know there is a need.
 #'
 #'     \code{position =} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
@@ -62,6 +63,8 @@
 #' komnr_2_MT_omrader <- read_MT_omrader(from_path = "./Data/")
 #'
 #' # Add new columns with MT_avdelingnr, MT_avdeling, MT_regionnr, and MT_region based on komnr
+#' # Remember to load "komnr_2_MT_omrader" by "read_MT_omrader()" before running "add_MT_omrader", 
+#' # see above.
 #' newdata <- add_MT_omrader(olddata,
 #'                        translation_table = list(komnr_2_MT_omrader),
 #'                        code_column = "komnr",
@@ -69,12 +72,16 @@
 #'
 #' # Add new columns with MT_avdelingnr and MT_avdeling based on komnr. The colname of the column
 #' # with komnr is komnr and the new columns are renamed to MT_avdnr and MT_avd.
+#' # Remember to load "komnr_2_MT_omrader" by "read_MT_omrader()" before running "add_MT_omrader", 
+#' # see above.
 #' newdata <- add_MT_omrader(olddata,
 #'                        translation_table = list(komnr_2_MT_omrader),
 #'                        code_column = c("komnr" = "komnr"),
 #'                        new_column = c("MT_avdnr" = "MT_avdelingnr", "MT_avd" = "MT_avdeling"))
 #'
 #' # Add new columns with MT_region based on MT_regionnr. MT_region is renamed to MT_regionnavn
+#' # Remember to load "komnr_2_MT_omrader" by "read_MT_omrader()" before running "add_MT_omrader", 
+#' # see above.
 #' newdata <- add_MT_omrader(olddata,
 #'                        translation_table = list(komnr_2_MT_omrader),
 #'                        code_column = "MT_region",

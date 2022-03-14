@@ -1,0 +1,106 @@
+--- 
+title: "README"
+output: 
+  md_document:
+  variant: markdown_github
+  
+params:
+  NVIpkg: "NVIdb"
+  first_copyright_year: "2019"
+---
+
+```{r, include = FALSE}
+NVIpkg <- params$NVIpkg
+# NVIpkg <- stringi::stri_extract_last_words(usethis::proj_path())
+NVIpkg_inline <- paste0("`", NVIpkg, "`")
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+`r paste0(NVIpkg, ": ", desc::desc_get_field(key = "Title"))`
+================
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+  - [Overview](#overview)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Copyright and license](#copyright-and-license)
+  - [Contributing](#contributing)
+
+## Overview
+```{r, include = FALSE}
+description <- desc::desc_get_field(key = "Description")
+```
+`r paste0(NVIpkg_inline, 
+   "", 
+   sub(substr(description,1,1), tolower(substr(description,1,1)), description))`
+
+```{r child=system.file('templates', "README_NVIverse.Rmd", package = "NVIpackager")}
+```
+
+## Installation
+```{r child=system.file('templates', "README_installation.Rmd", package = "NVIpackager")}
+```
+In addition, you will also need to install the private package `NVIconfig` that keep 
+specific information on NVI's paths and databases. `NVIconfig` is expected to be relatively 
+stable and you will not need to update `NVIconfig` every time `NVIdb` is updated.
+
+To install (or update) the `NVIconfig` package, run the following code:
+
+``` {r text2, message=FALSE, warnings=FALSE, echo=FALSE, prompt = FALSE, comment = ""} 
+text2 <- paste(paste0('remotes::install_github("NorwegianVeterinaryInstitute/NVIconfig")'), 
+	'    auth_token = "PAT"',
+	'    upgrade = FALSE,', 
+	'    build = TRUE,',
+	'    build_manual = TRUE)', sep = '\n')
+cat(text2, sep="", fill = TRUE)
+```
+
+where PAT is your personal access token.
+
+## Usage
+```{r child=system.file('templates', "README_usage_attach.Rmd", package = "NVIpackager")}
+```
+
+`NVIdb` provides tools to facilitate downloading and processing of data from the Norwegian Veterinary Institute’s databases, in particular PJS and EOS.
+The package comprises several categories of functions: 
+
+1. Manage credentials (i.e. password and username), 
+2. Login functions for database services, 
+3. Select PJS-data, 
+4. Initial cleaning of PJS-data, 
+5. Read, copy and update various in-house data registers, 
+6. Translate codes into descriptions. 
+
+By combining the functions for managing username and password and the login functions, you are able to login to PJS and EOS (and potentially other databases) without hard coding the password in the script. Thereafter, you may extract data from PJS and EOS using the R-package `RODBC`.
+
+The read copy and update functions for data from NVI's internal databases gives you access to these data without any need of knowing where the data are stored. Currently you get access to registers of administrative regions (Kommune, Fylke, Postnummer, Mattilsynets avdelinger og regioner), produsentinformasjon (Produksjonstilskuddsregister and new and old prodnr) and translation tables for PJS-codes into descriptive text.
+
+There are also functions to use these registers to translate variables with codes into names and others. You can translate
+
+- PJS-codes into descriptive text, 
+- kommunenr into kommune, fylke, as well as current kommunenr, kommune, fylkenr and fylke
+- kommunenr into Mattilsynets avdeling and region
+- postnr into poststed and poststedets kommunenr
+- old produsentnr into current produsentnr
+
+```{r child=system.file('templates', "README_usage_help.Rmd", package = "NVIpackager")}
+```
+
+## Copyright and license
+```{r child=system.file('templates', "README_copyright_and_license.Rmd", package = "NVIpackager")}
+```
+
+## Contributing
+```{r child=system.file('templates', "README_contributing.Rmd", package = "NVIpackager")}
+```
+
+<!-- Code of conduct -->
+-----
+```{r child=system.file('templates', "README_code_of_conduct.Rmd", package = "NVIpackager")}
+```
+

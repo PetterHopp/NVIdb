@@ -1,6 +1,5 @@
 library(NVIdb)
 library(testthat)
-context("choose_PJS_levels")
 
 test_that("Choose variables from PJS levels", {
   # skip if no connection to 'FAG' have been established
@@ -30,8 +29,8 @@ test_that("Choose variables from PJS levels", {
                       "skrottnr", "dyrnr", "provemerknad", "id_nr", "id_nr_type",
                       "stamme", "resirkuleringsanlegg", "salinitet", "temperatur", "dybde",
                       "sjosatt_tid", "vaksine", "vaksine_tid", "fortype", "lengde",
-                      "helsestatuskode", "konklnr", "konkl_kjennelsekode", "konkl_analyttkode", "konkl_type",
-                      "navn", "postnr")
+                      "helsestatuskode", "konklnr", "konkl_kjennelsekode", "konkl_analyttkode", "konkl_typekode",
+                      "eier_lokalitet", "postnr")
   sak_konkl <- choose_PJS_levels(PJStest, levels = c("sak" , "prove" , "konklusjon"))
 
   expect_identical(colnames(sak_konkl), correct_result)
@@ -57,7 +56,7 @@ test_that("Choose variables from PJS levels", {
                      "annen_aktortype", "annen_aktornr", "merknad", "fagkode", "fagnr",
                      "fagansvarlig_person", "karantene", "kartreferanse", "eierreferanse", "innsenderreferanse",
                      "okt_dodelighet", "epi_id", "utbrudd_id", "utbrudd_aar", "utbruddnr",
-                     "navn", "postnr") )
+                     "eier_lokalitet", "postnr") )
 
   prove <- choose_PJS_levels(PJStest, levels = c("prove"))
 
@@ -75,7 +74,7 @@ test_that("Choose variables from PJS levels", {
   konklusjon <- choose_PJS_levels(PJStest, levels = c("konklusjon"))
   expect_identical(colnames(konklusjon),
                    c("aar", "ansvarlig_seksjon", "innsendelsenr", "provenr", "konklnr",
-                     "konkl_kjennelsekode", "konkl_analyttkode", "konkl_type") )
+                     "konkl_kjennelsekode", "konkl_analyttkode", "konkl_typekode") )
 
 
   delprove <- choose_PJS_levels(PJStest, levels = c("delprove"))

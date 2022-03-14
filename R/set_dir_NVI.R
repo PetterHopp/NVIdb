@@ -17,17 +17,17 @@
 #' }
 #'
 set_dir_NVI <- function(datasource) {
-
+  
   # # ARGUMENT CHECKING
   # # Object to store check-results
   # checks <- checkmate::makeAssertCollection()
-  #
+  # 
   # # Perform checks
-  # NVIcheckmate::assert_choice_anycase(x = datasource, choices = names(NVIconfig :::path_NVI), add = checks)
-  #
+  # NVIcheckmate::assert_choice_character(x = datasource, choices = names(NVIconfig:::path_NVI), ignore.case = TRUE, add = checks)
+  # 
   # # Report check-results
   # checkmate::reportAssertions(checks)
-
+  
   # ERROR checking
   # Check function input
   datasource <- trimws(tolower(datasource))
@@ -35,9 +35,9 @@ set_dir_NVI <- function(datasource) {
     stop(paste0(datasource, " is not a valid input for datasource.","\n",
                "Valid inputs are (case insensitive): ", paste(names (NVIconfig:::path_NVI), collapse = ", "),"."))
   }
-
+  
   # The paths are defined in the package NVIconfig
   pathname <- unname(NVIconfig:::path_NVI[which(tolower(names(NVIconfig:::path_NVI)) == datasource)])
-
+  
   return(pathname)
 }

@@ -1,3 +1,31 @@
+NVIdb 0.7.0 - (2022-03-14)
+--------------------------
+
+New features:
+
+- add_PJS_codes_2_text now accepts PJS_variable_type = "auto" and new_column = "auto" if the input to code_colname is a vector of standardized column names for PJS-columns.
+
+
+Bug fixes:
+
+- read_leveransereg now correctly reads numeric values with comma as decimal separator.
+
+- standardize_columns don't get an error when the property = colclasses and the filename has a space.
+
+- standardize_PJS creates fagnr without a hyphen between fagkode and number.
+
+
+Other changes:
+
+- Help for standardize_PJSdata is improved and styled.
+
+- Improved argument checking of add_PJS_code_description.
+
+- Improved help for add_poststed, add_MT_omrader, and add_PJS_code_description.
+
+- README and the vignette "Contribute_to_NVIdb" are updated.
+
+
 NVIdb 0.6.0 - (2021-09-26)
 --------------------------
 

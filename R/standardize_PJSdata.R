@@ -1,17 +1,22 @@
 #' @title Standardizing PJS-data
-#' @description Standardizing PJS-data that always should be performed.
+#' @description Standardizing PJS-data. This standardizing should always be performed. 
+#'     Other functions used for further preparation of PJSdata, like \code{chose_PJS_levels},
+#'      and \code{exclude_form_PJSdata} will not work as intended unless the column 
+#'     names are standardized.
 #'
 #' @details The function performs the following standardizing of data extracted from PJS:
-#'     - The unnecessary columns konkl_provenr and vet_distriktnr are removed,
-#'     - The column names are standardized using standardize_columns,
-#'     - Numeric variables are transformed to numbers,
-#'     - Date variables are transformed to date format,
-#'     - Character variables are trimmed for leading and trailing spaces,
-#'     - The variables saksnr and, if possible, fagnr are generated,
-#'     - Test data, i.e. saker with ansvarlig_seksjon in c("14", "99") or are deleted.
+#' \itemize{
+#'   \item The unnecessary columns konkl_provenr and vet_distriktnr are removed
+#'   \item The column names are standardized using \code{standardize_columns}
+#'   \item Numeric variables are transformed to numbers
+#'   \item Date variables are transformed to date format
+#'   \item Character variables are trimmed for leading and trailing spaces
+#'   \item The variables saksnr and, if possible, fagnr are generated
+#'   \item Test data, i.e. saker with ansvarlig_seksjon in c("14", "99") are deleted
+#'   }
 #'
 #' @param PJSdata Data frame with data extracted from PJS.
-#' @param dbsource If specified, this will be used for standardize columns when selecting standard column names
+#' @param dbsource If specified, this will be used for fetching standard column names by \code{standardize_columns}.
 #'
 #' @return data frame with standardized PJS-data.
 #'
@@ -69,7 +74,7 @@ standardize_PJSdata <- function(PJSdata, dbsource = "v2_sak_m_res") {
   # Generate saksnr and fagnr
   PJSdata$saksnr <- paste(PJSdata$aar, PJSdata$ansvarlig_seksjon, PJSdata$innsendelsenr, sep = "-")
   if ("fagkode" %in% cols_2_modify & "fagnr" %in% cols_2_modify) {
-    PJSdata$fagnr <- paste(PJSdata$aar, PJSdata$ansvarlig_seksjon, PJSdata$fagkode, PJSdata$fagnr, sep = "-")
+    PJSdata$fagnr <- paste(PJSdata$aar, PJSdata$ansvarlig_seksjon, paste0(PJSdata$fagkode, PJSdata$fagnr), sep = "-")
   }
 
   # Delete test data, i.e. saker with ansvarlig_seksjon in c("14", "99")

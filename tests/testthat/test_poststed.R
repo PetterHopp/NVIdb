@@ -97,3 +97,41 @@ test_that("Correct result when using overwrite and keep", {
 
 })
 
+test_that("errors for add_poststed", {
+  
+  # skip if no connection to 'FAG' have been established
+  skip_if_not(dir.exists(set_dir_NVI("FAG")))
+  
+  # Load translation table for poststed
+  poststed <- read_poststed()
+  
+  expect_error(add_poststed(data = "no_data", translation_table = "poststed") ,
+               regexp = "Variable 'data': Must be of type 'data.frame', not 'character'.")
+  
+  
+  expect_error(add_poststed(data = "no_data", translation_table = "poststed", position = "before") ,
+               regexp = "Variable 'position': Must be element")
+  
+  expect_error(add_poststed(data = "no_data", translation_table = "poststed", overwrite = 1) ,
+               regexp = "Variable 'overwrite': Must be of type 'logical', not 'double'.")
+  
+})
+
+test_that("errors for copy_poststed", {
+  
+  # # skip if no connection to 'FAG' have been established
+  # skip_if_not(dir.exists(set_dir_NVI("FAG")))
+  # 
+  # # Load translation table for poststed
+  # poststed <- read_poststed()
+  # 
+  expect_error(copy_poststed(filename = NULL, from_path = tempdir(), to_path = "./") ,
+               regexp = "Variable 'filename': Must be of type 'character', not 'NULL'.")
+  
+  expect_error(copy_poststed(filename = "filename.csv", from_path = tempdir(), to_path = "./") ,
+               regexp = "File does not exist:")
+  
+  expect_error(copy_poststed(filename = "filename.csv", from_path = tempdir(), to_path = "filepath_dont_exist") ,
+               regexp = "Variable 'to_path': Directory 'filepath_dont_exist' does not exists.")
+  
+})

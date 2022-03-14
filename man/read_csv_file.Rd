@@ -4,12 +4,14 @@
 \alias{read_csv_file}
 \title{Read csv-file}
 \usage{
-read_csv_file(filename, from_path, options = NULL)
+read_csv_file(filename, from_path, options = NULL, ...)
 }
 \arguments{
 \item{filename}{Filename of the file that should be read}
 
 \item{from_path}{Path for the source file}
+
+\item{\dots}{Other arguments to be passed to \code{data.table::fread}.}
 
 \item{columnclasses}{Predefine format (numeric or character) of the variables}
 
