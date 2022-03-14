@@ -159,7 +159,7 @@ add_PJS_code_description <- function(data,
   #                                   dimnames = list(NULL, c("code_colname", "type", "new_column"))))
   if (PJS_variable_type[1] == "auto" | new_column[1] == "auto") {
     PJS_types_selected <- as.data.frame(code_colname) %>%
-      dplyr::left_join(PJS_code_description_colname, by = "code_colname") 
+      dplyr::left_join(NVIdb::PJS_code_description_colname, by = "code_colname") 
     PJS_types_selected <- subset(PJS_types_selected, !is.na(PJS_types_selected$type))
   }
   # ARGUMENT CHECKING ----
@@ -185,7 +185,7 @@ add_PJS_code_description <- function(data,
   # auto and PJS_variable_type/new_column
   if (PJS_variable_type[1] == "auto" | new_column[1] == "auto") {
     NVIcheckmate::assert_subset_character(code_colname,
-                                          choices = unique(PJS_code_description_colname$code_colname),
+                                          choices = unique(NVIdb::PJS_code_description_colname$code_colname),
                                           comment = paste("when 'PJS_variable_type' or 'new_column' equals 'auto'",
                                                           "the code_colnames must be standardized PJS column names.",
                                                           "You can use NVIdb::standardize_PJSdata to standardize."),
