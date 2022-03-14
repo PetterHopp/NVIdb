@@ -1,6 +1,5 @@
 library(NVIdb)
 library(testthat)
-context("choose_PJS_levels")
 
 test_that("Choose variables from PJS levels", {
   # skip if no connection to 'FAG' have been established
