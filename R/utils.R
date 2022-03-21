@@ -30,14 +30,16 @@
 copy_file_if_updated <- function(filename, from_path, to_path) {
 
   # Check if from_path and to_path ends in "/". If not, "/" is added.
-  if (!endsWith(from_path, "/")) { from_path <- paste0(from_path, "/") }
-  if (!endsWith(to_path, "/")) { to_path <- paste0(to_path, "/") }
+  from_path <- sub("/+$|\\\\+$", "", from_path)
+  to_path <- sub("/+$|\\\\+$", "", to_path)
+  # if (!endsWith(from_path, "/")) { from_path <- paste0(from_path, "/") }
+  # if (!endsWith(to_path, "/")) { to_path <- paste0(to_path, "/") }
 
   # Get creation date of source file
   if (dir.exists(from_path)) {
     files <- list.files(from_path, pattern = filename, ignore.case = TRUE)
     if (grep(filename, files)) {
-      source_file_created <- file.mtime(paste0(from_path, filename))
+      source_file_created <- file.mtime(file.path(from_path, filename))
     }
   }
 
@@ -49,14 +51,14 @@ copy_file_if_updated <- function(filename, from_path, to_path) {
       target_file_created <- 0
     } else {
       if (grep(filename, files)) {
-        target_file_created <- file.mtime(paste0(to_path, filename))
+        target_file_created <- file.mtime(file.path(to_path, filename))
       }
     }
   }
 
   # Copies the source file if source file is newer
   if (source_file_created > target_file_created) {
-    file.copy(from = paste0(from_path, filename),
+    file.copy(from = file.path(from_path, filename),
               to = to_path,
               overwrite = TRUE,
               copy.date = TRUE)
