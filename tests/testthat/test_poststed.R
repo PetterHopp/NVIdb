@@ -1,18 +1,27 @@
 library(NVIdb)
 library(testthat)
-context("poststed")
 
 # Assigns temporary dir to td
 td <- tempdir()
 
+if (!dir.exists(file.path (td, "test"))) {
+  dir.create(file.path (td, "test")) 
+} 
+filenames <- "Poststed_UTF8.csv"
+if (file.exists(file.path (td, "test", filenames[1]))) {
+  file.remove(file.path (td, "test", filenames[1])) 
+} 
+
 test_that("Copy poststed", {
   # skip if no connection to 'FAG' have been established
   skip_if_not(dir.exists(set_dir_NVI("FAG")))
-
-  # copy_kommune_fylke
+  
+  # copy file
   copy_poststed(to_path = td)
-
-  expect_true(file.exists(file.path(td, "Poststed_UTF8.csv")))
+  expect_true(file.exists(file.path(td, filenames[1])))
+  
+  copy_poststed(from_path = td, to_path =  file.path (td, "test"))
+  expect_true(file.exists(file.path(td, "test", filenames[1])))
 
 })
 
@@ -102,6 +111,9 @@ test_that("errors for add_poststed", {
   # skip if no connection to 'FAG' have been established
   skip_if_not(dir.exists(set_dir_NVI("FAG")))
   
+  linewidth <- options("width")
+  options(width = 80)
+  
   # Load translation table for poststed
   poststed <- read_poststed()
   
@@ -115,9 +127,13 @@ test_that("errors for add_poststed", {
   expect_error(add_poststed(data = "no_data", translation_table = "poststed", overwrite = 1) ,
                regexp = "Variable 'overwrite': Must be of type 'logical', not 'double'.")
   
+  options(width = unlist(linewidth))
 })
 
 test_that("errors for copy_poststed", {
+  
+  linewidth <- options("width")
+  options(width = 80)
   
   # # skip if no connection to 'FAG' have been established
   # skip_if_not(dir.exists(set_dir_NVI("FAG")))
@@ -131,7 +147,9 @@ test_that("errors for copy_poststed", {
   expect_error(copy_poststed(filename = "filename.csv", from_path = tempdir(), to_path = "./") ,
                regexp = "File does not exist:")
   
-  expect_error(copy_poststed(filename = "filename.csv", from_path = tempdir(), to_path = "filepath_dont_exist") ,
-               regexp = "Directory 'filepath_dont_exist' does not exists.")
+  expect_error(copy_poststed(filename = "filename.csv", from_path = tempdir(), to_path = "filepath_does_not_exist") ,
+               regexp = "Directory\n * 'filepath_does_not_exist' does not exists.",
+               fixed = TRUE)
   
+  options(width = unlist(linewidth))
 })
