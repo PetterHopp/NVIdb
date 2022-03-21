@@ -13,9 +13,9 @@ copy_poststed <- function(filename = "Poststed_UTF8.csv",
   # filename
   checkmate::assert_character(filename, len = 1, min.chars = 1, add = checks)
   # from_path / filename
-  checkmate::assert_file_exists(file.path(sub("/$", "", from_path), filename), access = "r", add = checks)
+  checkmate::assert_file_exists(file.path(sub("/+$|\\\\+$", "", from_path), filename), access = "r", add = checks)
   # to_path
-  checkmate::assert_directory_exists(sub("/$", "", to_path), access = "r", add = checks)
+  checkmate::assert_directory_exists(sub("/+$|\\\\+$", "", to_path), access = "r", add = checks)
   
   # Report check-results
   checkmate::reportAssertions(checks)
