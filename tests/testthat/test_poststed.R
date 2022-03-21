@@ -132,6 +132,6 @@ test_that("errors for copy_poststed", {
                regexp = "File does not exist:")
   
   expect_error(copy_poststed(filename = "filename.csv", from_path = tempdir(), to_path = "filepath_dont_exist") ,
-               regexp = "Variable 'to_path': Directory 'filepath_dont_exist' does not exists.")
+               regexp = "Directory 'filepath_dont_exist' does not exists.")
   
 })
