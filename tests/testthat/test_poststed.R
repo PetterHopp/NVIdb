@@ -142,14 +142,36 @@ test_that("errors for copy_poststed", {
   # poststed <- read_poststed()
   # 
   expect_error(copy_poststed(filename = NULL, from_path = tempdir(), to_path = "./") ,
-               regexp = "Variable 'filename': Must be of type 'character', not 'NULL'.")
+               regexp = "(filename): Must be of type 'character', *\n * not 'NULL'",
+               fixed = TRUE)
   
   expect_error(copy_poststed(filename = "filename.csv", from_path = tempdir(), to_path = "./") ,
                regexp = "File does not exist:")
   
   expect_error(copy_poststed(filename = "filename.csv", from_path = tempdir(), to_path = "filepath_does_not_exist") ,
-               regexp = "Directory\n * 'filepath_does_not_exist' does not exists.",
+               regexp = "Directory 'filepath_does_not_exist' does not\n * exists.",
                fixed = TRUE)
+  
+  options(width = unlist(linewidth))
+})
+
+test_that("errors for read_poststed", {
+  
+  linewidth <- options("width")
+  options(width = 80)
+  
+  # # skip if no connection to 'FAG' have been established
+  # skip_if_not(dir.exists(set_dir_NVI("FAG")))
+  # 
+  # # Load translation table for poststed
+  # poststed <- read_poststed()
+  # 
+  expect_error(read_poststed(filename = NULL, from_path = tempdir()) ,
+               regexp = "(filename): Must be of type 'character', *\n * not 'NULL'",
+               fixed = TRUE)
+  
+  expect_error(read_poststed(filename = "filename.csv", from_path = tempdir()) ,
+               regexp = "File does not exist:")
   
   options(width = unlist(linewidth))
 })
