@@ -1,7 +1,8 @@
 # assert_arguments
 #
 # assert collections that developed to fit functions with standardized input arguments.
-# - assert_add_functions
+# - assert_add_function
+# - assert_copy_function
 #
 #
 #' @title Collection of assertions for add_functions 
@@ -17,19 +18,19 @@
 #' @param position Argument to the add-function to be asserted. 
 #' @param overwrite Argument to the add-function to be asserted. 
 #'
-#' @return \code{TRUE } if none of the assertions failed. If any of the assertions 
+#' @return \code{TRUE} if none of the assertions failed. If any of the assertions 
 #'     failed, one or more error messages are returned. 
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @keywords internal
 #'
-  assert_add_function <- function(data,
-                                  translation_table,
-                                  code_column,
-                                  new_column,
-                                  position,
-                                  overwrite) {
-    
+assert_add_function <- function(data,
+                                translation_table,
+                                code_column,
+                                new_column,
+                                position,
+                                overwrite) {
+  
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
@@ -45,7 +46,7 @@
                              type = "named", 
                              subset.of = colnames(translation_table), 
                              comment = paste0("The value for code_column must be a column in the translation table, ",
-                                            #  deparse(substitute(translation_table)),
+                                              #  deparse(substitute(translation_table)),
                                               "but '",
                                               unname(code_column), 
                                               "' is not a column name in the translation table"),
@@ -91,7 +92,7 @@
                                               names(code_column),
                                               "' in the data" #,
                                               # deparse(substitute(data)), "`"
-                                              ),
+                             ),
                              add = checks)
   # position
   checkmate::assert_choice(position, choices = c("first", "left", "right", "last", "keep"), add = checks)
@@ -101,38 +102,49 @@
   
   # Report check-results
   checkmate::reportAssertions(checks)
-  
 }
 
 #' @title Collection of assertions for copy_functions 
 #' @description Collection of assertions used in standard copy_functions. 
 #'
 #' @details All copy functions have the same arguments and the 
-#'     assertion can be standardized. 
+#'     assertion can be standardized. The assertion of \code{filname} is 
+#'     constructed to handle both character and list input.
+#'     
+#'     The assertion is based on removing ending "\\" and "/" from 
+#'     \code{from_path} and \code{to_path} before the assertion is performed.
 #'
-#' @param filename Argument to the add-function to be asserted. 
-#' @param from_path Argument to the add-function to be asserted. 
-#' @param to_path Argument to the add-function to be asserted. 
+#' @param filename Argument to the copy-function to be asserted. 
+#' @param from_path Argument to the copy-function to be asserted. Ending 
+#'     "\\" and "/" should have been removed before the assertion is performed.
+#' @param to_path Argument to the copy-function to be asserted. Ending 
+#'     "\\" and "/" should have been removed before the assertion is performed.
 #'
-#' @return \code{TRUE } if none of the assertions failed. If any of the assertions 
+#' @return \code{TRUE} if none of the assertions failed. If any of the assertions 
 #'     failed, one or more error messages are returned. 
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @keywords internal
 #'
-  assert_copy_function <- function(filename ,
-                                  from_path,
-                                  to_path) {
-    
+#'
+assert_copy_function <- function(filename ,
+                                 from_path,
+                                 to_path) {
+  
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
   
   # Perform checks
-  # filename
-  checkmate::assert_data_frame(data, add = checks)
-    # filename
-  checkmate::assert_list(filename, len = 2, add = checks)
+  ## filename
+  NVIcheckmate::assert(checkmate::check_character(filename,
+                                                  min.chars = 1, 
+                                                  len = 1),
+                       checkmate::check_list(min.len = 1),
+                       combine = "or",
+                       add = checks)
+  
+  # checkmate::assert_list(filename, len = 2, add = checks)
   # # from_path
   # checkmate::assert_character(from_path, len = 1, min.chars = 1, add = checks)
   # if (endsWith(from_path, "/")) {
@@ -140,17 +152,14 @@
   # } else {
   #   checkmate::assert_directory_exists(from_path, access = "r", add = checks)
   # }
-  # from_path / filename
+  
+  ## from_path / filename
   for (i in c(1:length(filename))) {
-    checkmate::assert_file_exists(paste0(from_path, filename[[i]]), access = "r", add = checks)
+    checkmate::assert_file_exists(file.path(from_path, filename[[i]]), access = "r", add = checks)
   }
-  # to_path
-  if (endsWith(to_path, "/")) {
-    checkmate::assert_directory_exists(substr(to_path, 1, nchar(to_path) - 1), access = "r", add = checks)
-  } else {
-    checkmate::assert_directory_exists(to_path, access = "r", add = checks)
-  }  
+  ## to_path
+  checkmate::assert_directory_exists(to_path, access = "r", add = checks)
+  
   # Report check-results
   checkmate::reportAssertions(checks)
-  
 }
