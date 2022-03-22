@@ -127,7 +127,7 @@ assert_add_function <- function(data,
 #' @keywords internal
 #'
 #'
-assert_copy_function <- function(filename ,
+assert_copy_function <- function(filename,
                                  from_path,
                                  to_path) {
   
@@ -140,7 +140,7 @@ assert_copy_function <- function(filename ,
   NVIcheckmate::assert(checkmate::check_character(filename,
                                                   min.chars = 1, 
                                                   len = 1),
-                       checkmate::check_list(min.len = 1),
+                       checkmate::check_list(filename, min.len = 1),
                        combine = "or",
                        add = checks)
   
@@ -160,6 +160,51 @@ assert_copy_function <- function(filename ,
   ## to_path
   checkmate::assert_directory_exists(to_path, access = "r", add = checks)
   
+  # Report check-results
+  checkmate::reportAssertions(checks)
+}
+
+#' @title Collection of assertions for read_functions 
+#' @description Collection of assertions used in standard read_functions. 
+#'
+#' @details All read functions have the same arguments and the 
+#'     assertion can be standardized. The assertion of \code{filname} is 
+#'     constructed to handle both character and list input.
+#'     
+#'     The assertion is based on removing ending "\\" and "/" from 
+#'     \code{from_path} before the assertion is performed.
+#'
+#' @param filename Argument to the read-function to be asserted. 
+#' @param from_path Argument to the read-function to be asserted. Ending 
+#'     "\\" and "/" should have been removed before the assertion is performed.
+#'
+#' @return \code{TRUE} if none of the assertions failed. If any of the assertions 
+#'     failed, one or more error messages are returned. 
+#'
+#' @author Petter Hopp Petter.Hopp@@vetinst.no
+#' @keywords internal
+#'
+#'
+assert_read_function <- function(filename,
+                                 from_path) {
+  
+  # ARGUMENT CHECKING ----
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+  
+  # Perform checks
+  ## filename
+  NVIcheckmate::assert(checkmate::check_character(filename,
+                                                  min.chars = 1, 
+                                                  len = 1),
+                       checkmate::check_list(filename, min.len = 1),
+                       combine = "or",
+                       add = checks)
+  ## from_path / filename
+  for (i in c(1:length(filename))) {
+    checkmate::assert_file_exists(file.path(from_path, filename[[i]]), access = "r", add = checks)
+  }
+
   # Report check-results
   checkmate::reportAssertions(checks)
 }
