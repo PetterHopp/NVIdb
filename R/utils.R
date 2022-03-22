@@ -264,8 +264,10 @@ add_new_column <- function(data,
 
 read_csv_file <- function(filename, from_path, options = NULL, ...) {
 
-  # Check if from_path ends in "/". If not, "/" is added.
-  if (!endsWith(from_path, "/")) { from_path <- paste0(from_path, "/") }
+  # Removes trailing "/" and "\\".
+  from_path <- sub("/+$|\\\\+$", "", from_path)
+  # # Check if from_path ends in "/". If not, "/" is added.
+  # if (!endsWith(from_path, "/")) { from_path <- paste0(from_path, "/") }
 
 
   if (is.null(options)) {
@@ -277,8 +279,8 @@ read_csv_file <- function(filename, from_path, options = NULL, ...) {
   }
   # Get creation date of source file
   if (dir.exists(from_path)) {
-    if (file.exists(paste0(from_path, filename))) {
-      df <- data.table::fread(file = paste0(from_path, filename),
+    if (file.exists(file.path(from_path, filename))) {
+      df <- data.table::fread(file = file.path(from_path, filename),
                              colClasses = options$colClasses,
                              encoding = options$fileEncoding,
                              stringsAsFactors = options$stringsAsFactors,
