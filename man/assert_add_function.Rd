@@ -27,7 +27,7 @@ assert_add_function(
 \item{overwrite}{Argument to the add-function to be asserted.}
 }
 \value{
-\code{TRUE } if none of the assertions failed. If any of the assertions 
+\code{TRUE} if none of the assertions failed. If any of the assertions 
     failed, one or more error messages are returned.
 }
 \description{
