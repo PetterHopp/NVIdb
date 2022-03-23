@@ -160,12 +160,6 @@ test_that("errors for read_poststed", {
   linewidth <- options("width")
   options(width = 80)
   
-  # # skip if no connection to 'FAG' have been established
-  # skip_if_not(dir.exists(set_dir_NVI("FAG")))
-  # 
-  # # Load translation table for poststed
-  # poststed <- read_poststed()
-  # 
   expect_error(read_poststed(filename = NULL, from_path = tempdir()) ,
                regexp = "(filename): Must be of type 'character', *\n * not 'NULL'",
                fixed = TRUE)
