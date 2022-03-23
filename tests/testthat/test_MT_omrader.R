@@ -104,4 +104,20 @@ test_that("Correct result when using overwrite and keep", {
 })
 
 
+test_that("errors for read_MT_omrader", {
+  
+  linewidth <- options("width")
+  options(width = 80)
+  
+  expect_error(read_MT_omrader(filename = NULL, from_path = tempdir()) ,
+               regexp = "Variable 'filename': Must be of type 'list', not 'NULL'.",
+               fixed = TRUE)
+  
+  expect_error(read_MT_omrader(filename = "filename.csv", from_path = tempdir()) ,
+               regexp = "File does not exist:")
+  
+  options(width = unlist(linewidth))
+})
+
+
 
