@@ -4,13 +4,13 @@ library(testthat)
 # Assigns temporary dir to td
 td <- tempdir()
 
-if (!dir.exists(file.path (td, "data"))) {
-  dir.create(file.path (td, "data")) 
-} 
+# if (!dir.exists(file.path (td, "data"))) {
+#   dir.create(file.path (td, "data")) 
+# } 
 filenames <- c("Prodnr2GjeldendeProdnr.csv", "Prodnr2Koordinater.csv")
 for (i in 1:length(filenames)) {
-if (file.exists(file.path (td, "data", filenames[i]))) {
-  file.remove(file.path (td, "data", filenames[i])) 
+if (file.exists(file.path (td, filenames[i]))) {
+  file.remove(file.path (td, filenames[i])) 
 } 
 }
 
@@ -19,11 +19,11 @@ test_that("Copy produsent properties registers", {
   skip_if_not(dir.exists(set_dir_NVI("FAG")))
   
   # copy file
-  copy_produsent(to_path = td)
+  copy_prodnr_2_current_prodnr(to_path = td)
   expect_true(file.exists(file.path(td, filenames[1])))
   
-  copy_produsent(from_path = td, to_path =  file.path (td, "test"))
-  expect_true(file.exists(file.path(td, "test", filenames[1])))
+  # copy_produsent(from_path = td, to_path =  file.path (td, "data"))
+  # expect_true(file.exists(file.path(td, "data", filenames[1])))
 
 })
 
@@ -37,11 +37,8 @@ test_that("Correct merging of produsent og komnr", {
 # Reading from standard directory at NVI's network
 prodnr_2_gjeldende_prodnr <- read_prodnr_2_current_prodnr()
 
-# Copy standard file from standard location to the subdirectory Data below the working directory
-copy_prodnr_2_current_prodnr(to_path = "./Data/")
-
 # Reading from the subdirectory Data below the working directory
-prodnr_2_gjeldende_prodnr <- read_prodnr_2_current_prodnr(from_path = "./Data/")
+prodnr_2_gjeldende_prodnr <- read_prodnr_2_current_prodnr(from_path = td)
 
 prodnr8 <- c("09140087", "14260856", "17020818", "50060129")
 olddata <- as.data.frame(prodnr8)
