@@ -4,15 +4,17 @@ library(testthat)
 # Assigns temporary dir to td
 td <- tempdir()
 
-if (!dir.exists(file.path (td, "test"))) {
-  dir.create(file.path (td, "test")) 
+if (!dir.exists(file.path (td, "data"))) {
+  dir.create(file.path (td, "data")) 
 } 
-filenames <- "produsent_UTF8.csv"
-if (file.exists(file.path (td, "test", filenames[1]))) {
-  file.remove(file.path (td, "test", filenames[1])) 
+filenames <- c("Prodnr2GjeldendeProdnr.csv", "Prodnr2Koordinater.csv")
+for (i in 1:length(filenames)) {
+if (file.exists(file.path (td, "data", filenames[i]))) {
+  file.remove(file.path (td, "data", filenames[i])) 
 } 
+}
 
-test_that("Copy produsent", {
+test_that("Copy produsent properties registers", {
   # skip if no connection to 'FAG' have been established
   skip_if_not(dir.exists(set_dir_NVI("FAG")))
   
