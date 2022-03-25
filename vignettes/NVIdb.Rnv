@@ -1,7 +1,0 @@
-\documentclass{article}
-\usepackage{pdfpages}
-%\VignetteIndexEntry{NVIdb manual}
-
-\begin{document}
-\includepdf[pages=-, fitpaper=true]{NVIdb.pdf}
-\end{document}
