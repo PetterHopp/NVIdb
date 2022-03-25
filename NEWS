@@ -1,9 +1,16 @@
-NVIdb 0.7.0.9000 - (2022-##-##)
+NVIdb 0.7.0.9001 - (2022-##-##)
 --------------------------
 
 Bug fixes:
 
-- copy_poststed now accepts pathnames ending in "\\".
+- copy-functions (copy_kommune_fylke, copy_MT_omrader, copy_PJS_code_2_text, copy_poststed, copy_prodnr_2_current_prodnr and, copy_Prodtilskudd),  now accepts "from_path"" and "to_path"" that ends with "\\".
+
+
+Other changes:
+
+- Included NVIdb reference manual in documentation and vignettes.
+
+- Updated README and CONTRIBUTE
 
 
 NVIdb 0.7.0 - (2022-03-14)
