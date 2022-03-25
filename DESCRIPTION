@@ -42,6 +42,7 @@ Imports:
     rlang,
     rmarkdown,
     RODBC,
+    R.rsp,
     shiny,
     snakecase,
     svDialogs,
@@ -50,7 +51,6 @@ Imports:
 Suggests:
     covr,
     devtools,
-    R.rsp,
     spelling,
     testthat,
     tibble,
