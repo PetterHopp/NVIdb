@@ -14,8 +14,8 @@ NVIpkg <- params$NVIpkg
 # NVIpkg <- stringi::stri_extract_last_words(usethis::proj_path())
 NVIpkg_inline <- paste0("`", NVIpkg, "`")
 logo_path <- ""
-if (file.exists("./man/figures/logo.png")) {
-  logo_path <- ' <img src="man/figures/logo.png" align="right" height="138" />'
+if (file.exists(paste0("./man/figures/", NVIpkg, "_logo.png"))) {
+  logo_path <- paste0(' <img src="man/figures/', NVIpkg, '_logo.png" align="right" height="138" />')
 }
 
 knitr::opts_chunk$set(

@@ -1,4 +1,4 @@
-# NVIdb: Tools to facilitate the use of NVI’s databases <img src="man/figures/logo.png" align="right" height="138" />
+# NVIdb: Tools to facilitate the use of NVI’s databases <img src="man/figures/NVIdb_logo.png" align="right" height="138" />
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
