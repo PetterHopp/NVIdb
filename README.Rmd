@@ -56,7 +56,7 @@ stable and you will not need to update `NVIconfig` every time `NVIdb` is updated
 To install (or update) the `NVIconfig` package, run the following code:
 
 ``` {r text2, message=FALSE, warnings=FALSE, echo=FALSE, prompt = FALSE, comment = ""} 
-text2 <- paste(paste0('remotes::install_github("NorwegianVeterinaryInstitute/NVIconfig")'), 
+text2 <- paste(paste0('remotes::install_github("NorwegianVeterinaryInstitute/NVIconfig",'), 
 	'    auth_token = "PAT"',
 	'    upgrade = FALSE,', 
 	'    build = TRUE,',
