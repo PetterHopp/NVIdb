@@ -178,14 +178,14 @@ test_that("errors for copy_produsent", {
   # # Load translation table for produsent
   # produsent <- read_produsent()
   # 
-  expect_error(copy_produsent(filename = NULL, from_path = tempdir(), to_path = "./") ,
+  expect_error(copy_prodnr_2_current_prodnr(filename = NULL, from_path = tempdir(), to_path = "./") ,
                regexp = "(filename): Must be of type 'character', *\n * not 'NULL'",
                fixed = TRUE)
   
-  expect_error(copy_produsent(filename = "filename.csv", from_path = tempdir(), to_path = "./") ,
+  expect_error(copy_prodnr_2_current_prodnr(filename = "filename.csv", from_path = tempdir(), to_path = "./") ,
                regexp = "File does not exist:")
   
-  expect_error(copy_produsent(filename = "filename.csv", from_path = tempdir(), to_path = "filepath_does_not_exist") ,
+  expect_error(copy_prodnr_2_current_prodnr(filename = "filename.csv", from_path = tempdir(), to_path = "filepath_does_not_exist") ,
                regexp = "Directory 'filepath_does_not_exist' does not\n * exists.",
                fixed = TRUE)
   
@@ -197,11 +197,11 @@ test_that("errors for read_produsent", {
   linewidth <- options("width")
   options(width = 80)
   
-  expect_error(read_produsent(filename = NULL, from_path = tempdir()) ,
+  expect_error(read_prodnr_2_current_prodnr(filename = NULL, from_path = tempdir()) ,
                regexp = "(filename): Must be of type 'character', *\n * not 'NULL'",
                fixed = TRUE)
   
-  expect_error(read_produsent(filename = "filename.csv", from_path = tempdir()) ,
+  expect_error(read_prodnr_2_current_prodnr(filename = "filename.csv", from_path = tempdir()) ,
                regexp = "File does not exist:")
   
   options(width = unlist(linewidth))
