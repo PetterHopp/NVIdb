@@ -38,20 +38,26 @@
 read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder_UTF8.csv",
                               from_path = paste0(set_dir_NVI("Prodtilskudd"), "StotteData/")) {
 
-  # Argument checking
-  # Object to store check-results
-  checks <- checkmate::makeAssertCollection()
-  # Perform checks
-  checkmate::assert_character(filename, len = 1, min.chars = 1, add = checks)
-  checkmate::assert_character(from_path, len = 1, min.chars = 1, add = checks)
-  if (endsWith(from_path, "/")) {
-    checkmate::assert_directory_exists(substr(from_path, 1, nchar(from_path) - 1), access = "r", add = checks)
-  } else {
-    checkmate::assert_directory_exists(from_path, access = "r", add = checks)
-  }
-  checkmate::assert_file_exists(paste0(from_path, filename), access = "r", add = checks)
-  # Report check-results
-  checkmate::reportAssertions(checks)
+  # Removing ending "/" and "\\" from pathnames
+  from_path <- sub("/+$|\\\\+$", "", from_path)
+  
+  # ARGUMENT CHECKING ----
+  assert_read_function(filename = filename, from_path = from_path)
+  
+  # # Argument checking
+  # # Object to store check-results
+  # checks <- checkmate::makeAssertCollection()
+  # # Perform checks
+  # checkmate::assert_character(filename, len = 1, min.chars = 1, add = checks)
+  # checkmate::assert_character(from_path, len = 1, min.chars = 1, add = checks)
+  # if (endsWith(from_path, "/")) {
+  #   checkmate::assert_directory_exists(substr(from_path, 1, nchar(from_path) - 1), access = "r", add = checks)
+  # } else {
+  #   checkmate::assert_directory_exists(from_path, access = "r", add = checks)
+  # }
+  # checkmate::assert_file_exists(paste0(from_path, filename), access = "r", add = checks)
+  # # Report check-results
+  # checkmate::reportAssertions(checks)
 
   # reads header and identifies characters by using NVIdb::standardize_columns
   colclasses <- standardize_columns(data = paste0(from_path, filename), property = "colclasses")
