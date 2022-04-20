@@ -62,86 +62,6 @@ newdata <- add_produsent(newdata,
 })
 
 
-test_that("Correct merging of produsent og komnr", {
-  # skip if no connection to 'FAG' have been established
-  skip_if_not(dir.exists(set_dir_NVI("FAG")))
-
-  # Load translation table for produsent
-  produsent <- read_produsent()
-
-  # Make a dataframe with postnr that should be translated
-  produsenter <- as.data.frame(c("0468", "1343", "4550", "7800"))
-  colnames(produsenter) <- "postnr"
-
-  # Make a dataframe with the correct result
-  correct_result <- cbind(produsenter,
-                          as.data.frame(c("OSLO", "EIKSMARKA", "FARSUND", "NAMSOS"), stringsAsFactors = FALSE),
-                          as.data.frame(c("0301", "0219", "4206", "5007"), stringsAsFactors = FALSE))
-  colnames(correct_result) <- c("postnr", "produsent", "komnr")
-
-  # Compare Add fylke, current fylkenr and current fylke with correct result
-  expect_identical(add_produsent(produsenter,
-                                translation_table = produsent,
-                                code_column = "postnr",
-                                new_column = c("produsent", "komnr"),
-                                position = "last"),
-                   correct_result)
-
-})
-
-
-test_that("Correct result when using overwrite and keep", {
-  # skip if no connection to 'FAG' have been established
-  skip_if_not(dir.exists(set_dir_NVI("FAG")))
-
-  # Load translation table for produsent
-  produsent <- read_produsent()
-
-  # Make a dataframe with postnr that should be translated
-  produsenter <- as.data.frame(c("0468", "1343", "4550", "7800"))
-  colnames(produsenter) <- "postnr"
-
-  # Make a dataframe with the correct result
-  correct_result <- cbind(produsenter,
-                          as.data.frame(c("OSLO", "EIKSMARKA", "FARSUND", "NAMSOS"), stringsAsFactors = FALSE),
-                          as.data.frame(c("0301", "0219", "4206", "5007"), stringsAsFactors = FALSE))
-  colnames(correct_result) <- c("postnr", "produsent", "komnr")
-
-  produsenter <- add_produsent(produsenter,
-                             translation_table = produsent,
-                             code_column = "postnr",
-                             new_column = c("produsent", "komnr"))
-
-  # Compare Add fylke, current fylkenr and current fylke with correct result
-  expect_identical(produsenter,
-                   correct_result)
-
-  produsenter <- add_produsent(produsenter,
-                             translation_table = produsent,
-                             code_column = "postnr",
-                             new_column = c("produsent", "komnr"),
-                             position = "first",
-                             overwrite = TRUE)
-
-
-  expect_identical(produsenter,
-                   correct_result[, c("produsent", "komnr", "postnr")])
-
-  # Compare Add kommune, with overwrite = TRUE, keep position
-  produsenter <- add_produsent(produsenter,
-                             translation_table = produsent,
-                             code_column = "postnr",
-                             new_column = c("produsent", "komnr"),
-                             position = "keep",
-                             overwrite = TRUE)
-
-
-  expect_identical(produsenter,
-                   correct_result[, c("produsent", "komnr", "postnr")])
-
-
-
-})
 
 test_that("errors for add_produsent", {
   
@@ -152,16 +72,27 @@ test_that("errors for add_produsent", {
   options(width = 80)
   
   # Load translation table for produsent
-  produsent <- read_produsent()
+  prodnr_2_gjeldende_prodnr <- read_prodnr_2_current_prodnr()
   
-  expect_error(add_produsent(data = "no_data", translation_table = "produsent") ,
+  expect_error(add_produsent(data = "no_data", 
+                             translation_table = "prodnr_2_gjeldende_prodnr",
+                             code_column = "prodnr8",
+                             new_column = "gjeldende_prodnr8") ,
                regexp = "Variable 'data': Must be of type 'data.frame', not 'character'.")
   
   
-  expect_error(add_produsent(data = "no_data", translation_table = "produsent", position = "before") ,
+  expect_error(add_produsent(data = "no_data", 
+                             translation_table = "prodnr_2_gjeldende_prodnr",
+                             code_column = "prodnr8",
+                             new_column = "gjeldende_prodnr8",
+                             position = "before") ,
                regexp = "Variable 'position': Must be element")
   
-  expect_error(add_produsent(data = "no_data", translation_table = "produsent", overwrite = 1) ,
+  expect_error(add_produsent(data = "no_data",
+                             translation_table = "prodnr_2_gjeldende_prodnr",
+                             code_column = "prodnr8",
+                             new_column = "gjeldende_prodnr8",
+                             overwrite = 1) ,
                regexp = "Variable 'overwrite': Must be of type 'logical', not 'double'.")
   
   options(width = unlist(linewidth))
