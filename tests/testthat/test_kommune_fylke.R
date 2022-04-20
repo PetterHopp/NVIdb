@@ -1,6 +1,5 @@
 library(NVIdb)
 library(testthat)
-context("kommune_fylke")
 
 # Assigns temporary dir to td
 td <- tempdir()
@@ -241,7 +240,7 @@ test_that("errors for read_kommune_fylke", {
   options(width = 80)
   
   expect_error(read_kommune_fylke(filename = NULL, from_path = tempdir()) ,
-               regexp = "Variable 'filename': Must be of type 'list', not 'NULL'.",
+               regexp = "Variable 'filename': One of the following must apply:",
                fixed = TRUE)
   
   expect_error(read_kommune_fylke(filename = "filename.csv", from_path = tempdir()) ,
