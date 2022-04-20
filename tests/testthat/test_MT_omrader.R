@@ -1,6 +1,5 @@
 library(NVIdb)
 library(testthat)
-context("MT-omrader")
 
 # Assigns temporary dir to td
 td <- tempdir()
@@ -110,7 +109,7 @@ test_that("errors for read_MT_omrader", {
   options(width = 80)
   
   expect_error(read_MT_omrader(filename = NULL, from_path = tempdir()) ,
-               regexp = "Variable 'filename': Must be of type 'list', not 'NULL'.",
+               regexp = "Variable 'filename': One of the following must apply:",
                fixed = TRUE)
   
   expect_error(read_MT_omrader(filename = "filename.csv", from_path = tempdir()) ,
