@@ -5,7 +5,7 @@
 #'     function can also be used to translate MT_avdelingnr into MT_avdeling, MT_regionnr and MT_region or to translate MT_regionnr into
 #'     MT_region. When the \code{code_column =} in the dataframe is not equal to one of c("komnr", "MT_avdelingnr", "MT_regionnr") the
 #'     \code{code_column =} can be input as a named vector. Likewise, if the new columns should be given other names than
-#'     c("MT_avdelingnr","MT_avdeling","MT_regionnr","MT_region"), the \code{new_column =} can be input as a named vector, see examples.
+#'     c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region"), the \code{new_column =} can be input as a named vector, see examples.
 #'
 #'     \code{add_MT_omrader} uses a premade translation table (komnr_2_MT_avdeling.csv). These data need to be loaded by \code{read_MT_omrader}
 #'     before running \code{add_MT_omrader}, see example. "komnr_2_MT_avdeling.csv" is made based on information in PJS adresseregister.
@@ -30,7 +30,8 @@
 #' @param code_column The column with the coded value. Valid values are one of c("komnr", "MT_avdelingnr", "MT_regionnr"). If the column in
 #'     data has another name, it can be input as a named vector, see examples.
 #' @param new_column The new columns that should be included into the dataframe. The new columns can be up to
-#'     c("MT_avdelingnr","MT_avdeling","MT_regionnr","MT_region") depending on \code{code_column}. If the new columns in the result dataframe
+#'     c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region") depending on 
+#'     \code{code_column}. If the new columns in the result dataframe
 #'     should have other names, \code{new_column} can be input as a named vector, see examples.
 #' @param position position for the new columns, can be one of c("first", "left", "right", "last", "keep")
 #' @param overwrite When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
@@ -42,11 +43,14 @@
 #' @return \code{add_MT_omrader} A dataframe where the MT_avdelingnr has been added in the column to the
 #'     right of the column with the komnr.
 #'
-#'     \code{read_MT_omrader} A dataframe with the table for translating from komnr to c("MT_avdelingnr","MT_avdeling","MT_regionnr","MT_region") as
-#'     read from the source csv file. If not changing standard input to the function, the standard files at NVI's internal network is read.
+#'     \code{read_MT_omrader} A dataframe with the table for translating from komnr to 
+#'     c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region") as read from the source 
+#'     csv file. If not changing standard input to the function, the standard files at 
+#'     NVI's internal network is read.
 #'
-#'     \code{copy_MT_omrader} Copies the csv-files "komnr_2_MT_avdeling.csv" and "MT_omrader.csv" to another directory. If the target
-#'     files already exists the source files are only copied if they are newer than the target files.
+#'     \code{copy_MT_omrader} Copies the csv-files "komnr_2_MT_avdeling.csv" and "MT_omrader.csv" 
+#'     to another directory. If the target files already exists the source files are only 
+#'     copied if they are newer than the target files.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @export
