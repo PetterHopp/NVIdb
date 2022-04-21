@@ -115,7 +115,7 @@ prodnr_2_koordinater <- read_prodnr_2_coordinates()
 newdata <- add_produsent(newdata,
                         translation_table = prodnr_2_koordinater,
                         code_column = "prodnr8",
-                        new_column = c("longitude" = "geo_eu89_o", "latutude" = "geo_eu89_n")
+                        new_column = c("longitude" = "geo_eu89_o", "latitude" = "geo_eu89_n")
 
 }
 
