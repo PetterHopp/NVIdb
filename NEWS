@@ -3,9 +3,9 @@ NVIdb 0.7.0.9001 - (2022-##-##)
 
 Bug fixes:
 
-- copy-functions (copy_kommune_fylke, copy_MT_omrader, copy_PJS_code_2_text, copy_poststed, copy_prodnr_2_current_prodnr and, copy_Prodtilskudd),  now accepts "from_path" and "to_path" that ends with "\\".
+- copy-functions (copy_kommune_fylke, copy_MT_omrader, copy_PJS_code_2_text, copy_Pkode_2_text, copy_poststed, copy_prodnr_2_current_prodnr, and copy_Prodtilskudd),  now accepts "from_path" and "to_path" that ends with "\\".
 
-- read-functions (read_kommune_fylke, read_MT_omrader, read_PJS_code_2_text, read_poststed, read_prodnr_2_current_prodnr, read_prodnr_2_coordinates and, read_Prodtilskudd),  now accepts "from_path" that ends with "\\".
+- read-functions (read_kommune_fylke, read_leveransereg, read_MT_omrader, read_PJS_code_2_text, read_Pkode_2_text, read_poststed, read_prodnr_2_coordinates, read_prodnr_2_current_prodnr, read_Prodtilskudd, and read_sonetilhorighet),  now accepts "from_path" that ends with "\\".
 
 
 Other changes:
