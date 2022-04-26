@@ -1,0 +1,152 @@
+--- 
+title: "Fetch PJS data for one disease"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Fetch PJS data for one disease}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+## Overview ----
+
+# READ OK DATA FROM PJS
+
+# DESIGN ----
+# Seleksjonskriterier er metoder, resultatanalytt, konklusjonsanalytt, sykdom og hensikter
+# Simple control of selection parameters
+# Standard cleaning of data
+# Save data as rds-files
+
+
+# SET UP R-ENVIRONMENT ----
+# rm(list = ls())
+
+# Attach packages
+library(RODBC)
+# library(poorman)
+# library(openxlsx)
+library(NVIdb)
+# library(NVIpretty)
+
+# global variables
+today<-format(Sys.Date(),"%Y%m%d")
+domene <- sub("Rscripts","",dirname(rstudioapi::getSourceEditorContext()$path))
+
+
+aar <- c(2021)
+
+# support registers
+kommune_fylke <- read_kommune_fylke()
+PJS_codes_2_text <- read_PJS_codes_2_text()
+
+# Functions
+source(paste0(set_dir_NVI("OKprogrammer"), "Rutine", aar, "/Rapportering/Rscripts/", "agg_kjennelse.R"), encoding = "UTF-8")
+
+# RUN SCRIPTS ----
+
+# ok_gris_virus
+purpose <- "ok_gris_virus"
+source(file = paste0(set_dir_NVI("OKprogrammer"), "Rutine", aar, "/Rapportering/Rscripts/OK_selection_parameters/", purpose, "_selection_parameters.R"))
+source(file = paste0(domene, "/retrieve_ok_data_from_PJS.R"))
+
+
+
+
+
+
+# set_credentials_PJS()
+# READ DATA FROM PJS ----
+journal_rapp <- login_by_credentials_PJS()
+
+select_statement <- NVIdb::build_query_one_disease(year = aar, 
+                                                   analytt = c(),
+                                                   hensikt = hensikt2select,
+                                                   metode = c())
+
+PJSrawdata <- sqlQuery(journal_rapp,
+                       select_statement["selection_v2_sak_m_res"],
+                       as.is = TRUE,
+                       stringsAsFactors = FALSE)
+
+
+PJSsakskonklusjon <- sqlQuery(journal_rapp,
+                              select_statement["selection_sakskonklusjon"],
+                              as.is = TRUE,
+                              stringsAsFactors = FALSE)
+
+odbcClose(journal_rapp)
+
+# STANDARDIZE DATA ----
+## Standard cleaning of data
+PJSdata <- standardize_PJSdata(PJSdata = PJSrawdata)
+sakskonklusjon <- standardize_PJSdata(PJSdata = PJSsakskonklusjon) 
+
+## Exclude ring trials, quality assurance and samples from abroad
+PJSdata <- exclude_from_PJSdata(PJSdata = PJSdata, abroad = "exclude", quality = "exclude")
+sakskonklusjon <- exclude_from_PJSdata(PJSdata = sakskonklusjon, abroad = "exclude", quality = "exclude")
+
+
+## ONE ROW PER PRØVE, UNDERSØKELSE AND KONKLUSJON ----
+# Remove unnecessary rows due to cartesian product ----
+
+# TO DO: accept varying length for analytter in selections, can be done by for-loop for each analytt and missing
+source(paste0("./one_row_per_sample_konkl_res.R"), encoding = "UTF-8")
+
+# Add sakskonklusjon
+# 1. Når identisk analyttkode
+sakskonklusjon <- sakskonklusjon %>%
+  dplyr::select(-c(konklnr, konkl_typekode)) %>%
+  dplyr::rename(sakskonkl_kjennelsekode = konkl_kjennelsekode, sakskonkl_analyttkode = analyttkode) %>%
+  dplyr::mutate(sakskonkl_analyttkode = dplyr::case_when(is.na(sakskonkl_analyttkode) & !is.na(sakskonkl_kjennelsekode) ~ "missing",
+                                                         TRUE ~ sakskonkl_analyttkode)) %>%
+  dplyr::mutate(sakskonkl_kjennelsekode = dplyr::case_when(!is.na(sakskonkl_analyttkode) & is.na(sakskonkl_kjennelsekode) ~ "missing",
+                                                           TRUE ~ sakskonkl_kjennelsekode)) %>%
+  
+  dplyr::filter(substr(sakskonkl_analyttkode, 1, length_analytt) %in% c(analytt, substr("missing", 1, length_analytt))) %>%
+  dplyr::distinct() 
+
+tempX <- sakskonklusjon %>%
+  dplyr::select(saksnr, sakskonkl_kjennelsekode, sakskonkl_analyttkode) %>%
+  dplyr::distinct()
+
+temp <- PJSdata %>%
+  dplyr::inner_join(tempX, by = c("saksnr" = "saksnr", "konkl_analyttkode" = "sakskonkl_analyttkode")) %>%
+  dplyr::mutate(sakskonkl_analyttkode = konkl_analyttkode)
+
+sakskonklusjon <- subset(sakskonklusjon, 
+                         !paste(saksnr, sakskonkl_kjennelsekode, sakskonkl_analyttkode, sep = "-") %in%
+                           paste(temp$saksnr, temp$sakskonkl_kjennelsekode, temp$sakskonkl_analyttkode, sep = "-"))
+
+PJSdata <- subset(PJSdata, 
+                  !paste(saksnr, konkl_kjennelsekode, konkl_analyttkode, sep = "-") %in%
+                    paste(temp$saksnr, temp$konkl_kjennelsekode, temp$konkl_analyttkode, sep = "-"))
+
+# 2. Når analyttkode er lik på de første sifrene
+tempX <- sakskonklusjon %>%
+  dplyr::select(saksnr, sakskonkl_kjennelsekode, sakskonkl_analyttkode) %>%
+  dplyr::mutate(analyttkode = substr(sakskonkl_analyttkode, 1, length_analytt)) %>%
+  dplyr::distinct()
+
+tempX <- PJSdata %>%
+  # dplyr::select(-c(sakskonkl_kjennelsekode, sakskonkl_analyttkode)) %>%
+  dplyr::mutate(analyttkode = substr(konkl_analyttkode, 1, length_analytt)) %>%
+  dplyr::inner_join(tempX, by = c("saksnr" = "saksnr", "analyttkode" = "analyttkode")) %>%
+  dplyr::select(-analyttkode)
+
+sakskonklusjon <- subset(sakskonklusjon, 
+                         !paste(saksnr, sakskonkl_kjennelsekode, sakskonkl_analyttkode, sep = "-") %in%
+                           paste(tempX$saksnr, tempX$sakskonkl_kjennelsekode, tempX$sakskonkl_analyttkode, sep = "-"))
+
+PJSdata <- subset(PJSdata, 
+                  !paste(saksnr, konkl_kjennelsekode, konkl_analyttkode, sep = "-") %in%
+                    paste(tempX$saksnr, tempX$konkl_kjennelsekode, tempX$konkl_analyttkode, sep = "-"))
+
+PJSdata <- dplyr::bind_rows(temp, tempX, PJSdata, sakskonklusjon)
+
+saveRDS(PJSdata, file = paste0(set_dir_NVI("OKprogrammer"), "Rutine", aar, "/Rapportering/Radata/", purpose, ".rds"))
+
+
