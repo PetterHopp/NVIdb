@@ -60,7 +60,7 @@ read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder_UTF8.csv",
   # checkmate::reportAssertions(checks)
 
   # reads header and identifies characters by using NVIdb::standardize_columns
-  colclasses <- standardize_columns(data = paste0(from_path, filename), property = "colclasses")
+  colclasses <- standardize_columns(data = file.path(from_path, filename), property = "colclasses")
 
   read_csv_file(filename = filename,
                 from_path = from_path,
