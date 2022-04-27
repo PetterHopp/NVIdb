@@ -1,5 +1,5 @@
 #' @export
-#' @rdname add_produsent
+#' @rdname add_produsent_properties
 
 read_prodnr_2_coordinates <- function(filename = "Prodnr2Koordinater.csv",
                                       from_path = paste0(set_dir_NVI("Prodregister"), "FormaterteData/")) {

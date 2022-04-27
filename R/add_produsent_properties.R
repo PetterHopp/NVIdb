@@ -1,13 +1,17 @@
-#' @title Manage translation from prodnr8 into gjeldende_prodnr8
+#' @title Manage translation from prodnr8 into different produsent properties
 #' @description Function to add a column with gjeldende_prodnr8. In addition there are
 #'    functions to read and copy the translation tables.
-#' @details \code{add_produsentnr} can be used to translate the prodnr8 into gjeldende_prodnr8 and/or geo-koordinater.
+#' @details \code{add_produsent_properties} can be used to translate the prodnr8 into gjeldende_prodnr8 and/or geo-coordinates.
 #'
 #'     \code{position =} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
 #'     placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
 #'     code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
 #'     data.frame. A special case occurs for \code{position = "keep"} which only has meaning when the new column has the same name as an existing
 #'     column and overwrite = TRUE. In these cases, the existing column will be overwritten with new data and have the same position.
+#'
+#'     \code{impute_old_when_missing = TRUE} is used to replace missing values in the \code{new_column} with the value in
+#'     \code{code_column}. This is useful when translating prodnr8 to gjeldende_prodnr8. It should not be used when translating 
+#'     from prodnr8 to something where imputing the old prodnr8 in the new variables don't have any meaning, for example geo-coordinates.
 #'
 #'     \code{read_prodnr_2_current_prodnr} reads the file "Prodnr2GjeldendeProdnr.csv" into a data frame that can be used by
 #'     other routines. Standard setting will the file read in the latest updated file from NVI's internal network. If changing
@@ -31,16 +35,18 @@
 #' @param position position for the new columns, can be one of c("first", "left", "right", "last", "keep")
 #' @param overwrite When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
 #'     If the new columns already exists and overwrite = FALSE, then an error is issued.
+#' @param impute_old_when_missing Should the ID-variable be used as value for the \code{new_column} if the 
+#'     \code{new_column} value is missing? Standard is \code{FALSE}. To be used for translating prodnr8 to 
+#'     gjeldende_prodnr8, see details.
 #' @param filename a list with the filenames of the source files with the tables for generating the translation table.
 #' @param from_path Path for the source files for the translation table.
 #' @param to_path Path for the target translation table when copying the translation table.
 #'
-#' @return \code{add_produsentnr} A data frame where the gjeldende_prodnr8. has been added in the column to the
+#' @return \code{add_produsent_properties} returns a data frame where the gjeldende_prodnr8. has been added in the column to the
 #'     right of the column with the prodnr8.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @export
-#' @rdname add_produsent-deprecated
 #' @examples
 #' \dontrun{
 #' #CURRENT PRODNR8
@@ -57,41 +63,38 @@
 #' olddata <- as.data.frame(prodnr8)
 #'
 #' # Add new column with current prodnr8
-#' newdata <- add_produsent(olddata,
-#'                         translation_table = prodnr_2_gjeldende_prodnr,
-#'                         code_column = "prodnr8",
-#'                         new_column = "gjeldende_prodnr8",
-#'                         position = "left")
+#' newdata <- add_produsent_properties(olddata,
+#'                                     translation_table = prodnr_2_gjeldende_prodnr,
+#'                                     code_column = "prodnr8",
+#'                                     new_column = "gjeldende_prodnr8",
+#'                                     position = "left",
+#'                                     impute_old_when_missing = TRUE)
 #'
 #' # COORDINATES
 #' # Reading from standard directory at NVI's network
 #' prodnr_2_koordinater <- read_prodnr_2_coordinates()
 #'
-#' newdata <- add_produsent(newdata,
-#'                         translation_table = prodnr_2_koordinater,
-#'                         code_column = "prodnr8",
-#'                         new_column = c("longitude" = "geo_eu89_o", "latitude" = "geo_eu89_n")
+#' newdata <- add_produsent_properties(newdata,
+#'                                     translation_table = prodnr_2_koordinater,
+#'                                     code_column = "prodnr8",
+#'                                     new_column = c("longitude" = "geo_eu89_o", 
+#'                                                    "latitude" = "geo_eu89_n")
 #'
 #' }
 #'
-add_produsent <- function(data,
-                          translation_table,
-                          code_column,
-                          new_column,
-                          position = "right",
-                          overwrite = FALSE) {
-
-  .Deprecated(new = "add_produsent_properties",
-              msg = paste("'add_produsent' is replaced by 'add_produsent_properties' to achieve",
-                          "more flexibility and correct errors for other properties than 'gjeldende_prodnr8.",
-                          "Remember to set the input parameter 'impute_old_when_missing' when using",
-                          "'add_produsent_properties'."))
+add_produsent_properties <- function(data,
+                                     translation_table,
+                                     code_column,
+                                     new_column,
+                                     position = "right",
+                                     overwrite = FALSE,
+                                     impute_old_when_missing = FALSE) {
   
   # Ensure that code_column and new_column are named vectors by using the internal function set_name_vector()
   # Thereby, the following code can assume these to be named vectors
   code_column <- set_name_vector(code_column)
   new_column <- set_name_vector(new_column)
-
+  
   # ARGUMENT CHECKING ----
   assert_add_function(data = data,
                       translation_table = translation_table,
@@ -104,7 +107,7 @@ add_produsent <- function(data,
   # Makes the translation table with code_column and new_column. unique() is necessary to avoid duplicate
   # rows when code_column is not "kommunenr"
   code_2_new <- unique(translation_table[, c(unname(code_column), unname(new_column))])
-
+  
   # ADD NEW COLUMN(S) ----
   # Set up of parameters for the internal function add_new_column(). names() is used to select the column names
   # in the input data and unname() is used to select the column names in the translation table. n_columns_at_once
@@ -117,10 +120,10 @@ add_produsent <- function(data,
                          to_column_translation_table = unname(new_column),
                          position = position,
                          overwrite = overwrite,
-                         impute_old_when_missing = TRUE,
+                         impute_old_when_missing = impute_old_when_missing,
                          n_columns_at_once = length(new_column)
   )
-
-
+  
+  
   return(data)
 }
