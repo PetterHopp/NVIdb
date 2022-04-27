@@ -47,11 +47,12 @@ test_that("Correct merging of produsent og komnr", {
   
   
   # Compare Add fylke, current fylkenr and current fylke with correct result
-  produsenter <- add_produsent(produsenter,
-                               translation_table = prodnr_2_gjeldende_prodnr,
-                               code_column = "prodnr8",
-                               new_column = "gjeldende_prodnr8",
-                               position = "left")
+  produsenter <- add_produsent_properties(produsenter,
+                                          translation_table = prodnr_2_gjeldende_prodnr,
+                                          code_column = "prodnr8",
+                                          new_column = "gjeldende_prodnr8",
+                                          position = "left",
+                                          impute_old_when_missing = TRUE)
   expect_identical(produsenter, correct_result)
   
   
@@ -66,11 +67,11 @@ test_that("Correct merging of produsent og komnr", {
   )
   colnames(correct_result) <- c("gjeldende_prodnr8", "prodnr8", "longitude", "latitude")
   
-  produsenter <- add_produsent(produsenter,
-                               translation_table = prodnr_2_koordinater,
-                               code_column = c("gjeldende_prodnr8" = "prodnr8"),
-                               new_column = c("longitude" = "geo_eu89_o", "latitude" = "geo_eu89_n"),
-                               position = "last")
+  produsenter <- add_produsent_properties(produsenter,
+                                          translation_table = prodnr_2_koordinater,
+                                          code_column = c("gjeldende_prodnr8" = "prodnr8"),
+                                          new_column = c("longitude" = "geo_eu89_o", "latitude" = "geo_eu89_n"),
+                                          position = "last")
   expect_identical(produsenter, correct_result)
 })
 
@@ -87,25 +88,25 @@ test_that("errors for add_produsent", {
   # Load translation table for produsent
   prodnr_2_gjeldende_prodnr <- read_prodnr_2_current_prodnr()
   
-  expect_error(add_produsent(data = "no_data", 
-                             translation_table = "prodnr_2_gjeldende_prodnr",
-                             code_column = "prodnr8",
-                             new_column = "gjeldende_prodnr8") ,
+  expect_error(add_produsent_properties(data = "no_data", 
+                                        translation_table = "prodnr_2_gjeldende_prodnr",
+                                        code_column = "prodnr8",
+                                        new_column = "gjeldende_prodnr8") ,
                regexp = "Variable 'data': Must be of type 'data.frame', not 'character'.")
   
   
-  expect_error(add_produsent(data = "no_data", 
-                             translation_table = "prodnr_2_gjeldende_prodnr",
-                             code_column = "prodnr8",
-                             new_column = "gjeldende_prodnr8",
-                             position = "before") ,
+  expect_error(add_produsent_properties(data = "no_data", 
+                                        translation_table = "prodnr_2_gjeldende_prodnr",
+                                        code_column = "prodnr8",
+                                        new_column = "gjeldende_prodnr8",
+                                        position = "before") ,
                regexp = "Variable 'position': Must be element")
   
-  expect_error(add_produsent(data = "no_data",
-                             translation_table = "prodnr_2_gjeldende_prodnr",
-                             code_column = "prodnr8",
-                             new_column = "gjeldende_prodnr8",
-                             overwrite = 1) ,
+  expect_error(add_produsent_properties(data = "no_data",
+                                        translation_table = "prodnr_2_gjeldende_prodnr",
+                                        code_column = "prodnr8",
+                                        new_column = "gjeldende_prodnr8",
+                                        overwrite = 1) ,
                regexp = "Variable 'overwrite': Must be of type 'logical', not 'double'.")
   
   options(width = unlist(linewidth))
