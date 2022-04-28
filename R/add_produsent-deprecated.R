@@ -41,6 +41,7 @@
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @export
 #' @rdname add_produsent-deprecated
+#' @name add_produsent-deprecated
 #' @examples
 #' \dontrun{
 #' #CURRENT PRODNR8
@@ -74,53 +75,3 @@
 #'
 #' }
 #'
-add_produsent <- function(data,
-                          translation_table,
-                          code_column,
-                          new_column,
-                          position = "right",
-                          overwrite = FALSE) {
-
-  .Deprecated(new = "add_produsent_properties",
-              msg = paste("'add_produsent' is replaced by 'add_produsent_properties' to achieve",
-                          "more flexibility and correct errors for other properties than 'gjeldende_prodnr8.",
-                          "Remember to set the input parameter 'impute_old_when_missing' when using",
-                          "'add_produsent_properties'."))
-  
-  # Ensure that code_column and new_column are named vectors by using the internal function set_name_vector()
-  # Thereby, the following code can assume these to be named vectors
-  code_column <- set_name_vector(code_column)
-  new_column <- set_name_vector(new_column)
-
-  # ARGUMENT CHECKING ----
-  assert_add_function(data = data,
-                      translation_table = translation_table,
-                      code_column = code_column,
-                      new_column = new_column,
-                      position = position,
-                      overwrite = overwrite)
-  
-  # PREPARE TRANSLATION TABLE ----
-  # Makes the translation table with code_column and new_column. unique() is necessary to avoid duplicate
-  # rows when code_column is not "kommunenr"
-  code_2_new <- unique(translation_table[, c(unname(code_column), unname(new_column))])
-
-  # ADD NEW COLUMN(S) ----
-  # Set up of parameters for the internal function add_new_column(). names() is used to select the column names
-  # in the input data and unname() is used to select the column names in the translation table. n_columns_at_once
-  # is the number of new columns that should be added.
-  data <- add_new_column(data,
-                         ID_column = names(code_column),
-                         new_colname = names(new_column),
-                         translation_tables = list(code_2_new),
-                         ID_column_translation_table = unname(code_column),
-                         to_column_translation_table = unname(new_column),
-                         position = position,
-                         overwrite = overwrite,
-                         impute_old_when_missing = TRUE,
-                         n_columns_at_once = length(new_column)
-  )
-
-
-  return(data)
-}
