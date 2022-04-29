@@ -3,7 +3,7 @@ NVIdb 0.7.0.9001 - (2022-##-##)
 
 Bug fixes:
 
-- add_produsent now correctly adds geo-coordinates also when information on geo-coordinates is missing.
+- add_produsent_properties replaces add_produsent and add_produsent_properties correctly adds geo-coordinates also when information on geo-coordinates is missing.
 
 - copy-functions (copy_kommune_fylke, copy_MT_omrader, copy_PJS_code_2_text, copy_Pkode_2_text, copy_poststed, copy_prodnr_2_current_prodnr, and copy_Prodtilskudd),  now accepts "from_path" and "to_path" that ends with "\\".
 
@@ -19,7 +19,7 @@ Other changes:
 
 BREAKING CHANGES:
 
-- add_produsent will not automatically add the old prodnr8 to gjeldende_prodnr8 if the prodnr8 has not changed. To achieve this, one must set the parameter impute_old_when_missing = TRUE.
+- add_produsent is deprecated, see NVIdb-deprecated (help("NVIdb-deprecated")).
 
 
 NVIdb 0.7.0 - (2022-03-14)
