@@ -1,6 +1,8 @@
 #' @title Deprecated Functions in Package NVIdb 
 #' @description These functions are provided for compatibility with older 
-#'     versions of NVIdb only, and may be defunct as soon as the next release.
+#'     versions of NVIdb only, and may be defunct as soon as the next release. 
+#'     When possible, alternative functions are mentioned. Help pages for 
+#'     deprecated functions are available at \code{help("<function>-deprecated")}. 
 #' @details \code{add_produsent} was deprecated 2022-05-02 as other properties 
 #'     than 'gjeldende_prodnr8' could not be included without breaking backward 
 #'     compatibility. Use \code{add_produsent_properties} instead and ensure 
@@ -10,38 +12,14 @@
 #'     other properties. 
 #'
 #' @param \dots (arguments) 
-#'
-#' @author Petter Hopp Petter.Hopp@@vetinst.no
-#' @export
-#' @rdname NVIdb-deprecated
+#' @return (results)
 #' @name NVIdb-deprecated
-#' #' @examples
-#' \dontrun{
-#' add_produsent(...)   ### -- use add_produsent_properties(...)   instead
-#' }
-#'
-
-#' @rdname NVIdb-deprecated
-#' @aliasis add_produsent-deprecated
-#' @export
+#' @keywords internal
 #' 
-add_produsent <- function(...) {
-  
-  .Deprecated(new = "add_produsent_properties",
-              package = "NVIdb",
-              msg = paste("'add_produsent' is replaced by 'add_produsent_properties' to achieve",
-                          "more flexibility and correct errors for other properties than 'gjeldende_prodnr8.",
-                          "Remember to set the input parameter 'impute_old_when_missing' when using",
-                          "'add_produsent_properties'."))
-  
-  data <- add_produsent_properties(data = data,
-                                   translation_table = translation_table,
-                                   code_column = code_column,
-                                   new_column = new_column,
-                                   position = position,
-                                   overwrite = overwrite,
-                                   impute_old_when_missing = TRUE) 
-  
-  return(data)
-}
-
+#' @author Petter Hopp Petter.Hopp@@vetinst.no
+#' 
+#' @examples
+#' \dontrun{
+#' add_produsent(...)   ### -- use \code{\link{add_produsent_properties}}   instead
+#' }
+NULL

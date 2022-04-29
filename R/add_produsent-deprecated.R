@@ -39,9 +39,14 @@
 #'     right of the column with the prodnr8.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
-#' @export
-#' @rdname add_produsent-deprecated
 #' @name add_produsent-deprecated
+#' @usage add_produsent(data,
+#'                      translation_table,
+#'                      code_column,
+#'                      new_column,
+#'                      position,
+#'                      overwrite)
+#' @keywords internal
 #' @examples
 #' \dontrun{
 #' #CURRENT PRODNR8
@@ -75,3 +80,53 @@
 #'
 #' }
 #'
+NULL
+
+
+#' @title add_produsent is Deprecated
+#' @description add_produsent was deprecated 2022-05-02. as other properties 
+#'     than 'gjeldende_prodnr8' could not be included without breaking backward 
+#'     compatibility. Use \code{add_produsent_properties} instead and ensure 
+#'     to set the parameter \code{impute_old_when_missing = TRUE} when translating 
+#'     from "prodnr8" to "gjeldende_prodnr8" and set the parameter 
+#'     \code{impute_old_when_missing = FALSE} when translating from "prodnr8" to 
+#'     other properties.
+#' @details The old help pages can be found at \code{help("add_produsent-deprecated")}. 
+#'     Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+#' @param data Data frame with data with a column with a prodnr8
+#' @param translation_table Data frame with the table for translating from prodnr8 to gjeldende_prodnr8.
+#' @param code_column The column with the coded value. Valid values are one of c("prodnr8"). If the column in
+#'     data has another name, it can be input as a named vector, see examples.
+#' @param new_column The new columns that should be included into the dataframe. The new columns can be up to
+#'     c("gjeldende_prodnr8") depending on \code{code_column}. If the new columns in the result dataframe
+#'     should have other names, \code{new_column} can be input as a named vector, see examples.
+#' @param position position for the new columns, can be one of c("first", "left", "right", "last", "keep")
+#' @param overwrite When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
+#'     If the new columns already exists and overwrite = FALSE, then an error is issued.
+#' @export
+#' @keywords internal
+#'
+add_produsent <- function(data,
+                          translation_table,
+                          code_column,
+                          new_column,
+                          position = "right",
+                          overwrite = FALSE) {
+  
+  .Deprecated(new = "add_produsent_properties",
+              package = "NVIdb",
+              msg = paste("'add_produsent' is replaced by 'add_produsent_properties' to achieve",
+                          "more flexibility and correct errors for other properties than 'gjeldende_prodnr8.",
+                          "Remember to set the input parameter 'impute_old_when_missing' when using",
+                          "'add_produsent_properties'."))
+  
+  data <- add_produsent_properties(data = data,
+                                  translation_table = translation_table,
+                                  code_column = code_column,
+                                  new_column = new_column,
+                                  position = position,
+                                  overwrite = overwrite,
+                                  impute_old_when_missing = TRUE)
+  
+  return(data)
+}
