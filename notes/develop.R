@@ -29,16 +29,6 @@ NVIpackager::document_NVIpkg(style = FALSE,
 # spelling::spell_check_package(vignettes = TRUE, use_wordlist = TRUE)
 
 
-# Alternative for creating the PDF-manual. The manual is not put in the correct directory
-# system(paste(shQuote(file.path(R.home("bin"), "R")),
-#              "CMD",
-#              "Rd2pdf",
-#              paste0("../", pkg)))
-# file.copy(from = paste0(pkg, ".pdf"), to = "./vignettes", overwrite = TRUE)
-# file.remove(".Rd2pdf16372")
-# file.remove("NVIdb.pdf")
-# check .install_extras
-
 # TEST PACKAGE ----
 # Run tests included in ./tests.
 devtools::test()
@@ -56,7 +46,7 @@ print(x = code_coverage, group = "functions")
 # devtools::build_manual(pkg = "../NVIpackager", path = "./vignettes")
 
 # Build the package
-devtools::build(binary = FALSE, manual = TRUE, vignettes = TRUE)
+devtools::build(binary = FALSE, manual = FALSE, vignettes = TRUE)
 # Test built package.
 # Thereby, no problems with files in .Rbuildignore.
 version <- packageVersion(pkg, lib.loc = paste0(getwd(),"/.."))
