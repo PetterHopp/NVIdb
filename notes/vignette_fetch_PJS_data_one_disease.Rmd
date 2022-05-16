@@ -1,15 +1,35 @@
 --- 
-title: "Fetch PJS data for one disease"
+title: "Retrieve and standardize PJS-data examplified with data for one disease"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Fetch PJS data for one disease}
+  %\VignetteIndexEntry{Retrieve and standardize PJS-data}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(eval = FALSE)
 ```
+
+-   [Overview](#overview)
+-   [Set up R-environment](#Set up R-environment)
+-   [Login to PJS](#Login to PJS)
+-   [Make selection statement](#Make selection statement)
+-   [Read PJS-data](#Read PJS-data)
+-   [Standardize PJS-data](#Standardize PJS-data)
+-   [One analytt per row](#One analytt per row)
+
+Overview
+--------
+
+`NVIdb`provides tools to facilitate downloading and processing of data
+from the Norwegian Veterinary Institute’s databases, in particular PJS
+and EOS. The package comprises several categories of functions: 1)
+Manage credentials (i.e. password and username), 2) Login functions for
+database services, 3) Select PJS-data, 4) Initial cleaning of PJS-data,
+5) Read, copy and update various in-house data registers, 6) Translate
+codes into descriptions. NVIdb is dependant of NVIconfig which has to be
+installed manually from GitHub.
 
 ## Overview ----
 
@@ -22,29 +42,32 @@ knitr::opts_chunk$set(eval = FALSE)
 # Save data as rds-files
 
 
+```R
 # SET UP R-ENVIRONMENT ----
 # rm(list = ls())
 
 # Attach packages
 library(RODBC)
-# library(poorman)
-# library(openxlsx)
 library(NVIdb)
-# library(NVIpretty)
 
 # global variables
 today<-format(Sys.Date(),"%Y%m%d")
 domene <- sub("Rscripts","",dirname(rstudioapi::getSourceEditorContext()$path))
 
-
 aar <- c(2021)
 
+# Functions
+source(paste0(set_dir_NVI("OKprogrammer"), "Rutine", aar, "/Rapportering/Rscripts/", "agg_kjennelse.R"), encoding = "UTF-8")
+
+```
+
+
+```R
 # support registers
 kommune_fylke <- read_kommune_fylke()
 PJS_codes_2_text <- read_PJS_codes_2_text()
 
-# Functions
-source(paste0(set_dir_NVI("OKprogrammer"), "Rutine", aar, "/Rapportering/Rscripts/", "agg_kjennelse.R"), encoding = "UTF-8")
+
 
 # RUN SCRIPTS ----
 
@@ -58,6 +81,10 @@ source(file = paste0(domene, "/retrieve_ok_data_from_PJS.R"))
 
 
 
+```
+
+
+```R
 # set_credentials_PJS()
 # READ DATA FROM PJS ----
 journal_rapp <- login_by_credentials_PJS()
@@ -80,6 +107,10 @@ PJSsakskonklusjon <- sqlQuery(journal_rapp,
 
 odbcClose(journal_rapp)
 
+```
+
+
+```R
 # STANDARDIZE DATA ----
 ## Standard cleaning of data
 PJSdata <- standardize_PJSdata(PJSdata = PJSrawdata)
@@ -90,6 +121,9 @@ PJSdata <- exclude_from_PJSdata(PJSdata = PJSdata, abroad = "exclude", quality =
 sakskonklusjon <- exclude_from_PJSdata(PJSdata = sakskonklusjon, abroad = "exclude", quality = "exclude")
 
 
+```
+
+```R
 ## ONE ROW PER PRØVE, UNDERSØKELSE AND KONKLUSJON ----
 # Remove unnecessary rows due to cartesian product ----
 
@@ -148,5 +182,6 @@ PJSdata <- subset(PJSdata,
 PJSdata <- dplyr::bind_rows(temp, tempX, PJSdata, sakskonklusjon)
 
 saveRDS(PJSdata, file = paste0(set_dir_NVI("OKprogrammer"), "Rutine", aar, "/Rapportering/Radata/", purpose, ".rds"))
+```
 
 
