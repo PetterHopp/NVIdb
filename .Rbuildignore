@@ -3,13 +3,10 @@
 ^\.Rproj\.user$
 ^notes$
 ^nosync$
-^build.R
-^install.R
-^style.R
+^man-roxygen$
 ^CONTRIBUTING.md
 ^README\.md
 ^README\.Rmd
-^Meta$
 ^NVIdb.Rcheck\vign_test$
 ^\.git$
 ^\.gitignore$
