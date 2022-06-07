@@ -122,7 +122,7 @@ test_that("errors for add_poststed", {
   
   
   expect_error(add_poststed(data = "no_data", translation_table = "poststed", position = "before") ,
-               regexp = "Variable 'position': Must be element")
+               regexp = "Variable 'position': Must be a subset of")
   
   expect_error(add_poststed(data = "no_data", translation_table = "poststed", overwrite = 1) ,
                regexp = "Variable 'overwrite': Must be of type 'logical', not 'double'.")
