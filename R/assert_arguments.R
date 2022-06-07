@@ -96,11 +96,11 @@ assert_add_function <- function(data,
                              add = checks)
   # position
   # checkmate::assert_choice(position, choices = c("first", "left", "right", "last", "keep"), add = checks)
-  position <- match_arg(x = position, 
-                        choices = c("first", "left", "right", "last", "keep"), 
-                        several.ok = TRUE, 
-                        ignore.case = FALSE, 
-                        add = checks)
+  position <- NVIcheckmate::match_arg(x = position, 
+                                      choices = c("first", "left", "right", "last", "keep"), 
+                                      several.ok = TRUE, 
+                                      ignore.case = FALSE, 
+                                      add = checks)
   # overwrite
   checkmate::assert_logical(overwrite, any.missing = FALSE, len = 1, add = checks)
   
