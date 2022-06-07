@@ -95,7 +95,12 @@ assert_add_function <- function(data,
                              ),
                              add = checks)
   # position
-  checkmate::assert_choice(position, choices = c("first", "left", "right", "last", "keep"), add = checks)
+  # checkmate::assert_choice(position, choices = c("first", "left", "right", "last", "keep"), add = checks)
+  position <- match_arg(x = position, 
+                        choices = c("first", "left", "right", "last", "keep"), 
+                        several.ok = TRUE, 
+                        ignore.case = FALSE, 
+                        add = checks)
   # overwrite
   checkmate::assert_logical(overwrite, any.missing = FALSE, len = 1, add = checks)
   
@@ -204,7 +209,7 @@ assert_read_function <- function(filename,
   for (i in c(1:length(filename))) {
     checkmate::assert_file_exists(file.path(from_path, filename[[i]]), access = "r", add = checks)
   }
-
+  
   # Report check-results
   checkmate::reportAssertions(checks)
 }
