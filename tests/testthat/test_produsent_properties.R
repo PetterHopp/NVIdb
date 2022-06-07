@@ -100,7 +100,7 @@ test_that("errors for add_produsent", {
                                         code_column = "prodnr8",
                                         new_column = "gjeldende_prodnr8",
                                         position = "before") ,
-               regexp = "Variable 'position': Must be element")
+               regexp = "Variable 'position': Must be a subset of")
   
   expect_error(add_produsent_properties(data = "no_data",
                                         translation_table = "prodnr_2_gjeldende_prodnr",
