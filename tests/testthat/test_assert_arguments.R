@@ -1,7 +1,5 @@
 library(NVIdb)
 library(testthat)
-context("assert_arguments")
-
 
 test_that("assert_add_function by add_poststed", {
   # skip if no connection to 'FAG' have been established
@@ -13,6 +11,9 @@ test_that("assert_add_function by add_poststed", {
   # Make a dataframe with postnr that should be translated
   poststeder <- as.data.frame(c("0468", "1343", "4550", "7800"))
   colnames(poststeder) <- "postnr"
+  
+  linewidth <- options("width")
+  options(width = 80)
   
   expect_error(add_poststed(data = poststederX, translation_table = poststed, code_column = "postnr",
                             new_column = "poststed", position = "left", overwrite = FALSE),
@@ -48,6 +49,11 @@ test_that("assert_add_function by add_poststed", {
                             new_column = "poststed", position = "over", overwrite = TRUE),
                regexp = "\\{'first','left','right','last','keep'}" )
   
+  expect_error(add_poststed(data = poststeder, translation_table = poststed, code_column = "postnr",
+                            new_column = "poststed", position = "l", overwrite = TRUE),
+               regexp = "\\{'first','left','right','last','keep'}, but is \\{'l'}.  Abbreviated")
+  
+  options(width = unlist(linewidth))
 })
 
 
