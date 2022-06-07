@@ -39,9 +39,8 @@
 #' @param translation_table Data frame with the translation table for old komnr to current komnr
 #' @param code_column The name of the column with the old komnr
 #' @param new_column The name of the new column that should contain the current komnr
-#' @param position position for the new columns, can be one of c("first", "left", "right", "last", "keep")
-#' @param overwrite When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
-#'     If the new columns already exists and overwrite = FALSE, then an error is issued.
+#' @template position
+#' @template overwrite
 #' @param filename Filename of the translation table for old komnr to current komnr
 #' @param from_path Path for the source translation table
 #' @param to_path Path for the target translation table when copying the translation table

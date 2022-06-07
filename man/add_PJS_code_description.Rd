@@ -46,8 +46,10 @@ new column names should be given. You may also use "auto", if \code{code_colname
 \item{position}{position for the new columns, can be one of c("first", "left", "right", "last", "keep"). If several codes should be translated,
 either one value to be applied for all may be given or a vector with specified position for each code to be translated should be given.}
 
-\item{overwrite}{When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
-If the new columns already exists and overwrite = FALSE, an error will be issued.}
+\item{overwrite}{\code{TRUE} or \code{FALSE}, default is \code{FALSE}. When 
+the new column(s) already exist, the content in the existing column(s) is 
+replaced by new data if \code{overwrite = TRUE}. If the new column(s) already 
+exist and \code{overwrite = FALSE}, an error is issued.}
 
 \item{filename}{Filename of the source file for the translation table for PJS-codes}
 

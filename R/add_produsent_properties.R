@@ -32,11 +32,10 @@
 #' @param new_column The new columns that should be included into the dataframe. The new columns can be up to
 #'     c("gjeldende_prodnr8") depending on \code{code_column}. If the new columns in the result dataframe
 #'     should have other names, \code{new_column} can be input as a named vector, see examples.
-#' @param position position for the new columns, can be one of c("first", "left", "right", "last", "keep")
-#' @param overwrite When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
-#'     If the new columns already exists and overwrite = FALSE, then an error is issued.
+#' @template position
+#' @template overwrite
 #' @param impute_old_when_missing Should the ID-variable be used as value for the \code{new_column} if the 
-#'     \code{new_column} value is missing? Standard is \code{FALSE}. To be used for translating prodnr8 to 
+#'     \code{new_column} value is missing? Default is \code{FALSE}. To be used for translating prodnr8 to 
 #'     gjeldende_prodnr8, see details.
 #' @param filename a list with the filenames of the source files with the tables for generating the translation table.
 #' @param from_path Path for the source files for the translation table.

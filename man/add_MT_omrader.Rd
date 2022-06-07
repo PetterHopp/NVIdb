@@ -35,15 +35,18 @@ read_MT_omrader(
 \item{code_column}{The column with the coded value. Valid values are one of c("komnr", "MT_avdelingnr", "MT_regionnr"). If the column in
 data has another name, it can be input as a named vector, see examples.}
 
-\item{new_column}{The new columns that should be included into the dataframe. The new columns can be up to
+\item{new_column}{The new columns that should be included into the data frame. The new columns can be up to
 c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region") depending on 
-\code{code_column}. If the new columns in the result dataframe
+\code{code_column}. If the new columns in the result data frame
 should have other names, \code{new_column} can be input as a named vector, see examples.}
 
-\item{position}{position for the new columns, can be one of c("first", "left", "right", "last", "keep")}
+\item{position}{character input giving the position for the new columns, can be one
+of c("first", "left", "right", "last", "keep"). The input can be abbreviated.}
 
-\item{overwrite}{When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
-If the new columns already exists and overwrite = FALSE, then an error is issued.}
+\item{overwrite}{\code{TRUE} or \code{FALSE}, default is \code{FALSE}. When 
+the new column(s) already exist, the content in the existing column(s) is 
+replaced by new data if \code{overwrite = TRUE}. If the new column(s) already 
+exist and \code{overwrite = FALSE}, an error is issued.}
 
 \item{filename}{a list with the filenames of the source files with the tables for generating the translation table.}
 
@@ -52,10 +55,10 @@ If the new columns already exists and overwrite = FALSE, then an error is issued
 \item{to_path}{Path to where the source files for the translation table should be copied.}
 }
 \value{
-\code{add_MT_omrader} A dataframe where the MT_avdelingnr has been added in the column to the
+\code{add_MT_omrader} A data frame where the MT_avdelingnr has been added in the column to the
     right of the column with the komnr.
 
-    \code{read_MT_omrader} A dataframe with the table for translating from komnr to 
+    \code{read_MT_omrader} A data frame with the table for translating from komnr to 
     c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region") as read from the source 
     csv file. If not changing standard input to the function, the standard files at 
     NVI's internal network is read.

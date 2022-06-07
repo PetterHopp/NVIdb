@@ -47,13 +47,16 @@ data has another name, it can be input as a named vector, see examples.}
 c("gjeldende_prodnr8") depending on \code{code_column}. If the new columns in the result dataframe
 should have other names, \code{new_column} can be input as a named vector, see examples.}
 
-\item{position}{position for the new columns, can be one of c("first", "left", "right", "last", "keep")}
+\item{position}{character input giving the position for the new columns, can be one
+of c("first", "left", "right", "last", "keep"). The input can be abbreviated.}
 
-\item{overwrite}{When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
-If the new columns already exists and overwrite = FALSE, then an error is issued.}
+\item{overwrite}{\code{TRUE} or \code{FALSE}, default is \code{FALSE}. When 
+the new column(s) already exist, the content in the existing column(s) is 
+replaced by new data if \code{overwrite = TRUE}. If the new column(s) already 
+exist and \code{overwrite = FALSE}, an error is issued.}
 
 \item{impute_old_when_missing}{Should the ID-variable be used as value for the \code{new_column} if the 
-\code{new_column} value is missing? Standard is \code{FALSE}. To be used for translating prodnr8 to 
+\code{new_column} value is missing? Default is \code{FALSE}. To be used for translating prodnr8 to 
 gjeldende_prodnr8, see details.}
 
 \item{filename}{a list with the filenames of the source files with the tables for generating the translation table.}

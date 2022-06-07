@@ -39,10 +39,13 @@ read_kommune_fylke(
 
 \item{new_column}{The name of the new column that should contain the current komnr}
 
-\item{position}{position for the new columns, can be one of c("first", "left", "right", "last", "keep")}
+\item{position}{character input giving the position for the new columns, can be one
+of c("first", "left", "right", "last", "keep"). The input can be abbreviated.}
 
-\item{overwrite}{When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
-If the new columns already exists and overwrite = FALSE, then an error is issued.}
+\item{overwrite}{\code{TRUE} or \code{FALSE}, default is \code{FALSE}. When 
+the new column(s) already exist, the content in the existing column(s) is 
+replaced by new data if \code{overwrite = TRUE}. If the new column(s) already 
+exist and \code{overwrite = FALSE}, an error is issued.}
 
 \item{filename}{Filename of the translation table for old komnr to current komnr}
 
