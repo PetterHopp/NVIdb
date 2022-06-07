@@ -46,7 +46,7 @@ Imports:
     shiny,
     snakecase,
     svDialogs,
-    NVIcheckmate (>= 0.3.0),
+    NVIcheckmate (>= 0.4.0),
     NVIrpackages
 Suggests:
     covr,
