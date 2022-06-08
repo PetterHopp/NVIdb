@@ -19,5 +19,3 @@ for (i in c(2:dim(PJS_levels)[2])) {
 
 # SAVE IN PACKAGE DATA ----
 usethis::use_data(name = PJS_levels, overwrite = TRUE, internal = FALSE)
-
-
