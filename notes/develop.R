@@ -19,7 +19,7 @@ pkg_path = usethis::proj_path()
 # DOCUMENTATION AND STYLING ----
 # Creates new help files
 # Should be run before git push when documentation for functions have been changed
-NVIpackager::document_NVIpkg(style = FALSE,
+NVIpackager::document_NVIpkg(style = TRUE,
                              manual = "update",
                              contributing = FALSE,
                              readme = FALSE,
