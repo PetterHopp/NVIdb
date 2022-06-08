@@ -91,33 +91,33 @@ test_that("If translation table is updated", {
 
 
 test_that("Translate codes in PJS-data", {
-  
+
   # skip if no connection to 'FAG' have been established
   skip_if_not(dir.exists(set_dir_NVI("FAG")))
-  
+
   # Reads translation table for PJS-codes
   PJS_codes_2_text <- read_PJS_codes_2_text()
-  
+
   testdata <- as.data.frame(cbind(rbind(c("hensiktkode" = "01001"), c("hensiktkode" = "01002")),
                                   rbind(c("metodekode" = "010001"), c("metodekode" = "010002")),
                                   rbind(c("ansvarlig_seksjon" = "01"), c("ansvarlig_seksjon" = "02"))))
-  
+
   correct_result <- as.data.frame(cbind(rbind(c("hensiktkode" = "01001"), c("hensiktkode" = "01002")),
                                         rbind(c("hensikt" = "Oppklaring og oppfølging av helseproblem hos dyr"), c("hensikt" = "Oppklaring og oppfølging av helseproblem hos menneske")),
                                         rbind(c("metodekode" = "010001"), c("metodekode" = "010002")),
                                         rbind(c("metode" = "Obduksjon/organundersøkelse"), c("metode" = "Histopatologi")),
                                         rbind(c("ansvarlig_seksjon" = "01"), c("ansvarlig_seksjon" = "02")),
                                         rbind(c("seksjon" = "Bakteriologi - Fisk og dyr"), c("seksjon" = "Virologi"))))
-  
+
   testdata <- add_PJS_code_description(testdata,
                                        translation_table = PJS_codes_2_text,
                                        code_colname = c("hensiktkode", "metodekode", "ansvarlig_seksjon"),
                                        PJS_variable_type = c("hensikt", "metode", "seksjon"),
                                        new_column = c("hensikt", "metode", "seksjon"))
-  
+
   # Compare new and old code descriptions
   expect_identical(testdata, correct_result)
-  
+
   testdata <- add_PJS_code_description(testdata,
                                        translation_table = PJS_codes_2_text,
                                        code_colname = c("hensiktkode", "metodekode", "ansvarlig_seksjon"),
@@ -125,10 +125,10 @@ test_that("Translate codes in PJS-data", {
                                        new_column = c("hensikt", "metode", "seksjon"),
                                        position = "left",
                                        overwrite = TRUE)
-  
+
   # Compare new and old code descriptions
   expect_identical(testdata, correct_result[, c("hensikt", "hensiktkode", "metode", "metodekode", "seksjon", "ansvarlig_seksjon")])
-  
+
   testdata <- add_PJS_code_description(testdata,
                                        translation_table = PJS_codes_2_text,
                                        code_colname = c("hensiktkode", "metodekode", "ansvarlig_seksjon"),
@@ -136,40 +136,40 @@ test_that("Translate codes in PJS-data", {
                                        new_column = c("hensikt", "metode", "seksjon"),
                                        position = c("keep", "first", "last"),
                                        overwrite = TRUE)
-  
+
   # Compare new and old code descriptions
   expect_identical(testdata, correct_result[, c("metode", "hensikt", "hensiktkode", "metodekode", "ansvarlig_seksjon", "seksjon")])
-  
+
 })
 
 test_that("Translate codes using 'auto'", {
-  
+
   # skip if no connection to 'FAG' have been established
   skip_if_not(dir.exists(set_dir_NVI("FAG")))
-  
+
   # Reads translation table for PJS-codes
   PJS_codes_2_text <- read_PJS_codes_2_text()
-  
+
   testdata <- as.data.frame(cbind(rbind(c("hensiktkode" = "01001"), c("hensiktkode" = "01002")),
                                   rbind(c("metodekode" = "010001"), c("metodekode" = "010002")),
                                   rbind(c("ansvarlig_seksjon" = "01"), c("ansvarlig_seksjon" = "02"))))
-  
+
   correct_result <- as.data.frame(cbind(rbind(c("hensiktkode" = "01001"), c("hensiktkode" = "01002")),
                                         rbind(c("hensikt" = "Oppklaring og oppfølging av helseproblem hos dyr"), c("hensikt" = "Oppklaring og oppfølging av helseproblem hos menneske")),
                                         rbind(c("metodekode" = "010001"), c("metodekode" = "010002")),
                                         rbind(c("metode" = "Obduksjon/organundersøkelse"), c("metode" = "Histopatologi")),
                                         rbind(c("ansvarlig_seksjon" = "01"), c("ansvarlig_seksjon" = "02")),
                                         rbind(c("ansvarlig_seksjon_navn" = "Bakteriologi - Fisk og dyr"), c("ansvarlig_seksjon_navn" = "Virologi"))))
-  
+
   testdata <- add_PJS_code_description(testdata,
                                        translation_table = PJS_codes_2_text,
                                        code_colname = c("hensiktkode", "metodekode", "ansvarlig_seksjon"),
                                        PJS_variable_type = c("auto"),
                                        new_column = c("auto"))
-  
+
   # Compare new and old code descriptions
   expect_identical(testdata, correct_result)
-  
+
 })
 
 

@@ -49,7 +49,7 @@ test_that("Correct merging of fylke, gjeldende_fylkenr and gjeldende_fylke by fy
                                           "Trøndelag", "Nordland", "Troms og Finnmark", "Troms og Finnmark",
                                           "Viken", "Innlandet", "Vestfold og Telemark", "Agder", "Vestland", "Trøndelag", "Troms og Finnmark"), stringsAsFactors = FALSE))
   colnames(correct_result) <- c("fylkenr", "fylke", "gjeldende_fylkenr", "gjeldende_fylke")
-  
+
   # Compare Add fylke, current fylkenr and current fylke with correct result
   expect_identical(add_kommune_fylke(data = fylker,
                                      translation_table = kommune_fylke,
@@ -57,7 +57,7 @@ test_that("Correct merging of fylke, gjeldende_fylkenr and gjeldende_fylke by fy
                                      new_column = c("fylke", "gjeldende_fylkenr", "gjeldende_fylke"),
                                      position = "right"),
                    correct_result)
-  
+
   # Make a dataframe with the correct result
   correct_result <- cbind(as.data.frame(c("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11",
                                           "12", "14", "15", "16", "17", "18", "19", "20",
@@ -71,7 +71,7 @@ test_that("Correct merging of fylke, gjeldende_fylkenr and gjeldende_fylke by fy
                                           "Trøndelag", "Nordland", "Troms og Finnmark", "Troms og Finnmark",
                                           "Viken", "Innlandet", "Vestfold og Telemark", "Agder", "Vestland", "Trøndelag", "Troms og Finnmark"), stringsAsFactors = FALSE))
   colnames(correct_result) <- c("fylkenr", "gjeldende_fylkenr", "gjeldende_fylke")
-  
+
   # Compare Add fylke, current fylkenr and current fylke with correct result
   expect_identical(add_kommune_fylke(fylker,
                                      translation_table = kommune_fylke,
@@ -79,7 +79,7 @@ test_that("Correct merging of fylke, gjeldende_fylkenr and gjeldende_fylke by fy
                                      new_column = c("gjeldende_fylkenr", "gjeldende_fylke"),
                                      position = "right"),
                    correct_result)
-  
+
   # Test of adding fylke only
   # Make a dataframe with the correct result
   correct_result <- cbind(as.data.frame(c("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11",
@@ -152,26 +152,26 @@ test_that("Correct position of new variables", {
                           kommuner,
                           correct_result,
                           correct_result)
-  colnames(correct_result) <- c("kommune_first", "kommune_left", "komnr", "kommune_right", "kommune_last" )
+  colnames(correct_result) <- c("kommune_first", "kommune_left", "komnr", "kommune_right", "kommune_last")
 
 
   # Compare Add kommune, current komnr and current kommune with correct result
-  kommuner <-  add_kommune_fylke(kommuner,
+  kommuner <- add_kommune_fylke(kommuner,
                                  translation_table = kommune_fylke,
                                  code_column = "komnr",
                                  new_column = c("kommune_first" = "kommune"),
                                  position = "first")
-  kommuner <-  add_kommune_fylke(kommuner,
+  kommuner <- add_kommune_fylke(kommuner,
                                  translation_table = kommune_fylke,
                                  code_column = "komnr",
                                  new_column = c("kommune_last" = "kommune"),
                                  position = "last")
-  kommuner <-  add_kommune_fylke(kommuner,
+  kommuner <- add_kommune_fylke(kommuner,
                                  translation_table = kommune_fylke,
                                  code_column = "komnr",
                                  new_column = c("kommune_left" = "kommune"),
                                  position = "left")
-  kommuner <-  add_kommune_fylke(kommuner,
+  kommuner <- add_kommune_fylke(kommuner,
                                  translation_table = kommune_fylke,
                                  code_column = "komnr",
                                  new_column = c("kommune_right" = "kommune"),
@@ -195,11 +195,11 @@ test_that("Correct result when using overwrite and keep", {
   # Make a dataframe with the correct result
   correct_result <- as.data.frame(c("Spydeberg", "Oslo", "Eigersund", "Trondheim"), stringsAsFactors = FALSE)
   correct_result <- cbind(kommuner, correct_result)
-  colnames(correct_result) <- c("komnr", "kommune" )
+  colnames(correct_result) <- c("komnr", "kommune")
 
 
   # Compare Add kommune, current komnr and current kommune with correct result
-  kommuner <-  add_kommune_fylke(kommuner,
+  kommuner <- add_kommune_fylke(kommuner,
                                  translation_table = kommune_fylke,
                                  code_column = "komnr",
                                  new_column = c("kommune" = "kommune"),
@@ -209,7 +209,7 @@ test_that("Correct result when using overwrite and keep", {
                    correct_result)
 
   # Compare Add kommune, with overwrite = TRUE, new position
-  kommuner <-  add_kommune_fylke(kommuner,
+  kommuner <- add_kommune_fylke(kommuner,
                                  translation_table = kommune_fylke,
                                  code_column = "komnr",
                                  new_column = "kommune",
@@ -220,7 +220,7 @@ test_that("Correct result when using overwrite and keep", {
                    correct_result[, c("kommune", "komnr")])
 
   # Compare Add kommune, with overwrite = TRUE, keep position
-  kommuner <-  add_kommune_fylke(kommuner,
+  kommuner <- add_kommune_fylke(kommuner,
                                  translation_table = kommune_fylke,
                                  code_column = "komnr",
                                  new_column = "kommune",
@@ -235,17 +235,16 @@ test_that("Correct result when using overwrite and keep", {
 
 
 test_that("errors for read_kommune_fylke", {
-  
+
   linewidth <- options("width")
   options(width = 80)
-  
-  expect_error(read_kommune_fylke(filename = NULL, from_path = tempdir()) ,
+
+  expect_error(read_kommune_fylke(filename = NULL, from_path = tempdir()),
                regexp = "Variable 'filename': One of the following must apply:",
                fixed = TRUE)
-  
-  expect_error(read_kommune_fylke(filename = "filename.csv", from_path = tempdir()) ,
+
+  expect_error(read_kommune_fylke(filename = "filename.csv", from_path = tempdir()),
                regexp = "File does not exist:")
-  
+
   options(width = unlist(linewidth))
 })
-

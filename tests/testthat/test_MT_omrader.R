@@ -67,7 +67,7 @@ test_that("Correct result when using overwrite and keep", {
 
 
   # Compare Add kommune, current komnr and current kommune with correct result
-  kommuner <-  add_MT_omrader(data = kommuner,
+  kommuner <- add_MT_omrader(data = kommuner,
                               translation_table = MT_omrader,
                               code_column = "komnr",
                               new_column = c("MT_regionnr", "MT_region", "MT_avdelingnr", "MT_avdeling"),
@@ -77,7 +77,7 @@ test_that("Correct result when using overwrite and keep", {
                    correct_result)
 
   # Compare add_MT_omrader, with overwrite = TRUE, new position
-  kommuner <-   add_MT_omrader(data = kommuner,
+  kommuner <- add_MT_omrader(data = kommuner,
                                translation_table = MT_omrader,
                                code_column = "komnr",
                                new_column = c("MT_avdelingnr", "MT_avdeling"),
@@ -88,7 +88,7 @@ test_that("Correct result when using overwrite and keep", {
                    correct_result[, c("MT_regionnr", "MT_region", "komnr", "MT_avdelingnr", "MT_avdeling")])
 
   # Compare add_MT_omrader, with overwrite = TRUE, keep position
-  kommuner <-  add_MT_omrader(data = kommuner,
+  kommuner <- add_MT_omrader(data = kommuner,
                               translation_table = MT_omrader,
                               code_column = "komnr",
                               new_column = c("MT_regionnr", "MT_region"),
@@ -104,19 +104,16 @@ test_that("Correct result when using overwrite and keep", {
 
 
 test_that("errors for read_MT_omrader", {
-  
+
   linewidth <- options("width")
   options(width = 80)
-  
-  expect_error(read_MT_omrader(filename = NULL, from_path = tempdir()) ,
+
+  expect_error(read_MT_omrader(filename = NULL, from_path = tempdir()),
                regexp = "Variable 'filename': One of the following must apply:",
                fixed = TRUE)
-  
-  expect_error(read_MT_omrader(filename = "filename.csv", from_path = tempdir()) ,
+
+  expect_error(read_MT_omrader(filename = "filename.csv", from_path = tempdir()),
                regexp = "File does not exist:")
-  
+
   options(width = unlist(linewidth))
 })
-
-
-

@@ -31,12 +31,12 @@ test_that("Choose variables from PJS levels", {
                       "sjosatt_tid", "vaksine", "vaksine_tid", "fortype", "lengde",
                       "helsestatuskode", "konklnr", "konkl_kjennelsekode", "konkl_analyttkode", "konkl_typekode",
                       "eier_lokalitet", "postnr")
-  sak_konkl <- choose_PJS_levels(PJStest, levels = c("sak" , "prove" , "konklusjon"))
+  sak_konkl <- choose_PJS_levels(PJStest, levels = c("sak", "prove", "konklusjon"))
 
   expect_identical(colnames(sak_konkl), correct_result)
 
   sak_res_konkl <- choose_PJS_levels(PJStest,
-                                     levels = c("sak" , "prove" , "delprove", "undersokelse", "resultat", "konklusjon"))
+                                     levels = c("sak", "prove", "delprove", "undersokelse", "resultat", "konklusjon"))
 
   expect_identical(colnames(sak_res_konkl), colnames(PJStest))
 
@@ -56,7 +56,7 @@ test_that("Choose variables from PJS levels", {
                      "annen_aktortype", "annen_aktornr", "merknad", "fagkode", "fagnr",
                      "fagansvarlig_person", "karantene", "kartreferanse", "eierreferanse", "innsenderreferanse",
                      "okt_dodelighet", "epi_id", "utbrudd_id", "utbrudd_aar", "utbruddnr",
-                     "eier_lokalitet", "postnr") )
+                     "eier_lokalitet", "postnr"))
 
   prove <- choose_PJS_levels(PJStest, levels = c("prove"))
 
@@ -69,31 +69,31 @@ test_that("Choose variables from PJS levels", {
                      "tidl_eier", "avkom_imp_dyr", "oppstallingkode", "merknad_prove", "okologisk_drift",
                      "skrottnr", "dyrnr", "provemerknad", "id_nr", "id_nr_type", "stamme",
                      "resirkuleringsanlegg", "salinitet", "temperatur", "dybde", "sjosatt_tid",
-                     "vaksine", "vaksine_tid", "fortype", "lengde", "helsestatuskode") )
+                     "vaksine", "vaksine_tid", "fortype", "lengde", "helsestatuskode"))
 
   konklusjon <- choose_PJS_levels(PJStest, levels = c("konklusjon"))
   expect_identical(colnames(konklusjon),
                    c("aar", "ansvarlig_seksjon", "innsendelsenr", "provenr", "konklnr",
-                     "konkl_kjennelsekode", "konkl_analyttkode", "konkl_typekode") )
+                     "konkl_kjennelsekode", "konkl_analyttkode", "konkl_typekode"))
 
 
   delprove <- choose_PJS_levels(PJStest, levels = c("delprove"))
   expect_identical(colnames(delprove),
                    c("aar", "ansvarlig_seksjon", "innsendelsenr", "provenr", "delprovenr",
                      "utf_seksjon", "delpr_provematerialekode", "delpr_provetypekode",
-                     "ant_delprover", "ant_i_samledelprove", "delpr_forbehandling_kode") )
+                     "ant_delprover", "ant_i_samledelprove", "delpr_forbehandling_kode"))
 
 
   undersokelse <- choose_PJS_levels(PJStest, levels = c("undersokelse"))
   expect_identical(colnames(undersokelse),
                    c("aar", "ansvarlig_seksjon", "innsendelsenr", "provenr", "delprovenr", "undnr",
-                     "metodekode", "und_godkjent", "und_avsluttet") )
+                     "metodekode", "und_godkjent", "und_avsluttet"))
 
 
   resultat <- choose_PJS_levels(PJStest, levels = c("resultat"))
   expect_identical(colnames(resultat),
                    c("aar", "ansvarlig_seksjon", "innsendelsenr", "provenr", "delprovenr", "undnr", "resnr",
-                     "res_analyttkode", "verdi_mengde", "enhetkode", "res_kjennelsekode", "det_grense") )
+                     "res_analyttkode", "verdi_mengde", "enhetkode", "res_kjennelsekode", "det_grense"))
 
   # test keep_col
   # prove <- choose_PJS_levels(PJStest, levels = c("sak" , "prove" , "konklusjon"), keep_col = "delprovenr")
