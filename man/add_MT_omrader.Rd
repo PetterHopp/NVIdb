@@ -36,7 +36,7 @@ read_MT_omrader(
 data has another name, it can be input as a named vector, see examples.}
 
 \item{new_column}{The new columns that should be included into the data frame. The new columns can be up to
-c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region") depending on 
+c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region") depending on
 \code{code_column}. If the new columns in the result data frame
 should have other names, \code{new_column} can be input as a named vector, see examples.}
 
@@ -58,13 +58,13 @@ exist and \code{overwrite = FALSE}, an error is issued.}
 \code{add_MT_omrader} A data frame where the MT_avdelingnr has been added in the column to the
     right of the column with the komnr.
 
-    \code{read_MT_omrader} A data frame with the table for translating from komnr to 
-    c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region") as read from the source 
-    csv file. If not changing standard input to the function, the standard files at 
+    \code{read_MT_omrader} A data frame with the table for translating from komnr to
+    c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region") as read from the source
+    csv file. If not changing standard input to the function, the standard files at
     NVI's internal network is read.
 
-    \code{copy_MT_omrader} Copies the csv-files "komnr_2_MT_avdeling.csv" and "MT_omrader.csv" 
-    to another directory. If the target files already exists the source files are only 
+    \code{copy_MT_omrader} Copies the csv-files "komnr_2_MT_avdeling.csv" and "MT_omrader.csv"
+    to another directory. If the target files already exists the source files are only
     copied if they are newer than the target files.
 }
 \description{
@@ -109,7 +109,7 @@ copy_MT_omrader(to_path = "./Data/")
 komnr_2_MT_omrader <- read_MT_omrader(from_path = "./Data/")
 
 # Add new columns with MT_avdelingnr, MT_avdeling, MT_regionnr, and MT_region based on komnr
-# Remember to load "komnr_2_MT_omrader" by "read_MT_omrader()" before running "add_MT_omrader", 
+# Remember to load "komnr_2_MT_omrader" by "read_MT_omrader()" before running "add_MT_omrader",
 # see above.
 newdata <- add_MT_omrader(olddata,
                        translation_table = list(komnr_2_MT_omrader),
@@ -118,7 +118,7 @@ newdata <- add_MT_omrader(olddata,
 
 # Add new columns with MT_avdelingnr and MT_avdeling based on komnr. The colname of the column
 # with komnr is komnr and the new columns are renamed to MT_avdnr and MT_avd.
-# Remember to load "komnr_2_MT_omrader" by "read_MT_omrader()" before running "add_MT_omrader", 
+# Remember to load "komnr_2_MT_omrader" by "read_MT_omrader()" before running "add_MT_omrader",
 # see above.
 newdata <- add_MT_omrader(olddata,
                        translation_table = list(komnr_2_MT_omrader),
@@ -126,7 +126,7 @@ newdata <- add_MT_omrader(olddata,
                        new_column = c("MT_avdnr" = "MT_avdelingnr", "MT_avd" = "MT_avdeling"))
 
 # Add new columns with MT_region based on MT_regionnr. MT_region is renamed to MT_regionnavn
-# Remember to load "komnr_2_MT_omrader" by "read_MT_omrader()" before running "add_MT_omrader", 
+# Remember to load "komnr_2_MT_omrader" by "read_MT_omrader()" before running "add_MT_omrader",
 # see above.
 newdata <- add_MT_omrader(olddata,
                        translation_table = list(komnr_2_MT_omrader),

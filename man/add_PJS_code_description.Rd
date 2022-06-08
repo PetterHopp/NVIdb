@@ -34,7 +34,7 @@ read_PJS_codes_2_text(
 \item{translation_table}{Data frame with the code and the description for PJS-variables}
 
 \item{PJS_variable_type}{A vector with PJS-variables, for example "hensikt". See details for a list of all PJS-variables included in
-the premade translation table pjscode_2_descriptions.csv. If more than one code should be translated, they can be given in the vector. 
+the premade translation table pjscode_2_descriptions.csv. If more than one code should be translated, they can be given in the vector.
 You may also use "auto", if \code{code_colname} have standardized PJS names only, see details.}
 
 \item{code_colname}{The name of the column with codes that should be translated. If several codes should be translated, a vector with the
@@ -76,17 +76,17 @@ Export of data from PJS will produce data frames in which many columns have code
     into descriptive text to increase readability.
 
     \code{add_PJS_code_description} can be used to translate the codes into descriptive text. In a data.frame with coded values,
-    the function can return a data frame with the descriptive text in a new column. As default, the descriptive text is input 
+    the function can return a data frame with the descriptive text in a new column. As default, the descriptive text is input
     in a new column to the right of the column with codes.
 
-    \code{add_PJS_code_description} uses a premade translation table (PJS_codes_2_text.csv). The data need to be loaded by 
-    \code{read_PJS_code_registers} before running \code{add_PJS_code_description}, see example. The file "PJS_codes_2_text.csv" is 
+    \code{add_PJS_code_description} uses a premade translation table (PJS_codes_2_text.csv). The data need to be loaded by
+    \code{read_PJS_code_registers} before running \code{add_PJS_code_description}, see example. The file "PJS_codes_2_text.csv" is
     normally updated every night from PJS.
 
     Currently, the translation table has PJS-codes and the corresponding description for the PJS variable types given
-    in the first column in the table below. The standardized PJS column name is given in the column "code colname" for 
+    in the first column in the table below. The standardized PJS column name is given in the column "code colname" for
     which the "PJS variable type" will translate into descriptive text. The standard new column name is given in the
-    column "new column". 
+    column "new column".
 
 \tabular{llll}{
   \strong{PJS variable type} \tab \strong{code colname} \tab \strong{new column} \tab \strong{remark} \cr
@@ -118,7 +118,7 @@ Export of data from PJS will produce data frames in which many columns have code
     facilitate coding by setting \code{PJS_variable_type = "auto"} and/or \code{new_colname = "auto"}. Then the \code{PJS_variable_type}
     will be automatically set according to the table above (for "artkode" \code{PJS_variable_type = "art"} will be chosen). Likewise,
     the \code{new_column} will be automatically set according to the table above.
-    
+
     \code{position =} is used to give the position if the new columns in the data.frame. For \code{position = "right"} the new variables are
     placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
     code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the

@@ -43,8 +43,8 @@ read_prodnr_2_current_prodnr(
 \item{code_column}{The column with the coded value. Valid values are one of c("prodnr8"). If the column in
 data has another name, it can be input as a named vector, see examples.}
 
-\item{new_column}{The new columns that should be included into the dataframe. The new columns can be up to
-c("gjeldende_prodnr8") depending on \code{code_column}. If the new columns in the result dataframe
+\item{new_column}{The new columns that should be included into the data frame. The new columns can be up to
+c("gjeldende_prodnr8") depending on \code{code_column}. If the new columns in the result data frame
 should have other names, \code{new_column} can be input as a named vector, see examples.}
 
 \item{position}{character input giving the position for the new columns, can be one
@@ -55,8 +55,8 @@ the new column(s) already exist, the content in the existing column(s) is
 replaced by new data if \code{overwrite = TRUE}. If the new column(s) already 
 exist and \code{overwrite = FALSE}, an error is issued.}
 
-\item{impute_old_when_missing}{Should the ID-variable be used as value for the \code{new_column} if the 
-\code{new_column} value is missing? Default is \code{FALSE}. To be used for translating prodnr8 to 
+\item{impute_old_when_missing}{Should the ID-variable be used as value for the \code{new_column} if the
+\code{new_column} value is missing? Default is \code{FALSE}. To be used for translating prodnr8 to
 gjeldende_prodnr8, see details.}
 
 \item{filename}{a list with the filenames of the source files with the tables for generating the translation table.}
@@ -83,7 +83,7 @@ Function to add a column with gjeldende_prodnr8. In addition there are
     column and overwrite = TRUE. In these cases, the existing column will be overwritten with new data and have the same position.
 
     \code{impute_old_when_missing = TRUE} is used to replace missing values in the \code{new_column} with the value in
-    \code{code_column}. This is useful when translating prodnr8 to gjeldende_prodnr8. It should not be used when translating 
+    \code{code_column}. This is useful when translating prodnr8 to gjeldende_prodnr8. It should not be used when translating
     from prodnr8 to something where imputing the old prodnr8 in the new variables don't have any meaning, for example geo-coordinates.
 
     \code{read_prodnr_2_current_prodnr} reads the file "Prodnr2GjeldendeProdnr.csv" into a data frame that can be used by
@@ -100,7 +100,7 @@ Function to add a column with gjeldende_prodnr8. In addition there are
 }
 \examples{
 \dontrun{
-#CURRENT PRODNR8
+# CURRENT PRODNR8
 # Reading from standard directory at NVI's network
 prodnr_2_gjeldende_prodnr <- read_prodnr_2_current_prodnr()
 
@@ -128,9 +128,8 @@ prodnr_2_koordinater <- read_prodnr_2_coordinates()
 newdata <- add_produsent_properties(newdata,
                                     translation_table = prodnr_2_koordinater,
                                     code_column = "prodnr8",
-                                    new_column = c("longitude" = "geo_eu89_o", 
-                                                   "latitude" = "geo_eu89_n")
-
+                                    new_column = c("longitude" = "geo_eu89_o",
+                                                   "latitude" = "geo_eu89_n"))
 }
 
 }

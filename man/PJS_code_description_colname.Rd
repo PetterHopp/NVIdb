@@ -22,7 +22,7 @@ PJS_code_description_colname
 A data frame with the variable names (column names) in PJS and their corresponding PJS-level. The column names
    are the standardized column names, i.e. after running \code{NVIdb::standardize_columns}.
    The raw data can be edited in the \code{./data-raw/generate_PJS_code_description_colname.R}. The \code{PJS_code_description_colname}
-   is used by \code{NVIdb::add_PJS_code_description} when using the options \code{PJS_variable_type = "auto"} and/or 
+   is used by \code{NVIdb::add_PJS_code_description} when using the options \code{PJS_variable_type = "auto"} and/or
    \code{new_column = "auto"}.
 }
 \keyword{datasets}

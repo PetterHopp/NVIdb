@@ -9,25 +9,25 @@ assert_copy_function(filename, from_path, to_path)
 \arguments{
 \item{filename}{Argument to the copy-function to be asserted.}
 
-\item{from_path}{Argument to the copy-function to be asserted. Ending 
+\item{from_path}{Argument to the copy-function to be asserted. Ending
 "\\" and "/" should have been removed before the assertion is performed.}
 
-\item{to_path}{Argument to the copy-function to be asserted. Ending 
+\item{to_path}{Argument to the copy-function to be asserted. Ending
 "\\" and "/" should have been removed before the assertion is performed.}
 }
 \value{
-\code{TRUE} if none of the assertions failed. If any of the assertions 
+\code{TRUE} if none of the assertions failed. If any of the assertions
     failed, one or more error messages are returned.
 }
 \description{
 Collection of assertions used in standard copy_functions.
 }
 \details{
-All copy functions have the same arguments and the 
-    assertion can be standardized. The assertion of \code{filname} is 
+All copy functions have the same arguments and the
+    assertion can be standardized. The assertion of \code{filname} is
     constructed to handle both character and list input.
-    
-    The assertion is based on removing ending "\\" and "/" from 
+
+    The assertion is based on removing ending "\\" and "/" from
     \code{from_path} and \code{to_path} before the assertion is performed.
 }
 \author{

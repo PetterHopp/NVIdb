@@ -27,14 +27,14 @@ assert_add_function(
 \item{overwrite}{Argument to the add-function to be asserted.}
 }
 \value{
-\code{TRUE} if none of the assertions failed. If any of the assertions 
+\code{TRUE} if none of the assertions failed. If any of the assertions
     failed, one or more error messages are returned.
 }
 \description{
 Collection of assertions used in standard add_functions.
 }
 \details{
-All add functions except one, have the same arguments and the 
+All add functions except one, have the same arguments and the
     assertion can be standardized.
 }
 \author{

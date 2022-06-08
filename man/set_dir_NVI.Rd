@@ -7,8 +7,8 @@
 set_dir_NVI(datasource)
 }
 \arguments{
-\item{datasource}{The data source that one want to access. The input can be 
-abbreviated and case is ignored. To identify short names for the available 
+\item{datasource}{The data source that one want to access. The input can be
+abbreviated and case is ignored. To identify short names for the available
 directories, use \code{set_dir_NVI(datasource = "?")}.}
 }
 \value{
@@ -18,8 +18,8 @@ The full path for the directory at NVI's network. The path ends with "/".
 Set the directories for various data sources at NVI's network.
 }
 \details{
-The Norwegian Veterinary Institute has standard data sources at fixed 
-    directories. The function returns the standard directory for the given 
+The Norwegian Veterinary Institute has standard data sources at fixed
+    directories. The function returns the standard directory for the given
     data source. Thereby hard coding of the paths may be avoided.
 }
 \examples{

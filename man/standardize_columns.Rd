@@ -57,8 +57,8 @@ Experimental, the standardization table is under development. This version only 
 
     \code{property = "colclasses"} will generate a named vector with the column classes for variables that may not be read correct when importing
     data from a csv-file. This applies for example to numbers with leading zero that must be imported as character. This vector can be used as a
-    parameter for \code{colClasses = }. 
-    
+    parameter for \code{colClasses = }.
+
     The default fileEncoding is assumed to be "UTF-8". If another encoding one must give an additional argument like \code{fileEncoding = "latin"}.
 
     \code{property = "collabels"} will generate a vector with column labels that can be used to replace the column names in the header of the data
@@ -96,7 +96,6 @@ colnames(df) <- labels
 # Generate vector with standard column widths for Excel
 colwidths <- standardize_columns(data = df, property = "colwidths_Excel")
 colwidths
-
 }
 
 }

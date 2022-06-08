@@ -15,9 +15,9 @@ standardize_PJSdata(PJSdata, dbsource = "v2_sak_m_res")
 data frame with standardized PJS-data.
 }
 \description{
-Standardizing PJS-data. This standardizing should always be performed. 
+Standardizing PJS-data. This standardizing should always be performed.
     Other functions used for further preparation of PJSdata, like \code{chose_PJS_levels},
-     and \code{exclude_form_PJSdata} will not work as intended unless the column 
+     and \code{exclude_form_PJSdata} will not work as intended unless the column
     names are standardized.
 }
 \details{

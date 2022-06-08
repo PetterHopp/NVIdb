@@ -43,7 +43,7 @@ When reading PJS-data through certain views, data from more levels that needed m
 }
 \examples{
 \dontrun{
-#Attach packages
+# Attach packages
 library(RODBC)
 library(NVIdb)
 
@@ -70,7 +70,7 @@ sak_prove_konkl <- choose_PJS_levels(PJSdata,
                                                    "fodselsdato", "konklnr"),
                                     unique_rows = TRUE)
 
-sak_prove_und_res <-  choose_PJS_levels(PJSdata,
+sak_prove_und_res <- choose_PJS_levels(PJSdata,
                                         levels = c("sak", "prove", "undersokelse", "resultat"),
                                         remove_col = c("vet_distriktnr", "karantene",
                                                        "kartreferanse", "epi_id", "landnr",

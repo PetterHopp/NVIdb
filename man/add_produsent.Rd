@@ -31,16 +31,16 @@ should have other names, \code{new_column} can be input as a named vector, see e
 If the new columns already exists and overwrite = FALSE, then an error is issued.}
 }
 \description{
-add_produsent was deprecated 2022-05-02. as other properties 
-    than 'gjeldende_prodnr8' could not be included without breaking backward 
-    compatibility. Use \code{add_produsent_properties} instead and ensure 
-    to set the parameter \code{impute_old_when_missing = TRUE} when translating 
-    from "prodnr8" to "gjeldende_prodnr8" and set the parameter 
-    \code{impute_old_when_missing = FALSE} when translating from "prodnr8" to 
+add_produsent was deprecated 2022-05-02. as other properties
+    than 'gjeldende_prodnr8' could not be included without breaking backward
+    compatibility. Use \code{add_produsent_properties} instead and ensure
+    to set the parameter \code{impute_old_when_missing = TRUE} when translating
+    from "prodnr8" to "gjeldende_prodnr8" and set the parameter
+    \code{impute_old_when_missing = FALSE} when translating from "prodnr8" to
     other properties.
 }
 \details{
-The old help pages can be found at \code{help("add_produsent-deprecated")}. 
+The old help pages can be found at \code{help("add_produsent-deprecated")}.
     Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
 }
 \keyword{internal}

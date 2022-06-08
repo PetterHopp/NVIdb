@@ -19,14 +19,15 @@ add_produsent(data,
 \item{code_column}{The column with the coded value. Valid values are one of c("prodnr8"). If the column in
 data has another name, it can be input as a named vector, see examples.}
 
-\item{new_column}{The new columns that should be included into the dataframe. The new columns can be up to
-c("gjeldende_prodnr8") depending on \code{code_column}. If the new columns in the result dataframe
+\item{new_column}{The new columns that should be included into the data frame. The new columns can be up to
+c("gjeldende_prodnr8") depending on \code{code_column}. If the new columns in the result data frame
 should have other names, \code{new_column} can be input as a named vector, see examples.}
 
 \item{position}{position for the new columns, can be one of c("first", "left", "right", "last", "keep")}
 
-\item{overwrite}{When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
-If the new columns already exists and overwrite = FALSE, then an error is issued.}
+\item{overwrite}{When the new column(s) already exist, the content in the
+existing column(s) is replaced by new data if overwrite = TRUE. If the
+new columns already exists and overwrite = FALSE, then an error is issued.}
 
 \item{filename}{a list with the filenames of the source files with the tables for generating the translation table.}
 
@@ -65,7 +66,7 @@ Function to add a column with gjeldende_prodnr8. In addition there are
 }
 \examples{
 \dontrun{
-#CURRENT PRODNR8
+# CURRENT PRODNR8
 # Reading from standard directory at NVI's network
 prodnr_2_gjeldende_prodnr <- read_prodnr_2_current_prodnr()
 
@@ -92,8 +93,7 @@ prodnr_2_koordinater <- read_prodnr_2_coordinates()
 newdata <- add_produsent(newdata,
                         translation_table = prodnr_2_koordinater,
                         code_column = "prodnr8",
-                        new_column = c("longitude" = "geo_eu89_o", "latitude" = "geo_eu89_n")
-
+                        new_column = c("longitude" = "geo_eu89_o", "latitude" = "geo_eu89_n"))
 }
 
 }

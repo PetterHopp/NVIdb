@@ -104,7 +104,7 @@ poststed <- read_poststed(from_path = "./Data/")
 # Add new column with poststed and komnr
 # The variable postnummer should be translated into poststed and komnr. For poststed
 # the standard name is kept. For komnr the new variable is named postkomnr.
-# Remember to load "poststed" by "read_poststed()" before running "add_poststed", 
+# Remember to load "poststed" by "read_poststed()" before running "add_poststed",
 # see above.
 newdata <- add_poststed(olddata,
                         translation_table = poststed,

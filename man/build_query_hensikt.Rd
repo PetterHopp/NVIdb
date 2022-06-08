@@ -28,7 +28,6 @@ The function builds the SQL syntax to select all PJS-journals concerning the hen
 # SQL-select query for Pancreatic disease (PD)
 build_query_hensikt(year = 2020,
                     hensikt = c("0200102"))
-
 }
 \author{
 Petter Hopp Petter.Hopp@vetinst.no
