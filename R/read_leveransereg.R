@@ -18,19 +18,18 @@
 #' @examples
 #' \dontrun{
 #' # Reading from standard directory at NVI's network
-#' Lev>>Reg2019 <- read_leveransereg(filename = "LevReg_201901_201912.csv")
+#' LevReg2019 <- read_leveransereg(filename = "LevReg_201901_201912.csv")
 #' }
 #'
-
 read_leveransereg <- function(filename,
                               from_path = paste0(set_dir_NVI("LevReg"), "FormaterteData/")) {
-  
+
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
-  
+
   # ARGUMENT CHECKING ----
   assert_read_function(filename = filename, from_path = from_path)
-  
+
   # # Argument checking
   # # Object to store check-results
   # checks <- checkmate::makeAssertCollection()

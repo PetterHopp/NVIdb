@@ -19,10 +19,8 @@
 #' # SQL-select query for Pancreatic disease (PD)
 #' build_query_hensikt(year = 2020,
 #'                     hensikt = c("0200102"))
-#'
-
 build_query_hensikt <- function(year, hensikt, db = "PJS") {
-  
+
   # Argument checking
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
@@ -32,23 +30,23 @@ build_query_hensikt <- function(year, hensikt, db = "PJS") {
   checkmate::assert_choice(db, choices = c("PJS"), add = checks)
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   select_year <- NVIdb::build_sql_select_year(year = year, varname = "aar")
-  
+
   select_hensikt <- NVIdb::build_sql_select_code(values = hensikt, varname = "hensiktkode")
   # select_hensikt <- paste0("hensiktkode in ('", paste(hensikt, collapse = "', '"), "')")
-  
+
   selection_v2_sak_m_res <- paste("SELECT * FROM v2_sak_m_res",
-                                  "WHERE", select_year , "AND",
+                                  "WHERE", select_year, "AND",
                                   "(",
                                   select_hensikt,
-                                  ")" )
-  
+                                  ")")
+
   select_year <- NVIdb::build_sql_select_year(year = year, varname = "sak.aar")
-  
+
   select_hensikt <- NVIdb::build_sql_select_code(values = hensikt, varname = "sak.hensiktkode")
   # select_hensikt <- paste0("sak.hensiktkode in ('", paste(hensikt, collapse = "', '"), "')")
-  
+
   selection_sakskonklusjon <- paste("SELECT v_sakskonklusjon.*,",
                                     "sak.mottatt_dato, sak.uttaksdato, sak.sak_avsluttet, sak.hensiktkode,",
                                     "sak.eier_lokalitetstype, sak.eier_lokalitetnr",
@@ -60,11 +58,9 @@ build_query_hensikt <- function(year, hensikt, db = "PJS") {
                                     "WHERE", select_year, "AND (",
                                     select_hensikt,
                                     ")")
-  
+
   select_statement <- list("selection_v2_sak_m_res" = selection_v2_sak_m_res,
                            "selection_sakskonklusjon" = selection_sakskonklusjon)
-  
+
   return(select_statement)
 }
-
-

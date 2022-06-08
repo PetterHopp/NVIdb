@@ -103,7 +103,7 @@ add_new_column <- function(data,
                            ID_column_translation_table,
                            to_column_translation_table,
                            position = "right",
-                           overwrite= FALSE,
+                           overwrite = FALSE,
                            impute_old_when_missing = FALSE,
                            n_columns_at_once = 1) {
 

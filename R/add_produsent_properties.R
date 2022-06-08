@@ -10,7 +10,7 @@
 #'     column and overwrite = TRUE. In these cases, the existing column will be overwritten with new data and have the same position.
 #'
 #'     \code{impute_old_when_missing = TRUE} is used to replace missing values in the \code{new_column} with the value in
-#'     \code{code_column}. This is useful when translating prodnr8 to gjeldende_prodnr8. It should not be used when translating 
+#'     \code{code_column}. This is useful when translating prodnr8 to gjeldende_prodnr8. It should not be used when translating
 #'     from prodnr8 to something where imputing the old prodnr8 in the new variables don't have any meaning, for example geo-coordinates.
 #'
 #'     \code{read_prodnr_2_current_prodnr} reads the file "Prodnr2GjeldendeProdnr.csv" into a data frame that can be used by
@@ -29,13 +29,13 @@
 #' @param translation_table Data frame with the table for translating from prodnr8 to gjeldende_prodnr8.
 #' @param code_column The column with the coded value. Valid values are one of c("prodnr8"). If the column in
 #'     data has another name, it can be input as a named vector, see examples.
-#' @param new_column The new columns that should be included into the dataframe. The new columns can be up to
-#'     c("gjeldende_prodnr8") depending on \code{code_column}. If the new columns in the result dataframe
+#' @param new_column The new columns that should be included into the data frame. The new columns can be up to
+#'     c("gjeldende_prodnr8") depending on \code{code_column}. If the new columns in the result data frame
 #'     should have other names, \code{new_column} can be input as a named vector, see examples.
 #' @template position
 #' @template overwrite
-#' @param impute_old_when_missing Should the ID-variable be used as value for the \code{new_column} if the 
-#'     \code{new_column} value is missing? Default is \code{FALSE}. To be used for translating prodnr8 to 
+#' @param impute_old_when_missing Should the ID-variable be used as value for the \code{new_column} if the
+#'     \code{new_column} value is missing? Default is \code{FALSE}. To be used for translating prodnr8 to
 #'     gjeldende_prodnr8, see details.
 #' @param filename a list with the filenames of the source files with the tables for generating the translation table.
 #' @param from_path Path for the source files for the translation table.
@@ -48,7 +48,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' #CURRENT PRODNR8
+#' # CURRENT PRODNR8
 #' # Reading from standard directory at NVI's network
 #' prodnr_2_gjeldende_prodnr <- read_prodnr_2_current_prodnr()
 #'
@@ -76,9 +76,8 @@
 #' newdata <- add_produsent_properties(newdata,
 #'                                     translation_table = prodnr_2_koordinater,
 #'                                     code_column = "prodnr8",
-#'                                     new_column = c("longitude" = "geo_eu89_o", 
-#'                                                    "latitude" = "geo_eu89_n")
-#'
+#'                                     new_column = c("longitude" = "geo_eu89_o",
+#'                                                    "latitude" = "geo_eu89_n"))
 #' }
 #'
 add_produsent_properties <- function(data,
@@ -88,12 +87,12 @@ add_produsent_properties <- function(data,
                                      position = "right",
                                      overwrite = FALSE,
                                      impute_old_when_missing = FALSE) {
-  
+
   # Ensure that code_column and new_column are named vectors by using the internal function set_name_vector()
   # Thereby, the following code can assume these to be named vectors
   code_column <- set_name_vector(code_column)
   new_column <- set_name_vector(new_column)
-  
+
   # ARGUMENT CHECKING ----
   assert_add_function(data = data,
                       translation_table = translation_table,
@@ -101,12 +100,12 @@ add_produsent_properties <- function(data,
                       new_column = new_column,
                       position = position,
                       overwrite = overwrite)
-  
+
   # PREPARE TRANSLATION TABLE ----
   # Makes the translation table with code_column and new_column. unique() is necessary to avoid duplicate
   # rows when code_column is not "kommunenr"
   code_2_new <- unique(translation_table[, c(unname(code_column), unname(new_column))])
-  
+
   # ADD NEW COLUMN(S) ----
   # Set up of parameters for the internal function add_new_column(). names() is used to select the column names
   # in the input data and unname() is used to select the column names in the translation table. n_columns_at_once
@@ -122,7 +121,7 @@ add_produsent_properties <- function(data,
                          impute_old_when_missing = impute_old_when_missing,
                          n_columns_at_once = length(new_column)
   )
-  
-  
+
+
   return(data)
 }

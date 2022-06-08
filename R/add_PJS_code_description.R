@@ -5,17 +5,17 @@
 #'     into descriptive text to increase readability.
 #'
 #'     \code{add_PJS_code_description} can be used to translate the codes into descriptive text. In a data.frame with coded values,
-#'     the function can return a data frame with the descriptive text in a new column. As default, the descriptive text is input 
+#'     the function can return a data frame with the descriptive text in a new column. As default, the descriptive text is input
 #'     in a new column to the right of the column with codes.
 #'
-#'     \code{add_PJS_code_description} uses a premade translation table (PJS_codes_2_text.csv). The data need to be loaded by 
-#'     \code{read_PJS_code_registers} before running \code{add_PJS_code_description}, see example. The file "PJS_codes_2_text.csv" is 
+#'     \code{add_PJS_code_description} uses a premade translation table (PJS_codes_2_text.csv). The data need to be loaded by
+#'     \code{read_PJS_code_registers} before running \code{add_PJS_code_description}, see example. The file "PJS_codes_2_text.csv" is
 #'     normally updated every night from PJS.
 #'
 #'     Currently, the translation table has PJS-codes and the corresponding description for the PJS variable types given
-#'     in the first column in the table below. The standardized PJS column name is given in the column "code colname" for 
+#'     in the first column in the table below. The standardized PJS column name is given in the column "code colname" for
 #'     which the "PJS variable type" will translate into descriptive text. The standard new column name is given in the
-#'     column "new column". 
+#'     column "new column".
 #'
 #' \tabular{llll}{
 #'   \strong{PJS variable type} \tab \strong{code colname} \tab \strong{new column} \tab \strong{remark} \cr
@@ -42,12 +42,12 @@
 #'   analytt \tab konkl_analyttkode \tab konkl_analytt \tab \cr
 #'   analytt \tab res_analyttkode \tab res_analytt \tab \cr
 #' }
-#' 
+#'
 #'     If \code{code_colname = } is a vector of standardized PJS column names and a subset of "code column" in the table above, you may
 #'     facilitate coding by setting \code{PJS_variable_type = "auto"} and/or \code{new_colname = "auto"}. Then the \code{PJS_variable_type}
 #'     will be automatically set according to the table above (for "artkode" \code{PJS_variable_type = "art"} will be chosen). Likewise,
 #'     the \code{new_column} will be automatically set according to the table above.
-#'     
+#'
 #'     \code{position =} is used to give the position if the new columns in the data.frame. For \code{position = "right"} the new variables are
 #'     placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
 #'     code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
@@ -70,12 +70,12 @@
 #' @param data Data frame with PJS-data with a column with codes for a PJS-variable
 #' @param translation_table Data frame with the code and the description for PJS-variables
 #' @param PJS_variable_type A vector with PJS-variables, for example "hensikt". See details for a list of all PJS-variables included in
-#'     the premade translation table pjscode_2_descriptions.csv. If more than one code should be translated, they can be given in the vector. 
+#'     the premade translation table pjscode_2_descriptions.csv. If more than one code should be translated, they can be given in the vector.
 #'     You may also use "auto", if \code{code_colname} have standardized PJS names only, see details.
 #' @param code_colname The name of the column with codes that should be translated. If several codes should be translated, a vector with the
 #'     names of the coded variables should be given.
 #' @param new_column The name of the new column with the text describing the code. If several codes should be translated, a vector with the
-#'     new column names should be given. You may also use "auto", if \code{code_colname} have standardized PJS names only, see details. 
+#'     new column names should be given. You may also use "auto", if \code{code_colname} have standardized PJS names only, see details.
 #' @param position position for the new columns, can be one of c("first", "left", "right", "last", "keep"). If several codes should be translated,
 #'     either one value to be applied for all may be given or a vector with specified position for each code to be translated should be given.
 #' @template overwrite
@@ -130,8 +130,8 @@ add_PJS_code_description <- function(data,
                                      new_column,
                                      position = "right",
                                      overwrite = FALSE) {
-  
-  # Generate translation table from PJS-variable name (code_colname) to 
+
+  # Generate translation table from PJS-variable name (code_colname) to
   # PJS-type and standard variable name for description text (new_column)
   # PJS_types <- as.data.frame(matrix(rbind(c("ansvarlig_seksjon", "seksjon", "ansvarlig_seksjon_navn"),
   #                                         c("utf_seksjon", "seksjon", "utforende_seksjon_navn"),
@@ -153,18 +153,18 @@ add_PJS_code_description <- function(data,
   #                                         c("konkl_analyttkode", "analytt", "konkl_analytt"),
   #                                         c("metodekode", "metode", "metode"),
   #                                         c("res_kjennelsekode", "kjennelse", "res_kjennelse"),
-  #                                         c("res_analyttkode", "analytt", "res_analytt")),   
+  #                                         c("res_analyttkode", "analytt", "res_analytt")),
   #                                   ncol = 3,
   #                                   dimnames = list(NULL, c("code_colname", "type", "new_column"))))
   if (PJS_variable_type[1] == "auto" | new_column[1] == "auto") {
     PJS_types_selected <- as.data.frame(code_colname) %>%
-      dplyr::left_join(NVIdb::PJS_code_description_colname, by = "code_colname") 
+      dplyr::left_join(NVIdb::PJS_code_description_colname, by = "code_colname")
     PJS_types_selected <- subset(PJS_types_selected, !is.na(PJS_types_selected$type))
   }
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-  
+
   # Perform checks
   # data
   checkmate::assert_data_frame(data, add = checks)
@@ -172,13 +172,13 @@ add_PJS_code_description <- function(data,
   checkmate::assert_data_frame(translation_table, add = checks)
   # code_colname
   checkmate::assert_vector(code_colname, any.missing = FALSE, min.len = 1, add = checks)
-  NVIcheckmate::assert_names(code_colname, 
-                             type = "named", 
-                             subset.of = colnames(data), 
+  NVIcheckmate::assert_names(code_colname,
+                             type = "named",
+                             subset.of = colnames(data),
                              comment = paste0("The code_colname must be a column in the data",
                                               # deparse(substitute(data)),
                                               ", but '",
-                                              base::setdiff(code_colname, colnames(data)), 
+                                              base::setdiff(code_colname, colnames(data)),
                                               "' is not a column in the data"),
                              add = checks)
   # auto and PJS_variable_type/new_column
@@ -202,56 +202,56 @@ add_PJS_code_description <- function(data,
     new_column <- PJS_types_selected$new_column
   }
   if (isFALSE(overwrite)) {
-    NVIcheckmate::assert_names(new_column, 
-                               type = "named", 
+    NVIcheckmate::assert_names(new_column,
+                               type = "named",
                                disjunct.from = setdiff(colnames(data), code_colname),
                                comment = paste0("The column name(s): '",
                                                 intersect(colnames(data), new_column),
                                                 "' already exist in '",
                                                 deparse(substitute(data)),
-                                                "`. Either give new column name(s) for the column(s) called '", 
+                                                "`. Either give new column name(s) for the column(s) called '",
                                                 intersect(colnames(data), new_column),
                                                 "' or specify overwrite = TRUE to replace values in the existing column(s) with new content"),
                                add = checks)
   }
-  NVIcheckmate::assert_names(new_column, 
-                             type = "named", 
-                             disjunct.from = code_colname, 
+  NVIcheckmate::assert_names(new_column,
+                             type = "named",
+                             disjunct.from = code_colname,
                              comment = paste0("You cannot give any of the new column(s) the same name as the code_colname '",
                                               code_colname,
-                                              "' in the data" #,
+                                              "' in the data" # ,
                                               # deparse(substitute(data)), "`"
                              ),
                              add = checks)
-  
+
   # position
   NVIcheckmate::assert_subset_character(x = unique(position), choices = c("first", "left", "right", "last", "keep"), add = checks)
   # overwrite
   checkmate::assert_logical(overwrite, any.missing = FALSE, len = 1, add = checks)
-  
+
   # Report check-results
   checkmate::reportAssertions(checks)
-  
-  # Generates PJS_variable_type if "auto". 
+
+  # Generates PJS_variable_type if "auto".
   # new_column was generated above because the new column names should be checked in the argument checking
   if (PJS_variable_type[1] == "auto") {
     PJS_variable_type <- PJS_types_selected$type
   }
-  
-  
+
+
   # Transforms position to a vector with the same length as number of PJS-variables to be translated
   if (length(position) == 1 & length(code_colname) > 1) {position <- rep(position, length(code_colname))}
-  
+
   # runs the translation for several PJS-variables at a time if wanted
   for (i in 1:length(code_colname)) {
-    
+
     # Make a subset with only the codes that is relevant for the actual variabel
     code_2_description <- translation_table[base::which(translation_table$type == PJS_variable_type[i]), ]
     # code_2_description <- translation_table[base::which(translation_table$type == PJS_variable_type[i] & is.na(translation_table$utgatt_dato)), ]
-    
+
     # # Changes the name of navn to text wanted in the df (txtvarname)
     # base::colnames(code_2_description)[base::which(base::colnames(code_2_description)=="navn")] <- new_column
-    
+
     # Calls function that adds description to the right of the code
     data <- add_new_column(data,
                            ID_column = code_colname[i],
@@ -262,8 +262,8 @@ add_PJS_code_description <- function(data,
                            position = position[i],
                            overwrite = overwrite
     )
-    
+
   }
-  
+
   return(data)
 }

@@ -80,7 +80,7 @@ add_lokalitet <- function(data,
                       new_column = new_column,
                       position = position,
                       overwrite = overwrite)
-  
+
   # PREPARE TRANSLATION TABLE ----
   # Makes the translation table with code_column and new_column. unique() is necessary to avoid duplicate
   # rows when code_column is not "kommunenr"

@@ -9,7 +9,7 @@ copy_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder_UTF8.csv",
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
   to_path <- sub("/+$|\\\\+$", "", to_path)
-  
+
   # ARGUMENT CHECKING ----
   assert_copy_function(filename = filename,
                        from_path = from_path,

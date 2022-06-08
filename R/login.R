@@ -92,10 +92,10 @@ login <- function(dbservice,
   # Uses the predefined parameters only for parameters with NULL-value
   if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) {
     connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
-    if (is.null(dbdriver))   {dbdriver   <- connect[, "dbdriver"]}
-    if (is.null(db))         {db         <- connect[, "db"]}
-    if (is.null(dbserver))   {dbserver   <- connect[, "dbserver"]}
-    if (is.null(dbport))     {dbport     <- connect[, "dbport"]}
+    if (is.null(dbdriver)) {dbdriver <- connect[, "dbdriver"]}
+    if (is.null(db)) {db <- connect[, "db"]}
+    if (is.null(dbserver)) {dbserver <- connect[, "dbserver"]}
+    if (is.null(dbport)) {dbport <- connect[, "dbport"]}
     if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
   }
 
@@ -169,4 +169,3 @@ login_EOS <- function() {
     }
   }
 }
-

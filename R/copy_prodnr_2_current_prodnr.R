@@ -9,7 +9,7 @@ copy_prodnr_2_current_prodnr <- function(filename = "Prodnr2GjeldendeProdnr.csv"
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
   to_path <- sub("/+$|\\\\+$", "", to_path)
-  
+
   # ARGUMENT CHECKING ----
   assert_copy_function(filename = filename,
                        from_path = from_path,

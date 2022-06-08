@@ -3,13 +3,13 @@
 
 read_PJS_codes_2_text <- function(filename = "PJS_codes_2_text.csv",
                                   from_path = paste0(set_dir_NVI("Provedata_Rapportering"), "FormaterteData/")) {
-  
+
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
-  
+
   # ARGUMENT CHECKING ----
   assert_read_function(filename = filename, from_path = from_path)
-  
+
   # # Argument checking
   # # Object to store check-results
   # checks <- checkmate::makeAssertCollection()

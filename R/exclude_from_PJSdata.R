@@ -60,11 +60,10 @@ exclude_from_PJSdata <- function(PJSdata, abroad = "exclude", quality = "exclude
   if (quality == "exclude") {
     # Delete qualty assurance
     PJSdata <- subset(PJSdata,
-                      substr(PJSdata$hensiktkode, 1 , 2) != "09" |
-                        is.na(PJSdata$hensiktkode) )
+                      substr(PJSdata$hensiktkode, 1, 2) != "09" |
+                        is.na(PJSdata$hensiktkode))
 
   }
 
 
 }
-

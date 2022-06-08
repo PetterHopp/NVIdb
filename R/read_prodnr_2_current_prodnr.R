@@ -3,13 +3,13 @@
 
 read_prodnr_2_current_prodnr <- function(filename = "Prodnr2GjeldendeProdnr.csv",
                                          from_path = paste0(set_dir_NVI("Prodregister"), "FormaterteData/")) {
-  
+
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
-  
+
   # ARGUMENT CHECKING ----
   assert_read_function(filename = filename, from_path = from_path)
-  
+
   # # Argument checking
   # # Object to store check-results
   # checks <- checkmate::makeAssertCollection()

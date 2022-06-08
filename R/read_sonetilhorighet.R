@@ -3,13 +3,13 @@
 
 read_sonetilhorighet <- function(filename = "sonetilhorighet.txt",
                                  from_path = paste0(set_dir_NVI("EksterneDatakilder"), "Lokreg/FormaterteData/Soner/")) {
-  
+
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
-  
+
   # ARGUMENT CHECKING ----
   assert_read_function(filename = filename, from_path = from_path)
-  
+
   # # Argument checking
   # # Object to store check-results
   # checks <- checkmate::makeAssertCollection()
@@ -32,4 +32,3 @@ read_sonetilhorighet <- function(filename = "sonetilhorighet.txt",
 
   return(df1)
 }
-

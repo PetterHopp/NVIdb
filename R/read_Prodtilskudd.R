@@ -37,11 +37,11 @@
 read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/"),
                               Pkode_year = "last",
                               Pkode_month = "both") {
-  
+
   # PREPARE ARGUMENT ----
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
-  
+
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
@@ -55,7 +55,7 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
   checkmate::assert_subset(Pkode_month, choices = c("both", "last", "01", "03", "05", "07", "10", "12"), add = checks)
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   checkmate::assert(checkmate::check_integerish(as.numeric(Pkode_year[which(!grepl('[:alpha:]', Pkode_year))]),
                                                 lower = 1995,
                                                 upper = as.numeric(format(Sys.Date(), "%Y")),
@@ -63,30 +63,30 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
                                                 unique = TRUE),
                     # checkmate::check_character(Pkode_year, min.chars = 4, min.len = 1, any.missing = FALSE),
                     checkmate::check_choice(Pkode_year, choices = c("last")))
-  
-  
+
+
   # READ IN ALL FILES IN THE DIRECTORY AND MAKE A LIST OF THE SELECTED VERSIONS OF EXTRACTS FROM PKODEREGISTERET
   filelist <- select_prodtilskudd_files(from_path = from_path,
                                         Pkode_year = as.character(Pkode_year),
                                         Pkode_month = Pkode_month)
-  
+
   # Read data for the selected year and months from Pkoderegisteret and combine into one dataframe
   for (i in 1:dim(filelist)[1]) {
-    
+
     # Identifies column names with fylke, kommune and prodnr
     # thereby these are flexible if input files changes.
     colchar <- utils::read.csv2(file.path(set_dir_NVI("Prodtilskudd"), "FormaterteData", filelist[i, "filename"]),
                                 header = FALSE,
                                 nrow = 1,
                                 fileEncoding = "UTF-8")
-    
+
     colchar <- colchar[which(regexpr("kom", colchar, ignore.case = TRUE) > 0 |
                                regexpr("fylk", colchar, ignore.case = TRUE) > 0 |
                                regexpr("prodn", colchar, ignore.case = TRUE) > 0)]
-    
+
     colchars <- as.vector(rep("character", length(colchar)))
     names(colchars) <- colchar
-    
+
     # read single files
     tempdf <- read_csv_file(filename = filelist[i, "filename"],
                             from_path = from_path,
@@ -100,15 +100,15 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
       df1 <- tempdf
     }
   }
-  
+
   # TO DO: COMBINE SPRING AND AUTOMN INTO ONE FILE IF month = "both"
-  
+
   # Standardize column names
   # To be replaced by standardizing column names in the source files
   columnnames <- colnames(df1)
   columnnames <- sub("Prodnr", "prodnr", columnnames)
   colnames(df1) <- columnnames
-  
+
   # Return dataframe with data for all selected year and months
   return(df1)
 }

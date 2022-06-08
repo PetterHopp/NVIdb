@@ -26,31 +26,29 @@
 #' build_sql_select_year(year = c(2019, 2021), varname = "aar")
 #'
 #' build_sql_select_year(year = c(2019:2021), varname = "aar")
-#'
-
 build_sql_select_year <- function(year, varname, db = "PJS") {
   # ARGUMENT CHECKING ----
-  
+
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-  
+
   # Perform checks
-  checkmate::assert_integerish(year, 
-                               lower = 1990, 
-                               upper = as.numeric(format(Sys.Date(), "%Y")), 
-                               min.len = 1, 
-                               any.missing = FALSE, 
+  checkmate::assert_integerish(year,
+                               lower = 1990,
+                               upper = as.numeric(format(Sys.Date(), "%Y")),
+                               min.len = 1,
+                               any.missing = FALSE,
                                add = checks)
   checkmate::assert_character(varname, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
   checkmate::assert_choice(db, choices = c("PJS"), add = checks)
-  
+
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # CLEAN YEAR INPUT ----
   # Ensure that year vector have unique values and are ordered
   year <- unique(year[order(year)])
-  
+
   # GENERATE SQL STRING ----
   # set equal if only one year
   if (length(year) == 1) {
@@ -92,53 +90,51 @@ build_sql_select_year <- function(year, varname, db = "PJS") {
 #'
 #' @examples
 #' # SQL-select module for selecting hensiktkode from PJS
-#' build_sql_select_code(values = "0100101", varname = "hensiktkode", db = "PJS") 
-#' 
-#' build_sql_select_code(values = "0100101%", varname = "hensiktkode", db = "PJS") 
-#' 
-#' build_sql_select_code(values = c("0100101", "0100101007", "0100102%", "0100202%"), 
-#'                       varname = "hensiktkode", 
-#'                       db = "PJS") 
+#' build_sql_select_code(values = "0100101", varname = "hensiktkode", db = "PJS")
 #'
-
+#' build_sql_select_code(values = "0100101%", varname = "hensiktkode", db = "PJS")
+#'
+#' build_sql_select_code(values = c("0100101", "0100101007", "0100102%", "0100202%"),
+#'                       varname = "hensiktkode",
+#'                       db = "PJS")
 build_sql_select_code <- function(values, varname, db = "PJS") {
-  
+
   # cleaning values argument before argument checking
   values <- trimws(values)
-  
+
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-  
+
   # Perform checks
   checkmate::assert_character(values, null.ok = TRUE, any.missing = FALSE, min.chars = 1, add = checks)
   checkmate::assert_character(varname, add = checks)
   checkmate::assert_choice(db, choices = c("PJS"), add = checks)
-  
+
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # # Removes NA to avoid problems with CMD check and generating sql string
   # values <- subset(values, !is.na(values))
-  
+
   # GENERATE SQL STRING ----
   # Generate empty string if values are NULL
   select_code <- ""
-  if (!is.null(values) && 
+  if (!is.null(values) &&
       (length(values) > 1 || length(values) == 1 & trimws(values[1]) != "")) {
     #   select_code <- ""
     # } else {
-    
+
     # use "=" in sql string for values where sub-codes shall not be included when one code
     if (length(grep("%", values, invert = TRUE)) == 1) {
       select_code <- paste0(varname, " = '", grep("%", values, value = TRUE, invert = TRUE), "'")
     }
-    
+
     # use "IN" in sql string for values where sub-codes shall not be included when more than one code
     if (length(grep("%", values, invert = TRUE)) > 1) {
       select_code <- paste0(varname, " IN ('", paste(grep("%", values, value = TRUE, invert = TRUE), collapse = "', '"), "')")
     }
-    
+
     # use "like" in sql string for values where sub-codes shall be included
     values <- grep("%", values, value = TRUE, invert = FALSE)
     if (length(values) > 0) {
@@ -150,11 +146,10 @@ build_sql_select_code <- function(values, varname, db = "PJS") {
         # }
         # select_code <- paste(select_code, match.call()[1], varname, "LIKE", values[i])
         select_code <- paste(select_code, varname, "LIKE", paste0("'", values[i], "'"))
-        
+
       }
     }
   }
   # Removes leading space if only sub-codes are included
   return(trimws(select_code))
 }
-

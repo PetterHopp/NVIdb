@@ -40,10 +40,10 @@ read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder_UTF8.csv",
 
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
-  
+
   # ARGUMENT CHECKING ----
   assert_read_function(filename = filename, from_path = from_path)
-  
+
   # # Argument checking
   # # Object to store check-results
   # checks <- checkmate::makeAssertCollection()

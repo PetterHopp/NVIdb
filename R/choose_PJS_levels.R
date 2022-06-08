@@ -24,7 +24,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' #Attach packages
+#' # Attach packages
 #' library(RODBC)
 #' library(NVIdb)
 #'
@@ -51,7 +51,7 @@
 #'                                                    "fodselsdato", "konklnr"),
 #'                                     unique_rows = TRUE)
 #'
-#' sak_prove_und_res <-  choose_PJS_levels(PJSdata,
+#' sak_prove_und_res <- choose_PJS_levels(PJSdata,
 #'                                         levels = c("sak", "prove", "undersokelse", "resultat"),
 #'                                         remove_col = c("vet_distriktnr", "karantene",
 #'                                                        "kartreferanse", "epi_id", "landnr",

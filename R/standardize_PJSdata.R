@@ -1,7 +1,7 @@
 #' @title Standardizing PJS-data
-#' @description Standardizing PJS-data. This standardizing should always be performed. 
+#' @description Standardizing PJS-data. This standardizing should always be performed.
 #'     Other functions used for further preparation of PJSdata, like \code{chose_PJS_levels},
-#'      and \code{exclude_form_PJSdata} will not work as intended unless the column 
+#'      and \code{exclude_form_PJSdata} will not work as intended unless the column
 #'     names are standardized.
 #'
 #' @details The function performs the following standardizing of data extracted from PJS:
@@ -58,18 +58,18 @@ standardize_PJSdata <- function(PJSdata, dbsource = "v2_sak_m_res") {
   cols_2_modify <- intersect(colnames(PJSdata), c("aar", "innsendelsenr", "provenr", "delprovenr", "undnr",
                                                   "resnr", "sens_undnr", "sensresnr", "konklnr",
                                                   "ant_prover", "ant_i_samleprove", "ant_delprover", "ant_i_samledelprove"))
-  PJSdata[,cols_2_modify] <- lapply(PJSdata[,cols_2_modify], as.numeric)
+  PJSdata[, cols_2_modify] <- lapply(PJSdata[, cols_2_modify], as.numeric)
 
   # Change to date for date-variables
   # Done before trimming character variables to reduce variables that needs to be trimmed
   cols_2_modify <- intersect(colnames(PJSdata), c("mottatt", "uttatt", "avsluttet", "sak_forst_avsluttet",
                                                   "uttatt_parprove", "mottatt_parprove",
                                                   "und_godkjent", "und_avsluttet"))
-  PJSdata[,cols_2_modify] <- lapply(PJSdata[,cols_2_modify], as.Date, format = "%d.%m.%y")
+  PJSdata[, cols_2_modify] <- lapply(PJSdata[, cols_2_modify], as.Date, format = "%d.%m.%y")
 
   # Trim character variables
   cols_2_modify <- names(PJSdata)[vapply(PJSdata, is.character, logical(1))]
-  PJSdata[,cols_2_modify] <- lapply(PJSdata[,cols_2_modify], trimws)
+  PJSdata[, cols_2_modify] <- lapply(PJSdata[, cols_2_modify], trimws)
 
   # Generate saksnr and fagnr
   PJSdata$saksnr <- paste(PJSdata$aar, PJSdata$ansvarlig_seksjon, PJSdata$innsendelsenr, sep = "-")
@@ -81,4 +81,3 @@ standardize_PJSdata <- function(PJSdata, dbsource = "v2_sak_m_res") {
   PJSdata <- subset(PJSdata, !PJSdata$ansvarlig_seksjon %in% c("14", "99"))
 
 }
-
