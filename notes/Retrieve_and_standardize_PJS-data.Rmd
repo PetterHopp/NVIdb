@@ -12,79 +12,104 @@ knitr::opts_chunk$set(eval = FALSE)
 ```
 
 -   [Overview](#overview)
--   [Set up R-environment](#Set up R-environment)
--   [Login to PJS](#Login to PJS)
--   [Make selection statement](#Make selection statement)
--   [Read PJS-data](#Read PJS-data)
--   [Standardize PJS-data](#Standardize PJS-data)
--   [One analytt per row](#One analytt per row)
+-   [Set up the R environment](#set-up-the-r-environment)
+-   [Login to PJS](#login-to-pjs)
+-   [Make selection statement](#make-selection-statement)
+-   [Retrieve PJS-data](#retrieve-pjs-data)
+-   [Standardize PJS-data](#standardize-pjs-data)
+-   [One sample and analytt per row](#one-sample-and-analytt-per-row)
 
-Overview
---------
-
-`NVIdb`provides tools to facilitate downloading and processing of data
-from the Norwegian Veterinary Institute’s databases, in particular PJS
-and EOS. The package comprises several categories of functions: 1)
-Manage credentials (i.e. password and username), 2) Login functions for
-database services, 3) Select PJS-data, 4) Initial cleaning of PJS-data,
-5) Read, copy and update various in-house data registers, 6) Translate
-codes into descriptions. NVIdb is dependant of NVIconfig which has to be
-installed manually from GitHub.
-
-## Overview ----
-
-# READ OK DATA FROM PJS
-
+## Overview
+The purpose of this vignette is to give the main points when retrieving data from PJS. So that the method is Standardize at the NVI. And help to care of different points to achive good data.
 # DESIGN ----
 # Seleksjonskriterier er metoder, resultatanalytt, konklusjonsanalytt, sykdom og hensikter
 # Simple control of selection parameters
 # Standard cleaning of data
 # Save data as rds-files
 
+## Set up the R environment
+In this part you want to set up the R environment for all script that are called (sourced) by the main script. This includes attaching all packages needed and setting global variables and functions.
 
-```R
+### Attach packages
+In base one use `library` or `require` to attach packages. Of these `library` is preferred as `require` will not produce an error message if a package isn't attached. 
+
+An alternative is to use `use_pkg` and `use_NVIverse` from package `NVIbatch`. These functions accept a vector with package names and will attach the packages if installed, and install the package first if not installed. Use `use_pkg` for packages at "Cran" and `use_NVIverse` for packages within the "NVIverse".  If the packages need to be installed, the user running the batch needs writing access to the directories for R-packages.
+```{r, include = TRUE}
 # SET UP R-ENVIRONMENT ----
-# rm(list = ls())
+## Attach R-packages ----
+library(NVIbatch)
+use_pkg(pkg = c("dplyr", "RODBC"))
+use_NVIverse("NVIdb")
+```
 
-# Attach packages
-library(RODBC)
-library(NVIdb)
-
-# global variables
-today<-format(Sys.Date(),"%Y%m%d")
-domene <- sub("Rscripts","",dirname(rstudioapi::getSourceEditorContext()$path))
+### Set global variables
+The global variables are put in section in the main script. In this example there are two global variables, the path to the R scripts and today's date. 
+```{r, include = TRUE}
+## Paths and filenames ----
+# The path to the R-scripts.
+domene <- paste0(set_dir_NVI("OKprogrammer"),"outbreak_123_2022/.../rscripts/")
+script_path <- dirname(rstudioapi::getSourceEditorContext()$path)
 
 aar <- c(2021)
 
+
+# Today's date in the format yyyymmdd for use in filenames.
+today <- format(Sys.Date(), "%Y%m%d")
+```
+
+### Define functions
+These are functions needed for the script that are not included in any package, either because they are very specific for this script or that they are not yet mature for being included into a package. The example is a function for aggregating kjennelser into a higher level and this function is not yet mature for being included into a package. 
+
+```{r, include = TRUE}
 # Functions
 source(paste0(set_dir_NVI("OKprogrammer"), "Rutine", aar, "/Rapportering/Rscripts/", "agg_kjennelse.R"), encoding = "UTF-8")
 
 ```
 
+# Import support registers
 
-```R
+
+```{r, include = TRUE}
 # support registers
 kommune_fylke <- read_kommune_fylke()
 PJS_codes_2_text <- read_PJS_codes_2_text()
+```
 
 
+## READ DATA FROM PJS ----
+# 1. Construct a selection-statement
+#    Example: All saker related to one disease in 2021
+#             ~ all saker with rabies-specific hensikt
+#             + all saker with analytt rabies or lyssavirus for konklusjon or resultat
+#             + all saker med metode specific for rabies
 
+
+```{r, include = TRUE}
 # RUN SCRIPTS ----
+
+
+
+# Set selection parameters
+purpose <- "Rabies"
+aar <- c(2020)
+hensikt2select <- c("0100101020", "0100102026", "0100103026", "0200144", "06035")
+metode2select <- c("030010", "070017", "070180", "070245")
+analytt2select <-  c("011402%","1502010241")    # Lyssavirus med underliggende og rabies
+
 
 # ok_gris_virus
 purpose <- "ok_gris_virus"
 source(file = paste0(set_dir_NVI("OKprogrammer"), "Rutine", aar, "/Rapportering/Rscripts/OK_selection_parameters/", purpose, "_selection_parameters.R"))
 source(file = paste0(domene, "/retrieve_ok_data_from_PJS.R"))
 
-
-
-
-
-
 ```
 
+## LOGIN TO PJS ----
+# 1. Set username and password (credentials) for PJS. 
+#    The credentials are saved in the users profile (at the current machine). 
+#    Do once. Must be repeated when password to PJS changes or if you use another PC
 
-```R
+```{r, include = TRUE}
 # set_credentials_PJS()
 # READ DATA FROM PJS ----
 journal_rapp <- login_by_credentials_PJS()
@@ -109,8 +134,16 @@ odbcClose(journal_rapp)
 
 ```
 
+## STANDARDIZE DATA ----
+# - The unnecessary columns konkl_provenr and vet_distriktnr are removed
+# - The column names are standardized using standardize_columns
+# - Numeric variables are transformed to numbers
+# - Date variables are transformed to date format
+# - Character variables are trimmed for leading and trailing spaces
+# - The variables saksnr and, if possible, fagnr are generated
+# - Test data, i.e. saker with ansvarlig_seksjon in c("14", "99") are deleted
 
-```R
+```{r, include = TRUE}
 # STANDARDIZE DATA ----
 ## Standard cleaning of data
 PJSdata <- standardize_PJSdata(PJSdata = PJSrawdata)
@@ -122,8 +155,33 @@ sakskonklusjon <- exclude_from_PJSdata(PJSdata = sakskonklusjon, abroad = "exclu
 
 
 ```
+## KEEP VARIABLES IN SAK, PROVE AND KONKLUSJON -LEVEL ----
+PJSdata <- choose_PJS_levels(data = PJSdata,
+                             levels = c("sak", "prove", "konklusjon"),
+                             keep_col = NULL,
+                             remove_col = c("konklnr", "konkl_type"),
+                             unique_rows = TRUE)
 
-```R
+## TRANSLATE CODES INTO DESCRIPTIVE TEXT  ----
+### Import support registers
+PJS_codes_2_text <- read_PJS_codes_2_text()
+
+### Translate PJS-codes to code descriptions
+PJSdata <- add_PJS_code_description(data = PJSdata,
+                                    translation_table = PJS_codes_2_text,
+                                    PJS_variable_type = c("hensikt", "art", "driftsform", "provetype",
+                                                          "provemateriale", "kjonn", "kjennelse", "analytt"),
+                                    code_colname = c("hensiktkode", "artkode", "driftsformkode", "provetypekode",
+                                                     "provematerialekode", "kjonn", "konkl_kjennelsekode", "konkl_analyttkode"),
+                                    new_column = c("hensikt", "art", "driftsform", "provetype",
+                                                   "provemateriale", "kjonn2", "konkl_kjennelse", "konkl_analytt"),
+                                    position = "right",
+                                    overwrite = FALSE)
+
+
+
+
+```{r, include = TRUE}
 ## ONE ROW PER PRØVE, UNDERSØKELSE AND KONKLUSJON ----
 # Remove unnecessary rows due to cartesian product ----
 
