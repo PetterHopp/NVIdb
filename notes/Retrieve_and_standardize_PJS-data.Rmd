@@ -1,5 +1,5 @@
 --- 
-title: "Retrieve and standardize PJS-data examplified with data for one disease"
+title: "Retrieve and standardize PJS-data"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
@@ -20,55 +20,50 @@ knitr::opts_chunk$set(eval = FALSE)
 -   [One sample and analytt per row](#one-sample-and-analytt-per-row)
 
 ## Overview
-The purpose of this vignette is to give the main points when retrieving data from PJS. So that the method is Standardize at the NVI. And help to care of different points to achive good data.
-# DESIGN ----
-# Seleksjonskriterier er metoder, resultatanalytt, konklusjonsanalytt, sykdom og hensikter
-# Simple control of selection parameters
-# Standard cleaning of data
-# Save data as rds-files
+The purpose of this vignette is to give guidelines for retrieving and standardising data from PJS. The vignette shows how functions from `NVIdb` can be used to achieve this. Thereby, one should be able to make data sets from PJS with standard column names and standard classes for the variables to make it easier to share scripts for further management and analysing of PJS data. 
+
+To run the scripts below, you will need R with the "NVIverse" packages `NVIbatch` and `NVIconfig` installed. You will also need a valid user account for PJS.
+
+Be aware that all data, included PJS data, has pitfalls, peculiarities and mistakes. This vignette will make you aware of some of these, but remember; You should always make contact with the data owner, for example the scientist(s) responsible for the data, to ensure that you understand how the data has been generated and ot ensure that the data can be used for the purpose you intend to use it for. Analysing data without sufficient knowledge on how the data has been generated may give strange results.
+
 
 ## Set up the R environment
 In this part you want to set up the R environment for all script that are called (sourced) by the main script. This includes attaching all packages needed and setting global variables and functions.
 
-### Attach packages
+### Attach R packages
 In base one use `library` or `require` to attach packages. Of these `library` is preferred as `require` will not produce an error message if a package isn't attached. 
 
-An alternative is to use `use_pkg` and `use_NVIverse` from package `NVIbatch`. These functions accept a vector with package names and will attach the packages if installed, and install the package first if not installed. Use `use_pkg` for packages at "Cran" and `use_NVIverse` for packages within the "NVIverse".  If the packages need to be installed, the user running the batch needs writing access to the directories for R-packages.
+An alternative is to use `use_pkg` and `use_NVIverse` from package `NVIbatch`. These functions accept a vector with package names and will attach the packages if installed, and install the package first if not installed. Use `use_pkg` for packages at "Cran" and `use_NVIverse` for packages within the "NVIverse".  If the packages need to be installed, the user needs writing access to the directories for R packages. 
 ```{r, include = TRUE}
-# SET UP R-ENVIRONMENT ----
-## Attach R-packages ----
+# SET UP THE R ENVIRONMENT ----
+## Attach R packages ----
 library(NVIbatch)
 use_pkg(pkg = c("dplyr", "RODBC"))
-use_NVIverse("NVIdb")
+use_NVIverse(pkg = c("NVIdb"))
 ```
 
-### Set global variables
-The global variables are put in section in the main script. In this example there are two global variables, the path to the R scripts and today's date. 
+### Set global variables and functions
+The global variables should be defined early in the script so that they are easy to find and eventually edit. In this example there are two global variables, the path to the R scripts and today's date. 
+
+Likewise should global functions used by the script be defined early in the script. These are functions needed for the script that are not included in any package, either because they are very specific for this script or that they are not yet mature for being included into a package. It is recommended to generalise functions and move them to packages to facilitate maintenance, updating and error testing.
+
+In stead of including the script for defining the global variables and the functions in the main script, these scripts may be written in separate files that are sourced from the main script.
 ```{r, include = TRUE}
-## Paths and filenames ----
+## Global variables ----
+### Paths and file names
 # The path to the R-scripts.
-domene <- paste0(set_dir_NVI("OKprogrammer"),"outbreak_123_2022/.../rscripts/")
+# One may also use here::here to identify the path to the scripts.
 script_path <- dirname(rstudioapi::getSourceEditorContext()$path)
 
-aar <- c(2021)
-
-
-# Today's date in the format yyyymmdd for use in filenames.
+### Today's date in the format yyyymmdd for use in file names.
 today <- format(Sys.Date(), "%Y%m%d")
+
+### Functions
+# None in this example
 ```
 
-### Define functions
-These are functions needed for the script that are not included in any package, either because they are very specific for this script or that they are not yet mature for being included into a package. The example is a function for aggregating kjennelser into a higher level and this function is not yet mature for being included into a package. 
 
-```{r, include = TRUE}
-# Functions
-source(paste0(set_dir_NVI("OKprogrammer"), "Rutine", aar, "/Rapportering/Rscripts/", "agg_kjennelse.R"), encoding = "UTF-8")
-
-```
-
-# Import support registers
-
-
+### Import support registers
 ```{r, include = TRUE}
 # support registers
 kommune_fylke <- read_kommune_fylke()
@@ -82,6 +77,8 @@ PJS_codes_2_text <- read_PJS_codes_2_text()
 #             ~ all saker with rabies-specific hensikt
 #             + all saker with analytt rabies or lyssavirus for konklusjon or resultat
 #             + all saker med metode specific for rabies
+
+
 
 
 ```{r, include = TRUE}
@@ -155,14 +152,18 @@ sakskonklusjon <- exclude_from_PJSdata(PJSdata = sakskonklusjon, abroad = "exclu
 
 
 ```
+
 ## KEEP VARIABLES IN SAK, PROVE AND KONKLUSJON -LEVEL ----
+```{r, include = TRUE}
 PJSdata <- choose_PJS_levels(data = PJSdata,
                              levels = c("sak", "prove", "konklusjon"),
                              keep_col = NULL,
                              remove_col = c("konklnr", "konkl_type"),
                              unique_rows = TRUE)
+```
 
 ## TRANSLATE CODES INTO DESCRIPTIVE TEXT  ----
+```{r, include = TRUE}
 ### Import support registers
 PJS_codes_2_text <- read_PJS_codes_2_text()
 
@@ -177,67 +178,6 @@ PJSdata <- add_PJS_code_description(data = PJSdata,
                                                    "provemateriale", "kjonn2", "konkl_kjennelse", "konkl_analytt"),
                                     position = "right",
                                     overwrite = FALSE)
-
-
-
-
-```{r, include = TRUE}
-## ONE ROW PER PRØVE, UNDERSØKELSE AND KONKLUSJON ----
-# Remove unnecessary rows due to cartesian product ----
-
-# TO DO: accept varying length for analytter in selections, can be done by for-loop for each analytt and missing
-source(paste0("./one_row_per_sample_konkl_res.R"), encoding = "UTF-8")
-
-# Add sakskonklusjon
-# 1. Når identisk analyttkode
-sakskonklusjon <- sakskonklusjon %>%
-  dplyr::select(-c(konklnr, konkl_typekode)) %>%
-  dplyr::rename(sakskonkl_kjennelsekode = konkl_kjennelsekode, sakskonkl_analyttkode = analyttkode) %>%
-  dplyr::mutate(sakskonkl_analyttkode = dplyr::case_when(is.na(sakskonkl_analyttkode) & !is.na(sakskonkl_kjennelsekode) ~ "missing",
-                                                         TRUE ~ sakskonkl_analyttkode)) %>%
-  dplyr::mutate(sakskonkl_kjennelsekode = dplyr::case_when(!is.na(sakskonkl_analyttkode) & is.na(sakskonkl_kjennelsekode) ~ "missing",
-                                                           TRUE ~ sakskonkl_kjennelsekode)) %>%
-  
-  dplyr::filter(substr(sakskonkl_analyttkode, 1, length_analytt) %in% c(analytt, substr("missing", 1, length_analytt))) %>%
-  dplyr::distinct() 
-
-tempX <- sakskonklusjon %>%
-  dplyr::select(saksnr, sakskonkl_kjennelsekode, sakskonkl_analyttkode) %>%
-  dplyr::distinct()
-
-temp <- PJSdata %>%
-  dplyr::inner_join(tempX, by = c("saksnr" = "saksnr", "konkl_analyttkode" = "sakskonkl_analyttkode")) %>%
-  dplyr::mutate(sakskonkl_analyttkode = konkl_analyttkode)
-
-sakskonklusjon <- subset(sakskonklusjon, 
-                         !paste(saksnr, sakskonkl_kjennelsekode, sakskonkl_analyttkode, sep = "-") %in%
-                           paste(temp$saksnr, temp$sakskonkl_kjennelsekode, temp$sakskonkl_analyttkode, sep = "-"))
-
-PJSdata <- subset(PJSdata, 
-                  !paste(saksnr, konkl_kjennelsekode, konkl_analyttkode, sep = "-") %in%
-                    paste(temp$saksnr, temp$konkl_kjennelsekode, temp$konkl_analyttkode, sep = "-"))
-
-# 2. Når analyttkode er lik på de første sifrene
-tempX <- sakskonklusjon %>%
-  dplyr::select(saksnr, sakskonkl_kjennelsekode, sakskonkl_analyttkode) %>%
-  dplyr::mutate(analyttkode = substr(sakskonkl_analyttkode, 1, length_analytt)) %>%
-  dplyr::distinct()
-
-tempX <- PJSdata %>%
-  # dplyr::select(-c(sakskonkl_kjennelsekode, sakskonkl_analyttkode)) %>%
-  dplyr::mutate(analyttkode = substr(konkl_analyttkode, 1, length_analytt)) %>%
-  dplyr::inner_join(tempX, by = c("saksnr" = "saksnr", "analyttkode" = "analyttkode")) %>%
-  dplyr::select(-analyttkode)
-
-sakskonklusjon <- subset(sakskonklusjon, 
-                         !paste(saksnr, sakskonkl_kjennelsekode, sakskonkl_analyttkode, sep = "-") %in%
-                           paste(tempX$saksnr, tempX$sakskonkl_kjennelsekode, tempX$sakskonkl_analyttkode, sep = "-"))
-
-PJSdata <- subset(PJSdata, 
-                  !paste(saksnr, konkl_kjennelsekode, konkl_analyttkode, sep = "-") %in%
-                    paste(tempX$saksnr, tempX$konkl_kjennelsekode, tempX$konkl_analyttkode, sep = "-"))
-
-PJSdata <- dplyr::bind_rows(temp, tempX, PJSdata, sakskonklusjon)
 
 saveRDS(PJSdata, file = paste0(set_dir_NVI("OKprogrammer"), "Rutine", aar, "/Rapportering/Radata/", purpose, ".rds"))
 ```
