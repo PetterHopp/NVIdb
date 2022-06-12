@@ -64,14 +64,17 @@ today <- format(Sys.Date(), "%Y%m%d")
 
 
 ### Import support registers
+Very often, you will combine data with information in other registers. In this example we use tables to translate PJS-codes to descriptive text. Currently such registers must be loaded/imported before they can be used. This may change when such information becomes stored in databases.
 ```{r, include = TRUE}
 # support registers
-kommune_fylke <- read_kommune_fylke()
 PJS_codes_2_text <- read_PJS_codes_2_text()
 ```
 
 
-## READ DATA FROM PJS ----
+## RETRIEVE DATA FROM PJS ----
+We retrieve data from PJS though view in the data base journalrapp. Here are views for different purposes. If we need all data for a disease, we usually use the view v1_sak_med_res_eier that combines all information from sak to result level and that includes konklusjon and eier_lokalitet. 
+
+In this example we select all saker related to one disease, i.e. rabies, in one year. 
 # 1. Construct a selection-statement
 #    Example: All saker related to one disease in 2021
 #             ~ all saker with rabies-specific hensikt
