@@ -11,40 +11,40 @@
 #' @return If package of required version is installed, then TRUE, else aerror message
 #' @noRd
 
-check_package <- function(x, version = NULL) {
-  # ARGUMENT CHECKING ----
-  # Object to store check-results
-  checks <- checkmate::makeAssertCollection()
-  # Perform checks
-  checkmate::assert_character(x, len = 1, min.char = 2)
-  checkmate::assert_character(version, len = 1, null.ok = TRUE)
-  # Report check-results
-  checkmate::reportAssertions(checks)
-
-  # PERFORM CHECK
-  # if the package is not installed
-  if (!nchar(system.file(package = x))) {
-    res <- paste0("The package '", x, "' is not installed")
-  } else {
-    # Check if the required version is  installed
-    installed_version <- utils::packageDescription(x)$Version
-    if (utils::compareVersion(installed_version, version) == -1) {
-      res <- paste0("The package '", x, "' version '", installed_version, "' is installed, while version '", version, "' is required.")
-    } else {
-      res <- TRUE
-    }
-  }
-}
+# check_package <- function(x, version = NULL) {
+#   # ARGUMENT CHECKING ----
+#   # Object to store check-results
+#   checks <- checkmate::makeAssertCollection()
+#   # Perform checks
+#   checkmate::assert_character(x, len = 1, min.char = 2)
+#   checkmate::assert_character(version, len = 1, null.ok = TRUE)
+#   # Report check-results
+#   checkmate::reportAssertions(checks)
+#
+#   # PERFORM CHECK
+#   # if the package is not installed
+#   if (!nchar(system.file(package = x))) {
+#     res <- paste0("The package '", x, "' is not installed")
+#   } else {
+#     # Check if the required version is  installed
+#     installed_version <- utils::packageDescription(x)$Version
+#     if (utils::compareVersion(installed_version, version) == -1) {
+#       res <- paste0("The package '", x, "' version '", installed_version, "' is installed, while version '", version, "' is required.")
+#     } else {
+#       res <- TRUE
+#     }
+#   }
+# }
 
 
 # Do after loading NVIdb
 .onAttach <- function(libname, pkgname) {
 
   # check if "NVIconfig" is installed
-  msg <- check_package(x = "NVIconfig", version = "0.3.1")
+  msg <- NVIcheckmate::check_package(x = "NVIconfig", version = "0.3.1")
 
   # Print a startup message if not required version is installed
-  if (msg != TRUE) {
+  if (!isTRUE(msg)) {
     msg <- paste(msg,
                  "You can install 'NVIconfig' with remotes::install_github('NorwegianVeterinaryInstitute/NVIconfig',",
                  "                                                         auth_token = 'your_GitHub-PAT',",
