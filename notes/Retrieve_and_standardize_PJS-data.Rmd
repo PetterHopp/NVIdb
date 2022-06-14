@@ -74,12 +74,13 @@ PJS_codes_2_text <- read_PJS_codes_2_text()
 ## RETRIEVE DATA FROM PJS ----
 We retrieve data from PJS though view in the data base journalrapp. Here are views for different purposes. If we need all data for a disease, we usually use the view v1_sak_med_res_eier that combines all information from sak to result level and that includes konklusjon and eier_lokalitet. 
 
-In this example we select all saker related to one disease, i.e. rabies, in one year. 
-# 1. Construct a selection-statement
-#    Example: All saker related to one disease in 2021
-#             ~ all saker with rabies-specific hensikt
-#             + all saker with analytt rabies or lyssavirus for konklusjon or resultat
-#             + all saker med metode specific for rabies
+In this example we select all saker with resultater and konklusjoner related to one disease, i.e. rabies, for a single year. To achieve this we select
+
+- all saker with analytt rabies or lyssavirus for konklusjon or resultat
+- all saker with rabies-specific hensikt, i.e. they shall or should have been examined for rabies
+- all saker med metode specific for rabies, i.e. samples have been set up with a rabies examination
+
+Thereby, we get all saker with a konklusjon or resultat for rabies as well as those cases that have been set up for rabies examination but with no result yet and saker that have been examined for rabies but with no result for rabies, either because the sample or examination was rejected or a wrong result may have been entered.
 
 
 
@@ -135,12 +136,12 @@ odbcClose(journal_rapp)
 ```
 
 ## STANDARDIZE DATA ----
-# - The unnecessary columns konkl_provenr and vet_distriktnr are removed
 # - The column names are standardized using standardize_columns
 # - Numeric variables are transformed to numbers
 # - Date variables are transformed to date format
 # - Character variables are trimmed for leading and trailing spaces
 # - The variables saksnr and, if possible, fagnr are generated
+# - The unnecessary columns konkl_provenr and vet_distriktnr are removed
 # - Test data, i.e. saker with ansvarlig_seksjon in c("14", "99") are deleted
 
 ```{r, include = TRUE}
