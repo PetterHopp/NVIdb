@@ -56,7 +56,7 @@
 #' \dontrun{
 #' require(RODBC)
 #' journal_rapp <- login_PJS()
-#'  # Reads hensiktregistret from PJS
+#' # Reads hensiktregistret from PJS
 #'   hensikter <- sqlQuery(journal_rapp,
 #'                        "select * from v_hensikt",
 #'                        as.is = TRUE,
