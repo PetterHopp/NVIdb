@@ -27,41 +27,40 @@ be included, end the code with \%. Can be \code{NULL}.}
 \item{analytt2select}{Vector with  one or more analyttkode given as a character.
 If sub-analytter should be included, end the code with \%. Can be \code{NULL}.}
 
-\item{file}{An R script that can be sourced and that sets the parameters
-hensikt2select, utbrudd2select, metode2select, analytt2select. Can be
-\code{NULL}.}
+\item{file}{path and filename for an R script that can be sourced and that
+sets the parameters \code{hensikt2select}, \code{utbrudd2select}, \code{metode2select}, and
+\code{analytt2select}. Can be \code{NULL}.}
 }
 \value{
-A list with select-statement fom v2_sak_m_res and v_sakskonklusjon to
-    be included in a \code{RODBC::sqlQuery}.
+A named list with selection parameters that can be used to generate
+    SQL selection-statements and facilitate structuring output from PJS.
 }
 \description{
-Sets the disease selection parameters in a list object. The list
-    follows a standardised and named format and can be used as input to
-    build_query_one_disease or build_query_hensikt.
+Sets the disease selection parameters and store them in a list
+    object. The list follows a standardised named format and the elements can
+    be used as input to \code{build_query_one_disease} or \code{build_query_hensikt}.
 }
 \details{
 Saker in PJS that concern one infection / disease can be characterised
     by the analytt (at konklusjon and/or resultat level), specific hensikter,
-    utbrudds_ID and/or specific metoder. These can be used to select saker in
-    PJS and/or structurise and simplify the output from PJS.
+    a relevant utbrudds_ID and/or specific metoder. These can be used to select
+    saker in PJS and/or to structure and simplify the output from PJS.
 
     One or more specific hensikter may be input to the selection statement.
-    With specific hensikt is meant a hensikt that will imply
-    that the sample will be examined for the infectious agent or disease.
-    One or more specific metoder may be input to the selection statement.
-    With specific metode is meant a metode that implies an
-    examination that will give one of the input analytter as a result.
+    With specific hensikt is meant a hensikt that will imply that the sample
+    will be examined for specific infectious agent(s) or disease. One or more
+    specific metoder may be input to the selection statement. With specific
+    metode is meant a metode that implies an examination that will give one
+    of the input analytter as a result. If sub-codes of analytt or hensikt
+    should be included, end the code with \%.
 
-    The selection parameters can be input the function as such. Alternatively,
-    a source file for the input parameters hensikt2select, utbrudd2select,
-    metode2select and analytt2select may be given. This may be handy if the
+    The selection parameters can be input values for dedicated arguments. The
+    argument year must always be input that way. For input parameters
+    \code{hensikt2select}, \code{utbrudd2select}, \code{metode2select}, and
+    \code{analytt2select}, the input may be given in a source file. This may be handy if the
     selection will be performed many times. It also gives the possibility of
-    using a for loop for selecting and analysing data for several similar
-    diseases at one time.
-
-    The ouput is a named list with the selection parameters. This list can be
-    used as input build_query_one_disease or build_query_hensikt.
+    using a for loop that selects PJS-data and performs similar analyses at one
+    disease at a time.
 }
 \examples{
 # Selection parameters for Pancreatic disease (PD)
