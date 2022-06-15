@@ -3,6 +3,8 @@ NVIdb 0.7.0.9001 - (2022-##-##)
 
 New features:
 
+- set_disease_selection_parameters creates a list object with selection pasrameters from input arguments or by sourcing an R script that sets the input values (a "purpose" file).
+
 - set_dir_NVI now accepts abbreviated input for datasource. The abbreviation must be unique.
 
 - add-functions now accepts abbreviated input for position. The abbreviation must be unique.
@@ -21,7 +23,9 @@ Other changes:
 
 - Included NVIdb reference manual as a PDF-file in the vignettes.
 
-- Updated README and  and the vignette "Contribute_to_NVIdb".
+- Updated README and corrected the install instruction. 
+
+- Updated the vignette "Contribute_to_NVIdb".
 
 
 BREAKING CHANGES:
