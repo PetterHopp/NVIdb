@@ -24,16 +24,16 @@ The purpose of this vignette is to give guidelines for retrieving and standardis
 
 To run the scripts below, you will need R with the "NVIverse" packages `NVIbatch` and `NVIconfig` installed. You will also need a valid user account for PJS.
 
-Be aware that all data, included PJS data, has pitfalls, peculiarities and mistakes. This vignette will make you aware of some of these, but remember; You should always make contact with the data owner, for example the scientist(s) responsible for the data, to ensure that you understand how the data has been generated and ot ensure that the data can be used for the purpose you intend to use it for. Analysing data without sufficient knowledge on how the data has been generated may give strange results.
+Be aware that all data, included PJS data, has pitfalls, peculiarities and mistakes. This vignette will make you aware of some of these, but remember; You should always make contact with the data owner, for example the scientist(s) responsible for the data, to ensure that you understand how the data has been generated and to ensure that the data can be used for the purpose you intend to use it for. Analysing data without sufficient knowledge on how the data has been generated may give strange results.
 
 
 ## Set up the R environment
-In this part you want to set up the R environment for all script that are called (sourced) by the main script. This includes attaching all packages needed and setting global variables and functions.
+In this part you want to set up the R environment for all scripts that are called (sourced) by the main script. This includes attaching all packages needed and setting global variables and functions.
 
 ### Attach R packages
 In base one use `library` or `require` to attach packages. Of these `library` is preferred as `require` will not produce an error message if a package isn't attached. 
 
-An alternative is to use `use_pkg` and `use_NVIverse` from package `NVIbatch`. These functions accept a vector with package names and will attach the packages if installed, and install the package first if not installed. Use `use_pkg` for packages at "Cran" and `use_NVIverse` for packages within the "NVIverse".  If the packages need to be installed, the user needs writing access to the directories for R packages. 
+An alternative is to use `use_pkg` and `use_NVIverse` from package `NVIbatch`. These functions accept a vector with package names and will attach the packages if installed, and install the package if not installed. Use `use_pkg` for packages at "Cran" and `use_NVIverse` for packages within the "NVIverse".  If the packages need to be installed, the user needs writing access to the directories for R packages. 
 ```{r, include = TRUE}
 # SET UP THE R ENVIRONMENT ----
 ## Attach R packages ----
@@ -47,7 +47,7 @@ The global variables should be defined early in the script so that they are easy
 
 Likewise should global functions used by the script be defined early in the script. These are functions needed for the script that are not included in any package, either because they are very specific for this script or that they are not yet mature for being included into a package. It is recommended to generalise functions and move them to packages to facilitate maintenance, updating and error testing.
 
-In stead of including the script for defining the global variables and the functions in the main script, these scripts may be written in separate files that are sourced from the main script.
+In stead of including the script for defining the global variables and the functions in the main script, the code may be written in separate scripts (R files) that are sourced from the main script.
 ```{r, include = TRUE}
 ## Global variables ----
 ### Paths and file names
@@ -71,54 +71,48 @@ PJS_codes_2_text <- read_PJS_codes_2_text()
 ```
 
 
-## RETRIEVE DATA FROM PJS ----
-We retrieve data from PJS though view in the data base journalrapp. Here are views for different purposes. If we need all data for a disease, we usually use the view v1_sak_med_res_eier that combines all information from sak to result level and that includes konklusjon and eier_lokalitet. 
+## Retrive data from PJS
+We retrieve data from PJS though view in the data base journalrapp. Here are views for different purposes. If we need all data for a disease, we usually use the view "v2_sak_m_res" that combines information from sak to result level and that includes konklusjon and eier_lokalitet. 
 
 In this example we select all saker with resultater and konklusjoner related to one disease, i.e. rabies, for a single year. To achieve this we select
 
 - all saker with analytt rabies or lyssavirus for konklusjon or resultat
-- all saker with rabies-specific hensikt, i.e. they shall or should have been examined for rabies
-- all saker med metode specific for rabies, i.e. samples have been set up with a rabies examination
+- all saker with rabies-specific hensikt, i.e. the samples will be or should have been examined for rabies
+- all saker with metode specific for rabies, i.e. samples have been set up with a rabies examination
 
 Thereby, we get all saker with a konklusjon or resultat for rabies as well as those cases that have been set up for rabies examination but with no result yet and saker that have been examined for rabies but with no result for rabies, either because the sample or examination was rejected or a wrong result may have been entered.
 
-
-
-
 ```{r, include = TRUE}
-# RUN SCRIPTS ----
-
-
+# RETRIEVE DATA FROM PJS ----
 
 # Set selection parameters
+# [Kathy: There will come a function for this that can fetch this information from different sources (either as input or from files)]
 purpose <- "Rabies"
 aar <- c(2020)
 hensikt2select <- c("0100101020", "0100102026", "0100103026", "0200144", "06035")
 metode2select <- c("030010", "070017", "070180", "070245")
 analytt2select <-  c("011402%","1502010241")    # Lyssavirus med underliggende og rabies
 
-
-# ok_gris_virus
-purpose <- "ok_gris_virus"
-source(file = paste0(set_dir_NVI("OKprogrammer"), "Rutine", aar, "/Rapportering/Rscripts/OK_selection_parameters/", purpose, "_selection_parameters.R"))
-source(file = paste0(domene, "/retrieve_ok_data_from_PJS.R"))
-
 ```
+
+[Kathy: Below vignette text have not been made]  
+
+### Login to PJS and read PJS data
+
+```{r, include = TRUE}
+# set_credentials_PJS()
 
 ## LOGIN TO PJS ----
 # 1. Set username and password (credentials) for PJS. 
 #    The credentials are saved in the users profile (at the current machine). 
 #    Do once. Must be repeated when password to PJS changes or if you use another PC
-
-```{r, include = TRUE}
-# set_credentials_PJS()
 # READ DATA FROM PJS ----
-journal_rapp <- login_by_credentials_PJS()
+journal_rapp <- login_PJS()
 
 select_statement <- NVIdb::build_query_one_disease(year = aar, 
-                                                   analytt = c(),
+                                                   analytt = analytt2select,
                                                    hensikt = hensikt2select,
-                                                   metode = c())
+                                                   metode = metode2select)
 
 PJSrawdata <- sqlQuery(journal_rapp,
                        select_statement["selection_v2_sak_m_res"],
@@ -135,7 +129,11 @@ odbcClose(journal_rapp)
 
 ```
 
-## STANDARDIZE DATA ----
+### Standardize data
+
+```{r, include = TRUE}
+# STANDARDIZE DATA ----
+## Standard cleaning of data
 # - The column names are standardized using standardize_columns
 # - Numeric variables are transformed to numbers
 # - Date variables are transformed to date format
@@ -143,10 +141,6 @@ odbcClose(journal_rapp)
 # - The variables saksnr and, if possible, fagnr are generated
 # - The unnecessary columns konkl_provenr and vet_distriktnr are removed
 # - Test data, i.e. saker with ansvarlig_seksjon in c("14", "99") are deleted
-
-```{r, include = TRUE}
-# STANDARDIZE DATA ----
-## Standard cleaning of data
 PJSdata <- standardize_PJSdata(PJSdata = PJSrawdata)
 sakskonklusjon <- standardize_PJSdata(PJSdata = PJSsakskonklusjon) 
 
@@ -157,8 +151,9 @@ sakskonklusjon <- exclude_from_PJSdata(PJSdata = sakskonklusjon, abroad = "exclu
 
 ```
 
-## KEEP VARIABLES IN SAK, PROVE AND KONKLUSJON -LEVEL ----
+### Select variables from chosen levels for further processing
 ```{r, include = TRUE}
+## KEEP VARIABLES IN SAK, PROVE AND KONKLUSJON -LEVEL ----
 PJSdata <- choose_PJS_levels(data = PJSdata,
                              levels = c("sak", "prove", "konklusjon"),
                              keep_col = NULL,
@@ -166,10 +161,9 @@ PJSdata <- choose_PJS_levels(data = PJSdata,
                              unique_rows = TRUE)
 ```
 
-## TRANSLATE CODES INTO DESCRIPTIVE TEXT  ----
+### Translate PJS codes into descriptive text
 ```{r, include = TRUE}
-### Import support registers
-PJS_codes_2_text <- read_PJS_codes_2_text()
+## TRANSLATE CODES INTO DESCRIPTIVE TEXT  ----
 
 ### Translate PJS-codes to code descriptions
 PJSdata <- add_PJS_code_description(data = PJSdata,
@@ -180,6 +174,16 @@ PJSdata <- add_PJS_code_description(data = PJSdata,
                                                      "provematerialekode", "kjonn", "konkl_kjennelsekode", "konkl_analyttkode"),
                                     new_column = c("hensikt", "art", "driftsform", "provetype",
                                                    "provemateriale", "kjonn2", "konkl_kjennelse", "konkl_analytt"),
+                                    position = "right",
+                                    overwrite = FALSE)
+
+### Translate PJS-codes to code descriptions, simplified version
+PJSdata <- add_PJS_code_description(data = PJSdata,
+                                    translation_table = PJS_codes_2_text,
+                                    PJS_variable_type = "auto",
+                                    code_colname = c("hensiktkode", "artkode", "driftsformkode", "provetypekode",
+                                                     "provematerialekode", "kjonn", "konkl_kjennelsekode", "konkl_analyttkode"),
+                                    new_column = "auto",
                                     position = "right",
                                     overwrite = FALSE)
 
