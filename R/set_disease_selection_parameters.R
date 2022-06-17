@@ -91,7 +91,7 @@ set_disease_selection_parameters <- function(year = NULL,
 
   # Create list object with parameter values
   return(list("year" = year,
-              "hensikt2select" =  hensikt2select,
+              "hensikt2select" = hensikt2select,
               "utbrudd2select" = utbrudd2select,
               "metode2select" = metode2select,
               "analytt2select" = analytt2select))
