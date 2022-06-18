@@ -129,26 +129,28 @@ odbcClose(journal_rapp)
 
 ```
 
-### Standardize data
+### Standardize data 
+To facilitate writing script processing PJS data, we have developed column name standards and use functions to automatically set these names. In addition, correct class for numeric and date variables are ensured. The function standardize_PJS_data performs the following transformations:
+
+- The column names are standardized using standardize_columns. 
+- Numeric variables are transformed to number. 
+- Date variables are transformed to date class. 
+- Character variables are trimmed for leading and trailing spaces. 
+- The variables saksnr and, if possible, fagnr are generated. 
+- The unnecessary columns konkl_provenr and vet_distriktnr are removed. 
+- Test data, i.e. saker with ansvarlig_seksjon in c("14", "99") are deleted. 
+
+Thereafter, samples that are irrelevant for reporting Norwegian data, quality assessment and samples from abeoad, can be excluded. Be aware that only samples registreres with country non-Norwegian is excluded. If the owner /location is a organisatiin/dirm or person with address in another country, these are not excluded. 
 
 ```{r, include = TRUE}
-# STANDARDIZE DATA ----
-## Standard cleaning of data
-# - The column names are standardized using standardize_columns
-# - Numeric variables are transformed to numbers
-# - Date variables are transformed to date format
-# - Character variables are trimmed for leading and trailing spaces
-# - The variables saksnr and, if possible, fagnr are generated
-# - The unnecessary columns konkl_provenr and vet_distriktnr are removed
-# - Test data, i.e. saker with ansvarlig_seksjon in c("14", "99") are deleted
+## STANDARDIZE DATA ----
+### Standard cleaning of data
 PJSdata <- standardize_PJSdata(PJSdata = PJSrawdata)
 sakskonklusjon <- standardize_PJSdata(PJSdata = PJSsakskonklusjon) 
 
 ## Exclude ring trials, quality assurance and samples from abroad
 PJSdata <- exclude_from_PJSdata(PJSdata = PJSdata, abroad = "exclude", quality = "exclude")
 sakskonklusjon <- exclude_from_PJSdata(PJSdata = sakskonklusjon, abroad = "exclude", quality = "exclude")
-
-
 ```
 
 ### Select variables from chosen levels for further processing
