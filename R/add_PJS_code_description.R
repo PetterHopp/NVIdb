@@ -69,11 +69,11 @@
 #'     be used to read the translation file from other directories. This can be useful if having a
 #'     stand alone app with no connection the NVI's internal network. In other cases, it should be avoided.
 #'
-#'     PJS_codes_2_text.csv has the following columns: c("type", "kode", "navn", "utgatt_dato"), where 
-#'     "type" is the PJS variable type as listed above (for example hensikt), "kode" is the variable 
-#'     with the PJS-code, "navn" is the text describing the code, and "utgatt_dato" is the date for 
-#'     last date that the code was valid (NA if still valid). If translation tables are needed for 
-#'     other PJS variables, a data frame with the same column definition can be constructed to 
+#'     PJS_codes_2_text.csv has the following columns: c("type", "kode", "navn", "utgatt_dato"), where
+#'     "type" is the PJS variable type as listed above (for example hensikt), "kode" is the variable
+#'     with the PJS-code, "navn" is the text describing the code, and "utgatt_dato" is the date for
+#'     last date that the code was valid (NA if still valid). If translation tables are needed for
+#'     other PJS variables, a data frame with the same column definition can be constructed to
 #'     translate new variables.
 #'
 #'     \code{copy_PJS_code_registers} copies the file pjsCodeDescriptions.csv to a given directory.
@@ -145,7 +145,7 @@ add_PJS_code_description <- function(data,
                                      position = "right",
                                      overwrite = FALSE,
                                      backward = FALSE) {
-  
+
   if (PJS_variable_type[1] == "auto" | new_column[1] == "auto") {
     code_description_colname <- NVIdb::PJS_code_description_colname
     if (isTRUE(backward)) {
@@ -155,11 +155,11 @@ add_PJS_code_description <- function(data,
       dplyr::left_join(code_description_colname, by = "code_colname")
     PJS_types_selected <- subset(PJS_types_selected, !is.na(PJS_types_selected$type))
   }
-  
+
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-  
+
   # Perform checks
   # data
   checkmate::assert_data_frame(data, add = checks)
@@ -218,62 +218,62 @@ add_PJS_code_description <- function(data,
                                               # deparse(substitute(data)), "`"
                              ),
                              add = checks)
-  
+
   # position
   NVIcheckmate::assert_subset_character(x = unique(position), choices = c("first", "left", "right", "last", "keep"), add = checks)
   # overwrite
   checkmate::assert_logical(overwrite, any.missing = FALSE, len = 1, add = checks)
   checkmate::assert_logical(backward, any.missing = FALSE, len = 1, add = checks)
-  
+
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # Generates PJS_variable_type if "auto".
   # new_column was generated above because the new column names should be checked in the argument checking
   if (PJS_variable_type[1] == "auto") {
     PJS_variable_type <- PJS_types_selected$type
   }
-  
-  
+
+
   # Transforms position to a vector with the same length as number of PJS-variables to be translated
   if (length(position) == 1 & length(code_colname) > 1) {position <- rep(position, length(code_colname))}
-  
+
   # runs the translation for several PJS-variables at a time if wanted
   for (i in 1:length(code_colname)) {
-    
+
     # Make a subset with only the codes that is relevant for the actual variabel
     code_2_description <- translation_table[base::which(translation_table$type == PJS_variable_type[i]), ]
-    
+
     # Transform the translation file in the case that backward translation should be used
     if (isTRUE(backward)) {
       # Removes breeds from table if type = "art"
       if (PJS_variable_type[i] == "art") {
-        code_2_description[which(substr(code_2_description$kode,1,2) %in% c("03","05") & 
-                                   !substr(code_2_description$kode,1,8) %in% c("03100203")), "kode"] <- 
-          substr(code_2_description[which(substr(code_2_description$kode,1,2) %in% c("03","05") & 
-                                            !substr(code_2_description$kode,1,8) %in% c("03100203")),"kode"], 1, 11)
-      }      
+        code_2_description[which(substr(code_2_description$kode, 1, 2) %in% c("03", "05") &
+                                   !substr(code_2_description$kode, 1, 8) %in% c("03100203")), "kode"] <-
+          substr(code_2_description[which(substr(code_2_description$kode, 1, 2) %in% c("03", "05") &
+                                            !substr(code_2_description$kode, 1, 8) %in% c("03100203")), "kode"], 1, 11)
+      }
       # Removes non-unique description text, usually levels without name, i.e. "-"
       # Swips navn - kode
       code_2_description <- code_2_description %>%
-        dplyr::mutate(.data$navn = tolower(.data$navn)) %>%
+        dplyr::mutate(navn = tolower(.data$navn)) %>%
         dplyr::distinct() %>%
-        dplyr::rename(.data$kode = .data$navn, .data$navn = .data$kode) %>%
+        dplyr::rename(kode = .data$navn, navn = .data$kode) %>%
         dplyr::filter(is.na(.data$utgatt_dato)) %>%
         dplyr::add_count(.data$type, .data$kode, name = "antall") %>%
         dplyr::filter(.data$antall == 1) %>%
-        dplyr::select(- .data$antall)
-      
-      # Transforms code_colname in data to lower case. 
+        dplyr::select(-.data$antall)
+
+      # Transforms code_colname in data to lower case.
       data$code_colname_org_case <- data[, code_colname[i]]
       data[, code_colname[i]] <- tolower(data[, code_colname[i]])
     }
-    
+
     # code_2_description <- translation_table[base::which(translation_table$type == PJS_variable_type[i] & is.na(translation_table$utgatt_dato)), ]
-    
+
     # # Changes the name of navn to text wanted in the df (txtvarname)
     # base::colnames(code_2_description)[base::which(base::colnames(code_2_description)=="navn")] <- new_column
-    
+
     # Calls function that adds description at the position = position in the relation to the code
     data <- add_new_column(data,
                            ID_column = code_colname[i],
@@ -285,9 +285,9 @@ add_PJS_code_description <- function(data,
                            overwrite = overwrite
     )
     if (isTRUE(backward)) {
-      # Restores original case in code_colname 
-      data[, code_colname[i]] <- data$code_colname_org_case 
-      data$code_colname_org_case  <- NULL
+      # Restores original case in code_colname
+      data[, code_colname[i]] <- data$code_colname_org_case
+      data$code_colname_org_case <- NULL
     }
   }
   return(data)
