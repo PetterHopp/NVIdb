@@ -172,6 +172,52 @@ test_that("Translate codes using 'auto'", {
 
 })
 
+test_that("Backward translation from description to code", {
+  
+  # skip if no connection to 'FAG' have been established
+  skip_if_not(dir.exists(set_dir_NVI("FAG")))
+  
+  # Reads translation table for PJS-codes
+  PJS_codes_2_text <- read_PJS_codes_2_text()
+  
+  art <- c("Storfe", "storfe", "Pattedyr", "Laks", "Alpakka", "Mops")
+  testdata <- as.data.frame(art)
+  
+  
+  correct_result <- as.data.frame(cbind(rbind("03100202001", "03100202001", "03", 
+                                                "04031903001001", "03100203009002", NA_character_),
+                                        testdata))
+ colnames(correct_result) <- c("artkode", "art")
+ 
+  testdata <- add_PJS_code_description(testdata,
+                                       translation_table = PJS_codes_2_text,
+                                       code_colname = c("art"),
+                                       PJS_variable_type = c("art"),
+                                       new_column = c("artkode"),
+                                       position = "left",
+                                       backward = TRUE)
+  
+  # Compare new and old code descriptions
+  rownames(testdata) <- NULL
+  expect_identical(testdata, correct_result)
+  
+  
+  testdata <- add_PJS_code_description(data = testdata,
+                                      translation_table = PJS_codes_2_text,
+                                      PJS_variable_type = "artrase",
+                                      code_colname = "art",
+                                      new_column = "artkode",
+                                      position = "left",
+                                      overwrite = TRUE,
+                                      backward = TRUE)
+  
+  correct_result[6,1] <- "03070101002228"
+  # Compare new and old code descriptions
+  rownames(testdata) <- NULL
+  expect_identical(testdata, correct_result)
+  
+})
+
 
 # test_that("Translate codes in PJS-data", {
 #   # skip if no connection to PJS have been established
