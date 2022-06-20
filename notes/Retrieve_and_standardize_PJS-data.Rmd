@@ -91,7 +91,7 @@ purpose <- "Rabies"
 aar <- c(2020)
 hensikt2select <- c("0100101020", "0100102026", "0100103026", "0200144", "06035")
 metode2select <- c("030010", "070017", "070180", "070245")
-analytt2select <-  c("011402%","1502010241")    # Lyssavirus med underliggende og rabies
+analytt2select <-  c("011402%","1502010241")    # Lyssavirus including sub levels and rabies
 
 ```
 
@@ -155,7 +155,7 @@ sakskonklusjon <- exclude_from_PJSdata(PJSdata = sakskonklusjon, abroad = "exclu
 
 ### Select variables from chosen levels for further processing
 ```{r, include = TRUE}
-## KEEP VARIABLES IN SAK, PROVE AND KONKLUSJON -LEVEL ----
+## KEEP VARIABLES IN SAK, PROVE AND KONKLUSJON LEVEL ----
 PJSdata <- choose_PJS_levels(data = PJSdata,
                              levels = c("sak", "prove", "konklusjon"),
                              keep_col = NULL,
@@ -164,20 +164,11 @@ PJSdata <- choose_PJS_levels(data = PJSdata,
 ```
 
 ### Translate PJS codes into descriptive text
+The function add_PJS_code_description can be used to translate PJS codes into descriptive text. When the column names have been standardised, you must input the column names and the function translate to standard names for the columns with the text. See help for add_PJS_code_description how to do it with non-standard names. 
+
+The code below is dependent on the translation table already have been imported in a previous step.
 ```{r, include = TRUE}
 ## TRANSLATE CODES INTO DESCRIPTIVE TEXT  ----
-
-### Translate PJS-codes to code descriptions
-PJSdata <- add_PJS_code_description(data = PJSdata,
-                                    translation_table = PJS_codes_2_text,
-                                    PJS_variable_type = c("hensikt", "art", "driftsform", "provetype",
-                                                          "provemateriale", "kjonn", "kjennelse", "analytt"),
-                                    code_colname = c("hensiktkode", "artkode", "driftsformkode", "provetypekode",
-                                                     "provematerialekode", "kjonn", "konkl_kjennelsekode", "konkl_analyttkode"),
-                                    new_column = c("hensikt", "art", "driftsform", "provetype",
-                                                   "provemateriale", "kjonn2", "konkl_kjennelse", "konkl_analytt"),
-                                    position = "right",
-                                    overwrite = FALSE)
 
 ### Translate PJS-codes to code descriptions, simplified version
 PJSdata <- add_PJS_code_description(data = PJSdata,
@@ -188,7 +179,10 @@ PJSdata <- add_PJS_code_description(data = PJSdata,
                                     new_column = "auto",
                                     position = "right",
                                     overwrite = FALSE)
+```
 
+
+```{r, include = TRUE}
 saveRDS(PJSdata, file = paste0(set_dir_NVI("OKprogrammer"), "Rutine", aar, "/Rapportering/Radata/", purpose, ".rds"))
 ```
 
