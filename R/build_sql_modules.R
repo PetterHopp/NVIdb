@@ -7,7 +7,11 @@
 #' @description Builds a sql module for selecting one or more years from PJS. This can be included into queries for
 #'    selecting data from PJS.
 #'
-#' @details The function builds the SQL syntax to select one or more consequtive years from PJS.
+#' @details The function builds the SQL syntax to select one or more consecutive
+#'     years from PJS. Be aware that this function only builds a part of an sql
+#'     query that can be included into a select statement. It will not build a
+#'     complete query. The function is called from \code{build_query_hensikt} and
+#'     \code{build_query_one_disease}.
 #'
 #' @param db the database for which the query is built. Currently only the value "PJS" is accepted.
 #' @param year the year that should be selected as integer. Can be given as one year, the first and last year or a range of years.
@@ -74,7 +78,11 @@ build_sql_select_year <- function(year, varname, db = "PJS") {
 #' @description Builds a sql module for selecting one or more codes from PJS. This can be included into queries for
 #'    selecting data from PJS.
 #'
-#' @details The function builds the SQL syntax to select one or more codes for one variable from PJS.
+#' @details The function builds the SQL syntax to select one or more codes for
+#'     one variable from PJS. Be aware that this function only builds a part of an sql
+#'     query that can be included into a select statement. It will not build a
+#'     complete query. The function is called from \code{build_query_hensikt} and
+#'     \code{build_query_one_disease}.
 #'
 #' @param db the database for which the query is built. Currently only the value "PJS" is accepted.
 #' @param values the value of the codes that should be selected given as character. If sub-codes should be included, add "%"
