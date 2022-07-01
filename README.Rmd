@@ -59,11 +59,9 @@ To install (or update) the `NVIconfig` package, run the following code:
 text2 <- paste(paste0('remotes::install_github("NorwegianVeterinaryInstitute/NVIconfig",'), 
 	'    auth_token = "PAT",',
 	'    upgrade = FALSE,', 
-	'    build = TRUE,',
-	'    build_manual = TRUE)', sep = '\n')
+	'    build = TRUE)', sep = '\n')
 cat(text2, sep="", fill = TRUE)
 ```
-
 where PAT is your personal access token.
 
 ## Usage
