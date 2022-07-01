@@ -3,7 +3,7 @@ NVIdb 0.7.0.9001 - (2022-##-##)
 
 New features:
 
-- set_disease_selection_parameters creates a list object with selection pasrameters from input arguments or by sourcing an R script that sets the input values (a "purpose" file).
+- set_disease_selection_parameters creates a list object with selection parameters from input arguments or by sourcing an R script that sets the input values (a "purpose" file).
 
 - add_PJS_code_description can now perform backward translation from PJS description text to PJS-code. Use 'backward = TRUE'. Backward translation only works when the description text is unique per code. Case is ignored for backward translation.
 
@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- add_produsent_properties replaces add_produsent and add_produsent_properties correctly adds geo-coordinates also when information on geo-coordinates is missing.
+- add_produsent_properties replaces add_produsent. add_produsent_properties now correctly adds geo-coordinates also when information on geo-coordinates is missing.
 
 - copy-functions (copy_kommune_fylke, copy_MT_omrader, copy_PJS_code_2_text, copy_Pkode_2_text, copy_poststed, copy_prodnr_2_current_prodnr, and copy_Prodtilskudd),  now accepts "from_path" and "to_path" that ends with "\\".
 
