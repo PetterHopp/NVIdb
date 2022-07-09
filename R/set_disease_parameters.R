@@ -40,7 +40,7 @@
 #' @export
 #' @examples
 #' # Selection parameters for Pancreatic disease (PD)
-#' selection_parameters <- set_disease_selection_parameters(
+#' selection_parameters <- set_disease_parameters(
 #'   analytt2select = c("01220104%", "1502010235"),
 #'   hensikt2select = c("0100108018", "0100109003", "0100111003", "0800109"),
 #'   metode2select = c("070070", "070231", "010057", "060265")
