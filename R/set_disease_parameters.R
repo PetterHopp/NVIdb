@@ -56,11 +56,11 @@ set_disease_parameters <- function(hensikt2select = NULL,
   checks <- checkmate::makeAssertCollection()
 
   # Perform checks
-  checkmate::assert_character(hensikt2select, min.chars = 2, null.ok = TRUE, add = checks)
-  checkmate::assert_character(utbrudd2select, null.ok = TRUE, add = checks)
-  checkmate::assert_character(metode2select, min.chars = 6, null.ok = TRUE, add = checks)
+  checkmate::assert_character(hensikt2select, min.chars = 2, any.missing = FALSE, null.ok = TRUE, add = checks)
+  checkmate::assert_character(utbrudd2select, any.missing = FALSE, null.ok = TRUE, add = checks)
+  checkmate::assert_character(metode2select, min.chars = 6, any.missing = FALSE, null.ok = TRUE, add = checks)
   NVIcheckmate::assert_non_null(list(analytt2select, hensikt2select, utbrudd2select, file), add = checks)
-  checkmate::assert_character(analytt2select, min.chars = 2, add = checks)
+  checkmate::assert_character(analytt2select, min.chars = 2, any.missing = FALSE, add = checks)
   if (!is.null(file)) {
     checkmate::assert_file(x = file, add = checks)
   }
