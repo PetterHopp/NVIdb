@@ -29,53 +29,67 @@ data reporting at the Norwegian Veterinary Institute (NVI).
 <tr class="odd">
 <td style="text-align: left;">NVIconfig</td>
 <td style="text-align: left;">Private</td>
-<td style="text-align: left;">Configuration information necessary for some NVIverse functions</td>
+<td style="text-align: left;">Configuration information necessary for
+some NVIverse functions</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">NVIdb</td>
 <td style="text-align: left;">Public</td>
-<td style="text-align: left;">Tools to facilitate the use of NVI’s databases</td>
+<td style="text-align: left;">Tools to facilitate the use of NVI’s
+databases</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">NVIspatial</td>
+<td style="text-align: left;">Public</td>
+<td style="text-align: left;">Tools to facilitate working with spatial
+data at NVI</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">NVIpretty</td>
 <td style="text-align: left;">Public</td>
-<td style="text-align: left;">Tools to make R-output pretty in accord with NVI’s graphical profile</td>
+<td style="text-align: left;">Tools to make R-output pretty in accord
+with NVI’s graphical profile</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">NVIbatch</td>
 <td style="text-align: left;">Public</td>
-<td style="text-align: left;">Tools to facilitate the running of R-scripts in batch mode at NVI</td>
+<td style="text-align: left;">Tools to facilitate the running of
+R-scripts in batch mode at NVI</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">OKplan</td>
 <td style="text-align: left;">Public</td>
-<td style="text-align: left;">Tools to facilitate the planning of surveillance programmes for the NFSA</td>
+<td style="text-align: left;">Tools to facilitate the planning of
+surveillance programmes for the NFSA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">OKcheck</td>
 <td style="text-align: left;">Public</td>
-<td style="text-align: left;">Tools to facilitate checking of data from national surveillance programmes</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NVIcheckmate</td>
-<td style="text-align: left;">Public</td>
-<td style="text-align: left;">Extension of checkmate with argument checking adapted for NVIverse</td>
+<td style="text-align: left;">Tools to facilitate checking of data from
+national surveillance programmes</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">NVIpackager</td>
+<td style="text-align: left;">NVIcheckmate</td>
 <td style="text-align: left;">Public</td>
-<td style="text-align: left;">Tools to facilitate the development of NVIverse packages</td>
+<td style="text-align: left;">Extension of checkmate with argument
+checking adapted for NVIverse</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">NVIpackager</td>
+<td style="text-align: left;">Public</td>
+<td style="text-align: left;">Tools to facilitate the development of
+NVIverse packages</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">NVIrpackages</td>
 <td style="text-align: left;">Public</td>
-<td style="text-align: left;">Keeps a table of the R-Packages in NVIverse</td>
+<td style="text-align: left;">Keeps a table of the R-Packages in
+NVIverse</td>
 </tr>
 </tbody>
 </table>
 
-How you can contribute
-----------------------
+## How you can contribute
 
 There are several ways you can contribute to this project: ask a
 question, propose an idea, report a bug, improve the documentation, or
@@ -141,8 +155,7 @@ list](https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues) and
 leave a comment on the things you want to work on. See also the
 development guidelines below.
 
-Development guidelines
-----------------------
+## Development guidelines
 
 If you want to contribute code, you are welcome to do so. Please try to
 adhere to some principles and style convention used for
@@ -213,15 +226,13 @@ The start of commit messages should be one of the following:
 
 Do not capitalize the first letter.
 
-Code of conduct
----------------
+## Code of conduct
 
 Please note that this project is released with a [Contributor Code of
 Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
 By participating to this project, you agree to abide by its terms.
 
-References
-----------
+## References
 
 This document is adapted from a
 [template](https://gist.github.com/peterdesmet/e90a1b0dc17af6c12daf6e8b2f044e7c)

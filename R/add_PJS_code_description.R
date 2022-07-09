@@ -79,8 +79,8 @@
 #'     \code{copy_PJS_code_registers} copies the file pjsCodeDescriptions.csv to a given directory.
 #'
 #'
-#' @param data Data frame with PJS-data with a column with codes for a PJS-variable
-#' @param translation_table Data frame with the code and the description for PJS-variables
+#' @param data Data frame with PJS-data with a column with codes for a PJS-variable.
+#' @param translation_table Data frame with the code and the description for PJS-variables.
 #' @param PJS_variable_type A vector with PJS-variables, for example "hensikt". See details for a list of all PJS-variables included in
 #'     the premade translation table pjscode_2_descriptions.csv. If more than one code should be translated, they can be given in the vector.
 #'     You may also use "auto", if \code{code_colname} have standardized PJS names only, see details.
@@ -91,10 +91,10 @@
 #' @param position position for the new columns, can be one of c("first", "left", "right", "last", "keep"). If several codes should be translated,
 #'     either one value to be applied for all may be given or a vector with specified position for each code to be translated should be given.
 #' @template overwrite
-#' @param backward \[logical\]. If \code{TRUE}, it translate from descriptive text and back to PJS-code, see details. Defaults to \code{FALSE}.
-#' @param filename Filename of the source file for the translation table for PJS-codes
-#' @param from_path Path for the source translation table for PJS-codes
-#' @param to_path Path for the target translation table for PJS-codes when copying the table
+#' @param backward [\code{logical}]. If \code{TRUE}, it translate from descriptive text and back to PJS-code, see details. Defaults to \code{FALSE}.
+#' @param filename File name of the source file for the translation table for PJS-codes.
+#' @param from_path Path for the source translation table for PJS-codes.
+#' @param to_path Path for the target translation table for PJS-codes when copying the table.
 #'
 #' @return \code{add_PJS_code_description} A data frame where the description text for the PJS-code has been added in the column to the
 #'     right of the column with the code. If the input is a tibble, it will be transformed to a data frame.

@@ -32,9 +32,17 @@ Builds a sql module for selecting one or more codes from PJS. This can be includ
    selecting data from PJS.
 }
 \details{
-The function builds the SQL syntax to select one or more consequtive years from PJS.
+The function builds the SQL syntax to select one or more consecutive
+    years from PJS. Be aware that this function only builds a part of an sql
+    query that can be included into a select statement. It will not build a
+    complete query. The function is called from \code{build_query_hensikt} and
+    \code{build_query_one_disease}.
 
-The function builds the SQL syntax to select one or more codes for one variable from PJS.
+The function builds the SQL syntax to select one or more codes for
+    one variable from PJS. Be aware that this function only builds a part of an sql
+    query that can be included into a select statement. It will not build a
+    complete query. The function is called from \code{build_query_hensikt} and
+    \code{build_query_one_disease}.
 }
 \examples{
 # SQL-select module for selecting year from PJS
