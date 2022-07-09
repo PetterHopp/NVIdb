@@ -33,7 +33,7 @@ test_that("set disease parameters by direct input", {
 test_that("errors for set_disease_parameters", {
   linewidth <- options("width")
   options(width = 80)
-  
+
   expect_error(set_disease_parameters(analytt2select = "0",
                                       hensikt2select = "0100108018",
                                       metode2select = "070070"),
