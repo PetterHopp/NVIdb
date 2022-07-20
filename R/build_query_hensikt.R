@@ -26,7 +26,7 @@ build_query_hensikt <- function(year, hensikt, db = "PJS") {
   checks <- checkmate::makeAssertCollection()
   # Perform checks
   checkmate::assert_integerish(year, lower = 1990, upper = as.numeric(format(Sys.Date(), "%Y")), min.len = 1, add = checks)
-  checkmate::assert_character(hensikt, min.chars = 2, add = checks)
+  checkmate::assert_character(hensikt, min.chars = 2, any.missing = FALSE, add = checks)
   checkmate::assert_choice(db, choices = c("PJS"), add = checks)
   # Report check-results
   checkmate::reportAssertions(checks)
