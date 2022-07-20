@@ -1,6 +1,5 @@
 library(NVIdb)
 library(testthat)
-context("PJS build_sql_select_code")
 
 test_that("build_sql_select_code", {
 
@@ -32,7 +31,7 @@ test_that("build_sql_select_code", {
 test_that("errors for build_sql_select_code", {
 
 expect_error(build_sql_select_code(values = NA, varname = "hensiktkode", db = "PJS"),
-  regexp = "Contains missing values")
+  regexp = "Contains only missing values")
 
 expect_error(build_sql_select_code(values = "", varname = "hensiktkode", db = "PJS"),
   regexp = "All elements must have at least 1 characters")
