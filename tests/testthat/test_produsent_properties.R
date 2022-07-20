@@ -131,7 +131,7 @@ test_that("errors for copy_produsent", {
                regexp = "File does not exist:")
 
   expect_error(copy_prodnr_2_current_prodnr(filename = "filename.csv", from_path = tempdir(), to_path = "filepath_does_not_exist"),
-               regexp = "Directory 'filepath_does_not_exist' does not\n * exists.",
+               regexp = "Directory 'filepath_does_not_exist' does not\n * exist.",
                fixed = TRUE)
 
   options(width = unlist(linewidth))
