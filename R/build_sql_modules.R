@@ -85,9 +85,9 @@ build_sql_select_year <- function(year, varname, db = "PJS") {
 #'     \code{build_query_one_disease}.
 #'
 #' @param db the database for which the query is built. Currently only the value "PJS" is accepted.
-#' @param values the value of the codes that should be selected given as character. If sub-codes should be included, add "%"
-#'     after the code, see example.
-#' @param varname The variable name of the variable from which tha coded values should be selected
+#' @param values the value of the codes that should be selected given as character. 
+#'     If sub-codes should be included, add "%" after the code, see example.
+#' @param varname The variable name of the variable from which the coded values should be selected.
 #'
 #' @return a SQL-code for selecting the codes from PJS to be included when building select-statements .
 #'
@@ -108,14 +108,14 @@ build_sql_select_year <- function(year, varname, db = "PJS") {
 build_sql_select_code <- function(values, varname, db = "PJS") {
 
   # cleaning values argument before argument checking
-  values <- trimws(values)
+  if(!is.null(values)) {values <- trimws(values)}
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
 
   # Perform checks
-  checkmate::assert_character(values, null.ok = TRUE, any.missing = FALSE, min.chars = 1, add = checks)
+  checkmate::assert_character(values, null.ok = TRUE, all.missing = FALSE, min.chars = 1, add = checks)
   checkmate::assert_character(varname, add = checks)
   checkmate::assert_choice(db, choices = c("PJS"), add = checks)
 
@@ -128,30 +128,33 @@ build_sql_select_code <- function(values, varname, db = "PJS") {
   # GENERATE SQL STRING ----
   # Generate empty string if values are NULL
   select_code <- ""
+
   if (!is.null(values) &&
-      (length(values) > 1 || length(values) == 1 & trimws(values[1]) != "")) {
-    #   select_code <- ""
-    # } else {
+      (length(values) > 1 || (length(values) == 1 & trimws(values[1]) != ""))) {
+
+    # Include missing if any NA
+    if (any(is.na(values))) {
+      select_code <- paste(varname, "IS NULL OR ")
+      values <- subset(values, !is.na(values))
+    }
 
     # use "=" in sql string for values where sub-codes shall not be included when one code
     if (length(grep("%", values, invert = TRUE)) == 1) {
-      select_code <- paste0(varname, " = '", grep("%", values, value = TRUE, invert = TRUE), "'")
+      select_code <- paste0(select_code, varname, " = '", grep("%", values, value = TRUE, invert = TRUE), "'")
     }
 
     # use "IN" in sql string for values where sub-codes shall not be included when more than one code
     if (length(grep("%", values, invert = TRUE)) > 1) {
-      select_code <- paste0(varname, " IN ('", paste(grep("%", values, value = TRUE, invert = TRUE), collapse = "', '"), "')")
+      select_code <- paste0(select_code, varname, " IN ('", paste(grep("%", values, value = TRUE, invert = TRUE), collapse = "', '"), "')")
     }
 
     # use "like" in sql string for values where sub-codes shall be included
     values <- grep("%", values, value = TRUE, invert = FALSE)
     if (length(values) > 0) {
       for (i in 1:length(values)) {
-        if (select_code != "") {
+        if (select_code != "" & grepl("OR $", select_code) < 1) {
           select_code <- paste(select_code, "OR")
-        } # else {
-        # select_code <- ""
-        # }
+        }
         # select_code <- paste(select_code, match.call()[1], varname, "LIKE", values[i])
         select_code <- paste(select_code, varname, "LIKE", paste0("'", values[i], "'"))
 
