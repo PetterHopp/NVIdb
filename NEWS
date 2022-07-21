@@ -9,7 +9,7 @@ New features:
 
 - set_dir_NVI now accepts abbreviated input for datasource. The abbreviation must be unique.
 
-- add-functions now accepts abbreviated input for position. The abbreviation must be unique.
+- add-functions (add_kommune_fylke, add_MT_omrader, add_PJS_code_description, add_poststed and add_produsent_properties) now accepts abbreviated input for position. The abbreviation must be unique.
 
 
 Bug fixes:
