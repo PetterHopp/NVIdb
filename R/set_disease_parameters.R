@@ -46,15 +46,15 @@
 #'   metode2select = c("070070", "070231", "010057", "060265")
 #'   )
 set_disease_parameters <- function(hensikt2select = NULL,
-                                             utbrudd2select = NULL,
-                                             metode2select = NULL,
-                                             analytt2select = NULL,
-                                             file = NULL) {
-
+                                   utbrudd2select = NULL,
+                                   metode2select = NULL,
+                                   analytt2select = NULL,
+                                   file = NULL) {
+  
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-
+  
   # Perform checks
   checkmate::assert_character(hensikt2select, min.chars = 2, any.missing = FALSE, null.ok = TRUE, add = checks)
   checkmate::assert_character(utbrudd2select, any.missing = FALSE, null.ok = TRUE, add = checks)
@@ -64,14 +64,26 @@ set_disease_parameters <- function(hensikt2select = NULL,
   if (!is.null(file)) {
     checkmate::assert_file(x = file, add = checks)
   }
-
+  
   # Report check-results
   checkmate::reportAssertions(checks)
-
+  
   # SET SELECTION PARAMETERS ----
   # Import values from parameter file
-
-
+  if (!is.null(file)) {
+    script <-  as.character(parse(file = paste0(set_dir_NVI("OKprogrammer"), 
+                                                "Rutine2021/Rapportering/Rscripts/disease_selection_parameters/", 
+                                                purpose, 
+                                                "_selection_parameters.R"), encoding = "UTF-8"))
+    
+    script <- script[grepl(pattern = "^hensikt2select|^analytt2select|^metode2select|^art2select|^utbrudd2select", script)]
+    
+    for (i in 1:length(script)) {
+      eval(parse(text = script[i]))
+    } 
+  }
+  
+  
   # Create list object with parameter values
   return(list("hensikt2select" =  hensikt2select,
               "utbrudd2select" = utbrudd2select,
