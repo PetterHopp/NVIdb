@@ -12,12 +12,12 @@ build_sql_select_code(values, varname, db = "PJS")
 \arguments{
 \item{year}{the year that should be selected as integer. Can be given as one year, the first and last year or a range of years.}
 
-\item{varname}{The variable name of the variable from which tha coded values should be selected}
+\item{varname}{The variable name of the variable from which the coded values should be selected.}
 
 \item{db}{the database for which the query is built. Currently only the value "PJS" is accepted.}
 
-\item{values}{the value of the codes that should be selected given as character. If sub-codes should be included, add "%"
-after the code, see example.}
+\item{values}{the value of the codes that should be selected given as character.
+If sub-codes should be included, add "%" after the code, see example.}
 }
 \value{
 a SQL-code for selecting year from PJS to be included when building select-statements.
