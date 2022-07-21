@@ -85,7 +85,7 @@ build_sql_select_year <- function(year, varname, db = "PJS") {
 #'     \code{build_query_one_disease}.
 #'
 #' @param db the database for which the query is built. Currently only the value "PJS" is accepted.
-#' @param values the value of the codes that should be selected given as character. 
+#' @param values the value of the codes that should be selected given as character.
 #'     If sub-codes should be included, add "%" after the code, see example.
 #' @param varname The variable name of the variable from which the coded values should be selected.
 #'
@@ -108,7 +108,7 @@ build_sql_select_year <- function(year, varname, db = "PJS") {
 build_sql_select_code <- function(values, varname, db = "PJS") {
 
   # cleaning values argument before argument checking
-  if(!is.null(values)) {values <- trimws(values)}
+  if (!is.null(values)) {values <- trimws(values)}
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
