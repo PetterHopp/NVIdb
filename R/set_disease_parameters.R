@@ -23,13 +23,16 @@
 #'     using a for loop that selects PJS-data and performs similar analyses at one
 #'     disease at a time.
 #'
-#' @param hensikt2select Vector with specific hensikter. If sub-hensikter should
+#' @param hensikt2select Vector with specific hensikter. If sub-codes should
 #'     be included, end the code with \%. Can be \code{NULL}.
 #' @param utbrudd2select String with an utbrudd ID. Can be \code{NULL}.
 #' @param metode2select Vector with specific metoder. Can be \code{NULL}.
 #' @param analytt2select Vector with  one or more analyttkode given as a character.
-#'     If sub-analytter should be included, end the code with \%. Can be \code{NULL}.
-#' @param file path and filename for an R script that can be sourced and that
+#'     If sub-codes should be included, end the code with \%. Can be \code{NULL}.
+#' @param art2select Vector with  one or more artkode given as a character.
+#'     If sub-codes should be included, end the code with \%.  \code{NA} can be 
+#'     combined with another artkode. Can be \code{NULL}.
+#' @param file path and file name for an R script that can be sourced and that
 #'     sets the parameters \code{hensikt2select}, \code{utbrudd2select}, \code{metode2select}, and
 #'     \code{analytt2select}. Can be \code{NULL}.
 #'
@@ -49,6 +52,7 @@ set_disease_parameters <- function(hensikt2select = NULL,
                                    utbrudd2select = NULL,
                                    metode2select = NULL,
                                    analytt2select = NULL,
+                                   art2select = NULL,
                                    file = NULL) {
   
   # ARGUMENT CHECKING ----
@@ -56,11 +60,12 @@ set_disease_parameters <- function(hensikt2select = NULL,
   checks <- checkmate::makeAssertCollection()
   
   # Perform checks
+  NVIcheckmate::assert_non_null(list(analytt2select, hensikt2select, utbrudd2select, file), add = checks)
   checkmate::assert_character(hensikt2select, min.chars = 2, any.missing = FALSE, null.ok = TRUE, add = checks)
   checkmate::assert_character(utbrudd2select, any.missing = FALSE, null.ok = TRUE, add = checks)
   checkmate::assert_character(metode2select, min.chars = 6, any.missing = FALSE, null.ok = TRUE, add = checks)
-  NVIcheckmate::assert_non_null(list(analytt2select, hensikt2select, utbrudd2select, file), add = checks)
   checkmate::assert_character(analytt2select, min.chars = 2, any.missing = FALSE, add = checks)
+  checkmate::assert_character(art2select, min.chars = 2, all.missing = FALSE, add = checks)
   if (!is.null(file)) {
     checkmate::assert_file(x = file, add = checks)
   }
@@ -71,10 +76,7 @@ set_disease_parameters <- function(hensikt2select = NULL,
   # SET SELECTION PARAMETERS ----
   # Import values from parameter file
   if (!is.null(file)) {
-    script <-  as.character(parse(file = paste0(set_dir_NVI("OKprogrammer"), 
-                                                "Rutine2021/Rapportering/Rscripts/disease_selection_parameters/", 
-                                                purpose, 
-                                                "_selection_parameters.R"), encoding = "UTF-8"))
+    script <-  as.character(parse(file = file, encoding = "UTF-8"))
     
     script <- script[grepl(pattern = "^hensikt2select|^analytt2select|^metode2select|^art2select|^utbrudd2select", script)]
     
@@ -88,5 +90,6 @@ set_disease_parameters <- function(hensikt2select = NULL,
   return(list("hensikt2select" =  hensikt2select,
               "utbrudd2select" = utbrudd2select,
               "metode2select" = metode2select,
-              "analytt2select" = analytt2select))
+              "analytt2select" = analytt2select,
+              "art2select" = art2select))
 }
