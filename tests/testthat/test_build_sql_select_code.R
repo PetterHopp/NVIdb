@@ -28,7 +28,7 @@ test_that("build_sql_select_code", {
   expect_equivalent(query, "hensiktkode IS NULL OR hensiktkode IN ('0100101', '0100102')")
 
   query <- build_sql_select_code(values = c("0100101%", "0100102%", NA), varname = "hensiktkode", db = "PJS")
-  expect_equivalent(query, "hensiktkode IS NULL OR hensiktkode LIKE '0100101%' OR hensiktkode LIKE '0100102%'")
+  expect_equivalent(query, "hensiktkode IS NULL OR  hensiktkode LIKE '0100101%' OR hensiktkode LIKE '0100102%'")
 
   query <- build_sql_select_code(values = c(NA, "0100101", "0100102%", NA), varname = "hensiktkode", db = "PJS")
   expect_equivalent(query, "hensiktkode IS NULL OR hensiktkode = '0100101' OR hensiktkode LIKE '0100102%'")
