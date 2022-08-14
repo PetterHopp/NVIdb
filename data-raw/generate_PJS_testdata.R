@@ -53,11 +53,15 @@ PJS_testdataX <- PJS_testdata %>%
   # dplyr::mutate(provenummer = as.character(provenummer)) %>%
   # dplyr::mutate(antall = nchar(rekvirentnr)) %>%
   dplyr::rowwise() %>%
-  dplyr::mutate(date_correction = (weeknr - as.numeric(substr(ISOweek::ISOweek(as.Date(mottatt_dato, "%d.%m.%y")),7 ,8))) * 7,
+  dplyr::mutate(date_correction = (weeknr - as.numeric(substr(ISOweek::ISOweek(as.Date(mottatt_dato, "%d.%m.%y")),7 ,8))) * 7, 
                 rekvirenttype = "TYPE",
                 rekvirentnr = substr("12345678901234567890", 1, nchar(rekvirentnr)),
                 eier_lokalitetnr = substr("12345678901234567890", 1, nchar(eier_lokalitetnr)),
                 mottatt_dato = format(as.Date(mottatt_dato, "%d.%m.%y") + date_correction, "%d.%m.%y"),
+                # uttatt_dato = format(as.Date(uttatt_dato, "%d.%m.%y") + date_correction, "%d.%m.%y"),
+                # avsluttet_dato = format(as.Date(avsluttet_dato, "%d.%m.%y") + date_correction, "%d.%m.%y"),
+                # godkjent_dato = format(as.Date(godkjent_dato, "%d.%m.%y") + date_correction, "%d.%m.%y"),
+                # undersokt_dato = format(as.Date(undersokt_dato, "%d.%m.%y") + date_correction, "%d.%m.%y"),
                 postnr = substr("12345678901234567890", 1, nchar(postnr)),
                 kommunenr = substr("12345678901234567890", 1, nchar(kommunenr)),
                 tilleggsnr = substr("12345678901234567890", 1, nchar(tilleggsnr)),
@@ -82,7 +86,8 @@ PJS_testdataX <- PJS_testdata %>%
                 navn = "Xxxx Xxxxxxx",
                 innsendelsesnummer = innsnr,
                 fagnr = ceiling(innsnr/2)) #%>%
-  
-  # dplyr::select(-c(innsnr, weeknr))
+
+# dplyr::select(-c(innsnr, weeknr))
+
 
 saveRDS(PJS_testdata, "./tests/testthat/PJS_testdata.rds")
