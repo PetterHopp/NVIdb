@@ -13,11 +13,13 @@ knitr::opts_chunk$set(eval = FALSE)
 
 -   [Overview](#overview)
 -   [Set up the R environment](#set-up-the-r-environment)
--   [Login to PJS](#login-to-pjs)
+-   [Retrive data from PJS](#retrive-data-from-pjs)
 -   [Make selection statement](#make-selection-statement)
--   [Retrieve PJS-data](#retrieve-pjs-data)
+-   [Login to PJS and read PJS-data](#login-to-pjs-and-read-pjs-data)
+-   [Transform PJS-data](#transform-pjs-data)
 -   [Standardize PJS-data](#standardize-pjs-data)
--   [One sample and analytt per row](#one-sample-and-analytt-per-row)
+-   [Select variables from specified PJS-levels](#select-variables-from-specified-pjs-levels)
+-   [Translate PJS codes into descriptive text](#translate-pjs-codes-into-descriptive-text)
 
 ## Overview
 The purpose of this vignette is to give guidelines for retrieving and standardising data from PJS. The vignette shows how functions from `NVIdb` can be used to achieve this. Thereby, one should be able to make data sets from PJS with standard column names and standard classes for the variables to make it easier to share scripts for further management and analysing of PJS data. 
@@ -74,6 +76,7 @@ PJS_codes_2_text <- read_PJS_codes_2_text()
 ## Retrive data from PJS
 We retrieve data from PJS though view in the data base journalrapp. Here are views for different purposes. If we need all data for a disease, we usually use the view "v2_sak_m_res" that combines information from sak to result level and that includes konklusjon and eier_lokalitet. 
 
+### Make selection statement
 In this example we select all saker with resultater and konklusjoner related to one disease, i.e. rabies, for a single year. To achieve this we select
 
 - all saker with analytt rabies or lyssavirus for konklusjon or resultat
@@ -94,8 +97,6 @@ metode2select <- c("030010", "070017", "070180", "070245")
 analytt2select <-  c("011402%","1502010241")    # Lyssavirus including sub levels and rabies
 
 ```
-
-[Kathy: Below vignette text have not been made]  
 
 ### Login to PJS and read PJS data
 
@@ -129,7 +130,10 @@ odbcClose(journal_rapp)
 
 ```
 
-### Standardize data 
+## Transform PJS-data
+
+
+### Standardize PJS-data 
 To facilitate writing script processing PJS data, we have developed column name standards and use functions to automatically set these names. In addition, correct class for numeric and date variables are ensured. The function standardize_PJS_data performs the following transformations:
 
 - The column names are standardized using standardize_columns. 
@@ -153,7 +157,9 @@ PJSdata <- exclude_from_PJSdata(PJSdata = PJSdata, abroad = "exclude", quality =
 sakskonklusjon <- exclude_from_PJSdata(PJSdata = sakskonklusjon, abroad = "exclude", quality = "exclude")
 ```
 
-### Select variables from chosen levels for further processing
+### Select variables from specified PJS-levels
+Several views retrieve data from several of the PJS-levels as in this example. By selecting unique rows from Specific PJS-levels, the number of rows in the data May be reduce considerably. You may select variables from specified PJS-levels by using the function \code{choose_PJS_levels}. The function accepts the levels as input and you do not have to specify the variables. The function will only work as intended if the column names have been standardised using  \code{standardize_PJS}. See help for 
+\code{choose_PJS_levels} for further options. 
 ```{r, include = TRUE}
 ## KEEP VARIABLES IN SAK, PROVE AND KONKLUSJON LEVEL ----
 PJSdata <- choose_PJS_levels(data = PJSdata,
@@ -164,9 +170,9 @@ PJSdata <- choose_PJS_levels(data = PJSdata,
 ```
 
 ### Translate PJS codes into descriptive text
-The function add_PJS_code_description can be used to translate PJS codes into descriptive text. When the column names have been standardised, you must input the column names and the function translate to standard names for the columns with the text. See help for add_PJS_code_description how to do it with non-standard names. 
+To translate PJS codes into descriptive text you may use the function add_PJS_code_description. The function needs arguments like the data, the translation table, the name  of the columns with the codes, the name of the resulting columns with the descriptive text and the type of the code that should be translate. There are addition al arguments to position the resulting columns and other, see help for add_PJS_code_description. When the column names have been standardised as done above, you can simplify the input arguments code_column and new_column. See help for how to do it with non-standard names. 
 
-The code below is dependent on the translation table already have been imported in a previous step.
+The code below is dependent on the translation table already have been imported in a previous step. In this case it was imported in the section [Import support registers](#import-support-registers).
 ```{r, include = TRUE}
 ## TRANSLATE CODES INTO DESCRIPTIVE TEXT  ----
 
