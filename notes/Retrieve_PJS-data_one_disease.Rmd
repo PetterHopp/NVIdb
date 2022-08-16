@@ -1,0 +1,202 @@
+--- 
+title: "Retrieve PJS-data for one disease"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Retrieve PJS-data one disease}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+## Contents
+
+-   [Overview](#overview)
+-   [Set up the R environment](#set-up-the-r-environment)
+-   [Retrive data from PJS](#retrive-data-from-pjs)
+    -   [Make selection statement](#make-selection-statement)
+    -   [Login to PJS and read PJS-data](#login-to-pjs-and-read-pjs-data)
+-   [Transform PJS-data](#transform-pjs-data)
+    -   [Standardize PJS-data](#standardize-pjs-data)
+    -   [Select variables from specified PJS-levels](#select-variables-from-specified-pjs-levels)
+    -   [Translate PJS codes into descriptive text](#translate-pjs-codes-into-descriptive-text)
+
+## Overview
+The purpose of this vignette is to give guidelines for retrieving and standardising data from PJS. The vignette shows how functions from `NVIdb` can be used to achieve this. Thereby, one should be able to make data sets from PJS with standard column names and standard classes for the variables to make it easier to share scripts for further management and analysis of PJS data. 
+
+To run the scripts below, you will need R with the "NVIverse" packages `NVIbatch` and `NVIconfig` installed. You will also need a valid user account for PJS.
+
+Be aware that all data, included PJS data, has pitfalls, peculiarities and mistakes. This vignette will make you aware of some of these. But remember; you should always make contact with the data owner, for example the scientist(s) responsible for the data, to ensure that you understand how the data has been generated and to ensure that the data can be used for the purpose you intend to use it for. Analysing data without sufficient knowledge on how the data has been generated may give strange results.
+
+## Set up the R environment
+In this part you want to set up the R environment for all scripts that are called (sourced) by the main script. This includes attaching all packages needed and setting global variables and functions.
+
+### Attach R packages
+In base one use `library` or `require` to attach packages. Of these `library` is preferred as `require` will not produce an error message if a package is not attached. The packages have to be installed before using `library` or `require`.
+```{r, include = TRUE}
+# SET UP THE R ENVIRONMENT ----
+## Attach R packages ----
+library(dplyr)
+library(RODBC)
+library(NVIdb)
+```
+
+An alternative is to use `use_pkg` and `use_NVIverse` from the package `NVIbatch`. These functions accept a vector with package names and will attach the packages if installed, and install the package if not installed. Use `use_pkg` for packages at "Cran" and `use_NVIverse` for packages within the "NVIverse".  If the packages need to be installed, your user needs writing access to the directories for R packages. 
+```{r, include = TRUE}
+# SET UP THE R ENVIRONMENT ----
+## Attach R packages ----
+library(NVIbatch)
+use_pkg(pkg = c("dplyr", "RODBC"))
+use_NVIverse(pkg = c("NVIdb"))
+```
+
+### Set global variables and functions
+The global variables should be defined early in the script so that they are easy to find and eventually edit. In this example there are two global variables, the path to the R scripts and today's date. 
+
+Likewise should global functions used by the script be defined early in the script. These are functions needed for the script that are not included in any package, either because they are very specific for this script or that they are not yet mature for being included into a package. It is recommended to generalise functions and move them to packages to facilitate maintenance, updating and error testing.
+
+In stead of including the code for defining the global variables and the functions in the main script, the code may be written in separate scripts (R files) that are sourced from the main script.
+```{r, include = TRUE}
+## Global variables ----
+### Paths and file names
+# The path to the R-scripts.
+# One may also use here::here to identify the path to the scripts.
+script_path <- dirname(rstudioapi::getSourceEditorContext()$path)
+
+### Today's date in the format yyyymmdd for use in file names.
+today <- format(Sys.Date(), "%Y%m%d")
+
+### Functions
+# None in this example
+```
+
+### Import support registers
+Very often, you will combine PJS-data with information found in other registers. In this example we use tables to translate PJS-codes to descriptive text. Currently such registers must be loaded/imported before they can be used. This may change when this information is easily accessible through databases.
+```{r, include = TRUE}
+# support registers
+PJS_codes_2_text <- read_PJS_codes_2_text()
+```
+
+
+## Retrive data from PJS
+We retrieve data from PJS though views in the data base journalrapp. There are views avilable for different purposes. If we need all data for a disease, we usually use the view "v2_sak_m_res" that combines information from all levels from sak to result and in addition includes konklusjon and eier_lokalitet. 
+
+### Make selection statement
+In this example we select all saker with resultater and konklusjoner related to one disease, i.e. rabies, for a single year. To achieve this we select
+
+- all saker with analytt rabies or lyssavirus for konklusjon or resultat
+- all saker with rabies-specific hensikt, i.e. the samples that will be or should have been examined for rabies
+- all saker with metode specific for rabies, i.e. the samples that have been set up with a rabies examination
+
+Thereby, we get all saker with a konklusjon or resultat for rabies as well as saker that have been set up for rabies examination but with no result yet and saker that have been examined for rabies but with no result for rabies, either because the sample or examination was rejected or because a mistake was done when entering the result giving a wrong result that can not be found selecting for analytt.
+
+```{r, include = TRUE}
+# RETRIEVE DATA FROM PJS ----
+
+# Set selection parameters
+purpose <- "Rabies"
+aar <- c(2020)
+hensikt2select <- c("0100101020", "0100102026", "0100103026", "0200144", "06035")
+metode2select <- c("030010", "070017", "070180", "070245")
+analytt2select <-  c("011402%","1502010241")    # Lyssavirus including sub levels and rabies
+
+```
+
+```{r, include = TRUE}
+select_statement <- NVIdb::build_query_one_disease(year = aar, 
+                                                   analytt = analytt2select,
+                                                   hensikt = hensikt2select,
+                                                   metode = metode2select)
+```
+
+
+### Login to PJS and read PJS data
+ set_credentials_PJS()
+
+LOGIN TO PJS ----
+ 1. Set username and password (credentials) for PJS. 
+    The credentials are saved in the users profile (at the current machine). 
+    Do once. Must be repeated when password to PJS changes or if you use another PC
+ READ DATA FROM PJS ----
+
+```{r, include = TRUE}
+journal_rapp <- login_PJS()
+
+PJSrawdata <- sqlQuery(journal_rapp,
+                       select_statement["selection_v2_sak_m_res"],
+                       as.is = TRUE,
+                       stringsAsFactors = FALSE)
+
+
+PJSsakskonklusjon <- sqlQuery(journal_rapp,
+                              select_statement["selection_sakskonklusjon"],
+                              as.is = TRUE,
+                              stringsAsFactors = FALSE)
+
+odbcClose(journal_rapp)
+
+```
+
+## Transform PJS-data
+
+### Standardize PJS-data 
+To facilitate writing script processing PJS data, we have developed column name standards and use functions to automatically set these names. In addition, correct class for numeric and date variables are ensured. The function standardize_PJS_data performs the following transformations:
+
+- The column names are standardized using standardize_columns. 
+- Numeric variables are transformed from character to numeric. 
+- Date variables are transformed to date class. 
+- Character variables are trimmed for leading and trailing spaces. 
+- The variables saksnr and, if possible, fagnr are generated. 
+- The unnecessary columns konkl_provenr and vet_distriktnr are removed. 
+- Test data, i.e. saker with ansvarlig_seksjon in c("14", "99") are deleted. 
+
+Thereafter, samples that are irrelevant for reporting Norwegian data, i.e. quality assessment and samples from abroad, can be excluded. Be aware that only samples registered with owner/location type = country are excluded when excluding samples from abroad. If the owner/location type is an organisation, firm, laboratory or person with address in another country, these are not excluded. 
+
+```{r, include = TRUE}
+## STANDARDIZE DATA ----
+### Standard cleaning of data
+PJSdata <- standardize_PJSdata(PJSdata = PJSrawdata)
+sakskonklusjon <- standardize_PJSdata(PJSdata = PJSsakskonklusjon) 
+
+## Exclude ring trials, quality assurance and samples from abroad
+PJSdata <- exclude_from_PJSdata(PJSdata = PJSdata, abroad = "exclude", quality = "exclude")
+sakskonklusjon <- exclude_from_PJSdata(PJSdata = sakskonklusjon, abroad = "exclude", quality = "exclude")
+```
+
+### Select variables from specified PJS-levels
+Several views retrieve data from several of the PJS-levels as in this example. By selecting unique rows from specific PJS-levels, the number of rows in the data may be reduce considerably. You may select variables from specified PJS-levels by using the function `choose_PJS_levels`. The function accepts the levels as input and you do not have to specify all the variables within the levels. The function will only work as intended if the column names have been standardised using `standardize_PJS`. In this example we remove the columns "konklnr" and "konkl_type". Thereby, we remove duplicate Konklusjoner when `unique_rows = TRUE`. See help for 
+`choose_PJS_levels` for further options. 
+```{r, include = TRUE}
+## KEEP VARIABLES IN SAK, PROVE AND KONKLUSJON LEVEL ----
+PJSdata <- choose_PJS_levels(data = PJSdata,
+                             levels = c("sak", "prove", "konklusjon"),
+                             keep_col = NULL,
+                             remove_col = c("konklnr", "konkl_type"),
+                             unique_rows = TRUE)
+```
+
+### Translate PJS codes into descriptive text
+To translate PJS codes into descriptive text you may use the function `add_PJS_code_description`. The function needs arguments like the data, the translation table, the name  of the columns with the codes, the name of the new columns with the descriptive text and the type of the code that should be translate. There are additional arguments to position the new columns etc., see help for `add_PJS_code_description`. When the column names have been standardised as done above, you can simplify the input arguments code_column and new_column as shown in the example below. See `add_PJS_code_description` help for how to do it with non-standard names. 
+
+The code below is dependent on the translation table already have been imported in a previous step. In this case it was imported in the section [Import support registers](#import-support-registers).
+```{r, include = TRUE}
+## TRANSLATE CODES INTO DESCRIPTIVE TEXT  ----
+
+### Translate PJS-codes to code descriptions, simplified version
+PJSdata <- add_PJS_code_description(data = PJSdata, 
+                                    translation_table = PJS_codes_2_text,
+                                    PJS_variable_type = "auto",
+                                    code_colname = c("hensiktkode", "artkode", "driftsformkode", "provetypekode",
+                                                     "provematerialekode", "kjonn", "konkl_kjennelsekode", "konkl_analyttkode"),
+                                    new_column = "auto",
+                                    position = "right",
+                                    overwrite = FALSE)
+```
+
+## Save data
+```{r, include = TRUE}
+saveRDS(PJSdata, file = paste0(set_dir_NVI("OKprogrammer"), "Rutine", aar, "/Rapportering/Radata/", purpose, ".rds"))
+```
+
+
