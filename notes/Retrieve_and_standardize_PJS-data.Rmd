@@ -83,31 +83,25 @@ PJS_codes_2_text <- read_PJS_codes_2_text()
 We retrieve data from PJS though views in the data base journalrapp. There are views avilable for different purposes. If we need all data for a disease, we usually use the view "v2_sak_m_res" that combines information from all levels from sak to result and in addition includes konklusjon and eier_lokalitet. 
 
 ### Make selection statement
-In this example we select all saker with resultater and konklusjoner related to one disease, i.e. rabies, for a single year. To achieve this we select
+In this example we select all saker with resultater and konklusjoner related to surveillance for paratuberkulosis in different species for a single year. To achieve this we select
 
-- all saker with analytt rabies or lyssavirus for konklusjon or resultat
-- all saker with rabies-specific hensikt, i.e. the samples that will be or should have been examined for rabies
-- all saker with metode specific for rabies, i.e. the samples that have been set up with a rabies examination
+- all saker with hensikt for paratuberkulosis surveillance. 
 
-Thereby, we get all saker with a konklusjon or resultat for rabies as well as saker that have been set up for rabies examination but with no result yet and saker that have been examined for rabies but with no result for rabies, either because the sample or examination was rejected or because a mistake was done when entering the result giving a wrong result that can not be found selecting for analytt.
+There are four main hensikter, each for one species (group of species). 
 
 ```{r, include = TRUE}
 # RETRIEVE DATA FROM PJS ----
 
 # Set selection parameters
-purpose <- "Rabies"
+purpose <- "Paratuberkulose"
 aar <- c(2020)
-hensikt2select <- c("0100101020", "0100102026", "0100103026", "0200144", "06035")
-metode2select <- c("030010", "070017", "070180", "070245")
-analytt2select <-  c("011402%","1502010241")    # Lyssavirus including sub levels and rabies
-
+hensikt2select <- c("0200106%","0200119","0200122%","0200125%")
 ```
 
+
 ```{r, include = TRUE}
-select_statement <- NVIdb::build_query_one_disease(year = aar, 
-                                                   analytt = analytt2select,
-                                                   hensikt = hensikt2select,
-                                                   metode = metode2select)
+select_statement <- NVIdb::build_query_hensikt(year = aar, 
+                                               hensikt = hensikt2select)
 ```
 
 
