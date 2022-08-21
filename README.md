@@ -21,10 +21,12 @@ installed manually from GitHub.
 
 `NVIdb` is part of `NVIverse`, a collection of R-packages with tools to
 facilitate data management and data reporting at the Norwegian
-Veterinary Institute (NVI). The NVIverse consists of the following
-packages: NVIconfig, NVIdb, NVIspatial, NVIpretty, NVIbatch, OKplan,
-OKcheck, NVIcheckmate, NVIpackager, NVIrpackages. See the vignette
-“Contribute to NVIdb” for more information.
+Veterinary Institute (NVI). The `NVIverse` consists of the following
+packages: `NVIconfig`, `NVIdb`, `NVIspatial`, `NVIpretty`, `NVIbatch`,
+`OKplan`, `OKcheck`, `NVIcheckmate`, `NVIpackager`, `NVIrpackages`. See
+[Contribute to
+NVIdb](https://github.com/NorwegianVeterinaryInstitute/NVIdb/blob/main/CONTRIBUTING.md)
+for more information.
 
 ## Installation
 
@@ -32,9 +34,9 @@ OKcheck, NVIcheckmate, NVIpackager, NVIrpackages. See the vignette
 [GitHub](https://github.com/NorwegianVeterinaryInstitute). To install
 `NVIdb` you will need:
 
--   R version &gt; 4.0.0
+-   R version > 4.0.0
 -   R package `remotes`
--   Rtools 4.0
+-   Rtools 4.0 or Rtools 4.2 depending on R version
 
 First install and attach the `remotes` package.
 
@@ -45,7 +47,8 @@ To install (or update) the `NVIdb` package, run the following code:
 
     remotes::install_github("NorwegianVeterinaryInstitute/NVIdb",
         upgrade = FALSE,
-        build = TRUE)
+        build = TRUE,
+        build_vignettes = TRUE)
 
 In addition, you will also need to install the private package
 `NVIconfig` that keep specific information on NVI’s paths and databases.
@@ -122,7 +125,9 @@ for details.
 Contributions to develop `NVIdb` is highly appreciated. There are
 several ways you can contribute to this project: ask a question, propose
 an idea, report a bug, improve the documentation, or contribute code.
-The vignette “Contribute to NVIdb” gives more information.
+See [Contribute to
+NVIdb](https://github.com/NorwegianVeterinaryInstitute/NVIdb/blob/main/CONTRIBUTING.md)
+for more information.
 
 ## <!-- Code of conduct -->
 
