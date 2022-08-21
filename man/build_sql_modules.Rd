@@ -62,6 +62,4 @@ build_sql_select_code(values = c("0100101", "0100101007", "0100102\%", "0100202\
 }
 \author{
 Petter Hopp Petter.Hopp@vetinst.no
-
-Petter Hopp Petter.Hopp@vetinst.no
 }
