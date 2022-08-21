@@ -116,6 +116,31 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
 ###   ----
 
 ### select_prodtilskudd_files ----
+
+
+#' @title List selected files from Søknad om register for produksjonstilskudd
+#' @description List selected files with extracts from Søknad om register for produksjonstilskudd.
+#' @details Reads the filenames of files with extracts from Søknad om register for produksjonstilskudd into a data frame.
+#'     The function gives options to select year and month and path for the files. The function is called from read_Prodtilskudd
+#'     and copy_Prodtilskudd.
+#'
+#' @param from_path Path for the source translation table for PJS-codes
+#' @param Pkode_year The year(s) from which the register should be read. Options is "last", or a vector with one or more years.
+#' @param Pkode_month the month for which the register should be read. The options are c("05", "10", "both", "last") for Pkode_year = 2017
+#'     and c("03", "10", "both", "last") for Pkode_year >= 2018.
+#'
+#' @return A data frame with filenames of the files with the selected extracts of Prodtilskudd.
+#'
+#' @author Petter Hopp Petter.Hopp@@vetinst.no
+#' @examples
+#' \dontrun{
+#' # Making the filelist for read_Prodtilskudd or copy_Prodtilskudd
+#' filelist <- select_prodtilskudd_files(from_path = from_path,
+#'                                       Pkode_year = Pkode_year,
+#'                                       Pkode_month = Pkode_month)
+#' }
+#' @keywords internal
+
 select_prodtilskudd_files <- function(from_path,
                                       Pkode_year,
                                       Pkode_month) {
@@ -135,14 +160,14 @@ select_prodtilskudd_files <- function(from_path,
                        filelist$content %in% c("Koordinater", "Uttrekk"))
   filelist$contenttype <- sapply(filelist$fileinfo, FUN = find_n_th_word, position = 4)
   filelist <- subset(filelist, filelist$contenttype == "UTF8")
-  
+
   filelist$uttrekk_dato <- as.Date(sapply(filelist$fileinfo, FUN = find_n_th_word, position = 3), format = "%Y%m%d")
   max_uttrekk_dato <- stats::aggregate(filelist$uttrekk_dato, by = list(filelist$pkodeaar, filelist$pkodemonth), FUN = max)
   filelist <- merge(filelist, max_uttrekk_dato, by.x = c("pkodeaar", "pkodemonth"), by.y = c("Group.1", "Group.2"))
   filelist <- subset(filelist, filelist$uttrekk_dato == filelist$x)
   filelist <- filelist[, c("filename", "pkodeaar", "pkodemonth", "uttrekk_dato")]
   filelist <- filelist[order(filelist$pkodeaar, filelist$pkodemonth, filelist$uttrekk_dato, decreasing = TRUE), ]
-  
+
   if ("last" %in% Pkode_year) {
     filelist <- filelist[c(1:2), ]
     if (!"both" %in% Pkode_month) {
@@ -163,6 +188,6 @@ select_prodtilskudd_files <- function(from_path,
       }
     }
   }
-  
+
   return(filelist)
 }

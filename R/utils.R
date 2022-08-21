@@ -368,28 +368,3 @@ set_name_vector <- function(colname_vector) {
 #' @noRd
 
 find_n_th_word <- function(x, position) {strsplit(x, " ")[[1]][position]}
-
-
-#' @title List selected files from Søknad om register for produksjonstilskudd
-#' @description List selected files with extracts from Søknad om register for produksjonstilskudd.
-#' @details Reads the filenames of files with extracts from Søknad om register for produksjonstilskudd into a data frame.
-#'     The function gives options to select year and month and path for the files. The function is called from read_Prodtilskudd
-#'     and copy_Prodtilskudd.
-#'
-#' @param from_path Path for the source translation table for PJS-codes
-#' @param Pkode_year The year(s) from which the register should be read. Options is "last", or a vector with one or more years.
-#' @param Pkode_month the month for which the register should be read. The options are c("05", "10", "both", "last") for Pkode_year = 2017
-#'     and c("03", "10", "both", "last") for Pkode_year >= 2018.
-#'
-#' @return A data frame with filenames of the files with the selected extracts of Prodtilskudd.
-#'
-#' @author Petter Hopp Petter.Hopp@@vetinst.no
-#' @examples
-#' \dontrun{
-#' # Making the filelist for read_Prodtilskudd or copy_Prodtilskudd
-#' filelist <- select_prodtilskudd_files(from_path = from_path,
-#'                                       Pkode_year = Pkode_year,
-#'                                       Pkode_month = Pkode_month)
-#' }
-#' @keywords internal
-
