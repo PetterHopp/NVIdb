@@ -40,8 +40,8 @@ Thank you for considering contributing to `r NVIpkg_inline`.
 
 ###  NVIverse packages
 ```{r echo = FALSE, results = 'asis'}
-library(NVIpackager)
-knitr::kable(x = NVIpackages)
+# library(NVIpackager)
+knitr::kable(x = NVIrpackages::NVIpackages)
 ```
   
 ## How you can contribute
