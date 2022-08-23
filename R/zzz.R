@@ -41,7 +41,7 @@
 .onAttach <- function(libname, pkgname) {
 
   # check if "NVIconfig" is installed
-  msg <- NVIcheckmate::check_package(x = "NVIconfig", version = "0.3.1")
+  msg <- NVIcheckmate::check_package(x = "NVIconfig", version = "0.4.0")
 
   # Print a startup message if not required version is installed
   if (!isTRUE(msg)) {
@@ -49,7 +49,8 @@
                  "You can install 'NVIconfig' with remotes::install_github('NorwegianVeterinaryInstitute/NVIconfig',",
                  "                                                         auth_token = 'your_GitHub-PAT',",
                  "                                                         upgrade = FALSE,",
-                 "                                                         build = TRUE)",
+                 "                                                         build = TRUE,",
+                 "                                                         build_vignettes = TRUE)",
                  sep = "\n")
     packageStartupMessage(msg)
   }
