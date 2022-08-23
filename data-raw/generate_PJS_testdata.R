@@ -22,7 +22,7 @@ PJS_selected <- PJS_testdata %>%
   # Unique journals
   dplyr::select(aar, ansvarlig_seksjon, innsendelsesnummer, category) %>%
   dplyr::distinct() %>%
-  dplyr::arrange(aar, ansvarlig_seksjon, innsendelsesnummer) 
+  dplyr::arrange(aar, ansvarlig_seksjon, innsendelsesnummer)
 
 # Make new column with random number. By initilising the seed this is reproducable
 set.seed(2)
@@ -36,9 +36,9 @@ PJS_selected <- PJS_selected %>%
   dplyr::slice_min(random) %>%
   dplyr::ungroup() %>%
   dplyr::select(-c(category, random))
-  
-# mottatt_datoX = format(as.Date(PJS_testdata[1, "mottatt_dato"], "%d.%m.%y") - 
-#                          ((as.numeric(substr(ISOweek::ISOweek(as.Date(PJS_testdata[1, "mottatt_dato"], "%d.%m.%y"))) - 
+
+# mottatt_datoX = format(as.Date(PJS_testdata[1, "mottatt_dato"], "%d.%m.%y") -
+#                          ((as.numeric(substr(ISOweek::ISOweek(as.Date(PJS_testdata[1, "mottatt_dato"], "%d.%m.%y"))) -
 #                              PJS_testdata[1, "weeknr"]) * 7), "%d.%m.%y")
 
 # Anonymize names and ID's
@@ -53,7 +53,7 @@ PJS_testdataX <- PJS_testdata %>%
   # dplyr::mutate(provenummer = as.character(provenummer)) %>%
   # dplyr::mutate(antall = nchar(rekvirentnr)) %>%
   dplyr::rowwise() %>%
-  dplyr::mutate(date_correction = (weeknr - as.numeric(substr(ISOweek::ISOweek(as.Date(mottatt_dato, "%d.%m.%y")),7 ,8))) * 7, 
+  dplyr::mutate(date_correction = (weeknr - as.numeric(substr(ISOweek::ISOweek(as.Date(mottatt_dato, "%d.%m.%y")), 7, 8))) * 7,
                 rekvirenttype = "TYPE",
                 rekvirentnr = substr("12345678901234567890", 1, nchar(rekvirentnr)),
                 eier_lokalitetnr = substr("12345678901234567890", 1, nchar(eier_lokalitetnr)),
@@ -85,7 +85,7 @@ PJS_testdataX <- PJS_testdata %>%
                 stamme = NA_character_,
                 navn = "Xxxx Xxxxxxx",
                 innsendelsesnummer = innsnr,
-                fagnr = ceiling(innsnr/2)) #%>%
+                fagnr = ceiling(innsnr / 2)) # %>%
 
 # dplyr::select(-c(innsnr, weeknr))
 
