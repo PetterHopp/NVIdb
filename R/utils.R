@@ -313,7 +313,7 @@ read_csv_file <- function(filename, from_path, options = NULL, ...) {
 #' @examples
 #' \dontrun{
 #' new_columns <- c("name11" = "column1", "name2" = "column2", "column3")
-#'   new_columns <- set_name_vector(new_columns)
+#' new_columns <- set_name_vector(new_columns)
 #' }
 #' @keywords internal
 
@@ -358,12 +358,12 @@ set_name_vector <- function(colname_vector) {
 #' @examples
 #' \dontrun{
 #' #' Find second word in a string
-#'   find_n_th_word("This is a text", 2)
+#' find_n_th_word("This is a text", 2)
 #'
-#'   #' Find second word in all rows in a column with a string
-#'   data <- rbind("This is a text", "The text is short", "Short", "Or a little bit longer")
-#'   colnames(data) <- "text"
-#'   data$word2 <- sapply(data$text, FUN = find_n_th_word, position = 2)
+#' #' Find second word in all rows in a column with a string
+#' data <- rbind("This is a text", "The text is short", "Short", "Or a little bit longer")
+#' colnames(data) <- "text"
+#' data$word2 <- sapply(data$text, FUN = find_n_th_word, position = 2)
 #' }
 #' @noRd
 
