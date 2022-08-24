@@ -60,7 +60,8 @@ To install (or update) the `NVIconfig` package, run the following code:
     remotes::install_github("NorwegianVeterinaryInstitute/NVIconfig",
         auth_token = "PAT",
         upgrade = FALSE,
-        build = TRUE)
+        build = TRUE,
+        build_vignettes = TRUE)
 
 where PAT is your personal access token.
 
