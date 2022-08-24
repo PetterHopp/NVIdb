@@ -62,6 +62,7 @@ Remotes:
 LazyData: true
 Encoding: UTF-8
 Language: en-GB
+Roxygen: list(markdown = FALSE)
 RoxygenNote: 7.2.1
 VignetteBuilder: 
     knitr,
