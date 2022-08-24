@@ -49,7 +49,7 @@ To install (or update) the `NVIdb` package, run the following code:
     remotes::install_github("NorwegianVeterinaryInstitute/NVIdb")
         upgrade = FALSE,
         build = TRUE,
-        build_manual = TRUE)
+        build_vignettes = TRUE)
 
 In addition, you will also need to install the private package
 `NVIconfig` that keep specific information on NVI’s paths and databases.
@@ -62,7 +62,7 @@ To install (or update) the `NVIconfig` package, run the following code:
         auth_token = "PAT"
         upgrade = FALSE,
         build = TRUE,
-        build_manual = TRUE)
+        build_vignettes = TRUE)
 
 where PAT is your personal access token.
 
