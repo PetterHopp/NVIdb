@@ -1,7 +1,7 @@
 Package: NVIdb
 Title: Tools to facilitate the use of NVI's databases
-Version: 0.7.1
-Date: 2022-08-24
+Version: 0.7.1.9000
+Date: 2022-##-##
 Authors@R: 
   c(person(given = "Petter",
            family = "Hopp",
