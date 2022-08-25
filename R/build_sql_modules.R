@@ -1,27 +1,48 @@
 # build_sql_modules
 # Collection of query modules that can be used when building queries for PJS
 
-
 # build_sql_select_year ----
-#' @title Builds sql module for selecting year from PJS
-#' @description Builds a sql module for selecting one or more years from PJS. This can be included into queries for
-#'    selecting data from PJS.
+#' @md
+#' @title Builds sql modules to be included in select statements for PJS
+#' @description Builds sql modules to be included in select statements for PJS
+#'    when building queries for selecting data. The functions takes the values
+#'    for which observations should be selected as input and builds the
+#'    sql syntax.
 #'
-#' @details The function builds the SQL syntax to select one or more consecutive
-#'     years from PJS. Be aware that this function only builds a part of an sql
-#'     query that can be included into a select statement. It will not build a
-#'     complete query. The function is called from \code{build_query_hensikt} and
-#'     \code{build_query_one_disease}.
+#' @details \code{build_sql_select_year} builds the SQL syntax to select observations
+#'     from one or more consecutive years from PJS. The input can be given as
+#'     one year, the first and last year or a range of years. If a range is given,
+#'     this will be interpreted as first and last years and all years in between
+#'     will be included.
 #'
-#' @param db the database for which the query is built. Currently only the value "PJS" is accepted.
-#' @param year the year that should be selected as integer. Can be given as one year, the first and last year or a range of years.
+#' `build_sql_select_code` builds the SQL syntax to select observations
+#'     with the given code values from one variabel in PJS with hierarchical codes.
+#'     When the code value including sub codes  should be selected, add "%" to the
+#'     code, see example.
 #'
-#' @return a SQL-code for selecting year from PJS to be included when building select-statements.
+#' Be aware that these functions only builds an sql building block to be
+#'     included into a select statement. It will not build a complete select
+#'     statement. These functions are mainly intended for internal use and
+#'     are called from \code{\link{build_query_hensikt}} and \code{\link{build_query_one_disease}}.
+#'     If generating own select statements, these can be used to facilitate the
+#'     coding. The building blocks can be combined with "AND" and "OR" and
+#'     brackets to get the intended select statement.
+#'
+#' @param db The database for which the query is built. Currently only the value "PJS" is accepted.
+#' @param year One year or a vector with the first and last year that should
+#'     be selected as integer vector.
+#' @param values The value of the codes that should be selected given as character.
+#'     If sub-codes should be included, add "%" after the code, see example.
+#' @param varname The PJS variable name of the variable in PJS from which the
+#'     coded values should be selected.
+#'
+#' @return SQL-code to be included when building select-statements for PJS.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #'
 #' @export
 #' @rdname build_sql_modules
+#' @name build_sql_modules
 #'
 #' @examples
 #' # SQL-select module for selecting year from PJS
@@ -30,6 +51,16 @@
 #' build_sql_select_year(year = c(2019, 2021), varname = "aar")
 #'
 #' build_sql_select_year(year = c(2019:2021), varname = "aar")
+#'
+#' # SQL-select module for selecting hensiktkode from PJS
+#' build_sql_select_code(values = "0100101", varname = "hensiktkode", db = "PJS")
+#'
+#' build_sql_select_code(values = "0100101%", varname = "hensiktkode", db = "PJS")
+#'
+#' build_sql_select_code(values = c("0100101", "0100101007", "0100102%", "0100202%"),
+#'                       varname = "hensiktkode",
+#'                       db = "PJS")
+#'
 build_sql_select_year <- function(year, varname, db = "PJS") {
   # ARGUMENT CHECKING ----
 
@@ -74,37 +105,9 @@ build_sql_select_year <- function(year, varname, db = "PJS") {
 
 
 # build_sql_select_code ----
-#' @title Builds sql module for selecting hierarchical codes from PJS
-#' @description Builds a sql module for selecting one or more codes from PJS. This can be included into queries for
-#'    selecting data from PJS.
-#'
-#' @details The function builds the SQL syntax to select one or more codes for
-#'     one variable from PJS. Be aware that this function only builds a part of an sql
-#'     query that can be included into a select statement. It will not build a
-#'     complete query. The function is called from \code{build_query_hensikt} and
-#'     \code{build_query_one_disease}.
-#'
-#' @param db the database for which the query is built. Currently only the value "PJS" is accepted.
-#' @param values the value of the codes that should be selected given as character.
-#'     If sub-codes should be included, add "%" after the code, see example.
-#' @param varname The variable name of the variable from which the coded values should be selected.
-#'
-#' @return a SQL-code for selecting the codes from PJS to be included when building select-statements .
-#'
-#' @author Petter Hopp Petter.Hopp@@vetinst.no
-#'
 #' @export
 #' @rdname build_sql_modules
 #'
-#' @examples
-#' # SQL-select module for selecting hensiktkode from PJS
-#' build_sql_select_code(values = "0100101", varname = "hensiktkode", db = "PJS")
-#'
-#' build_sql_select_code(values = "0100101%", varname = "hensiktkode", db = "PJS")
-#'
-#' build_sql_select_code(values = c("0100101", "0100101007", "0100102%", "0100202%"),
-#'                       varname = "hensiktkode",
-#'                       db = "PJS")
 build_sql_select_code <- function(values, varname, db = "PJS") {
 
   # cleaning values argument before argument checking
