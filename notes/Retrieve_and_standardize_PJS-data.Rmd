@@ -98,6 +98,7 @@ aar <- c(2020)
 hensikt2select <- c("0200106%","0200119","0200122%","0200125%")
 ```
 
+We can use build_query_hensikt to generate the select statement to retrieve all observations from one (or more) years and the hensikter that you give in the input statement. The function generates the sql syntax for selecting observations from the views v2_sak_res_eier and sakskonklusjon in journalrapp. These are used as input to the query sent to the database.
 
 ```{r, include = TRUE}
 select_statement <- NVIdb::build_query_hensikt(year = aar, 
