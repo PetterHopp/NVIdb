@@ -21,6 +21,7 @@ knitr::opts_chunk$set(eval = FALSE)
     -   [Standardize PJS-data](#standardize-pjs-data)
     -   [Select variables from specified PJS-levels](#select-variables-from-specified-pjs-levels)
     -   [Translate PJS codes into descriptive text](#translate-pjs-codes-into-descriptive-text)
+-   [Further processing](#further-processing)
 
 ## Overview
 The purpose of this vignette is to give guidelines for retrieving and standardising data from PJS. The vignette shows how functions from `NVIdb` can be used to achieve this. Thereby, one should be able to make data sets from PJS with standard column names and standard classes for the variables to make it easier to share scripts for further management and analysis of PJS data. 
@@ -98,7 +99,7 @@ aar <- c(2020)
 hensikt2select <- c("0200106%","0200119","0200122%","0200125%")
 ```
 
-We can use build_query_hensikt to generate the select statement to retrieve all observations from one (or more) years and the hensikter that you give in the input statement. The function generates the sql syntax for selecting observations from the views v2_sak_res_eier and sakskonklusjon in journalrapp. These are used as input to the query sent to the database.
+We can use build_query_hensikt to generate the sql syntax for selecting observations from the views v2_sak_res_eier and sakskonklusjon in journalrapp. The select statement retrieves all observations from one (or more) years AND the hensikter with or without sub-hensikter that you give in the input statement. The select statement is used as input to the query sent to the database.
 
 ```{r, include = TRUE}
 select_statement <- NVIdb::build_query_hensikt(year = aar, 
@@ -107,15 +108,15 @@ select_statement <- NVIdb::build_query_hensikt(year = aar,
 
 
 ### Login to PJS and read PJS data
- set_credentials_PJS()
+To retrieve the PJS data, you login to the database journalrapp to established a data base connection, query the database and close the database connection. You can use login_PJS (equals login("PJS")) for the login. You will then enter the username and password, but the other specifications of the data base connection are not necessary to input. If you often login to PJS, you may store the credentials (username and password) in your user profile (at the current PC) with set_credentials_PJS. Do once These will be automatically found by login. Must be repeated when password to PJS changes or if you use another PC. To avoid being asked for credentials when running batch scripts, store your credentials with set_credentials_PJS and use login_by_credentials_PJS.
 
-LOGIN TO PJS ----
- 1. Set username and password (credentials) for PJS. 
-    The credentials are saved in the users profile (at the current machine). 
-    Do once. Must be repeated when password to PJS changes or if you use another PC
- READ DATA FROM PJS ----
+The query can be sent PJS by RODBC::sqlQuery. In this example we only select observations using the view v2_sak_res_eier and not from sakskonklusjon. The argument as.is =TRUE ensures that lading zeros are kept in character variables with only numbers.
+
+After the wanted queries have been run, you should tidy up closing the data base connection. 
+
 
 ```{r, include = TRUE}
+# READ DATA FROM PJS ----
 journal_rapp <- login_PJS()
 
 PJSrawdata <- sqlQuery(journal_rapp,
@@ -189,9 +190,9 @@ PJSdata <- add_PJS_code_description(data = PJSdata,
                                     overwrite = FALSE)
 ```
 
-## Save data
+## Further processing
 ```{r, include = TRUE}
-saveRDS(PJSdata, file = paste0(set_dir_NVI("OKprogrammer"), "Rutine", aar, "/Rapportering/Radata/", purpose, ".rds"))
+saveRDS(PJSdata, file = file.path(tempdir(), paste0(purpose, ".rds")))
 ```
 
 
