@@ -20,7 +20,7 @@ knitr::opts_chunk$set(eval = FALSE)
     -   [Read PJS-data](#read-pjs-data)
 -   [Transform PJS-data](#transform-pjs-data)
     -   [Standardise PJS-data](#standardise-pjs-data)
-    -   [Select variables from specified PJS-levels](#select-variables-from-specified-pjs-levels)
+    -   [Select variables from specified PJS levels](#select-variables-from-specified-pjs-levels)
     -   [Translate PJS codes into descriptive text](#translate-pjs-codes-into-descriptive-text)
 -   [Further processing](#further-processing)
 
