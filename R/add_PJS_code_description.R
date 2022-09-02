@@ -42,6 +42,7 @@
 #'   kjennelse \tab res_kjennelsekode \tab res_kjennelse \tab \cr
 #'   analytt \tab konkl_analyttkode \tab konkl_analytt \tab \cr
 #'   analytt \tab res_analyttkode \tab res_analytt \tab \cr
+#'   enhet \tab enhetkode \tab enhet \tab \cr
 #' }
 #'
 #'     If \code{code_colname = } is a vector of standardized PJS column names and a subset of "code column" in the table above, you may

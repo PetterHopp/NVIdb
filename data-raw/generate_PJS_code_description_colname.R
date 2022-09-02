@@ -23,7 +23,8 @@ PJS_code_description_colname <- as.data.frame(matrix(rbind(c("ansvarlig_seksjon"
                                                            c("konkl_analyttkode", "analytt", "konkl_analytt"),
                                                            c("metodekode", "metode", "metode"),
                                                            c("res_kjennelsekode", "kjennelse", "res_kjennelse"),
-                                                           c("res_analyttkode", "analytt", "res_analytt")),
+                                                           c("res_analyttkode", "analytt", "res_analytt"),
+                                                           c("enhetkode", "enhet", "enhet")),
                                                      ncol = 3,
                                                      dimnames = list(NULL, c("code_colname", "type", "new_column"))))
 
