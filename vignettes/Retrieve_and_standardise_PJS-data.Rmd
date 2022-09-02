@@ -81,7 +81,7 @@ PJS_codes_2_text <- read_PJS_codes_2_text()
 ```
 
 ## Retrive data from PJS
-We retrieve data from PJS though views in the data base journalrapp. There are views available for different purposes. If we need all data for a disease, we usually use the view "v2_sak_m_res" that combines information from all levels from sak to result and in addition includes konklusjon and eier_lokalitet. 
+We retrieve data from PJS though views in the data base journal_rapp. There are views available for different purposes. If we need all data for a disease, we usually use the view "v2_sak_m_res" that combines information from all levels from sak to result and in addition includes konklusjon and eier_lokalitet. 
 
 ### Make selection statement
 In this example we select all saker with resultater and konklusjoner related to surveillance for paratuberkulosis in different species for a single year. To achieve this we select
@@ -98,7 +98,7 @@ aar <- c(2020)
 hensikt2select <- c("0200106%","0200119","0200122%","0200125%")
 ```
 
-We can use build_query_hensikt to generate the sql syntax for selecting observations from the views v2_sak_res_eier and sakskonklusjon in journalrapp. The select statement retrieves all observations from one (or more) years AND the hensikter with or without sub-hensikter that you give in the input statement. The select statement is used as input to the query sent to the database.
+We can use build_query_hensikt to generate the sql syntax for selecting observations from the views v2_sak_res_eier and sakskonklusjon in journal_rapp. The select statement retrieves all observations from one (or more) years AND the hensikter with or without sub-hensikter that you give in the input statement. The select statement is used as input to the query sent to the database.
 ```{r, include = TRUE}
 select_statement <- NVIdb::build_query_hensikt(year = aar, 
                                                hensikt = hensikt2select)
@@ -106,7 +106,7 @@ select_statement <- NVIdb::build_query_hensikt(year = aar,
 
 
 ### Login to PJS
-To retrieve the PJS data, you log in to the database journalrapp to established a data base connection, query the database and close the database connection. You can use `login_PJS` (equals `login("PJS")`) for the log in. You will then enter the username and password, but the other specifications of the data base connection are not necessary to input. If you often login to PJS, you may store the credentials (username and password) in your user profile (at the current PC) with `set_credentials_PJS`. Do once These will be automatically found by `login`. Must be repeated when password to PJS changes or if you use another PC. To avoid being asked for credentials when running batch scripts, store your credentials with `set_credentials_PJS` and use `login_by_credentials_PJS`.
+To retrieve the PJS data, you log in to the database journal_rapp to established a data base connection, query the database and close the database connection. You can use `login_PJS` (equals `login("PJS")`) for the log in. You will then enter the username and password, but the other specifications of the data base connection are not necessary to input. If you often login to PJS, you may store the credentials (username and password) in your user profile (at the current PC) with `set_credentials_PJS`. Do once These will be automatically found by `login`. Must be repeated when password to PJS changes or if you use another PC. To avoid being asked for credentials when running batch scripts, store your credentials with `set_credentials_PJS` and use `login_by_credentials_PJS`.
 ```{r, include = TRUE}
 # READ DATA FROM PJS ----
 journal_rapp <- login_PJS()
