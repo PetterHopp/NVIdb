@@ -47,7 +47,7 @@ read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder_UTF8.csv",
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
   # Perform checks
-  assert_read_functions(filename = filename, from_path = from_path)
+  checks <- assert_read_functions(filename = filename, from_path = from_path, add = checks)
   # checkmate::assert_character(filename, len = 1, min.chars = 1, add = checks)
   # checkmate::assert_character(from_path, len = 1, min.chars = 1, add = checks)
   # if (endsWith(from_path, "/")) {
