@@ -55,3 +55,29 @@ test_that("assert_add_function by add_poststed", {
 
   options(width = unlist(linewidth))
 })
+
+
+test_that("assert_read_functions", {
+  linewidth <- options("width")
+  options(width = 80)
+
+  filename <- "noname.csv"
+  from_path <- tempdir()
+  checks <- checkmate::makeAssertCollection()
+  # Perform checks
+  assert_read_functions(filename = filename, from_path = from_path, add = checks)
+  # Report check-results
+  expect_error(checkmate::reportAssertions(checks),
+               regexp = "File does not exist")
+
+  filename <- NA
+  from_path <- tempdir()
+  checks <- checkmate::makeAssertCollection()
+  # Perform checks
+  assert_read_functions(filename = filename, from_path = from_path, add = checks)
+  # Report check-results
+  expect_error(checkmate::reportAssertions(checks),
+               regexp = "Contains missing values")
+
+  options(width = unlist(linewidth))
+})
