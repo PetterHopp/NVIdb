@@ -71,11 +71,14 @@ read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder2_UTF8.csv",
                           options = list(colClasses = colclasses, fileEncoding = "UTF-8"))
 
   if (isTRUE(keep_old_names)) {
+standard_names <- c("soknadaar", "soknadmnd", "telledato", "art", "Pkode",
+                                            "beskrivelse", "enhet", "unike_dyr", "sortering")
     if (isTRUE(check_names(type = "named",
-                           identical.to = c("soknadaar", "soknadmnd", "telledato", "art", "Pkode",
-                                            "beskrivelse", "enhet", "unike_dyr", "sortering")))) {
-      colnames(Pkoder) <- c("Søknadsår", "soknadsmnd", "Telledato", "Art", "Kode",
-                            "Beskrivelse", "Enhet", "Seleksjon", "Sortering")
+                           must.include = standard_names, 
+names = "colname"))) {
+Pkoder <- Pkoder[, c(standard_names, base::setdiff(colnames(Pkoder), standard_names))] 
+      colnames(Pkoder) <- c("Søknadsår", "Telledato", "Art", "Kode",
+                            "Beskrivelse", "Enhet", "Seleksjon", "Sortering", base::setdiff(colnames(Pkoder), standard_names))
       Pkoder$Telledato <- format(as.Date(Pkoder$Telledato), "%d.%m")
     }
   }
