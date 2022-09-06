@@ -13,6 +13,8 @@
 #' @param filename name of the translation table, standard name is "Produksjonstilskuddskoder_UTF8.csv"
 #' @param from_path Path for the translation table for produksjonstilskuddskoder
 #' @param to_path Path for the target translation table when copying produksjonstilskuddskoder
+#' @param keep_old_names [logical(1)]. Keep old column names as were used as standard
+#'     in NVIdb <= v0.7.1. Defaults to \code{FALSE}.
 #'
 #' @return Data frame with the translation table for produksjonstilskuddskoder.
 #' @return \code{read_Pkode_2_text} A data frame with the translation table for Pkoder to description as read from the csv file.
@@ -35,8 +37,9 @@
 #' Pkode_2_text <- read_Pkode_2_text(from_path = "./Data")
 #' }
 #'
-read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder_UTF8.csv",
-                              from_path = paste0(set_dir_NVI("Prodtilskudd"), "StotteData/")) {
+read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder2_UTF8.csv",
+                              from_path = paste0(set_dir_NVI("Prodtilskudd"), "StotteData/"),
+                              keep_old_names = FALSE) {
 
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
@@ -48,6 +51,7 @@ read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder_UTF8.csv",
   checks <- checkmate::makeAssertCollection()
   # Perform checks
   checks <- assert_read_functions(filename = filename, from_path = from_path, add = checks)
+  checkmate::assert_flag(x = keep_old_names, add = checks)
   # checkmate::assert_character(filename, len = 1, min.chars = 1, add = checks)
   # checkmate::assert_character(from_path, len = 1, min.chars = 1, add = checks)
   # if (endsWith(from_path, "/")) {
@@ -62,8 +66,18 @@ read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder_UTF8.csv",
   # reads header and identifies characters by using NVIdb::standardize_columns
   colclasses <- standardize_columns(data = file.path(from_path, filename), property = "colclasses")
 
-  read_csv_file(filename = filename,
-                from_path = from_path,
-                options = list(colClasses = colclasses, fileEncoding = "UTF-8"))
+  Pkoder <- read_csv_file(filename = filename,
+                          from_path = from_path,
+                          options = list(colClasses = colclasses, fileEncoding = "UTF-8"))
+
+  if (isTRUE(keep_old_names)) {
+    if (isTRUE(check_names(type = "named",
+                           identical.to = c("soknadaar", "soknadmnd", "telledato", "art", "Pkode",
+                                            "beskrivelse", "enhet", "unike_dyr", "sortering")))) {
+      colnames(Pkoder) <- c("Søknadsår", "soknadsmnd", "Telledato", "Art", "Kode",
+                            "Beskrivelse", "Enhet", "Seleksjon", "Sortering")
+      Pkoder$Telledato <- format(as.Date(Pkoder$Telledato), "%d.%m")
+    }
+  }
 
 }
