@@ -4,8 +4,8 @@ library(checkmate)
 
 # Assigns temporary dir to td
 td <- tempdir()
-if (!dir.exists(file.path (td, "data"))) {
-  dir.create(file.path (td, "data"))
+if (!dir.exists(file.path(td, "data"))) {
+  dir.create(file.path(td, "data"))
 }
 
 filenames <- "Produksjonstilskuddskoder2_UTF8.csv"
@@ -34,18 +34,18 @@ test_that("Read Produksjonstilskuddskoder", {
   # read file
   Pkoder <- read_Pkode_2_text(filename = "Produksjonstilskuddskoder2_UTF8.csv")
 
-  expect_subset(x = c("soknadaar", "soknadmnd", "telledato", "art", "Pkode", "beskrivelse", 
+  expect_subset(x = c("soknadaar", "soknadmnd", "telledato", "art", "Pkode", "beskrivelse",
                                 "enhet", "unike_dyr", "sortering"),
                 choices = colnames(Pkoder))
 
   Pkoder <- read_Pkode_2_text(keep_old_names = TRUE)
 
-  expect_subset(x = c("Søknadsår", "Telledato", "Art", "Kode", "Beskrivelse", 
+  expect_subset(x = c("Søknadsår", "Telledato", "Art", "Kode", "Beskrivelse",
                       "Enhet", "Seleksjon", "Sortering"),
                 choices = colnames(Pkoder))
 })
 
-  test_that("errors for copy_Pkode_2_text", {
+test_that("errors for copy_Pkode_2_text", {
 
     linewidth <- options("width")
     options(width = 80)
@@ -64,7 +64,7 @@ test_that("Read Produksjonstilskuddskoder", {
     options(width = unlist(linewidth))
   })
 
-  test_that("errors for read_Pkode_2_text", {
+test_that("errors for read_Pkode_2_text", {
 
     linewidth <- options("width")
     options(width = 80)
