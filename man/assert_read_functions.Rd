@@ -7,29 +7,44 @@
 assert_read_functions(filename, from_path, add = checks)
 }
 \arguments{
-\item{filename}{Argument to the read-function to be asserted.}
+\item{filename}{Argument to the function to be asserted.}
 
-\item{from_path}{Argument to the read-function to be asserted. Ending
-"\\" and "/" should have been removed before the assertion is performed.}
+\item{from_path}{Argument to the function to be asserted. Ending
+"\\" and "/" must have been removed before the assertion is performed.}
 
-\item{checks}{AssertCollection, defaults to checks.}
+\item{add}{assertCollection, defaults to checks.}
 }
 \value{
-\code{TRUE} if none of the assertions failed. If any of the assertions
-    failed, one or more error messages are returned. An AssertCollection that have been updated with the result of the checks.
+An assertCollection that have been updated with the results of assertions for \code{filename} and \code{from_path}.
 }
 \description{
 Collection of assertions used in standard read_functions.
 }
 \details{
-All read functions have the same arguments and the
+All read functions include the same arguments and the
     assertion can be standardized. The assertion of \code{filname} is
     constructed to handle both character and list input.
 
     The assertion is based on removing ending "\\" and "/" from
     \code{from_path} before the assertion is performed.
-The function does not set up and report the assertCollection.
-  This need to be done separately, see example.
+The assertCollection must be set up separately and is used as input argument, see example.
+}
+\examples{
+# Attach package and make temporary directory
+library(NVIdb)
+td <- tempdir()
+if (!dir.exists(file.path(td, "NVItest"))) {
+  dir.create(file.path(td, "NVItest"))
+}
+# ARGUMENT CHECKING
+# Object to store check-results
+checks <- checkmate::makeAssertCollection()
+# Perform checks
+checks <- assert_pkg_path(pkg = "NVItest",
+                pkg_path = paste0(td, "/NVItest"),
+                add = checks)
+# Report check-results
+checkmate::reportAssertions(checks)
 }
 \author{
 Petter Hopp Petter.Hopp@vetinst.no

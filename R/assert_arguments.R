@@ -218,27 +218,41 @@ assert_read_function <- function(filename,
 #' @title Collection of assertions for read_functions
 #' @description Collection of assertions used in standard read_functions.
 #'
-#' @details All read functions have the same arguments and the
+#' @details All read functions include the same arguments and the
 #'     assertion can be standardized. The assertion of \code{filname} is
 #'     constructed to handle both character and list input.
 #'
 #'     The assertion is based on removing ending "\\" and "/" from
 #'     \code{from_path} before the assertion is performed.
 
-#' The function does not set up and report the assertCollection.
-#'   This need to be done separately, see example.
+#' The assertCollection must be set up separately and is used as input argument, see example.
 #'
-#' @param filename Argument to the read-function to be asserted.
-#' @param from_path Argument to the read-function to be asserted. Ending
-#'     "\\" and "/" should have been removed before the assertion is performed.
-#' @param checks AssertCollection, defaults to checks.
+#' @param filename Argument to the function to be asserted.
+#' @param from_path Argument to the function to be asserted. Ending
+#'     "\\" and "/" must have been removed before the assertion is performed.
+#' @param add assertCollection, defaults to checks.
 #'
-#' @return \code{TRUE} if none of the assertions failed. If any of the assertions
-#'     failed, one or more error messages are returned. An AssertCollection that have been updated with the result of the checks.
+#' @return An assertCollection that have been updated with the results of assertions for \code{filename} and \code{from_path}.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @keywords internal
 #'
+#' @examples
+#' # Attach package and make temporary directory
+#' library(NVIdb)
+#' td <- tempdir()
+#' if (!dir.exists(file.path(td, "NVItest"))) {
+#'   dir.create(file.path(td, "NVItest"))
+#' }
+#' # ARGUMENT CHECKING
+#' # Object to store check-results
+#' checks <- checkmate::makeAssertCollection()
+#' # Perform checks
+#' checks <- assert_pkg_path(pkg = "NVItest",
+#'                 pkg_path = paste0(td, "/NVItest"),
+#'                 add = checks)
+#' # Report check-results
+#' checkmate::reportAssertions(checks)
 assert_read_functions <- function(filename,
                                   from_path,
                                   add = checks) {
