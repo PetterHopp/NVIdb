@@ -4,7 +4,7 @@
 \alias{assert_read_functions}
 \title{Collection of assertions for read_functions}
 \usage{
-assert_read_functions(filename, from_path, add = checks)
+assert_read_functions(filename, from_path, add)
 }
 \arguments{
 \item{filename}{Argument to the function to be asserted.}
@@ -12,7 +12,7 @@ assert_read_functions(filename, from_path, add = checks)
 \item{from_path}{Argument to the function to be asserted. Ending
 "\\" and "/" must have been removed before the assertion is performed.}
 
-\item{add}{assertCollection, defaults to checks.}
+\item{add}{assertCollection.}
 }
 \value{
 An assertCollection that have been updated with the results of assertions for \code{filename} and \code{from_path}.
@@ -33,16 +33,15 @@ The assertCollection must be set up separately and is used as input argument, se
 # Attach package and make temporary directory
 library(NVIdb)
 td <- tempdir()
-if (!dir.exists(file.path(td, "NVItest"))) {
-  dir.create(file.path(td, "NVItest"))
-}
+write.csv2(NVIdb::PJS_levels, file = file.path(td, "PJS_levels.csv"))
+
 # ARGUMENT CHECKING
 # Object to store check-results
 checks <- checkmate::makeAssertCollection()
 # Perform checks
-checks <- assert_pkg_path(pkg = "NVItest",
-                pkg_path = paste0(td, "/NVItest"),
-                add = checks)
+checks <- assert_read_functions(filename = "PJS_levels.csv",
+                                from_path = td,
+                                add = checks)
 # Report check-results
 checkmate::reportAssertions(checks)
 }

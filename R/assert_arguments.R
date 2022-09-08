@@ -230,32 +230,32 @@ assert_read_function <- function(filename,
 #' @param filename Argument to the function to be asserted.
 #' @param from_path Argument to the function to be asserted. Ending
 #'     "\\" and "/" must have been removed before the assertion is performed.
-#' @param add assertCollection, defaults to checks.
+#' @param add assertCollection.
 #'
 #' @return An assertCollection that have been updated with the results of assertions for \code{filename} and \code{from_path}.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @keywords internal
+#' @export
 #'
 #' @examples
 #' # Attach package and make temporary directory
 #' library(NVIdb)
 #' td <- tempdir()
-#' if (!dir.exists(file.path(td, "NVItest"))) {
-#'   dir.create(file.path(td, "NVItest"))
-#' }
+#' write.csv2(NVIdb::PJS_levels, file = file.path(td, "PJS_levels.csv"))
+#'
 #' # ARGUMENT CHECKING
 #' # Object to store check-results
 #' checks <- checkmate::makeAssertCollection()
 #' # Perform checks
-#' checks <- assert_pkg_path(pkg = "NVItest",
-#'                 pkg_path = paste0(td, "/NVItest"),
-#'                 add = checks)
+#' checks <- assert_read_functions(filename = "PJS_levels.csv",
+#'                                 from_path = td,
+#'                                 add = checks)
 #' # Report check-results
 #' checkmate::reportAssertions(checks)
 assert_read_functions <- function(filename,
                                   from_path,
-                                  add = checks) {
+                                  add) {
 
   checkmate::assert_class(x = add, classes = "AssertCollection")
 
