@@ -6,7 +6,7 @@
 \title{Manage translation table for produksjonstilskuddskoder (Pkoder)}
 \usage{
 copy_Pkode_2_text(
-  filename = "Produksjonstilskuddskoder_UTF8.csv",
+  filename = "Produksjonstilskuddskoder2_UTF8.csv",
   from_path = paste0(set_dir_NVI("Prodtilskudd"), "StotteData/"),
   to_path = NULL
 )
@@ -18,7 +18,7 @@ read_Pkode_2_text(
 )
 }
 \arguments{
-\item{filename}{name of the translation table, standard name is "Produksjonstilskuddskoder_UTF8.csv"}
+\item{filename}{Name of the translation table, defaults to "Produksjonstilskuddskoder2_UTF8.csv"}
 
 \item{from_path}{Path for the translation table for produksjonstilskuddskoder}
 
@@ -28,13 +28,14 @@ read_Pkode_2_text(
 in NVIdb <= v0.7.1. Defaults to \code{FALSE}.}
 }
 \value{
-Data frame with the translation table for produksjonstilskuddskoder.
+\code{read_Pkode_2_text} A data frame with the translation table for
+    Pkoder to description as read from the csv file. If not changing standard
+    input to the function, the standard file at NVI's internal network is read.
 
-\code{read_Pkode_2_text} A data frame with the translation table for Pkoder to description as read from the csv file.
-    If not changing standard input to the function, the standard file at NVI's internal network is read.
-
-    \code{copy_Pkode_2_text} Copies the source translation table "Produksjonstilskuddskoder_UTF8.csv" to another location. If the target file
-    already exists, the source file is only copied when it is newer than the target file.
+    \code{copy_Pkode_2_text} Copies the source translation table
+    "Produksjonstilskuddskoder2_UTF8.csv" to another location. If the target
+    file already exists, the source file is only copied when it is newer than
+    the target file.
 }
 \description{
 Read and copy the translation table for produksjonstilskuddskoder (Pkoder).
@@ -43,12 +44,12 @@ Read and copy the translation table for produksjonstilskuddskoder (Pkoder).
 The translation table for Pkoder contains the Pkode, descriptive text, unit of interest (Dyr), whether the code counts unique animals
     or not (used when summarising number of animals), and sortering to order the Pkoder. The register covers 2017 and later.
 
-    \code{read_Pkode_2_text} reads the file "Produksjonstilskuddskoder_UTF8.csv" into a data frame. The standard settings will read
+    \code{read_Pkode_2_text} reads the file "Produksjonstilskuddskoder2_UTF8.csv" into a data frame. The standard settings will read
     the file from NVI's internal network. If changing the from_path, the function can be used to read the translation file from other
     directories. This can be useful if having a stand alone app with no connection the NVI's internal network. In other cases, it should
     be avoided.
 
-    \code{copy_Pkode_2_text} copies the file Produksjonstilskuddskoder_UTF8.csv to a given location.
+    \code{copy_Pkode_2_text} copies the file Produksjonstilskuddskoder2_UTF8.csv to a given location.
 }
 \examples{
 \dontrun{
