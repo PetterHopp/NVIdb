@@ -1,7 +1,7 @@
 #' @export
 #' @rdname read_Pkode_2_text
 
-copy_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder_UTF8.csv",
+copy_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder2_UTF8.csv",
                               from_path = paste0(set_dir_NVI("Prodtilskudd"), "StotteData/"),
                               to_path = NULL) {
 
