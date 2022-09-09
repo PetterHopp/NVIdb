@@ -13,7 +13,7 @@
 #'
 #' @param data Data frame with data from PJS
 #' @param levels PJS-levels from which data should be chosen. Valid values are c("sak", "prove", "delprove", "undersokelse", "resultat",
-#'     "konklusjon").
+#'     "konklusjon", "subundersokelse", "subresultat").
 #' @param keep_col Column names of columns that should be included in addition to the columns defined by levels.
 #' @param remove_col Column names of columns that should be removed even if being at the defined levels.
 #' @param unique_rows If \code{TRUE} (default), only unique rows are included in the data frame.
