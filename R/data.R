@@ -8,7 +8,7 @@
 #' @details The variables included into a specific level is given the value 1, if not included they are given the value 0. To
 #'    ensure that information on a specific level an be traced to the correct sak, all index variables are given value 1.
 #'
-#' @format A data frame with 7 variables:
+#' @format A data frame with 9 variables:
 #' \describe{
 #'   \item{variable}{column name for variables read from PJs and standardized using \code{NVIdb::standardize_columns}}
 #'   \item{sak}{columns at sak-level are given value 1}
@@ -17,6 +17,8 @@
 #'   \item{undersokelse}{columns at undersokelse-level are given value 1}
 #'   \item{resultat}{columns at resultat-level are given value 1}
 #'   \item{konklusjon}{columns at konklusjon-level are given value 1}
+#'   \item{subundersokelse}{columns at subundersokelse-level are given value 1}
+#'   \item{subresultat}{columns at subresultat-level are given value 1}
 #' }
 #' @source \code{./data-raw/PJS_levels.xlsx} in package \code{NVIdb}
 "PJS_levels"
@@ -32,7 +34,7 @@
 #'
 #' @format A data frame with 3 variables:
 #' \describe{
-#'   \item{code_colname}{column name for selected code variables in PJs and thathave been standardized using \code{NVIdb::standardize_columns}}
+#'   \item{code_colname}{column name for selected code variables in PJs and that have been standardized using \code{NVIdb::standardize_columns}}
 #'   \item{type}{the type of PJS variable as used by \code{NVIdb::add_PJS_code_description} to translate PJS-codes to description text}
 #'   \item{new_column}{The new standard column names for the corresponding code column name in PJS}
 #' }
