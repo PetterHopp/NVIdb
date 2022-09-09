@@ -56,7 +56,7 @@ standardize_PJSdata <- function(PJSdata, dbsource = "v2_sak_m_res") {
   # Change to numeric for ID-numbers and counts
   # Done before trimming character variables to reduce variables that needs to be trimmed
   cols_2_modify <- intersect(colnames(PJSdata), c("aar", "innsendelsenr", "provenr", "delprovenr", "undnr",
-                                                  "resnr", "sens_undnr", "sensresnr", "konklnr",
+                                                  "resnr", "subundnr", "subresnr", "konklnr",
                                                   "ant_prover", "ant_i_samleprove", "ant_delprover", "ant_i_samledelprove"))
   PJSdata[, cols_2_modify] <- lapply(PJSdata[, cols_2_modify], as.numeric)
 
@@ -80,4 +80,5 @@ standardize_PJSdata <- function(PJSdata, dbsource = "v2_sak_m_res") {
   # Delete test data, i.e. saker with ansvarlig_seksjon in c("14", "99")
   PJSdata <- subset(PJSdata, !PJSdata$ansvarlig_seksjon %in% c("14", "99"))
 
+return(PJSdata) 
 }
