@@ -111,12 +111,16 @@ Export of data from PJS will produce data frames in which many columns have code
   provemateriale \tab provematerialekode \tab provemateriale \tab \cr
   forbehandling \tab forbehandlingkode \tab forbehandling \tab \cr
   metode \tab metodekode \tab metode \tab \cr
+  metode \tab subund_metodekode \tab submetode \tab \cr
   konkl_type \tab konkl_typekode \tab konkl_type \tab \cr
   kjennelse \tab konkl_kjennelsekode \tab konkl_kjennelse \tab \cr
   kjennelse \tab res_kjennelsekode \tab res_kjennelse \tab \cr
+  kjennelse \tab subres_kjennelsekode \tab subres_kjennelse \tab \cr
   analytt \tab konkl_analyttkode \tab konkl_analytt \tab \cr
   analytt \tab res_analyttkode \tab res_analytt \tab \cr
+  analytt \tab subres_analyttkode \tab subres_analytt \tab \cr
   enhet \tab enhetkode \tab enhet \tab \cr
+  enhet \tab subres_enhetkode \tab subres_enhet \tab \cr
 }
 
     If \code{code_colname = } is a vector of standardized PJS column names and a subset of "code column" in the table above, you may
