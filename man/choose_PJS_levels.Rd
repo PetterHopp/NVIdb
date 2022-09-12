@@ -16,7 +16,7 @@ choose_PJS_levels(
 \item{data}{Data frame with data from PJS}
 
 \item{levels}{PJS-levels from which data should be chosen. Valid values are c("sak", "prove", "delprove", "undersokelse", "resultat",
-"konklusjon").}
+"konklusjon", "subundersokelse", "subresultat").}
 
 \item{keep_col}{Column names of columns that should be included in addition to the columns defined by levels.}
 
