@@ -81,5 +81,5 @@ standardize_PJSdata <- function(PJSdata, dbsource = "v2_sak_m_res") {
   # Delete test data, i.e. saker with ansvarlig_seksjon in c("14", "99")
   PJSdata <- subset(PJSdata, !PJSdata$ansvarlig_seksjon %in% c("14", "99"))
 
-return(PJSdata) 
+return(PJSdata)
 }
