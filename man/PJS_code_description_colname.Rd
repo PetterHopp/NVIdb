@@ -7,7 +7,7 @@
 \format{
 A data frame with 3 variables:
 \describe{
-  \item{code_colname}{column name for selected code variables in PJs and thathave been standardized using \code{NVIdb::standardize_columns}}
+  \item{code_colname}{column name for selected code variables in PJs and that have been standardized using \code{NVIdb::standardize_columns}}
   \item{type}{the type of PJS variable as used by \code{NVIdb::add_PJS_code_description} to translate PJS-codes to description text}
   \item{new_column}{The new standard column names for the corresponding code column name in PJS}
 }
