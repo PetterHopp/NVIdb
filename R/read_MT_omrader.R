@@ -15,7 +15,7 @@ read_MT_omrader <- function(filename = list("komnr_2_MT_avdeling.csv", "MT_omrad
   checks <- assert_read_functions(filename = filename, from_path = from_path, add = checks)
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # READ DATA ----
   komnr_2_MT_avdeling <- read_csv_file(filename = filename[[1]],
                                        from_path = from_path,

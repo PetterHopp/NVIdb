@@ -14,7 +14,7 @@ read_PJS_codes_2_text <- function(filename = "PJS_codes_2_text.csv",
   checks <- assert_read_functions(filename = filename, from_path = from_path, add = checks)
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # READ DATA ----
   PJS_codes_2_text <- read_csv_file(filename = filename,
                                     from_path = from_path,

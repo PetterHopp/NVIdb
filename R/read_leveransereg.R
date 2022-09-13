@@ -34,7 +34,7 @@ read_leveransereg <- function(filename,
   checks <- assert_read_functions(filename = filename, from_path = from_path, add = checks)
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # READ DATA ----
   # reads header and identifies characters by using NVIdb::standardize_columns
   colclasses <- standardize_columns(data = file.path(from_path, filename), property = "colclasses")

@@ -14,7 +14,7 @@ read_sonetilhorighet <- function(filename = "sonetilhorighet.txt",
   checks <- assert_read_functions(filename = filename, from_path = from_path, add = checks)
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # READ DATA ----
   df1 <- read_csv_file(filename = filename,
                        from_path = from_path,

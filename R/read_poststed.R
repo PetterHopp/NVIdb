@@ -14,7 +14,7 @@ read_poststed <- function(filename = "Poststed_UTF8.csv",
   checks <- assert_read_functions(filename = filename, from_path = from_path, add = checks)
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # READ DATA ----
   read_csv_file(filename = filename,
                 from_path = from_path,

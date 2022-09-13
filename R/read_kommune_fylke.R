@@ -21,7 +21,7 @@ read_kommune_fylke <- function(filename = list("Kommune_UTF8.csv",
   checks <- assert_read_functions(filename = filename, from_path = from_path, add = checks)
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # READ DATA ----
   ## Read files with kommune and fylke data
   # Read kommune (nr and name)
