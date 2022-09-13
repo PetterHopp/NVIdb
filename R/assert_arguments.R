@@ -281,7 +281,7 @@ assert_add_functions <- function(data,
                                               ", but '",
                                               unname(new_column),
                                               "' are not column name(s) in the translation table"),
-                             add = checks)
+                             add = add)
   if (isFALSE(overwrite)) {
     NVIcheckmate::assert_names(names(new_column),
                                type = "named",
