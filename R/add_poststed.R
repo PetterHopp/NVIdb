@@ -84,12 +84,23 @@ add_poststed <- function(data,
   new_column <- set_name_vector(new_column)
 
   # ARGUMENT CHECKING ----
-  assert_add_function(data = data,
-                      translation_table = translation_table,
-                      code_column = code_column,
-                      new_column = new_column,
-                      position = position,
-                      overwrite = overwrite)
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+  # Perform checks
+  checks <- assert_add_functions(data = data,
+                                 translation_table = translation_table,
+                                 code_column = code_column,
+                                 new_column = new_column,
+                                 overwrite = overwrite,
+                                 add = checks)
+  # position
+  position <- NVIcheckmate::match_arg(x = position,
+                                      choices = c("first", "left", "right", "last", "keep"),
+                                      several.ok = TRUE,
+                                      ignore.case = FALSE,
+                                      add = checks)
+  # Report check-results
+  checkmate::reportAssertions(checks)
 
 
   # Makes the translation table with code_column and new_column. unique() is necessary to avoid duplicate
