@@ -92,28 +92,23 @@ add_kommune_fylke <- function(data,
   new_column <- set_name_vector(new_column)
 
   # ARGUMENT CHECKING ----
-  assert_add_function(data = data,
-                      translation_table = translation_table,
-                      code_column = code_column,
-                      new_column = new_column,
-                      position = position,
-                      overwrite = overwrite)
-
-  # # ERROR check
-  # # error:
-  # if (names(code_column) %in% names(new_column)) {
-  #   # issue error if names already exists
-  #   stop(paste0("You cannot give the new column the same name as the code_column '", names(code_column), "' in the data frame '", deparse(substitute(data)), "`."))
-  # }
-  #
-  # # check_exist_colname(df_name = deparse(substitute(data)), df_columns = colnames(data), new_column = new_column, overwrite = overwrite)
-  # if (length(intersect(colnames(data), names(new_column))) > 0 & overwrite == FALSE) {
-  #   # issue error if names already exists
-  #   stop(paste(paste0("The column name(s): '", intersect(colnames(data), names(new_column)), "' already exist in '", deparse(substitute(data)), "`."),
-  #              paste0("Either give new column name(s) for the column(s) called '", intersect(colnames(data), names(new_column)), "' or"),
-  #              "Specify overwrite = TRUE to replace values in the existing column(s) with new content.", sep = "\n"))
-  # }
-  #
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+  # Perform checks
+  checks <- assert_add_functions(data = data,
+                                 translation_table = translation_table,
+                                 code_column = code_column,
+                                 new_column = new_column,
+                                 overwrite = overwrite,
+                                 add = checks)
+  # position
+  position <- NVIcheckmate::match_arg(x = position,
+                                      choices = c("first", "left", "right", "last", "keep"),
+                                      several.ok = TRUE,
+                                      ignore.case = FALSE,
+                                      add = checks)
+  # Report check-results
+  checkmate::reportAssertions(checks)
 
   # PREPARE TRANSLATION TABLE ----
   # Makes the translation table with code_column and new_column. unique() is necessary to avoid duplicate
