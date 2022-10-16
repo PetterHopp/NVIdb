@@ -293,6 +293,8 @@ add_PJS_code_description <- function(data,
       # Restores original case in code_colname
       data[, code_colname[i]] <- data$code_colname_org_case
       data$code_colname_org_case <- NULL
+      # Fix of difficulties translating NA correct. Should probably be fixed elsewhere
+      data[which(is.na(data[, code_colname[i]])), new_column[i]] <- NA
     }
   }
   return(data)
