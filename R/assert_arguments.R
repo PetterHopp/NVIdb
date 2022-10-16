@@ -135,20 +135,20 @@
 assert_copy_function <- function(filename,
                                  from_path,
                                  to_path) {
-
+  
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-
+  
   # Perform checks
   ## filename
-  NVIcheckmate::assert(checkmate::check_character(filename,
-                                                  min.chars = 1,
-                                                  len = 1),
-                       checkmate::check_list(filename, min.len = 1),
-                       combine = "or",
-                       add = checks)
-
+  checkmate::assert(checkmate::check_character(filename,
+                                               min.chars = 1,
+                                               len = 1),
+                    checkmate::check_list(filename, min.len = 1),
+                    combine = "or",
+                    add = checks)
+  
   # checkmate::assert_list(filename, len = 2, add = checks)
   # # from_path
   # checkmate::assert_character(from_path, len = 1, min.chars = 1, add = checks)
@@ -157,14 +157,14 @@ assert_copy_function <- function(filename,
   # } else {
   #   checkmate::assert_directory_exists(from_path, access = "r", add = checks)
   # }
-
+  
   ## from_path / filename
   for (i in c(1:length(filename))) {
     checkmate::assert_file_exists(file.path(from_path, filename[[i]]), access = "r", add = checks)
   }
   ## to_path
   checkmate::assert_directory_exists(to_path, access = "r", add = checks)
-
+  
   # Report check-results
   checkmate::reportAssertions(checks)
 }
@@ -243,7 +243,7 @@ assert_add_functions <- function(data,
                                  new_column,
                                  overwrite,
                                  add) {
-
+  
   # ARGUMENT CHECKING ----
   # Perform checks
   # data
@@ -304,10 +304,10 @@ assert_add_functions <- function(data,
                                               # deparse(substitute(data)), "`"
                              ),
                              add = add)
-
+  
   # overwrite
   checkmate::assert_logical(overwrite, any.missing = FALSE, len = 1, add = add)
-
+  
   return(add)
 }
 
@@ -353,20 +353,20 @@ assert_add_functions <- function(data,
 assert_read_functions <- function(filename,
                                   from_path,
                                   add) {
-
+  
   checkmate::assert_class(x = add, classes = "AssertCollection")
-
+  
   # Perform checks ----
-
+  
   ## filename
-  NVIcheckmate::assert(checkmate::check_character(filename,
-                                                  min.chars = 1, len = 1,
-                                                  any.missing = FALSE),
-                       checkmate::check_list(filename,
-                                             min.len = 1,
-                                             any.missing = FALSE),
-                       combine = "or",
-                       add = add)
+  checkmate::assert(checkmate::check_character(filename,
+                                               min.chars = 1, len = 1,
+                                               any.missing = FALSE),
+                    checkmate::check_list(filename,
+                                          min.len = 1,
+                                          any.missing = FALSE),
+                    combine = "or",
+                    add = add)
   ## from_path / filename
   for (i in c(1:length(filename))) {
     checkmate::assert_file_exists(file.path(from_path, filename[[i]]), access = "r", add = add)
