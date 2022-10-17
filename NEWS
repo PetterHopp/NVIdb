@@ -9,7 +9,7 @@ New features:
 
 - add_PJS_code_description can now perform backward translation from PJS description text to PJS-code. Use 'backward = TRUE'. Backward translation only works when the description text is unique per code. Case is ignored for backward translation.
 
-- add_PJS_code_description, chose_PJS_levels, and Standardize_PJS_data now handles the levels subundersokelse ans subresultat. 
+- add_PJS_code_description, chose_PJS_levels, and Standardize_PJS_data now handles the levels subundersokelse and subresultat. 
 
 - set_dir_NVI now accepts abbreviated input for datasource. The abbreviation must be unique.
 
@@ -23,6 +23,8 @@ Bug fixes:
 - copy-functions (copy_kommune_fylke, copy_MT_omrader, copy_PJS_code_2_text, copy_Pkode_2_text, copy_poststed, copy_prodnr_2_current_prodnr, and copy_Prodtilskudd),  now accepts "from_path" and "to_path" that ends with "\\".
 
 - read-functions (read_kommune_fylke, read_leveransereg, read_MT_omrader, read_PJS_code_2_text, read_Pkode_2_text, read_poststed, read_prodnr_2_coordinates, read_prodnr_2_current_prodnr, read_Prodtilskudd, and read_sonetilhorighet),  now accepts "from_path" that ends with "\\".
+
+- exclude_from_PJSdata now returns correct data frame if quality = "include".
 
 
 Other changes:
