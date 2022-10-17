@@ -27,11 +27,11 @@
 #' }
 #'
 exclude_from_PJSdata <- function(PJSdata, abroad = "exclude", quality = "exclude") {
-
+  
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-
+  
   # Perform checks
   # pjsDATA
   checkmate::assert_data_frame(PJSdata, add = checks)
@@ -39,31 +39,31 @@ exclude_from_PJSdata <- function(PJSdata, abroad = "exclude", quality = "exclude
   checkmate::assert_choice(abroad, choices = c("exclude", "include"), add = checks)
   # quality
   checkmate::assert_choice(quality, choices = c("exclude", "include"), add = checks)
-
+  
   # Report check-results
   checkmate::reportAssertions(checks)
-
-
+  
+  
   # PERFORM CLEANING ----
   # Remove samples from abroad
   if (abroad == "exclude") {
     # Remove eier_lokalitet with landnr different from Norway in address
-
+    
     PJSdata <- subset(PJSdata,
                       PJSdata$eier_lokalitettype != "LAND" |
                         is.na(PJSdata$eier_lokalitettype) |
                         (PJSdata$eier_lokalitettype == "LAND" & PJSdata$eier_lokalitetnr == "NO"))
-
+    
   }
-
-
+  
+  
   if (quality == "exclude") {
     # Delete qualty assurance
     PJSdata <- subset(PJSdata,
                       substr(PJSdata$hensiktkode, 1, 2) != "09" |
                         is.na(PJSdata$hensiktkode))
-
+    
   }
-
-
+  
+  return(PJSdata)
 }
