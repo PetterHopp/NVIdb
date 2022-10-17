@@ -8,7 +8,7 @@ library(NVIdb)
 # Retrieve PJS data as template for testdata
 journal_rapp <- login_PJS()
 PJS_testdata <- sqlQuery(journal_rapp,
-                         "select * from v2_sak_m_sres where aar = 2020 and innsendelsesnummer <= 3000",
+                         "select * from v2_sak_m_res where aar = 2020 and innsendelsesnummer <= 3000",
                          as.is = TRUE,
                          stringsAsFactors = FALSE)
 odbcClose(journal_rapp)
@@ -30,9 +30,6 @@ PJS_selected <- PJS_testdata %>%
   dplyr::mutate(category = case_when(eier_lokalitetstype == "LAND" ~ "LAND",
                                      eier_lokalitetstype != "LAND" & substr(hensiktkode, 1, 2) == "09" ~ "QA",
                                      TRUE ~ ansvarlig_seksjon)) %>%
-
-  dplyr::mutate(category = case_when(!is.na(resultatnummer_sens) ~ "SUB",
-                                     TRUE ~ category)) %>%
 
   dplyr::mutate(category = case_when(substr(hensiktkode, 1, 7) == "0200102" & substr(konklusjonkode, 1, 2) != "02" ~ "OKV1",
                                      substr(hensiktkode, 1, 7) == "0200102" & substr(konklusjonkode, 1, 2) == "02" & trimws(konkl_analyttkode) == "01150101" ~ "OKV2",
@@ -85,9 +82,9 @@ PJS_testdata <- PJS_testdata %>%
                 sak_avsluttet = format(as.Date(sak_avsluttet, "%d.%m.%y") + date_correction, "%d.%m.%y"),
                 uttaksdato_parprove = format(as.Date(uttaksdato_parprove, "%d.%m.%y") + date_correction, "%d.%m.%y"),
                 mottatt_dato_parprove = format(as.Date(mottatt_dato_parprove, "%d.%m.%y") + date_correction, "%d.%m.%y"),
-                start_dato = format(as.Date(start_dato, "%d.%m.%y") + date_correction, "%d.%m.%y"),
+                godkjent_dato = format(as.Date(godkjent_dato, "%d.%m.%y") + date_correction, "%d.%m.%y"),
                 avsluttet_dato = format(as.Date(avsluttet_dato, "%d.%m.%y") + date_correction, "%d.%m.%y"),
-                avsluttet_dato_sens = format(as.Date(avsluttet_dato_sens, "%d.%m.%y") + date_correction, "%d.%m.%y"),
+                # avsluttet_dato_sens = format(as.Date(avsluttet_dato_sens, "%d.%m.%y") + date_correction, "%d.%m.%y"),
                 kommunenr = substr("12345678901234567890", 1, nchar(kommunenr)),
                 tilleggsnr = substr("12345678901234567890", 1, nchar(tilleggsnr)),
                 merknad = NA_character_,
@@ -110,7 +107,9 @@ PJS_testdata <- PJS_testdata %>%
                 id_nr = substr("12345678901234567890", 1, nchar(id_nr)),
                 stamme = NA_character_,
                 innsendelsesnummer = innsnr,
-                fagnr = ceiling(innsnr / 2)) %>%
+                fagnr = ceiling(innsnr / 2),
+                navn = "Xxxx Xxxxxxx",
+                postnr = substr("12345678901234567890", 1, nchar(postnr))) %>%
   dplyr::select(-c(innsnr, weeknr, ant_prover_per_sak, category, date_correction))
 
 # Save testdata
