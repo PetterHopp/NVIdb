@@ -29,7 +29,7 @@ PJS_testdata <- PJS_testdata %>%
 PJS_selected <- PJS_testdata %>%
   dplyr::mutate(category = case_when(!is.na(resultatnummer_sens) ~ "SUB",
                                      TRUE ~ NA_character_)) %>%
-  
+
   # Filter journals
   dplyr::filter(category %in% c("SUB")) %>%
   dplyr::filter(ant_prover_per_sak <= 1) %>%
