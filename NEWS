@@ -3,6 +3,8 @@ NVIdb 0.7.1.9001 - (2022-##-##)
 
 New features:
 
+- build_query_outbreak builds a query for retrieving outbreak data from PJS. Potential input are aar, hensiktkode, utbrudd_id, analyttkode and metodekode. 
+
 - set_disease_selection_parameters creates a list object with selection parameters from input arguments or by sourcing an R script that sets the input values (a "purpose" file).
 
 - read_Pkode_2_text now reads translation table for Pkoder from 1995 to current year as default. Column names are changed in accord with standard conventions. Use keep_old_names = TRUE to keep old names. 
