@@ -25,7 +25,7 @@ knitr::opts_chunk$set(eval = FALSE)
 -   [Further processing](#further-processing)
 
 ## Overview
-The purpose of this vignette is to give guidelines for retrieving and standardising data from PJS. The vignette shows how functions from `NVIdb` can be used to facilitate this. Thereby, one should be able to make data sets from PJS with standard column names and standard classes for the variables to make it easier to share scripts for further management and analysis of PJS data. 
+The purpose of this vignette is to give guidelines for retrieving and standardising data from PJS. The vignette shows how functions in `NVIdb` can be used to facilitate this. Thereby, one should be able to make data sets from PJS with standard column names and standard classes for the variables to make it easier to share scripts for further management and analysis of PJS data. 
 
 To run the scripts below, you will need R with the "NVIverse" packages `NVIbatch` and `NVIconfig` installed. You will also need a valid user account for PJS.
 
@@ -44,7 +44,7 @@ library(RODBC)
 library(NVIdb)
 ```
 
-An alternative is to use `use_pkg` and `use_NVIverse` from the package `NVIbatch`. These functions accept a vector with package names and will attach the packages if installed, and install the package if not installed. Use `use_pkg` for packages at "Cran" and `use_NVIverse` for packages within the "NVIverse".  If the packages need to be installed, you also need writing access to the directory for R packages. 
+An alternative is to use `use_pkg` and `use_NVIverse` from the package `NVIbatch`. These functions accept a vector with package names and will attach the packages if installed, and install the package if not installed. Use `use_pkg` for packages at "Cran" and `use_NVIverse` for packages within the "NVIverse". If the packages need to be installed, you also need writing access to the directory for R packages. 
 ```{r, include = TRUE}
 # SET UP THE R ENVIRONMENT ----
 # # Attach R packages (using NVIbatch) ----
@@ -58,7 +58,7 @@ The global variables should be defined at the beginning of the script to make th
 
 Likewise should global functions used by the script be defined at the beginning of the script. These are functions needed for the script that are not included in any package, either because they are very specific for this script or that they are not yet mature for being included into a package. If functions are used in several scripts, it is recommended to generalise the functions and move them to packages to facilitate maintenance, updating and error testing.
 
-In stead of including the code for defining the global variables and the functions in the main script, the code may be written in separate scripts (R files) that are sourced from the main script.
+Instead of including the code for defining the global variables and the functions in the main script, the code may be written in separate scripts (R files) that are sourced from the main script.
 ```{r, include = TRUE}
 # # Global variables ----
 # ## Paths and file names
@@ -81,14 +81,14 @@ PJS_codes_2_text <- read_PJS_codes_2_text()
 ```
 
 ## Retrive data from PJS
-We retrieve data from PJS though views in the data base journal_rapp. There are views available for different purposes. If we need all data for a disease, we usually use the view "v2_sak_m_res" that combines information from all levels from sak to result and in addition includes konklusjon and eier_lokalitet. 
+We retrieve data from PJS through views in the data base journal_rapp. There are views available for different purposes. If we need all data for a disease, we usually use the view "v2_sak_m_res" that combines information from all levels from sak to result and in addition includes konklusjon and eier_lokalitet. 
 
 ### Make selection statement
-In this example we select all saker with resultater and konklusjoner related to surveillance for paratuberkulosis in different species for a single year. To achieve this we select
+In this example we select all saker with resultater and konklusjoner related to surveillance for paratuberculosis in different species for a single year. To achieve this we select
 
-- all saker with hensikt for paratuberkulosis surveillance. 
+- all saker with hensikt for paratuberculosis surveillance. 
 
-There are four main hensikter, each for one species (group of species). 
+There are four main hensikter, each for one species (group of species). For three of them there are sub-hensikter. To retreive data for sub-hensikter when using `build_query_hensikt`, you can add % at the end of the code instead of listing all the sub-hensikter.
 ```{r, include = TRUE}
 # RETRIEVE DATA FROM PJS ----
 
@@ -106,14 +106,14 @@ select_statement <- NVIdb::build_query_hensikt(year = aar,
 
 
 ### Login to PJS
-To retrieve the PJS data, you log in to the database journal_rapp to established a data base connection, query the database and close the database connection. You can use `login_PJS` (equals `login("PJS")`) for the log in. You will then enter the username and password, but the other specifications of the data base connection are not necessary to input. If you often login to PJS, you may store the credentials (username and password) in your user profile (at the current PC) with `set_credentials_PJS`. Do once These will be automatically found by `login`. Must be repeated when password to PJS changes or if you use another PC. To avoid being asked for credentials when running batch scripts, store your credentials with `set_credentials_PJS` and use `login_by_credentials_PJS`.
+To retrieve the PJS data, you log in to the database journal_rapp to established a data base connection, query the database and close the database connection. You can use `login_PJS` (equals `login("PJS")`) for the log in. You will then enter the username and password, but the other specifications of the data base connection are not necessary to input. If you often login to PJS, you may store the credentials (username and password) in your user profile (at the current PC) with `set_credentials_PJS`. These will be automatically found by `login`. Must be repeated when password to PJS changes or if you use another PC. To avoid being asked for credentials when running batch scripts, store the credentials with `set_credentials_PJS` and use `login_by_credentials_PJS`.
 ```{r, include = TRUE}
 # READ DATA FROM PJS ----
 journal_rapp <- login_PJS()
 ```
 
 ### Read PJS data
-The query can be sent PJS by `RODBC::sqlQuery`. In this example we only select observations using the view "v2_sak_res_eier" and not from the view "sakskonklusjon". The argument `as.is =TRUE` ensures that lading zeros are kept in character variables with only numbers.
+The query can be sent PJS by `RODBC::sqlQuery`. In this example we only select observations using the view "v2_sak_res_eier" and not from the view "sakskonklusjon". The argument `as.is =TRUE` ensures that leading zeros are kept in character variables with only numbers.
 
 After the wanted queries have been run, you should tidy up by closing the data base connection. 
 ```{r, include = TRUE}
@@ -168,7 +168,7 @@ PJSdata <- choose_PJS_levels(data = PJSdata,
 ```
 
 ### Translate PJS codes into descriptive text
-To translate PJS codes into descriptive text you may use the function `add_PJS_code_description`. The function needs arguments like the data, the translation table, the name  of the columns with the codes, the name of the new columns with the descriptive text and the type of the code that should be translate. There are additional arguments to position the new columns etc., see `add_PJS_code_description`. When the column names have been standardised as done above, you can simplify the input arguments code_column and new_column as shown in the example below. See `add_PJS_code_description` for how to do it with non-standard names. 
+To translate PJS codes into descriptive text you may use the function `add_PJS_code_description`. The function needs input of the data, the translation table, the name  of the columns with the codes, the name of the new columns with the descriptive text and the type of the code that should be translate. There are additional arguments to position the new columns etc., see `add_PJS_code_description`. When the column names have been standardised as done above, you can simplify the input arguments code_column and new_column as shown in the example below. See `add_PJS_code_description` for how to do it with non-standard names. 
 
 The code below is dependent on the translation table already have been imported in a previous step. In this case it was imported in the section [Import support registers](#import-support-registers).
 ```{r, include = TRUE}
