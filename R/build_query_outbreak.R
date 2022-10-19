@@ -45,11 +45,11 @@
 #' @export
 #' @examples
 #' # SQL-select query for an outbreak
-#' build_query_outbreak(year = 2020,
-#'                         utbrudd = "1",
-#'                         hensikt = c("0100108018", "0100109003", "0100111003", "0800109"),
-#'                         analytt = c("01220104%", "1502010235"),
-#'                         metode = NULL)
+#' build_query_outbreak(year = 2022,
+#'                      utbrudd = "27",
+#'                      hensikt = c("0100101014", "0100102005", "0100103005", "0100104029", "0200130%"),
+#'                      analytt = "01130301%",
+#'                      metode = NULL)
 build_query_outbreak <- function(year,
                                  utbrudd = NULL,
                                  hensikt = NULL,
