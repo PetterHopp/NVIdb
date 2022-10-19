@@ -44,7 +44,7 @@ names of the coded variables should be given.}
 \item{new_column}{The name of the new column with the text describing the code. If several codes should be translated, a vector with the
 new column names should be given. You may also use "auto", if \code{code_colname} have standardized PJS names only, see details.}
 
-\item{position}{position for the new columns, can be one of c("first", "left", "right", "last", "keep"). If several codes should be translated,
+\item{position}{Position for the new columns, can be one of c("first", "left", "right", "last", "keep"). If several codes should be translated,
 either one value to be applied for all may be given or a vector with specified position for each code to be translated should be given.}
 
 \item{overwrite}{\code{TRUE} or \code{FALSE}, default is \code{FALSE}. When 
