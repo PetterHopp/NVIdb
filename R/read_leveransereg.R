@@ -10,6 +10,7 @@
 #'
 #' @param from_path Path for Leveranseregisteret
 #' @param filename The name of the file with Leveranseregisteret
+#' @param \dots	Other arguments to be passed to \code{data.table::fread}.
 #'
 #' @return \code{read_LevReg} A data frame with Leveranseregisteret as in selected csv-file.
 #'
@@ -22,7 +23,8 @@
 #' }
 #'
 read_leveransereg <- function(filename,
-                              from_path = paste0(set_dir_NVI("LevReg"), "FormaterteData/")) {
+                              from_path = paste0(set_dir_NVI("LevReg"), "FormaterteData/"),
+                              ...) {
 
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
@@ -43,5 +45,6 @@ read_leveransereg <- function(filename,
   levreg <- read_csv_file(filename = filename,
                           from_path = from_path,
                           options = list(colClasses = colclasses, fileEncoding = "UTF-8"),
-                          dec = ",")
+                          dec = ",",
+                          ...)
 }

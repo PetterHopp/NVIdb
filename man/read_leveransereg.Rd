@@ -6,13 +6,16 @@
 \usage{
 read_leveransereg(
   filename,
-  from_path = paste0(set_dir_NVI("LevReg"), "FormaterteData/")
+  from_path = paste0(set_dir_NVI("LevReg"), "FormaterteData/"),
+  ...
 )
 }
 \arguments{
 \item{filename}{The name of the file with Leveranseregisteret}
 
 \item{from_path}{Path for Leveranseregisteret}
+
+\item{\dots}{Other arguments to be passed to \code{data.table::fread}.}
 }
 \value{
 \code{read_LevReg} A data frame with Leveranseregisteret as in selected csv-file.
