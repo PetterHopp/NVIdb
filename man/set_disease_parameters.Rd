@@ -6,16 +6,21 @@
 \usage{
 set_disease_parameters(
   hensikt2select = NULL,
+  hensikt2delete = NULL,
   utbrudd2select = NULL,
   metode2select = NULL,
   analytt2select = NULL,
   art2select = NULL,
+  missing_art = NULL,
   file = NULL
 )
 }
 \arguments{
 \item{hensikt2select}{Vector with specific hensikter. If sub-codes should
 be included, end the code with \%. Can be \code{NULL}.}
+
+\item{hensikt2delete}{Vector with hensikter for which saker should be excluded
+If sub-codes should be included, end the code with \%. Can be \code{NULL}.}
 
 \item{utbrudd2select}{String with an utbrudd ID. Can be \code{NULL}.}
 
@@ -27,6 +32,9 @@ If sub-codes should be included, end the code with \%. Can be \code{NULL}.}
 \item{art2select}{Vector with  one or more artkode given as a character.
 If sub-codes should be included, end the code with \%.  \code{NA} can be
 combined with another artkode. Can be \code{NULL}.}
+
+\item{missing_art}{Should missing art be included if one or more arter should
+be selected. Character one of c("never", "always", "non_selected_hensikt").}
 
 \item{file}{path and file name for an R script that can be sourced and that
 sets the parameters \code{hensikt2select}, \code{utbrudd2select}, \code{metode2select}, and

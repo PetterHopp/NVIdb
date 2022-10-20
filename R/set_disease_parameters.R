@@ -25,6 +25,8 @@
 #'
 #' @param hensikt2select Vector with specific hensikter. If sub-codes should
 #'     be included, end the code with \%. Can be \code{NULL}.
+#' @param hensikt2delete Vector with hensikter for which saker should be excluded
+#'     If sub-codes should be included, end the code with \%. Can be \code{NULL}.
 #' @param utbrudd2select String with an utbrudd ID. Can be \code{NULL}.
 #' @param metode2select Vector with specific metoder. Can be \code{NULL}.
 #' @param analytt2select Vector with  one or more analyttkode given as a character.
@@ -32,6 +34,8 @@
 #' @param art2select Vector with  one or more artkode given as a character.
 #'     If sub-codes should be included, end the code with \%.  \code{NA} can be
 #'     combined with another artkode. Can be \code{NULL}.
+#' @param missing_art Should missing art be included if one or more arter should
+#'     be selected. Character one of c("never", "always", "non_selected_hensikt").
 #' @param file path and file name for an R script that can be sourced and that
 #'     sets the parameters \code{hensikt2select}, \code{utbrudd2select}, \code{metode2select}, and
 #'     \code{analytt2select}. Can be \code{NULL}.
@@ -49,11 +53,28 @@
 #'   metode2select = c("070070", "070231", "010057", "060265")
 #'   )
 set_disease_parameters <- function(hensikt2select = NULL,
+                                   hensikt2delete = NULL,
                                    utbrudd2select = NULL,
                                    metode2select = NULL,
                                    analytt2select = NULL,
                                    art2select = NULL,
+                                   missing_art = NULL,
                                    file = NULL) {
+
+  # SET SELECTION PARAMETERS ----
+  # Import values from parameter file if exists
+  if (!is.null(file)) {
+    checkmate::assert_file(x = file)
+    if (!is.null(file)) {
+      script <- as.character(parse(file = file, encoding = "UTF-8"))
+
+      script <- script[grepl(pattern = "^hensikt2select|^hensikt2delete|^analytt2select|^metode2select|^art2select|^utbrudd2select|^missing_art", script)]
+
+      for (i in 1:length(script)) {
+        eval(parse(text = script[i]))
+      }
+    }
+  }
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
@@ -61,35 +82,25 @@ set_disease_parameters <- function(hensikt2select = NULL,
 
   # Perform checks
   NVIcheckmate::assert_non_null(list(analytt2select, hensikt2select, utbrudd2select, file), add = checks)
-  checkmate::assert_character(hensikt2select, min.chars = 2, any.missing = FALSE, null.ok = TRUE, add = checks)
-  checkmate::assert_character(utbrudd2select, any.missing = FALSE, null.ok = TRUE, add = checks)
-  checkmate::assert_character(metode2select, min.chars = 6, any.missing = FALSE, null.ok = TRUE, add = checks)
-  checkmate::assert_character(analytt2select, min.chars = 2, any.missing = FALSE, add = checks)
-  checkmate::assert_character(art2select, min.chars = 2, all.missing = FALSE, null.ok = TRUE, add = checks)
-  if (!is.null(file)) {
-    checkmate::assert_file(x = file, add = checks)
+  checkmate::assert_character(hensikt2select, min.chars = 2, max.chars = 15, any.missing = FALSE, null.ok = TRUE, add = checks)
+  checkmate::assert_character(hensikt2delete, min.chars = 2, max.chars = 15, any.missing = FALSE, null.ok = TRUE, add = checks)
+  checkmate::assert_character(utbrudd2select, max.chars = 5, any.missing = FALSE, null.ok = TRUE, add = checks)
+  checkmate::assert_character(metode2select, n.chars = 6, any.missing = FALSE, null.ok = TRUE, add = checks)
+  checkmate::assert_character(analytt2select, min.chars = 2, max.chars = 20, any.missing = FALSE, null.ok = TRUE, add = checks)
+  checkmate::assert_character(art2select, min.chars = 2, max.chars = 20, all.missing = FALSE, null.ok = TRUE, add = checks)
+  if (!is.null(art2select)) {
+    checkmate::assert_choice(missing_art, choices = c("never", "always", "non_selected_hensikt"), add = checks)
   }
 
   # Report check-results
   checkmate::reportAssertions(checks)
 
-  # SET SELECTION PARAMETERS ----
-  # Import values from parameter file
-  if (!is.null(file)) {
-    script <- as.character(parse(file = file, encoding = "UTF-8"))
-
-    script <- script[grepl(pattern = "^hensikt2select|^analytt2select|^metode2select|^art2select|^utbrudd2select", script)]
-
-    for (i in 1:length(script)) {
-      eval(parse(text = script[i]))
-    }
-  }
-
-
-  # Create list object with parameter values
+  # CREATE LIST WITH PARAMETER VALUES ----
   return(list("hensikt2select" = hensikt2select,
+              "hensikt2delete" = hensikt2delete,
               "utbrudd2select" = utbrudd2select,
               "metode2select" = metode2select,
               "analytt2select" = analytt2select,
-              "art2select" = art2select))
+              "art2select" = art2select,
+              "missing_art" = missing_art))
 }
