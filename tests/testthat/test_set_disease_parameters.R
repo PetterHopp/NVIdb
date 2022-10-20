@@ -44,24 +44,25 @@ test_that("set disease parameters by direct input", {
                     "missing_art" = "never"))
 })
 
-# test_that("set disease parameters using parameter file", {
-#   td <- tempdir()
-#   writeLines (
-#     paste('hensikt2select <- c("0100108018", "0100109003", "0100111003", "0800109")' ,
-#           'utbrudd2select <- NULL',
-#           'metode2select <- c("070070", "070231", "010057", "060265")' ,
-#           'analytt2select <- c("01220104%", "1502010235")',
-#           "",
-#           sep ="\n"),
-#   con = file.path(td, "PD.R")
-#   )
-# test <-  as.character(parse(file = file.path(td, "PD.R"), keep.source = FALSE))
-#   parameters <- set_disease_parameters( file = file.path(td, "PD.R") )
-#   expect_equal(parameters,
-#                list(         "hensikt2select" =           c("0100108018", "0100109003", "0100111003", "0800109"),
-#                              "metode2select" = c("070070", "070231", "010057", "060265"),
-#                              "analytt2select" = c("01220104%", "1502010235")))
-# })
+test_that("set disease parameters using parameter file", {
+writeLines (
+  c('hensikt2select <- c("0100108018", "0100109003", "0100111003", "0800109")' ,
+    'utbrudd2select <- NULL',
+    'metode2select <- c("070070", "070231", "010057", "060265")' ,
+    'analytt2select <- c("01220104%", "1502010235")'),
+  con = file.path(tempdir(), "PD.R")
+)
+
+  parameters <- set_disease_parameters( file = file.path(tempdir(), "PD.R") )
+expect_equal(parameters,
+             list("hensikt2select" = c("0100108018", "0100109003", "0100111003", "0800109"),
+                  "hensikt2delete" = NULL,
+                  "utbrudd2select" = NULL,
+                  "metode2select" = c("070070", "070231", "010057", "060265"),
+                  "analytt2select" = c("01220104%", "1502010235"),
+                  "art2select" = NULL,
+                  "missing_art" = NULL))
+})
 
 
 test_that("errors for set_disease_parameters", {
