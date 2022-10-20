@@ -45,13 +45,13 @@ test_that("build query HPAI outbreak", {
                                             "0100102003", # "Oppfølging"
                                             "0100103003", # "Oppfølging"
                                             "0200130001", # "Passiv overvåking"
-                                            "0200130",    # "Aktiv overvåking"
+                                            "0200130", # "Aktiv overvåking"
                                             "0200130002"), # "Aktiv overvåking"
                                 analytt = "01150101%",
-                                metode = c('070027', '070127', '070130', '070137', '070138', '070149', 
+                                metode = c('070027', '070127', '070130', '070137', '070138', '070149',
                                            '070150', '070151', '070191', '070313', '070314', '070315',
                                            '070324', '070325', '070328', '070329'))
-  
+
   correct_result <- paste("SELECT *",
                           "FROM v2_sak_m_res",
                           "WHERE aar >= 2020 AND",
@@ -62,7 +62,7 @@ test_that("build query HPAI outbreak", {
                                          "'070324', '070325', '070328', '070329') OR",
                           "konkl_analyttkode LIKE '01150101%' OR",
                           "analyttkode_funn LIKE '01150101%')")
-  
+
   expect_equivalent(query["selection_v2_sak_m_res"], correct_result)
 
   correct_result <- paste("SELECT v_sakskonklusjon.*, sak.mottatt_dato, sak.uttaksdato, sak.sak_avsluttet,",
@@ -81,19 +81,19 @@ test_that("build query HPAI outbreak", {
 
 test_that("build query P. ovis outbreak", {
   query <- build_query_outbreak(year = c(2019:2022),
-                                hensikt = c("0100101044", "0100101023", "0100102007", "0100102", 
+                                hensikt = c("0100101044", "0100101023", "0100102007", "0100102",
                                             "0100103007", "0100103", "0200152", "0200147"),
                                 analytt = "0302060104050102%")
-  
+
   correct_result <- paste("SELECT *",
                           "FROM v2_sak_m_res",
                           "WHERE aar >= 2019 AND",
-                          "(hensiktkode IN ('0100101044', '0100101023', '0100102007', '0100102',", 
+                          "(hensiktkode IN ('0100101044', '0100101023', '0100102007', '0100102',",
                                             "'0100103007', '0100103', '0200152', '0200147') OR",
                           "konkl_analyttkode LIKE '0302060104050102%' OR analyttkode_funn LIKE '0302060104050102%')")
-  
+
   expect_equivalent(query["selection_v2_sak_m_res"], correct_result)
-  
+
   correct_result <- paste("SELECT v_sakskonklusjon.*, sak.mottatt_dato, sak.uttaksdato, sak.sak_avsluttet,",
                           "sak.hensiktkode, sak.eier_lokalitetstype, sak.eier_lokalitetnr",
                           "FROM v_innsendelse AS sak",
@@ -102,9 +102,9 @@ test_that("build query P. ovis outbreak", {
                           "v_sakskonklusjon.ansvarlig_seksjon = sak.ansvarlig_seksjon AND",
                           "v_sakskonklusjon.innsendelsesnummer = sak.innsendelsesnummer)",
                           "WHERE sak.aar >= 2019 AND (analyttkode LIKE '0302060104050102%')")
-  
+
   expect_equivalent(query["selection_sakskonklusjon"], correct_result)
-  
+
 })
 
 
