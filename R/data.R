@@ -10,7 +10,7 @@
 #'
 #' @format A data frame with 9 variables:
 #' \describe{
-#'   \item{variable}{column name for variables read from PJs and standardized using \code{NVIdb::standardize_columns}}
+#'   \item{variable}{column name for variables read from PJS and standardized using \code{NVIdb::standardize_columns}}
 #'   \item{sak}{columns at sak-level are given value 1}
 #'   \item{prove}{columns at prove-level are given value 1}
 #'   \item{delprove}{columns at delprove-level are given value 1}
