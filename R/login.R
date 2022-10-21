@@ -71,52 +71,114 @@ login <- function(dbservice,
                   dbserver = NULL,
                   dbport = NULL,
                   dbprotocol = NULL) {
-
-  # Error handling
-  # 1. keyring package is missing
-  # Use of require is avoided as loading packages should be avoided in package functions
-  # This implies that there is no check of keyring is correctly installed
-  if (!is.element("keyring", utils::installed.packages()[, 1])) {
-    stop("Package keyring need to be installed for this function to work")
-  }
-
-  # 3. Parameters for db-connection is missing
-  if ((is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) &
-      !tolower(dbservice) %in% tolower(NVIconfig:::dbconnect$dbservice)) {
-    stop(paste("Parameters for connection to",
-               dbservice,
-               "are missing and predefined parameters are not available"))
-  }
-
-  # Identifies connection parameters for predefined dbservices
-  # Uses the predefined parameters only for parameters with NULL-value
+  
+  # ARGUMENT CHECKING ----
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+  
+  # Perform checks
+  # dbservice
+  checkmate::assert_character(dbservice, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  
+  
+  # Identifies if predefined connection parameters are needed
   if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) {
-    connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
-    if (is.null(dbdriver)) {dbdriver <- connect[, "dbdriver"]}
-    if (is.null(db)) {db <- connect[, "db"]}
-    if (is.null(dbserver)) {dbserver <- connect[, "dbserver"]}
-    if (is.null(dbport)) {dbport <- connect[, "dbport"]}
-    if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
+    # Identify if NVIconfig are installed and parameters for dbservice exists.
+    NVIcheckmate::assert_package(x = "NVIconfig",
+                                 comment = paste0("Parameters for logging into the database '",
+                                                  dbservice,
+                                                  "' is lacking and NVIconfig with predefined parameters is not installed"),
+                                 add = checks)
+    
+    if (isTRUE(NVIcheckmate::check_package(x = "NVIconfig"))) {
+      NVIcheckmate::assert_choice_character(x = dbservice, choices = NVIconfig:::dbconnect$dbservice, ignore.case = TRUE,
+                                            comment = paste0("Predefined parameters for logging into the database '",
+                                                             dbservice,
+                                                             "' is not available in your version of NVIconfig"),
+                                            add = checks)
+      
+      # Uses the predefined parameters only for parameters with NULL-value
+      connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
+      if (is.null(dbdriver)) {dbdriver <- connect[, "dbdriver"]}
+      if (is.null(db)) {db <- connect[, "db"]}
+      if (is.null(dbserver)) {dbserver <- connect[, "dbserver"]}
+      if (is.null(dbport)) {dbport <- connect[, "dbport"]}
+      if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
+    }
   }
-
-  # Check if credentials for PJS is stored in the user profile
-  if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
-    # 2. Credentials for PJS are missing from the user profile
-    login_by_input(dbservice,
-                   dbdriver,
-                   db,
-                   dbserver,
-                   dbport,
-                   dbprotocol)
-  } else {
+  
+  # dbdriver
+  checkmate::assert_character(dbdriver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # db
+  checkmate::assert_character(db, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # dbserver
+  checkmate::assert_character(dbserver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # dbport
+  checkmate::assert_character(dbport, len = 1, any.missing = FALSE, add = checks)
+  # dbprotocol
+  checkmate::assert_character(dbprotocol, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  
+  # Report check-results
+  checkmate::reportAssertions(checks)
+  
+  # # Error handling
+  # 
+  # # 3. Parameters for db-connection is missing
+  # if ((is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) &
+  #     !tolower(dbservice) %in% tolower(NVIconfig:::dbconnect$dbservice)) {
+  #   stop(paste("Parameters for connection to",
+  #              dbservice,
+  #              "are missing and predefined parameters are not available"))
+  # }
+  # 
+  # # Identifies connection parameters for predefined dbservices
+  # # Uses the predefined parameters only for parameters with NULL-value
+  # if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) {
+  #   connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
+  #   if (is.null(dbdriver)) {dbdriver <- connect[, "dbdriver"]}
+  #   if (is.null(db)) {db <- connect[, "db"]}
+  #   if (is.null(dbserver)) {dbserver <- connect[, "dbserver"]}
+  #   if (is.null(dbport)) {dbport <- connect[, "dbport"]}
+  #   if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
+  # }
+  # 
+  
+  #   # Check if credentials for PJS is stored in the user profile
+  # if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
+  #   # 2. Credentials for PJS are missing from the user profile
+  #   login_by_input(dbservice,
+  #                  dbdriver,
+  #                  db,
+  #                  dbserver,
+  #                  dbport,
+  #                  dbprotocol)
+  # } else {
+  #   login_by_credentials(dbservice,
+  #                        dbdriver,
+  #                        db,
+  #                        dbserver,
+  #                        dbport,
+  #                        dbprotocol)
+  # }
+  # Use check for saved credentials to chose between login_by_input and login_by_credentials
+  if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
+    # If credentials are saved for the user profile
     login_by_credentials(dbservice,
                          dbdriver,
                          db,
                          dbserver,
                          dbport,
                          dbprotocol)
+  } else {
+    # If credentials are missing from the user profile
+    login_by_input(dbservice,
+                   dbdriver,
+                   db,
+                   dbserver,
+                   dbport,
+                   dbprotocol)
   }
-
+  
 }
 
 
@@ -125,23 +187,31 @@ login <- function(dbservice,
 #' @rdname login
 
 login_PJS <- function() {
-
+  
   # Set service to PJS
   dbservice <- "PJS"
-
-  # Check if credentials for PJS is stored in the user profile
-  # 1. keyring package is missing
-  # Use of require is avoided as loading packages should be avoided in package functions
-  # This implies that there is no check if keyring is correctly installed
-  if (!is.element("keyring", utils::installed.packages()[, 1])) {
-    login_by_input(dbservice)
+  
+  # # Check if credentials for PJS is stored in the user profile
+  # # 1. keyring package is missing
+  # # Use of require is avoided as loading packages should be avoided in package functions
+  # # This implies that there is no check if keyring is correctly installed
+  # if (!is.element("keyring", utils::installed.packages()[, 1])) {
+  #   login_by_input(dbservice)
+  # } else {
+  #   if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
+  #     # 2. Credentials for PJS are missing from the user profile
+  #     login_by_input(dbservice)
+  #   } else {
+  #     login_by_credentials(dbservice)
+  #   }
+  # }
+  # Use check for saved credentials to chose between login_by_input and login_by_credentials
+  if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
+    # If credentials are saved for the user profile
+    login_by_credentials(dbservice)
   } else {
-    if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
-      # 2. Credentials for PJS are missing from the user profile
-      login_by_input(dbservice)
-    } else {
-      login_by_credentials(dbservice)
-    }
+    # If credentials are missing from the user profile
+    login_by_input(dbservice)
   }
 }
 
@@ -150,22 +220,30 @@ login_PJS <- function() {
 #' @rdname login
 
 login_EOS <- function() {
-
+  
   # Set service to EOS
   dbservice <- "EOS"
-
-  # Check if credentials for EOS is stored in the user profile
-  # 1. keyring package is missing
-  # Use of require is avoided as loading packages should be avoided in package functions
-  # This implies that there is no check if keyring is correctly installed
-  if (!is.element("keyring", utils::installed.packages()[, 1])) {
-    login_by_input(dbservice)
+  
+  # # Check if credentials for EOS is stored in the user profile
+  # # 1. keyring package is missing
+  # # Use of require is avoided as loading packages should be avoided in package functions
+  # # This implies that there is no check if keyring is correctly installed
+  # if (!is.element("keyring", utils::installed.packages()[, 1])) {
+  #   login_by_input(dbservice)
+  # } else {
+  #   if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
+  #     # 2. Credentials for PJS are missing from the user profile
+  #     login_by_input(dbservice)
+  #   } else {
+  #     login_by_credentials(dbservice)
+  #   }
+  # }
+  # Use check for saved credentials to chose between login_by_input and login_by_credentials
+  if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
+    # If credentials are saved for the user profile
+    login_by_credentials(dbservice)
   } else {
-    if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
-      # 2. Credentials for PJS are missing from the user profile
-      login_by_input(dbservice)
-    } else {
-      login_by_credentials(dbservice)
-    }
+    # If credentials are missing from the user profile
+    login_by_input(dbservice)
   }
 }
