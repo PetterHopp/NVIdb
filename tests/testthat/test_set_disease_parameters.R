@@ -45,15 +45,15 @@ test_that("set disease parameters by direct input", {
 })
 
 test_that("set disease parameters using parameter file", {
-writeLines (
-  c('hensikt2select <- c("0100108018", "0100109003", "0100111003", "0800109")' ,
+writeLines(
+  c('hensikt2select <- c("0100108018", "0100109003", "0100111003", "0800109")',
     'utbrudd2select <- NULL',
-    'metode2select <- c("070070", "070231", "010057", "060265")' ,
+    'metode2select <- c("070070", "070231", "010057", "060265")',
     'analytt2select <- c("01220104%", "1502010235")'),
   con = file.path(tempdir(), "PD.R")
 )
 
-  parameters <- set_disease_parameters( file = file.path(tempdir(), "PD.R") )
+  parameters <- set_disease_parameters(file = file.path(tempdir(), "PD.R"))
 expect_equal(parameters,
              list("hensikt2select" = c("0100108018", "0100109003", "0100111003", "0800109"),
                   "hensikt2delete" = NULL,
