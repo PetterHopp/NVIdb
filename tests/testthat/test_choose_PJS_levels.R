@@ -95,12 +95,60 @@ test_that("Choose variables from PJS levels", {
                    c("aar", "ansvarlig_seksjon", "innsendelsenr", "provenr", "delprovenr", "undnr", "resnr",
                      "res_analyttkode", "verdi_mengde", "enhetkode", "res_kjennelsekode", "det_grense"))
 
+})
+
+test_that("Choose variables from PJS levels subundersokelse og subresultat", {
+  # skip if no connection to 'FAG' have been established
+  skip_if_not(dir.exists(set_dir_NVI("FAG")))
+  
+  PJStest <- readRDS(file.path(".", "PJS_testdata2.rds"))
+  # PJStest <- readRDS("./tests/testthat/PJS_testdata2.rds")
+  
+  # Standardisere kolonnenavn
+  PJStest <- standardize_columns(data = PJStest, property = "colnames")
+  # Removes vet_distriktnr and konkl_provenr
+  PJStest$vet_distriktnr <- NULL
+  PJStest$konkl_provenr <- NULL
+  
+  subundersokelse <- choose_PJS_levels(PJStest, levels = c("subundersokelse"))
+  expect_identical(colnames(subundersokelse),
+                   c("aar", "ansvarlig_seksjon", "innsendelsenr", "provenr", "delprovenr", "undnr",
+                     "resnr", "subundnr",
+                     "subund_metodekode", "subund_avsluttet"))
+  
+  
+  subresultat <- choose_PJS_levels(PJStest, levels = c("subresultat"))
+  expect_identical(colnames(subresultat),
+                   c("aar", "ansvarlig_seksjon", "innsendelsenr", "provenr", "delprovenr", "undnr", 
+                     "resnr", "subundnr", "subresnr",
+                     "subres_analyttkode", "subres_verdi_mengde", "subres_enhetkode", "subres_kjennelsekode"))
+  
+})
+
+
+test_that("Choose variables from PJS levels subundersokelse og subresultat", {
+  # skip if no connection to 'FAG' have been established
+  skip_if_not(dir.exists(set_dir_NVI("FAG")))
+  
+  PJStest <- readRDS(file.path(".", "PJS_testdata.rds"))
+  # PJStest <- readRDS("./tests/testthat/PJS_testdata.rds")
+  
+  # Standardisere kolonnenavn
+  PJStest <- standardize_columns(data = PJStest, property = "colnames")
+  # Removes vet_distriktnr and konkl_provenr
+  PJStest$vet_distriktnr <- NULL
+  PJStest$konkl_provenr <- NULL
+  
+  sak_konkl <- choose_PJS_levels(PJStest, levels = c("sak", "prove", "konklusjon"))
+  
   # test keep_col
-  # prove <- choose_PJS_levels(PJStest, levels = c("sak" , "prove" , "konklusjon"), keep_col = "delprovenr")
-  #
+  prove <- choose_PJS_levels(PJStest, levels = c("sak" , "prove" , "konklusjon"), keep_col = "delprovenr")
+  expect_true(dim(sak_konkl)[1] < dim(prove)[1])
+  expect_identical(dim(sak_konkl)[2], dim(prove)[2] - 1L)
+
   # # test remove_col
-  # sak_konkl <- choose_PJS_levels(PJStest, levels = c("sak" , "prove" , "konklusjon"), remove_col = "konklnr")
-  #
+  # sak_konkl2 <- choose_PJS_levels(prove, levels = c("sak" , "prove" , "konklusjon"), remove_col = "konklnr")
+  # 
   # # test remove_col and unique_col
   # sak_konkl <- choose_PJS_levels(PJStest, levels = c("sak" , "prove" , "konklusjon"), remove_col = "konklnr", unique_rows = FALSE)
 })
