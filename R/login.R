@@ -71,16 +71,16 @@ login <- function(dbservice,
                   dbserver = NULL,
                   dbport = NULL,
                   dbprotocol = NULL) {
-  
+
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-  
+
   # Perform checks
   # dbservice
   checkmate::assert_character(dbservice, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
-  
-  
+
+
   # Identifies if predefined connection parameters are needed
   if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) {
     # Identify if NVIconfig are installed and parameters for dbservice exists.
@@ -89,14 +89,14 @@ login <- function(dbservice,
                                                   dbservice,
                                                   "' is lacking and NVIconfig with predefined parameters is not installed"),
                                  add = checks)
-    
+
     if (isTRUE(NVIcheckmate::check_package(x = "NVIconfig"))) {
       NVIcheckmate::assert_choice_character(x = dbservice, choices = NVIconfig:::dbconnect$dbservice, ignore.case = TRUE,
                                             comment = paste0("Predefined parameters for logging into the database '",
                                                              dbservice,
                                                              "' is not available in your version of NVIconfig"),
                                             add = checks)
-      
+
       # Uses the predefined parameters only for parameters with NULL-value
       connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
       if (is.null(dbdriver)) {dbdriver <- connect[, "dbdriver"]}
@@ -106,7 +106,7 @@ login <- function(dbservice,
       if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
     }
   }
-  
+
   # dbdriver
   checkmate::assert_character(dbdriver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
   # db
@@ -117,12 +117,12 @@ login <- function(dbservice,
   checkmate::assert_character(dbport, len = 1, any.missing = FALSE, add = checks)
   # dbprotocol
   checkmate::assert_character(dbprotocol, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
-  
+
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # # Error handling
-  # 
+  #
   # # 3. Parameters for db-connection is missing
   # if ((is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) &
   #     !tolower(dbservice) %in% tolower(NVIconfig:::dbconnect$dbservice)) {
@@ -130,7 +130,7 @@ login <- function(dbservice,
   #              dbservice,
   #              "are missing and predefined parameters are not available"))
   # }
-  # 
+  #
   # # Identifies connection parameters for predefined dbservices
   # # Uses the predefined parameters only for parameters with NULL-value
   # if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) {
@@ -141,8 +141,8 @@ login <- function(dbservice,
   #   if (is.null(dbport)) {dbport <- connect[, "dbport"]}
   #   if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
   # }
-  # 
-  
+  #
+
   #   # Check if credentials for PJS is stored in the user profile
   # if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
   #   # 2. Credentials for PJS are missing from the user profile
@@ -178,7 +178,7 @@ login <- function(dbservice,
                    dbport,
                    dbprotocol)
   }
-  
+
 }
 
 
@@ -187,10 +187,10 @@ login <- function(dbservice,
 #' @rdname login
 
 login_PJS <- function() {
-  
+
   # Set service to PJS
   dbservice <- "PJS"
-  
+
   # # Check if credentials for PJS is stored in the user profile
   # # 1. keyring package is missing
   # # Use of require is avoided as loading packages should be avoided in package functions
@@ -220,10 +220,10 @@ login_PJS <- function() {
 #' @rdname login
 
 login_EOS <- function() {
-  
+
   # Set service to EOS
   dbservice <- "EOS"
-  
+
   # # Check if credentials for EOS is stored in the user profile
   # # 1. keyring package is missing
   # # Use of require is avoided as loading packages should be avoided in package functions
