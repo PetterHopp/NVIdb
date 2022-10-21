@@ -2,7 +2,7 @@ library(NVIdb)
 library(testthat)
 
 test_that("build query ND outbreak", {
-  query <- build_query_outbreak(year = 2022,
+  query <- build_query_outbreak(period = 2022,
                                 utbrudd = "27",
                                 hensikt = c("0100101014", # "Mistanke"
                                             "0100102005", # "Oppfølging"
@@ -39,7 +39,7 @@ test_that("build query ND outbreak", {
 
 
 test_that("build query HPAI outbreak", {
-  query <- build_query_outbreak(year = c(2020:2022),
+  query <- build_query_outbreak(period = c(2020:2022),
                                 utbrudd = "22",
                                 hensikt = c("0100101007", # "Mistanke"
                                             "0100102003", # "Oppfølging"
@@ -80,7 +80,7 @@ test_that("build query HPAI outbreak", {
 
 
 test_that("build query P. ovis outbreak", {
-  query <- build_query_outbreak(year = c(2019:2022),
+  query <- build_query_outbreak(period = c(2019:2022),
                                 hensikt = c("0100101044", "0100101023", "0100102007", "0100102",
                                             "0100103007", "0100103", "0200152", "0200147"),
                                 analytt = "0302060104050102%")
@@ -109,7 +109,7 @@ test_that("build query P. ovis outbreak", {
 
 
 test_that("build query maedi outbreak", {
-  query <- build_query_outbreak(year = c(2019:2022),
+  query <- build_query_outbreak(period = c(2019:2022),
                                 hensikt = c("0100104020", "0100104054", "0100105007", "0100105008", "0100106007",
                                              "0700605", "0400101", "0400109001", "0200113", "0200135", "0200141", "0200163"))
 
@@ -142,13 +142,13 @@ test_that("build query outbreak error testing", {
   options(width = 80)
 
   expect_error(build_query_outbreak(analytt = "0406020202"),
-               regexp = 'argument "year" is missing')
+               regexp = 'argument "period" is missing')
 
-  expect_error(build_query_outbreak(year = 2020, metode = "070183"),
+  expect_error(build_query_outbreak(period = 2020, metode = "070183"),
                regexp = "Variable 'list(utbrudd, hensikt, analytt)': At least one of the", fixed = TRUE)
 
-  expect_error(build_query_outbreak(year = (as.numeric(format(Sys.Date(), "%Y")) + 1), analytt = "0406020202"),
-               regexp = "Variable 'year': Element ")
+  expect_error(build_query_outbreak(period = (as.numeric(format(Sys.Date(), "%Y")) + 1), analytt = "0406020202"),
+               regexp = "Variable 'period': Element ")
 
   options(width = unlist(linewidth))
 })

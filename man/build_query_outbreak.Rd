@@ -5,7 +5,7 @@
 \title{Builds query to select data for a disease outbreak from PJS}
 \usage{
 build_query_outbreak(
-  year,
+  period,
   utbrudd = NULL,
   hensikt = NULL,
   analytt = NULL,
@@ -14,7 +14,7 @@ build_query_outbreak(
 )
 }
 \arguments{
-\item{year}{One year or a vector with years giving the first and last years
+\item{period}{Time period given as year. One year or a vector with years giving the first and last years
 that should be selected as integer.}
 
 \item{utbrudd}{One or more utbrudd id given as a character. Can be \code{NULL}.}
@@ -66,7 +66,7 @@ The function builds the SQL syntax to select all PJS-saker
 }
 \examples{
 # SQL-select query for an outbreak
-build_query_outbreak(year = 2022,
+build_query_outbreak(period = 2022,
                      utbrudd = "27",
                      hensikt = c("0100101014", "0100102005", "0100103005",
                                  "0100104029", "0200130\%"),

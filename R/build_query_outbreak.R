@@ -27,7 +27,7 @@
 #'     cannot be sufficient to define the outbreak, but is included if the
 #'     outbreak is defined as all samples examined for a specific analytt.
 #'
-#' @param year One year or a vector with years giving the first and last years
+#' @param period Time period given as year. One year or a vector with years giving the first and last years
 #'     that should be selected as integer.
 #' @param utbrudd One or more utbrudd id given as a character. Can be \code{NULL}.
 #' @param hensikt Vector with specific hensikter. If sub-hensikter should be
@@ -45,13 +45,13 @@
 #' @export
 #' @examples
 #' # SQL-select query for an outbreak
-#' build_query_outbreak(year = 2022,
+#' build_query_outbreak(period = 2022,
 #'                      utbrudd = "27",
 #'                      hensikt = c("0100101014", "0100102005", "0100103005",
 #'                                  "0100104029", "0200130%"),
 #'                      analytt = "01130301%",
 #'                      metode = NULL)
-build_query_outbreak <- function(year,
+build_query_outbreak <- function(period,
                                  utbrudd = NULL,
                                  hensikt = NULL,
                                  analytt = NULL,
@@ -64,7 +64,7 @@ build_query_outbreak <- function(year,
   checks <- checkmate::makeAssertCollection()
 
   # Perform checks
-  checkmate::assert_integerish(year, lower = 1990, upper = as.numeric(format(Sys.Date(), "%Y")), min.len = 1, add = checks)
+  checkmate::assert_integerish(period, lower = 1990, upper = as.numeric(format(Sys.Date(), "%Y")), min.len = 1, add = checks)
   checkmate::assert_character(utbrudd, min.chars = 1, null.ok = TRUE, any.missing = FALSE, add = checks)
   checkmate::assert_character(hensikt, min.chars = 2, null.ok = TRUE, any.missing = FALSE, add = checks)
   checkmate::assert_character(analytt, min.chars = 2, null.ok = TRUE, any.missing = FALSE, add = checks)
@@ -76,7 +76,7 @@ build_query_outbreak <- function(year,
   checkmate::reportAssertions(checks)
 
 
-  select_year <- NVIdb::build_sql_select_year(year = year, varname = "aar")
+  select_year <- NVIdb::build_sql_select_year(year = period, varname = "aar")
 
   select_hensikt <- NVIdb::build_sql_select_code(values = hensikt, varname = "hensiktkode")
   if (nchar(select_hensikt) > 0) {select_codes <- select_hensikt}
@@ -123,7 +123,7 @@ build_query_outbreak <- function(year,
   # selection_v2_sak_m_res <- gsub("( ", "(", selection_v2_sak_m_res, fixed = TRUE)
 
 
-  select_year <- NVIdb::build_sql_select_year(year = year, varname = "sak.aar")
+  select_year <- NVIdb::build_sql_select_year(year = period, varname = "sak.aar")
 
   if (!is.null(analytt)) {
     select_analytt <- NVIdb::build_sql_select_code(values = analytt, varname = "analyttkode")
