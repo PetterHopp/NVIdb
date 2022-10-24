@@ -8,7 +8,7 @@
 #' @param hensikt Vector with one or more hensiktkoder. Sub-hensikter are not included and must be explicitly mentioned.
 #' @param db The database for which the query is built. Currently only the value "PJS" is accepted.
 #'
-#' @return A list with select-statements for v2_sak_m_res and v_sakskonklusjon, respectively. The statements should
+#' @return A list with select-statements for "v2_sak_m_res" and "v_sakskonklusjon", respectively. The statements should
 #'    be included in a \code{RODBC::sqlQuery}.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no

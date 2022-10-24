@@ -14,7 +14,7 @@ build_query_hensikt(year, hensikt, db = "PJS")
 \item{db}{The database for which the query is built. Currently only the value "PJS" is accepted.}
 }
 \value{
-A list with select-statements for v2_sak_m_res and v_sakskonklusjon, respectively. The statements should
+A list with select-statements for "v2_sak_m_res" and "v_sakskonklusjon", respectively. The statements should
    be included in a \code{RODBC::sqlQuery}.
 }
 \description{
