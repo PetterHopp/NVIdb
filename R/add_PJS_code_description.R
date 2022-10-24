@@ -96,7 +96,7 @@
 #' @param position Position for the new columns, can be one of c("first", "left", "right", "last", "keep"). If several codes should be translated,
 #'     either one value to be applied for all may be given or a vector with specified position for each code to be translated should be given.
 #' @template overwrite
-#' @param backward [\code{logical}]. If \code{TRUE}, it translate from descriptive text and back to PJS-code, see details. Defaults to \code{FALSE}.
+#' @param backward [\code{logical(1)}]. If \code{TRUE}, it translates from descriptive text and back to PJS-code, see details. Defaults to \code{FALSE}.
 #' @param filename File name of the source file for the translation table for PJS-codes.
 #' @param from_path Path for the source translation table for PJS-codes.
 #' @param to_path Path for the target translation table for PJS-codes when copying the table.
@@ -228,6 +228,7 @@ add_PJS_code_description <- function(data,
   NVIcheckmate::assert_subset_character(x = unique(position), choices = c("first", "left", "right", "last", "keep"), add = checks)
   # overwrite
   checkmate::assert_logical(overwrite, any.missing = FALSE, len = 1, add = checks)
+  # backward
   checkmate::assert_logical(backward, any.missing = FALSE, len = 1, add = checks)
 
   # Report check-results

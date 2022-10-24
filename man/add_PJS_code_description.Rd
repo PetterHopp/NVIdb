@@ -47,12 +47,12 @@ new column names should be given. You may also use "auto", if \code{code_colname
 \item{position}{Position for the new columns, can be one of c("first", "left", "right", "last", "keep"). If several codes should be translated,
 either one value to be applied for all may be given or a vector with specified position for each code to be translated should be given.}
 
-\item{overwrite}{\code{TRUE} or \code{FALSE}, default is \code{FALSE}. When 
-the new column(s) already exist, the content in the existing column(s) is 
-replaced by new data if \code{overwrite = TRUE}. If the new column(s) already 
-exist and \code{overwrite = FALSE}, an error is issued.}
+\item{overwrite}{[\code{logical(1)}]. When the new column(s) already exist, 
+the content in the existing column(s) is replaced by new data if 
+\code{overwrite = TRUE}. If the new column(s) already exist and 
+\code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
 
-\item{backward}{[\code{logical}]. If \code{TRUE}, it translate from descriptive text and back to PJS-code, see details. Defaults to \code{FALSE}.}
+\item{backward}{[\code{logical(1)}]. If \code{TRUE}, it translates from descriptive text and back to PJS-code, see details. Defaults to \code{FALSE}.}
 
 \item{filename}{File name of the source file for the translation table for PJS-codes.}
 
