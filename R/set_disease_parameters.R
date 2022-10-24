@@ -68,7 +68,11 @@ set_disease_parameters <- function(hensikt2select = NULL,
     if (!is.null(file)) {
       script <- as.character(parse(file = file, encoding = "UTF-8"))
 
-      script <- script[grepl(pattern = "^hensikt2select|^hensikt2delete|^analytt2select|^metode2select|^art2select|^utbrudd2select|^missing_art", script)]
+      script <- script[grepl(pattern = paste0("[^hensikt2select|^hensikt2delete|^analytt2select|^metode2select|",
+                                               "^art2select|^utbrudd2select|^missing_art]",
+                                              "[[:blank:]]*",
+                                              "[=|<\\-]"),
+                             script)]
 
       for (i in 1:length(script)) {
         eval(parse(text = script[i]))
