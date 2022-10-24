@@ -1,9 +1,9 @@
-NVIdb 0.7.1.9001 - (2022-##-##)
+NVIdb 0.8.0 - (2022-10-24)
 --------------------------
 
 New features:
 
-- build_query_outbreak builds a query for retrieving outbreak data from PJS. Potential input are aar, hensiktkode, utbrudd_id, analyttkode and metodekode. 
+- build_query_outbreak builds a query for retrieving outbreak data from PJS. Potential inputs are period, hensiktkode, utbrudd_id, analyttkode and metodekode. 
 
 - set_disease_selection_parameters creates a list object with selection parameters from input arguments or by sourcing an R script that sets the input values (a "purpose" file).
 
@@ -11,7 +11,7 @@ New features:
 
 - add_PJS_code_description can now perform backward translation from PJS description text to PJS-code. Use 'backward = TRUE'. Backward translation only works when the description text is unique per code. Case is ignored for backward translation.
 
-- add_PJS_code_description, chose_PJS_levels, and Standardize_PJS_data now handles the levels subundersokelse and subresultat. 
+- add_PJS_code_description, choose_PJS_levels, and standardize_PJS_data now handles the levels subundersokelse and subresultat. 
 
 - set_dir_NVI now accepts abbreviated input for datasource. The abbreviation must be unique.
 
@@ -39,7 +39,7 @@ Other changes:
 
 - Updated the vignette "Contribute_to_NVIdb".
 
-- Minor improvements in help for various functions
+- Updated and improved help for many functions.
 
 
 BREAKING CHANGES:
