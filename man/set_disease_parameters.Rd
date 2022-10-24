@@ -16,22 +16,22 @@ set_disease_parameters(
 )
 }
 \arguments{
-\item{hensikt2select}{Vector with specific hensikter. If sub-codes should
+\item{hensikt2select}{Vector with specific "hensikter". If sub-codes should
 be included, end the code with \%. Can be \code{NULL}.}
 
-\item{hensikt2delete}{Vector with hensikter for which saker should be excluded
+\item{hensikt2delete}{Vector with "hensikter" for which saker should be excluded
 If sub-codes should be included, end the code with \%. Can be \code{NULL}.}
 
-\item{utbrudd2select}{String with an utbrudd ID. Can be \code{NULL}.}
+\item{utbrudd2select}{String with an "utbruddsID". Can be \code{NULL}.}
 
-\item{metode2select}{Vector with specific metoder. Can be \code{NULL}.}
+\item{metode2select}{Vector with specific "metoder." Can be \code{NULL}.}
 
-\item{analytt2select}{Vector with  one or more analyttkode given as a character.
+\item{analytt2select}{Vector with  one or more "analyttkode" given as a character.
 If sub-codes should be included, end the code with \%. Can be \code{NULL}.}
 
-\item{art2select}{Vector with  one or more artkode given as a character.
+\item{art2select}{Vector with  one or more "artkode" given as a character.
 If sub-codes should be included, end the code with \%.  \code{NA} can be
-combined with another artkode. Can be \code{NULL}.}
+combined with another "artkode". Can be \code{NULL}.}
 
 \item{missing_art}{Should missing art be included if one or more arter should
 be selected. Character one of c("never", "always", "non_selected_hensikt").}
@@ -47,20 +47,21 @@ A named list with selection parameters that can be used to generate
 \description{
 Sets the disease selection parameters and store them in a list
     object. The list follows a standardised named format and the elements can
-    be used as input to \code{build_query_one_disease} or \code{build_query_hensikt}.
+    be used as input to \code{\link{build_query_one_disease}},
+     \code{\link{build_query_hensikt}} or \code{\link{build_query_outbreak}}.
 }
 \details{
 Saker in PJS that concern one infection / disease can be characterised
-    by the analytt (at konklusjon and/or resultat level), specific hensikter,
-    a relevant utbrudds_ID and/or specific metoder. These can be used to select
+    by the "analytt" (at "konklusjon" and/or "resultat" level), specific "hensikter",
+    a relevant "utbrudds_ID" and/or specific "metoder." These can be used to select
     saker in PJS and/or to structure and simplify the output from PJS.
 
-    One or more specific hensikter may be input to the selection statement.
-    With specific hensikt is meant a hensikt that will imply that the sample
+    One or more specific "hensikter" may be input to the selection statement.
+    With specific "hensikt" is meant a "hensikt" that will imply that the sample
     will be examined for specific infectious agent(s) or disease. One or more
-    specific metoder may be input to the selection statement. With specific
-    metode is meant a metode that implies an examination that will give one
-    of the input analytter as a result. If sub-codes of analytt or hensikt
+    specific "metoder" may be input to the selection statement. With specific
+    "metode" is meant a "metode" that implies an examination that will give one
+    of the input 2 as a result. If sub-codes of "analytt" or "hensikt"
     should be included, end the code with \%.
 
     The selection parameters can be input values for dedicated arguments. For input parameters
