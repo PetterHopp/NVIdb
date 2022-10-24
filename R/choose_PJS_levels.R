@@ -39,28 +39,29 @@
 #' odbcClose(journal_rapp)
 #'
 #' # Generate two data frames,
-#' #   one with sak, prove, konklusjon and one with sak, prove, undersokelse and resultat
-#' sak_prove_konkl <- choose_PJS_levels(PJSdata,
-#'                                     levels = c("sak", "prove", "konklusjon"),
-#'                                     remove_col = c("vet_distriktnr", "karantene",
-#'                                                    "kartreferanse", "epi_id", "landnr",
-#'                                                    "uttatt_parprove", "mottatt_parprove",
-#'                                                    "eksportland", "importdato",
-#'                                                    "tidl_eier", "avkom_imp_dyr",
-#'                                                    "okologisk_drift", "skrottnr", "kjonn",
-#'                                                    "fodselsdato", "konklnr"),
-#'                                     unique_rows = TRUE)
+#' #  generates data frame with sak, prove, konklusjon
+#' s_p_k <- choose_PJS_levels(PJSdata,
+#'                            levels = c("sak", "prove", "konklusjon"),
+#'                            remove_col = c("vet_distriktnr", "karantene",
+#'                                           "kartreferanse", "epi_id", "landnr",
+#'                                           "uttatt_parprove", "mottatt_parprove",
+#'                                           "eksportland", "importdato",
+#'                                           "tidl_eier", "avkom_imp_dyr",
+#'                                           "okologisk_drift", "skrottnr",
+#'                                           "kjonn", "fodselsdato", "konklnr"),
+#'                            unique_rows = TRUE)
 #'
-#' sak_prove_und_res <- choose_PJS_levels(PJSdata,
-#'                                        levels = c("sak", "prove", "undersokelse", "resultat"),
-#'                                        remove_col = c("vet_distriktnr", "karantene",
-#'                                                       "kartreferanse", "epi_id", "landnr",
-#'                                                       "uttatt_parprove", "mottatt_parprove",
-#'                                                       "eksportland", "importdato",
-#'                                                       "tidl_eier", "avkom_imp_dyr",
-#'                                                       "okologisk_drift", "skrottnr", "kjonn",
-#'                                                       "fodselsdato"),
-#'                                        unique_rows = TRUE)
+#' #  generates data frame with sak, prove, undersokelse and resultat
+#' s_p_u_r <- choose_PJS_levels(PJSdata,
+#'                              levels = c("sak", "prove", "undersokelse", "resultat"),
+#'                              remove_col = c("vet_distriktnr", "karantene",
+#'                                             "kartreferanse", "epi_id", "landnr",
+#'                                             "uttatt_parprove", "mottatt_parprove",
+#'                                             "eksportland", "importdato",
+#'                                             "tidl_eier", "avkom_imp_dyr",
+#'                                             "okologisk_drift", "skrottnr",
+#'                                             "kjonn", "fodselsdato"),
+#'                              unique_rows = TRUE)
 #' }
 #'
 choose_PJS_levels <- function(data,
