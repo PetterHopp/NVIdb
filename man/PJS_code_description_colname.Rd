@@ -3,11 +3,12 @@
 \docType{data}
 \name{PJS_code_description_colname}
 \alias{PJS_code_description_colname}
-\title{Data: PJS_code_description_colname, standard column names for description texts for selected code variables in PJS.}
+\title{Data: PJS_code_description_colname, standard column names for
+    description texts for selected code variables in PJS.}
 \format{
 A data frame with 3 variables:
 \describe{
-  \item{code_colname}{column name for selected code variables in PJs and that have been standardized using \code{NVIdb::standardize_columns}}
+  \item{code_colname}{column name for selected code variables in PJS and that have been standardized using \code{NVIdb::standardize_columns}}
   \item{type}{the type of PJS variable as used by \code{NVIdb::add_PJS_code_description} to translate PJS-codes to description text}
   \item{new_column}{The new standard column names for the corresponding code column name in PJS}
 }
@@ -19,10 +20,16 @@ A data frame with 3 variables:
 PJS_code_description_colname
 }
 \description{
-A data frame with the variable names (column names) in PJS and their corresponding PJS-level. The column names
-   are the standardized column names, i.e. after running \code{NVIdb::standardize_columns}.
-   The raw data can be edited in the \code{./data-raw/generate_PJS_code_description_colname.R}. The \code{PJS_code_description_colname}
-   is used by \code{NVIdb::add_PJS_code_description} when using the options \code{PJS_variable_type = "auto"} and/or
+A data frame with the standard variable names (column names) for
+   the code variables in PJS, their corresponding standard name of the column
+   with  the descriptive text and a column with the PJS type that will can
+   be used to translate from the code variable to the descriptive text. The
+   column names of the code variable are the standardised column names, i.e.
+   after running \code{NVIdb::standardize_columns}.
+
+   The raw data can be edited in the \code{./data-raw/generate_PJS_code_description_colname.R}.
+   The \code{PJS_code_description_colname} is used by \code{NVIdb::add_PJS_code_description}
+   when using the options \code{PJS_variable_type = "auto"} and/or
    \code{new_column = "auto"}.
 }
 \keyword{datasets}
