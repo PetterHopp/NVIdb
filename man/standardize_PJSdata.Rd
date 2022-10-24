@@ -9,27 +9,28 @@ standardize_PJSdata(PJSdata, dbsource = "v2_sak_m_res")
 \arguments{
 \item{PJSdata}{Data frame with data extracted from PJS.}
 
-\item{dbsource}{If specified, this will be used for fetching standard column names by \code{standardize_columns}.}
+\item{dbsource}{If specified, this will be used for fetching standard column
+names by \code{\link{standardize_columns}}.}
 }
 \value{
 data frame with standardized PJS-data.
 }
 \description{
 Standardizing PJS-data. This standardizing should always be performed.
-    Other functions used for further preparation of PJSdata, like \code{chose_PJS_levels},
-     and \code{exclude_form_PJSdata} will not work as intended unless the column
-    names are standardized.
+    Other functions used for further preparation of PJSdata, like
+    \code{\link{chose_PJS_levels}}, and \code{\link{exclude_form_PJSdata}}
+    will not work as intended unless the column names are standardized.
 }
 \details{
 The function performs the following standardizing of data extracted from PJS:
 \itemize{
-  \item The unnecessary columns konkl_provenr and vet_distriktnr are removed
-  \item The column names are standardized using \code{standardize_columns}
-  \item Numeric variables are transformed to numbers
-  \item Date variables are transformed to date format
-  \item Character variables are trimmed for leading and trailing spaces
-  \item The variables saksnr and, if possible, fagnr are generated
-  \item Test data, i.e. saker with ansvarlig_seksjon in c("14", "99") are deleted
+  \item The unnecessary columns konkl_provenr and vet_distriktnr are removed.
+  \item The column names are standardized using \code{\link{standardize_columns}}.
+  \item Numeric variables are transformed to numbers.
+  \item Date variables are transformed to date format.
+  \item Character variables are trimmed for leading and trailing spaces.
+  \item The variables saksnr and, if possible, fagnr are generated.
+  \item Test data, i.e. saker with ansvarlig_seksjon in c("14", "99") are deleted.
   }
 }
 \examples{
