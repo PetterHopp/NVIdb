@@ -1,7 +1,7 @@
 #' @title Standardizing PJS-data
 #' @description Standardizing PJS-data. This standardizing should always be performed.
 #'     Other functions used for further preparation of PJSdata, like
-#'     \code{\link{chose_PJS_levels}}, and \code{\link{exclude_form_PJSdata}}
+#'     \code{\link{choose_PJS_levels}}, and \code{\link{exclude_from_PJSdata}}
 #'     will not work as intended unless the column names are standardized.
 #'
 #' @details The function performs the following standardizing of data extracted from PJS:
