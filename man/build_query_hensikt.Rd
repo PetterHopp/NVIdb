@@ -14,7 +14,7 @@ build_query_hensikt(year, hensikt, db = "PJS")
 \item{db}{The database for which the query is built. Currently only the value "PJS" is accepted.}
 }
 \value{
-A list with select-statements for v2_sak_m_res and v_sakskonklusjon, respectively. The statements should
+A list with select-statements for "v2_sak_m_res" and "v_sakskonklusjon", respectively. The statements should
    be included in a \code{RODBC::sqlQuery}.
 }
 \description{
@@ -28,7 +28,6 @@ The function builds the SQL syntax to select all PJS-journals concerning the hen
 # SQL-select query for Pancreatic disease (PD)
 build_query_hensikt(year = 2020,
                     hensikt = c("0200102"))
-
 }
 \author{
 Petter Hopp Petter.Hopp@vetinst.no

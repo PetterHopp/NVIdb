@@ -1,52 +1,70 @@
 #' @title Log in to data base services
 #' @description  Log in to NVI's data base services, in particular journal_rapp/PJS and EOS.
-#' @details The NVI has access to several database services. These functions log in to such services. The functions
-#'     provides methods to either log in using credentials set in the user profile by \code{set_credentials} or use
-#'     input windows for username and password. Thereby the hard coding of username and password can be avoided.
+#' @details The NVI has access to several database services. These functions log
+#'     in to such services. The functions provides methods to either log in using
+#'     credentials set in the user profile by \code{\link{set_credentials}} or use
+#'     input windows for username and password. Thereby the hard coding of
+#'     username and password can be avoided.
 #'
-#'     \code{login} is general functions where all necessary specifications like server name and database name of
-#'     the database must be input. The database provider can give information on what specifications that has to be used.
-#'     This can be used to log in to many different databases. In the case that one login to a database service for
-#'     which the connection parameters have been predefined (i.e. PJS, EOS, sea_sites and Fallvilt), it will be sufficient
-#'     to provide the parameter dbservice.
+#'     \code{login} is general functions where all necessary specifications like
+#'     server name and database name of the database must be input. The database
+#'     provider can give information on what specifications that has to be used.
+#'     This can be used to log in to many different databases. In the case that
+#'     one login to a database service for which the connection parameters have
+#'     been predefined (i.e. PJS, EOS, sea_sites and Fallvilt), it will be sufficient
+#'     to provide the parameter \code{dbservice =}.
 #'
-#'     Depending on whether username and password have been saved in the users profile at the current computer or not,
-#'     the user is asked to input credentials.
+#'     Depending on whether username and password have been saved in the users
+#'     profile at the current computer or not, the user is asked to input credentials.
 #'
-#'     \code{login_by_input} is general functions where all necessary specifications like server name and database name of
-#'     the database must be input. In the case that one login to a database service for which the connection parameters have
-#'     been predefined (i.e. PJS, EOS, sea_sites and Fallvilt), it will be sufficient to provide the parameter dbservice.
+#'     \code{login_by_input} is general functions where all necessary
+#'     specifications like server name and database name of the database must be
+#'     input. In the case that one login to a database service for which the
+#'     connection parameters have been predefined (i.e. PJS, EOS, sea_sites and
+#'     Fallvilt), it will be sufficient to provide the parameter \code{dbservice =}.
 #'     The user is always asked to input username and password.
 #'
-#'     \code{login_by_credentials} is general functions where all necessary specifications like server name and database name of
-#'     the database must be input. In the case that one login to a database service for which the connection parameters have
-#'     been predefined (i.e. PJS, EOS, sea_sites and Fallvilt), it will be sufficient to provide the parameter dbservice. The user
-#'     is never asked for username and password, and the function can only be used when the credentials previously have been set
-#'     in the user's profile at the current computer.
+#'     \code{login_by_credentials} is general functions where all necessary
+#'     specifications like server name and database name of the database must be
+#'     input. In the case that one login to a database service for which the
+#'     connection parameters have been predefined (i.e. PJS, EOS, sea_sites and
+#'     Fallvilt), it will be sufficient to provide the parameter \code{dbservice =}.
+#'     The user is never asked for username and password, and the function can
+#'     only be used when the credentials previously have been set in the user's
+#'     profile at the current computer.
 #'
-#'     \code{login_PJS}, \code{login_by_input_PJS}, and \code{login_by_credentials_PJS} are wrappers for the functions above
-#'     where the specifications for the database journal_rapp/PJS have been preset. The user only need to input username and
-#'     password or if the username and password for journal_rapp/PJS are stored in the user profile at the current computer,
-#'     the user is automatically logged in to journal_rapp. If the password is no longer valid, an error occur. If so, the
-#'     user must update the username and password by \code{set_credentials_PJS}.
+#'     \code{login_PJS}, \code{login_by_input_PJS}, and \code{login_by_credentials_PJS}
+#'     are wrappers for the functions above where the specifications for the
+#'     database journal_rapp/PJS have been preset. The user only need to input
+#'     username and password. In the case that the username and password for
+#'     journal_rapp/PJS have been stored in the user profile at the current
+#'     computer, the user is automatically logged in to journal_rapp. If the
+#'     password is no longer valid, an error occur. If so, the user must update
+#'     the username and password by \code{\link{set_credentials_PJS}}.
 #'
-#'     \code{login_EOS}, \code{login_by_input_EOS}, and \code{login_by_credentials_EOS} are wrappers for the functions above
-#'     where the specifications for the database EOS have been preset. The user only need to input username and password
-#'     or if the credentials are saved in the users profile by \code{set_credentials_EOS}, no input is needed.
+#'     \code{login_EOS}, \code{login_by_input_EOS}, and \code{login_by_credentials_EOS}
+#'     are wrappers for the functions above where the specifications for the
+#'     database EOS have been preset. The user only need to input username and
+#'     password or if the credentials are saved in the users profile by
+#'     \code{\link{set_credentials_EOS}}, no input is needed.
 #'
-#'     The login functions returns an open ODBC-channel to the database service. The database can then be queried by using
-#'     functions in the package \code{RODBC}.
+#'     The login functions returns an open ODBC-channel to the database service.
+#'     The database can then be queried by using functions in the package \code{RODBC}.
 #'
-#'     When the session is finished, the script shall close the ODBC-channel by \code{odbcClose("myodbcchannel")} or \code{odbcCloseAll}.
-#' @param dbservice Name of the database service, for example "PJS" or "EOS". For database services where one don't use the premade
-#'     wrappers, the name can be chosen freely, but must be the same as used in \code{set_credentials}
-#' @param dbdriver Name of database engine
-#' @param db Name of database
-#' @param dbserver Name of database server
-#' @param dbport Port
-#' @param dbprotocol Protocol to be used
-#' @param dbtext used in login with input. Gives the possibility of showing another name than the dbservice in the windows asking for
-#'     username and password.
+#'     When the session is finished, the script shall close the ODBC-channel by
+#'     \code{odbcClose("myodbcchannel")} or \code{odbcCloseAll}.
+#'
+#' @param dbservice Name of the database service, for example "PJS" or "EOS".
+#'     For database services where one don't use the premade wrappers, the name
+#'     can be chosen freely, but must be the same as used in \code{\link{set_credentials}}.
+#' @param dbdriver Name of database engine.
+#' @param db Name of database.
+#' @param dbserver Name of database server.
+#' @param dbport Port.
+#' @param dbprotocol Protocol to be used.
+#' @param dbtext used in login with input. Gives the possibility of showing
+#'     another name than the dbservice in the windows asking for username and
+#'     password.
 #' @return An open ODBC-channel to the database service.
 #' @family Log in functions
 #' @seealso  \code{\link{set_credentials}}
@@ -56,7 +74,7 @@
 #' \dontrun{
 #' require(RODBC)
 #' journal_rapp <- login_PJS()
-#'  # Reads hensiktregistret from PJS
+#' # Reads hensiktregistret from PJS
 #'   hensikter <- sqlQuery(journal_rapp,
 #'                        "select * from v_hensikt",
 #'                        as.is = TRUE,
@@ -72,49 +90,111 @@ login <- function(dbservice,
                   dbport = NULL,
                   dbprotocol = NULL) {
 
-  # Error handling
-  # 1. keyring package is missing
-  # Use of require is avoided as loading packages should be avoided in package functions
-  # This implies that there is no check of keyring is correctly installed
-  if (!is.element("keyring", utils::installed.packages()[, 1])) {
-    stop("Package keyring need to be installed for this function to work")
-  }
+  # ARGUMENT CHECKING ----
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
 
-  # 3. Parameters for db-connection is missing
-  if ((is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) &
-      !tolower(dbservice) %in% tolower(NVIconfig:::dbconnect$dbservice)) {
-    stop(paste("Parameters for connection to",
-               dbservice,
-               "are missing and predefined parameters are not available"))
-  }
+  # Perform checks
+  # dbservice
+  checkmate::assert_character(dbservice, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
 
-  # Identifies connection parameters for predefined dbservices
-  # Uses the predefined parameters only for parameters with NULL-value
+
+  # Identifies if predefined connection parameters are needed
   if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) {
-    connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
-    if (is.null(dbdriver))   {dbdriver   <- connect[, "dbdriver"]}
-    if (is.null(db))         {db         <- connect[, "db"]}
-    if (is.null(dbserver))   {dbserver   <- connect[, "dbserver"]}
-    if (is.null(dbport))     {dbport     <- connect[, "dbport"]}
-    if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
+    # Identify if NVIconfig are installed and parameters for dbservice exists.
+    NVIcheckmate::assert_package(x = "NVIconfig",
+                                 comment = paste0("Parameters for logging into the database '",
+                                                  dbservice,
+                                                  "' is lacking and NVIconfig with predefined parameters is not installed"),
+                                 add = checks)
+
+    if (isTRUE(NVIcheckmate::check_package(x = "NVIconfig"))) {
+      NVIcheckmate::assert_choice_character(x = dbservice, choices = NVIconfig:::dbconnect$dbservice, ignore.case = TRUE,
+                                            comment = paste0("Predefined parameters for logging into the database '",
+                                                             dbservice,
+                                                             "' is not available in your version of NVIconfig"),
+                                            add = checks)
+
+      # Uses the predefined parameters only for parameters with NULL-value
+      connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
+      if (is.null(dbdriver)) {dbdriver <- connect[, "dbdriver"]}
+      if (is.null(db)) {db <- connect[, "db"]}
+      if (is.null(dbserver)) {dbserver <- connect[, "dbserver"]}
+      if (is.null(dbport)) {dbport <- connect[, "dbport"]}
+      if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
+    }
   }
 
-  # Check if credentials for PJS is stored in the user profile
-  if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
-    # 2. Credentials for PJS are missing from the user profile
-    login_by_input(dbservice,
-                   dbdriver,
-                   db,
-                   dbserver,
-                   dbport,
-                   dbprotocol)
-  } else {
+  # dbdriver
+  checkmate::assert_character(dbdriver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # db
+  checkmate::assert_character(db, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # dbserver
+  checkmate::assert_character(dbserver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # dbport
+  checkmate::assert_character(dbport, len = 1, any.missing = FALSE, add = checks)
+  # dbprotocol
+  checkmate::assert_character(dbprotocol, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+
+  # Report check-results
+  checkmate::reportAssertions(checks)
+
+  # # Error handling
+  #
+  # # 3. Parameters for db-connection is missing
+  # if ((is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) &
+  #     !tolower(dbservice) %in% tolower(NVIconfig:::dbconnect$dbservice)) {
+  #   stop(paste("Parameters for connection to",
+  #              dbservice,
+  #              "are missing and predefined parameters are not available"))
+  # }
+  #
+  # # Identifies connection parameters for predefined dbservices
+  # # Uses the predefined parameters only for parameters with NULL-value
+  # if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) {
+  #   connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
+  #   if (is.null(dbdriver)) {dbdriver <- connect[, "dbdriver"]}
+  #   if (is.null(db)) {db <- connect[, "db"]}
+  #   if (is.null(dbserver)) {dbserver <- connect[, "dbserver"]}
+  #   if (is.null(dbport)) {dbport <- connect[, "dbport"]}
+  #   if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
+  # }
+  #
+
+  #   # Check if credentials for PJS is stored in the user profile
+  # if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
+  #   # 2. Credentials for PJS are missing from the user profile
+  #   login_by_input(dbservice,
+  #                  dbdriver,
+  #                  db,
+  #                  dbserver,
+  #                  dbport,
+  #                  dbprotocol)
+  # } else {
+  #   login_by_credentials(dbservice,
+  #                        dbdriver,
+  #                        db,
+  #                        dbserver,
+  #                        dbport,
+  #                        dbprotocol)
+  # }
+  # Use check for saved credentials to chose between login_by_input and login_by_credentials
+  if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
+    # If credentials are saved for the user profile
     login_by_credentials(dbservice,
                          dbdriver,
                          db,
                          dbserver,
                          dbport,
                          dbprotocol)
+  } else {
+    # If credentials are missing from the user profile
+    login_by_input(dbservice,
+                   dbdriver,
+                   db,
+                   dbserver,
+                   dbport,
+                   dbprotocol)
   }
 
 }
@@ -129,19 +209,27 @@ login_PJS <- function() {
   # Set service to PJS
   dbservice <- "PJS"
 
-  # Check if credentials for PJS is stored in the user profile
-  # 1. keyring package is missing
-  # Use of require is avoided as loading packages should be avoided in package functions
-  # This implies that there is no check if keyring is correctly installed
-  if (!is.element("keyring", utils::installed.packages()[, 1])) {
-    login_by_input(dbservice)
+  # # Check if credentials for PJS is stored in the user profile
+  # # 1. keyring package is missing
+  # # Use of require is avoided as loading packages should be avoided in package functions
+  # # This implies that there is no check if keyring is correctly installed
+  # if (!is.element("keyring", utils::installed.packages()[, 1])) {
+  #   login_by_input(dbservice)
+  # } else {
+  #   if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
+  #     # 2. Credentials for PJS are missing from the user profile
+  #     login_by_input(dbservice)
+  #   } else {
+  #     login_by_credentials(dbservice)
+  #   }
+  # }
+  # Use check for saved credentials to chose between login_by_input and login_by_credentials
+  if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
+    # If credentials are saved for the user profile
+    login_by_credentials(dbservice)
   } else {
-    if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
-      # 2. Credentials for PJS are missing from the user profile
-      login_by_input(dbservice)
-    } else {
-      login_by_credentials(dbservice)
-    }
+    # If credentials are missing from the user profile
+    login_by_input(dbservice)
   }
 }
 
@@ -154,19 +242,26 @@ login_EOS <- function() {
   # Set service to EOS
   dbservice <- "EOS"
 
-  # Check if credentials for EOS is stored in the user profile
-  # 1. keyring package is missing
-  # Use of require is avoided as loading packages should be avoided in package functions
-  # This implies that there is no check if keyring is correctly installed
-  if (!is.element("keyring", utils::installed.packages()[, 1])) {
-    login_by_input(dbservice)
+  # # Check if credentials for EOS is stored in the user profile
+  # # 1. keyring package is missing
+  # # Use of require is avoided as loading packages should be avoided in package functions
+  # # This implies that there is no check if keyring is correctly installed
+  # if (!is.element("keyring", utils::installed.packages()[, 1])) {
+  #   login_by_input(dbservice)
+  # } else {
+  #   if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
+  #     # 2. Credentials for PJS are missing from the user profile
+  #     login_by_input(dbservice)
+  #   } else {
+  #     login_by_credentials(dbservice)
+  #   }
+  # }
+  # Use check for saved credentials to chose between login_by_input and login_by_credentials
+  if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
+    # If credentials are saved for the user profile
+    login_by_credentials(dbservice)
   } else {
-    if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
-      # 2. Credentials for PJS are missing from the user profile
-      login_by_input(dbservice)
-    } else {
-      login_by_credentials(dbservice)
-    }
+    # If credentials are missing from the user profile
+    login_by_input(dbservice)
   }
 }
-

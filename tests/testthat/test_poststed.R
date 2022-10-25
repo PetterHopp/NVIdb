@@ -1,18 +1,27 @@
 library(NVIdb)
 library(testthat)
-context("poststed")
 
 # Assigns temporary dir to td
 td <- tempdir()
+
+if (!dir.exists(file.path(td, "test"))) {
+  dir.create(file.path(td, "test"))
+}
+filenames <- "Poststed_UTF8.csv"
+if (file.exists(file.path(td, "test", filenames[1]))) {
+  file.remove(file.path(td, "test", filenames[1]))
+}
 
 test_that("Copy poststed", {
   # skip if no connection to 'FAG' have been established
   skip_if_not(dir.exists(set_dir_NVI("FAG")))
 
-  # copy_kommune_fylke
+  # copy file
   copy_poststed(to_path = td)
+  expect_true(file.exists(file.path(td, filenames[1])))
 
-  expect_true(file.exists(file.path(td, "Poststed_UTF8.csv")))
+  copy_poststed(from_path = td, to_path = file.path(td, "test"))
+  expect_true(file.exists(file.path(td, "test", filenames[1])))
 
 })
 
@@ -98,40 +107,65 @@ test_that("Correct result when using overwrite and keep", {
 })
 
 test_that("errors for add_poststed", {
-  
+
   # skip if no connection to 'FAG' have been established
   skip_if_not(dir.exists(set_dir_NVI("FAG")))
-  
+
+  linewidth <- options("width")
+  options(width = 80)
+
   # Load translation table for poststed
   poststed <- read_poststed()
-  
-  expect_error(add_poststed(data = "no_data", translation_table = "poststed") ,
+
+  expect_error(add_poststed(data = "no_data", translation_table = "poststed"),
                regexp = "Variable 'data': Must be of type 'data.frame', not 'character'.")
-  
-  
-  expect_error(add_poststed(data = "no_data", translation_table = "poststed", position = "before") ,
-               regexp = "Variable 'position': Must be element")
-  
-  expect_error(add_poststed(data = "no_data", translation_table = "poststed", overwrite = 1) ,
+
+
+  expect_error(add_poststed(data = "no_data", translation_table = "poststed", position = "before"),
+               regexp = "Variable 'position': Must be a subset of")
+
+  expect_error(add_poststed(data = "no_data", translation_table = "poststed", overwrite = 1),
                regexp = "Variable 'overwrite': Must be of type 'logical', not 'double'.")
-  
+
+  options(width = unlist(linewidth))
 })
 
 test_that("errors for copy_poststed", {
-  
+
+  linewidth <- options("width")
+  options(width = 80)
+
   # # skip if no connection to 'FAG' have been established
   # skip_if_not(dir.exists(set_dir_NVI("FAG")))
-  # 
+  #
   # # Load translation table for poststed
   # poststed <- read_poststed()
-  # 
-  expect_error(copy_poststed(filename = NULL, from_path = tempdir(), to_path = "./") ,
-               regexp = "Variable 'filename': Must be of type 'character', not 'NULL'.")
-  
-  expect_error(copy_poststed(filename = "filename.csv", from_path = tempdir(), to_path = "./") ,
+  #
+  expect_error(copy_poststed(filename = NULL, from_path = tempdir(), to_path = "./"),
+               regexp = "(filename): Must be of type 'character', *\n * not 'NULL'",
+               fixed = TRUE)
+
+  expect_error(copy_poststed(filename = "filename.csv", from_path = tempdir(), to_path = "./"),
                regexp = "File does not exist:")
-  
-  expect_error(copy_poststed(filename = "filename.csv", from_path = tempdir(), to_path = "filepath_dont_exist") ,
-               regexp = "Variable 'to_path': Directory 'filepath_dont_exist' does not exists.")
-  
+
+  expect_error(copy_poststed(filename = "filename.csv", from_path = tempdir(), to_path = "filepath_does_not_exist"),
+               regexp = "Directory 'filepath_does_not_exist' does not\n * exist.",
+               fixed = TRUE)
+
+  options(width = unlist(linewidth))
+})
+
+test_that("errors for read_poststed", {
+
+  linewidth <- options("width")
+  options(width = 80)
+
+  expect_error(read_poststed(filename = NULL, from_path = tempdir()),
+               regexp = "(filename): Must be of type 'character', *\n * not 'NULL'",
+               fixed = TRUE)
+
+  expect_error(read_poststed(filename = "filename.csv", from_path = tempdir()),
+               regexp = "File does not exist:")
+
+  options(width = unlist(linewidth))
 })

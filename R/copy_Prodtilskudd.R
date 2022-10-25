@@ -9,7 +9,7 @@ copy_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-  
+
   # Perform checks
   # from_path
   checkmate::assert_character(from_path, len = 1, min.chars = 1, add = checks)
@@ -33,7 +33,7 @@ copy_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
                     # checkmate::check_character(Pkode_year, min.chars = 4, min.len = 1, any.missing = FALSE),
                     checkmate::check_choice(Pkode_year, choices = c("last")),
                     add = checks)
-  
+
   # Report check-results
   checkmate::reportAssertions(checks)
 

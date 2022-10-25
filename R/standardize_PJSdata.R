@@ -1,22 +1,23 @@
 #' @title Standardizing PJS-data
-#' @description Standardizing PJS-data. This standardizing should always be performed. 
-#'     Other functions used for further preparation of PJSdata, like \code{chose_PJS_levels},
-#'      and \code{exclude_form_PJSdata} will not work as intended unless the column 
-#'     names are standardized.
+#' @description Standardizing PJS-data. This standardizing should always be performed.
+#'     Other functions used for further preparation of PJSdata, like
+#'     \code{\link{choose_PJS_levels}}, and \code{\link{exclude_from_PJSdata}}
+#'     will not work as intended unless the column names are standardized.
 #'
 #' @details The function performs the following standardizing of data extracted from PJS:
 #' \itemize{
-#'   \item The unnecessary columns konkl_provenr and vet_distriktnr are removed
-#'   \item The column names are standardized using \code{standardize_columns}
-#'   \item Numeric variables are transformed to numbers
-#'   \item Date variables are transformed to date format
-#'   \item Character variables are trimmed for leading and trailing spaces
-#'   \item The variables saksnr and, if possible, fagnr are generated
-#'   \item Test data, i.e. saker with ansvarlig_seksjon in c("14", "99") are deleted
+#'   \item The unnecessary columns konkl_provenr and vet_distriktnr are removed.
+#'   \item The column names are standardized using \code{\link{standardize_columns}}.
+#'   \item Numeric variables are transformed to numbers.
+#'   \item Date variables are transformed to date format.
+#'   \item Character variables are trimmed for leading and trailing spaces.
+#'   \item The variables saksnr and, if possible, fagnr are generated.
+#'   \item Test data, i.e. saker with ansvarlig_seksjon in c("14", "99") are deleted.
 #'   }
 #'
 #' @param PJSdata Data frame with data extracted from PJS.
-#' @param dbsource If specified, this will be used for fetching standard column names by \code{standardize_columns}.
+#' @param dbsource If specified, this will be used for fetching standard column
+#'     names by \code{\link{standardize_columns}}.
 #'
 #' @return data frame with standardized PJS-data.
 #'
@@ -56,20 +57,21 @@ standardize_PJSdata <- function(PJSdata, dbsource = "v2_sak_m_res") {
   # Change to numeric for ID-numbers and counts
   # Done before trimming character variables to reduce variables that needs to be trimmed
   cols_2_modify <- intersect(colnames(PJSdata), c("aar", "innsendelsenr", "provenr", "delprovenr", "undnr",
-                                                  "resnr", "sens_undnr", "sensresnr", "konklnr",
+                                                  "resnr", "subundnr", "subresnr", "konklnr",
                                                   "ant_prover", "ant_i_samleprove", "ant_delprover", "ant_i_samledelprove"))
-  PJSdata[,cols_2_modify] <- lapply(PJSdata[,cols_2_modify], as.numeric)
+  PJSdata[, cols_2_modify] <- lapply(PJSdata[, cols_2_modify], as.numeric)
 
   # Change to date for date-variables
   # Done before trimming character variables to reduce variables that needs to be trimmed
   cols_2_modify <- intersect(colnames(PJSdata), c("mottatt", "uttatt", "avsluttet", "sak_forst_avsluttet",
                                                   "uttatt_parprove", "mottatt_parprove",
-                                                  "und_godkjent", "und_avsluttet"))
-  PJSdata[,cols_2_modify] <- lapply(PJSdata[,cols_2_modify], as.Date, format = "%d.%m.%y")
+                                                  "und_godkjent", "und_avsluttet",
+                                                  "subund_godkjent", "subund_avsluttet", "subund_startet"))
+  PJSdata[, cols_2_modify] <- lapply(PJSdata[, cols_2_modify], as.Date, format = "%d.%m.%y")
 
   # Trim character variables
   cols_2_modify <- names(PJSdata)[vapply(PJSdata, is.character, logical(1))]
-  PJSdata[,cols_2_modify] <- lapply(PJSdata[,cols_2_modify], trimws)
+  PJSdata[, cols_2_modify] <- lapply(PJSdata[, cols_2_modify], trimws)
 
   # Generate saksnr and fagnr
   PJSdata$saksnr <- paste(PJSdata$aar, PJSdata$ansvarlig_seksjon, PJSdata$innsendelsenr, sep = "-")
@@ -80,5 +82,5 @@ standardize_PJSdata <- function(PJSdata, dbsource = "v2_sak_m_res") {
   # Delete test data, i.e. saker with ansvarlig_seksjon in c("14", "99")
   PJSdata <- subset(PJSdata, !PJSdata$ansvarlig_seksjon %in% c("14", "99"))
 
+return(PJSdata)
 }
-

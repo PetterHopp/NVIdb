@@ -38,13 +38,13 @@ test_that("Standardize colnames from PJS", {
 test_that("Standardize colnames from EOS scrapie", {
   # Generate data frame with selected column names from V1_SAK_M_RES_EIER
   # data is fom saksnr 2018-01-1557
-  df <- as.data.frame(cbind("id" = 1 , "hensiktkode" = "0200124002" , "hensikt" = "Scrapie – normalslakt" ,
-                            "mottatt_dato" = "2019-02-27 00:00:00" , "uttaks_dato_inns" = "2019-02-26 00:00:00" ,
-                            "fodselsdato" = NA , "skrottnr" = "210861" ,
-                            "aar" = "2019" , "ansvarlig_seksjon" = "04" , "innsendelsesnummer" = "6832" , "saksnr" = "2019-04-6832/SC 1437" ,
-                            "eier_type" = "PROD" , "eier_navn" = "EO" , "eier_nummer" = "###########" , "annen_aktør_type" = "AUTO", "annen_aktør_navn" = "Slakthuset Eidsmo Dullum AS avd Oppdal" ,
-                            "id_nr" = "60203" , "art" = "Sau" , "kjennelse" = "Ikke påvist" , "sist_oppdatert" = "2020-10-06 01:30:03.427" , "annen_aktør_nr" = "123" ,
-                            "rekvirent_type" = "MTA" , "rekvirent_nr" = "M22110" , "rekvirent" = "Glåmdal og Østerdal" , "avvik_i_registrering" = "0" , "antall_und_prover" = "1"))
+  df <- as.data.frame(cbind("id" = 1, "hensiktkode" = "0200124002", "hensikt" = "Scrapie – normalslakt",
+                            "mottatt_dato" = "2019-02-27 00:00:00", "uttaks_dato_inns" = "2019-02-26 00:00:00",
+                            "fodselsdato" = NA, "skrottnr" = "210861",
+                            "aar" = "2019", "ansvarlig_seksjon" = "04", "innsendelsesnummer" = "6832", "saksnr" = "2019-04-6832/SC 1437",
+                            "eier_type" = "PROD", "eier_navn" = "EO", "eier_nummer" = "###########", "annen_aktør_type" = "AUTO", "annen_aktør_navn" = "Slakthuset Eidsmo Dullum AS avd Oppdal",
+                            "id_nr" = "60203", "art" = "Sau", "kjennelse" = "Ikke påvist", "sist_oppdatert" = "2020-10-06 01:30:03.427", "annen_aktør_nr" = "123",
+                            "rekvirent_type" = "MTA", "rekvirent_nr" = "M22110", "rekvirent" = "Glåmdal og Østerdal", "avvik_i_registrering" = "0", "antall_und_prover" = "1"))
 
 
   # Make a vector with correct column names after translation
@@ -115,12 +115,12 @@ PJStest <- readRDS(file.path(".", "PJS_testdata.rds"))
 # PJStest <- readRDS("./tests/testthat/PJS_testdata.rds")
 
 #   # Make a vector with correct column names after translation
-correct_result <- c( 5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.71, 10.71,
+correct_result <- c(5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.71, 10.71,
                     10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
-                    10.71, 10.71, 10.71, 20.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                    10.71, 10.71, 10.71, 20.00, 20.00, 10.71, 10.71, 10.71, 10.71, 10.71,
                     10.71, 11.00, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                     10.71, 10.71, 10.71, 11.00, 10.71,  8.00, 10.71, 10.71, 10.71, 10.71,
-                    10.71, 10.71, 10.71, 10.71, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71,
+                    30.00, 10.71, 10.71, 10.71, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71,
                     10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                     10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                     10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
@@ -129,44 +129,44 @@ correct_result <- c( 5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.7
   expect_equal(standardize_columns(data = PJStest, property = "colwidths_Excel"),
                    correct_result)
 
-  
+
   # Standardisere kolonnenavn
   PJStest <- standardize_columns(data = PJStest, property = "colnames")
-  
+
   #   # Make a vector with correct column names after translation
-  correct_result <- c( 5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.00, 10.00, 10.00,
-                      10.00, 10.71, 10.71,  5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
-                      10.71, 10.71, 10.71, 20.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+  correct_result <- c(5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.00, 10.00, 10.00,
+                      10.00, 10.71, 10.71, 5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 20.00, 20.00, 10.71, 10.71, 10.71, 10.71, 10.71,
                        5.00, 11.00, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
-                      10.71, 10.00, 10.00, 11.00, 10.71,  8.00, 10.71, 10.71, 10.71, 10.71,
-                      10.71, 10.71, 10.71, 10.71, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.00, 10.00, 11.00, 10.71, 8.00, 10.71, 10.71, 10.71, 10.71,
+                      30.00, 10.71, 10.71, 10.71, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                        8.00, 10.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.71, 10.71, 30.00, 10.71)
-  
+
   expect_equal(standardize_columns(data = PJStest, property = "colwidths_Excel"),
                correct_result)
-  
+
   # Transforms to tibble before checking
   PJStest <- tibble::as_tibble(PJStest)
-  
+
   #   # Make a vector with correct column names after translation
-  correct_result <- c( 5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.00, 10.00, 10.00,
-                      10.00, 10.71, 10.71,  5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
-                      10.71, 10.71, 10.71, 20.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+  correct_result <- c(5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.00, 10.00, 10.00,
+                      10.00, 10.71, 10.71, 5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 20.00, 20.00, 10.71, 10.71, 10.71, 10.71, 10.71,
                        5.00, 11.00, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
-                      10.71, 10.00, 10.00, 11.00, 10.71,  8.00, 10.71, 10.71, 10.71, 10.71,
-                      10.71, 10.71, 10.71, 10.71, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.00, 10.00, 11.00, 10.71, 8.00, 10.71, 10.71, 10.71, 10.71,
+                      30.00, 10.71, 10.71, 10.71, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                        8.00, 10.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.71, 10.71, 30.00, 10.71)
-  
+
   expect_equal(standardize_columns(data = PJStest, property = "colwidths_Excel"),
                correct_result)
-  
-  
+
+
 })
 
 
@@ -182,7 +182,7 @@ test_that("Standardize English collabels", {
 
   # Make a vector with correct column names after translation
   correct_result <- c("Søknadsår", "Gjeldende produsentnr", "Producer no.", "Producer no.", "Organisation number",
-                      "Municipality no.", "Municipality" )
+                      "Municipality no.", "Municipality")
 
   # Compare Add fylke, current fylkenr and current fylke with correct result
   expect_identical(standardize_columns(data = df,
@@ -234,18 +234,18 @@ test_that("standardize_columns argument checking", {
   # PJStest <- readRDS("./tests/testthat/PJS_testdata.rds")
 
   expect_error(standardize_columns(data = PJStestX, property = "colNames", language = "no", exclude = FALSE),
-               regexp = "object 'PJStestX' not found" )
+               regexp = "object 'PJStestX' not found")
 
   expect_error(standardize_columns(data = PJStest, property = "columnNames", language = "no", exclude = FALSE),
-               regexp = "property" )
+               regexp = "property")
 
   expect_error(standardize_columns(data = PJStest, property = "colClasses", language = "no", exclude = FALSE),
-               regexp = "No file provided." )
+               regexp = "No file provided.")
 
   expect_error(standardize_columns(data = PJStest, property = "colLabels", language = "sa", exclude = FALSE),
-               regexp = "Variable 'language': Must be a subset of " )
+               regexp = "Variable 'language': Must be a subset of ")
 
   expect_error(standardize_columns(data = PJStest, property = "colNames", language = "no", exclude = "FALSE"),
-               regexp = "Variable 'exclude': Must be of type 'logical', not 'character'." )
+               regexp = "Variable 'exclude': Must be of type 'logical', not 'character'.")
 
 })

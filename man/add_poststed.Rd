@@ -36,10 +36,14 @@ read_poststed(
 
 \item{new_column}{The name of the new column that should contain the poststed and/or komnr}
 
-\item{position}{position for the new columns, can be one of c("first", "left", "right", "last", "keep")}
+\item{position}{[\code{character(1)}]. The position for the new columns, can 
+be one of c("first", "left", "right", "last", "keep"). The input can be 
+abbreviated, but must be unique, i.e. c("f", "le". "r", "la", "k").}
 
-\item{overwrite}{When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
-If the new columns already exists and overwrite = FALSE, then an error is issued.}
+\item{overwrite}{[\code{logical(1)}]. When the new column(s) already exist, 
+the content in the existing column(s) is replaced by new data if 
+\code{overwrite = TRUE}. If the new column(s) already exist and 
+\code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
 
 \item{filename}{Filename of the translation table for postnr to poststed and komnr}
 
@@ -101,7 +105,7 @@ poststed <- read_poststed(from_path = "./Data/")
 # Add new column with poststed and komnr
 # The variable postnummer should be translated into poststed and komnr. For poststed
 # the standard name is kept. For komnr the new variable is named postkomnr.
-# Remember to load "poststed" by "read_poststed()" before running "add_poststed", 
+# Remember to load "poststed" by "read_poststed()" before running "add_poststed",
 # see above.
 newdata <- add_poststed(olddata,
                         translation_table = poststed,

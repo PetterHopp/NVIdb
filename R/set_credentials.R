@@ -49,7 +49,7 @@ set_credentials <- function(dbservice) {
 
   # ARGUMENT CHECKING dbservice ----
   checkmate::assert_character(x = dbservice, min.chars = 1, len = 1, any.missing = FALSE)
-  
+
   # Removes previously set credentials for the database service
   remove_credentials(dbservice)
 
@@ -58,7 +58,7 @@ set_credentials <- function(dbservice) {
 
   # ARGUMENT CHECKING username ----
   checkmate::assert_character(x = username, min.chars = 1, len = 1, any.missing = FALSE)
-  
+
   # Open window for input of password to the given dbservice and saves username and password in user's profile
   keyring::key_set(service = dbservice, username = username)
 }
@@ -84,4 +84,3 @@ set_credentials_EOS <- function() {
   # Set database service to EOS
   set_credentials(dbservice = "EOS")
 }
-

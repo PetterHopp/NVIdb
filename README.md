@@ -1,5 +1,4 @@
-NVIdb: Tools to facilitate the use of NVI’s databases
-=====================================================
+# NVIdb: Tools to facilitate the use of NVI’s databases <img src="man/figures/NVIdb_logo.png" align="right" height="138" />
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -9,8 +8,7 @@ NVIdb: Tools to facilitate the use of NVI’s databases
 -   [Copyright and license](#copyright-and-license)
 -   [Contributing](#contributing)
 
-Overview
---------
+## Overview
 
 `NVIdb`provides tools to facilitate downloading and processing of data
 from the Norwegian Veterinary Institute’s databases, in particular PJS
@@ -23,21 +21,22 @@ installed manually from GitHub.
 
 `NVIdb` is part of `NVIverse`, a collection of R-packages with tools to
 facilitate data management and data reporting at the Norwegian
-Veterinary Institute (NVI). The NVIverse consists of the following
-packages: NVIconfig, NVIdb, NVIpretty, NVIbatch, OKplan, OKcheck,
-NVIcheckmate, NVIpackager. See the vignette “Contribute to NVIdb” for
-more information.
+Veterinary Institute (NVI). The `NVIverse` consists of the following
+packages: `NVIconfig`, `NVIdb`, `NVIspatial`, `NVIpretty`, `NVIbatch`,
+`OKplan`, `OKcheck`, `NVIcheckmate`, `NVIpackager`, `NVIrpackages`. See
+[Contribute to
+NVIdb](https://github.com/NorwegianVeterinaryInstitute/NVIdb/blob/main/CONTRIBUTING.md)
+for more information.
 
-Installation
-------------
+## Installation
 
 `NVIdb` is available at
 [GitHub](https://github.com/NorwegianVeterinaryInstitute). To install
 `NVIdb` you will need:
 
--   R version &gt; 4.0.0
+-   R version > 4.0.0
 -   R package `remotes`
--   Rtools 4.0
+-   Rtools 4.0 or Rtools 4.2 depending on R version
 
 First install and attach the `remotes` package.
 
@@ -46,7 +45,7 @@ First install and attach the `remotes` package.
 
 To install (or update) the `NVIdb` package, run the following code:
 
-    remotes::install_github("NorwegianVeterinaryInstitute/NVIdb")
+    remotes::install_github("NorwegianVeterinaryInstitute/NVIdb",
         upgrade = FALSE,
         build = TRUE,
         build_vignettes = TRUE)
@@ -58,16 +57,15 @@ update `NVIconfig` every time `NVIdb` is updated.
 
 To install (or update) the `NVIconfig` package, run the following code:
 
-    remotes::install_github("NorwegianVeterinaryInstitute/NVIconfig")
-        auth_token = "PAT"
+    remotes::install_github("NorwegianVeterinaryInstitute/NVIconfig",
+        auth_token = "PAT",
         upgrade = FALSE,
         build = TRUE,
         build_vignettes = TRUE)
 
 where PAT is your personal access token.
 
-Usage
------
+## Usage
 
 The `NVIdb` package needs to be attached.
 
@@ -116,24 +114,23 @@ typing
 Please check the NEWS for information on new features, bug fixes and
 other changes.
 
-Copyright and license
----------------------
+## Copyright and license
 
-Copyright (c) 2019 - 2021 Norwegian Veterinary Institute.  
+Copyright (c) 2019 - 2022 Norwegian Veterinary Institute.  
 Licensed under the BSD\_3\_clause License. See
 [License](https://github.com/NorwegianVeterinaryInstitute/NVIdb/blob/main/LICENSE)
 for details.
 
-Contributing
-------------
+## Contributing
 
 Contributions to develop `NVIdb` is highly appreciated. There are
 several ways you can contribute to this project: ask a question, propose
 an idea, report a bug, improve the documentation, or contribute code.
-The vignette “Contribute to NVIdb” gives more information.
+See [Contribute to
+NVIdb](https://github.com/NorwegianVeterinaryInstitute/NVIdb/blob/main/CONTRIBUTING.md)
+for more information.
 
-<!-- Code of conduct -->
-------------------------
+## <!-- Code of conduct -->
 
 Please note that the NVIdb project is released with a [Contributor Code
 of

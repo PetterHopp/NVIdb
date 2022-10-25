@@ -32,9 +32,8 @@
 #' @param translation_table Data frame with the translation table for postnr to poststed and komnr
 #' @param code_column The name of the column with the postnr
 #' @param new_column The name of the new column that should contain the poststed and/or komnr
-#' @param position position for the new columns, can be one of c("first", "left", "right", "last", "keep")
-#' @param overwrite When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
-#'     If the new columns already exists and overwrite = FALSE, then an error is issued.
+#' @template position
+#' @template overwrite
 #' @param filename Filename of the translation table for postnr to poststed and komnr
 #' @param from_path Path for the source translation table
 #' @param to_path Path for the target translation table when copying the translation table
@@ -64,7 +63,7 @@
 #' # Add new column with poststed and komnr
 #' # The variable postnummer should be translated into poststed and komnr. For poststed
 #' # the standard name is kept. For komnr the new variable is named postkomnr.
-#' # Remember to load "poststed" by "read_poststed()" before running "add_poststed", 
+#' # Remember to load "poststed" by "read_poststed()" before running "add_poststed",
 #' # see above.
 #' newdata <- add_poststed(olddata,
 #'                         translation_table = poststed,
@@ -78,25 +77,36 @@ add_poststed <- function(data,
                          new_column = c("poststed", "komnr"),
                          position = "right",
                          overwrite = FALSE) {
-  
+
   # Ensure that code_column and new_column are named vectors by using the internal function set_name_vector()
   # Thereby, the following code can assume these to be named vectors
   code_column <- set_name_vector(code_column)
   new_column <- set_name_vector(new_column)
-  
+
   # ARGUMENT CHECKING ----
-  assert_add_function(data = data,
-                      translation_table = translation_table,
-                      code_column = code_column,
-                      new_column = new_column,
-                      position = position,
-                      overwrite = overwrite)
-  
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+  # Perform checks
+  checks <- assert_add_functions(data = data,
+                                 translation_table = translation_table,
+                                 code_column = code_column,
+                                 new_column = new_column,
+                                 overwrite = overwrite,
+                                 add = checks)
+  # position
+  position <- NVIcheckmate::match_arg(x = position,
+                                      choices = c("first", "left", "right", "last", "keep"),
+                                      several.ok = TRUE,
+                                      ignore.case = FALSE,
+                                      add = checks)
+  # Report check-results
+  checkmate::reportAssertions(checks)
+
 
   # Makes the translation table with code_column and new_column. unique() is necessary to avoid duplicate
   # rows when code_column is not "komnr"
   code_2_new <- unique(translation_table[, c(unname(code_column), unname(new_column))])
-  
+
   # Set up of parameters for the internal function add_new_column(). names() is used to select the column names
   # in the input data and unname() is used to select the column names in the translation table. n_columns_at_once
   # is the number of new columns that should be added.
@@ -110,7 +120,7 @@ add_poststed <- function(data,
                          overwrite = overwrite,
                          n_columns_at_once = length(new_column)
   )
-  
-  
+
+
   return(data)
 }

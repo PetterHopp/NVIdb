@@ -30,14 +30,16 @@
 copy_file_if_updated <- function(filename, from_path, to_path) {
 
   # Check if from_path and to_path ends in "/". If not, "/" is added.
-  if (!endsWith(from_path, "/")) { from_path <- paste0(from_path, "/") }
-  if (!endsWith(to_path, "/")) { to_path <- paste0(to_path, "/") }
+  from_path <- sub("/+$|\\\\+$", "", from_path)
+  to_path <- sub("/+$|\\\\+$", "", to_path)
+  # if (!endsWith(from_path, "/")) { from_path <- paste0(from_path, "/") }
+  # if (!endsWith(to_path, "/")) { to_path <- paste0(to_path, "/") }
 
   # Get creation date of source file
   if (dir.exists(from_path)) {
     files <- list.files(from_path, pattern = filename, ignore.case = TRUE)
     if (grep(filename, files)) {
-      source_file_created <- file.mtime(paste0(from_path, filename))
+      source_file_created <- file.mtime(file.path(from_path, filename))
     }
   }
 
@@ -49,14 +51,14 @@ copy_file_if_updated <- function(filename, from_path, to_path) {
       target_file_created <- 0
     } else {
       if (grep(filename, files)) {
-        target_file_created <- file.mtime(paste0(to_path, filename))
+        target_file_created <- file.mtime(file.path(to_path, filename))
       }
     }
   }
 
   # Copies the source file if source file is newer
   if (source_file_created > target_file_created) {
-    file.copy(from = paste0(from_path, filename),
+    file.copy(from = file.path(from_path, filename),
               to = to_path,
               overwrite = TRUE,
               copy.date = TRUE)
@@ -101,7 +103,7 @@ add_new_column <- function(data,
                            ID_column_translation_table,
                            to_column_translation_table,
                            position = "right",
-                           overwrite= FALSE,
+                           overwrite = FALSE,
                            impute_old_when_missing = FALSE,
                            n_columns_at_once = 1) {
 
@@ -262,8 +264,10 @@ add_new_column <- function(data,
 
 read_csv_file <- function(filename, from_path, options = NULL, ...) {
 
-  # Check if from_path ends in "/". If not, "/" is added.
-  if (!endsWith(from_path, "/")) { from_path <- paste0(from_path, "/") }
+  # Removes trailing "/" and "\\".
+  from_path <- sub("/+$|\\\\+$", "", from_path)
+  # # Check if from_path ends in "/". If not, "/" is added.
+  # if (!endsWith(from_path, "/")) { from_path <- paste0(from_path, "/") }
 
 
   if (is.null(options)) {
@@ -275,8 +279,8 @@ read_csv_file <- function(filename, from_path, options = NULL, ...) {
   }
   # Get creation date of source file
   if (dir.exists(from_path)) {
-    if (file.exists(paste0(from_path, filename))) {
-      df <- data.table::fread(file = paste0(from_path, filename),
+    if (file.exists(file.path(from_path, filename))) {
+      df <- data.table::fread(file = file.path(from_path, filename),
                              colClasses = options$colClasses,
                              encoding = options$fileEncoding,
                              stringsAsFactors = options$stringsAsFactors,
@@ -309,7 +313,7 @@ read_csv_file <- function(filename, from_path, options = NULL, ...) {
 #' @examples
 #' \dontrun{
 #' new_columns <- c("name11" = "column1", "name2" = "column2", "column3")
-#'   new_columns <- set_name_vector(new_columns)
+#' new_columns <- set_name_vector(new_columns)
 #' }
 #' @keywords internal
 
@@ -354,91 +358,13 @@ set_name_vector <- function(colname_vector) {
 #' @examples
 #' \dontrun{
 #' #' Find second word in a string
-#'   find_n_th_word("This is a text", 2)
+#' find_n_th_word("This is a text", 2)
 #'
-#'   #' Find second word in all rows in a column with a string
-#'   data <- rbind("This is a text", "The text is short", "Short", "Or a little bit longer")
-#'   colnames(data) <- "text"
-#'   data$word2 <- sapply(data$text, FUN = find_n_th_word, position = 2)
+#' #' Find second word in all rows in a column with a string
+#' data <- rbind("This is a text", "The text is short", "Short", "Or a little bit longer")
+#' colnames(data) <- "text"
+#' data$word2 <- sapply(data$text, FUN = find_n_th_word, position = 2)
 #' }
 #' @noRd
 
 find_n_th_word <- function(x, position) {strsplit(x, " ")[[1]][position]}
-
-
-#' @title List selected files from Søknad om register for produksjonstilskudd
-#' @description List selected files with extracts from Søknad om register for produksjonstilskudd.
-#' @details Reads the filenames of files with extracts from Søknad om register for produksjonstilskudd into a data frame.
-#'     The function gives options to select year and month and path for the files. The function is called from read_Prodtilskudd
-#'     and copy_Prodtilskudd.
-#'
-#' @param from_path Path for the source translation table for PJS-codes
-#' @param Pkode_year The year(s) from which the register should be read. Options is "last", or a vector with one or more years.
-#' @param Pkode_month the month for which the register should be read. The options are c("05", "10", "both", "last") for Pkode_year = 2017
-#'     and c("03", "10", "both", "last") for Pkode_year >= 2018.
-#'
-#' @return A data frame with filenames of the files with the selected extracts of Prodtilskudd.
-#'
-#' @author Petter Hopp Petter.Hopp@@vetinst.no
-#' @examples
-#' \dontrun{
-#' # Making the filelist for read_Prodtilskudd or copy_Prodtilskudd
-#' filelist <- select_prodtilskudd_files(from_path = from_path,
-#'                                       Pkode_year = Pkode_year,
-#'                                       Pkode_month = Pkode_month)
-#' }
-#' @keywords internal
-
-###   ----
-
-### select_prodtilskudd_files ----
-select_prodtilskudd_files <- function(from_path,
-                                      Pkode_year,
-                                      Pkode_month) {
-  # READ IN ALL FILES IN THE DIRECTORY AND MAKE A LIST OF THE LAST VERSION OF ALL UTREKK FRO PKODEREGISTERET
-  filelist <- as.data.frame(list.files(path = from_path, pattern = "csv", ignore.case = TRUE, include.dirs = FALSE),
-                            stringsAsFactors = FALSE)
-  colnames(filelist) <- "filename"
-  filelist$fileinfo <- sub("per ", "", filelist$filename)
-  filelist$fileinfo <- sub("fra ", "", filelist$fileinfo)
-  filelist$fileinfo <- sub(".csv", "", filelist$fileinfo)
-  filelist$pkodeaar <- substr(filelist$fileinfo, 6, 9)
-  filelist$pkodemonth <- substr(filelist$fileinfo, 10, 11)
-  filelist$content <- sapply(filelist$fileinfo, FUN = find_n_th_word, position = 2)
-  filelist <- subset(filelist,
-                     tolower(substr(filelist$fileinfo, 1, 5)) == "pkode" &
-                       filelist$pkodeaar > "1994" & filelist$pkodeaar < "2099" &
-                       filelist$content %in% c("Koordinater", "Uttrekk"))
-  filelist$contenttype <- sapply(filelist$fileinfo, FUN = find_n_th_word, position = 4)
-  filelist <- subset(filelist, filelist$contenttype == "UTF8")
-
-  filelist$uttrekk_dato <- as.Date(sapply(filelist$fileinfo, FUN = find_n_th_word, position = 3), format = "%Y%m%d")
-  max_uttrekk_dato <- stats::aggregate(filelist$uttrekk_dato, by = list(filelist$pkodeaar, filelist$pkodemonth), FUN = max)
-  filelist <- merge(filelist, max_uttrekk_dato, by.x = c("pkodeaar", "pkodemonth"), by.y = c("Group.1", "Group.2"))
-  filelist <- subset(filelist, filelist$uttrekk_dato == filelist$x)
-  filelist <- filelist[, c("filename", "pkodeaar", "pkodemonth", "uttrekk_dato")]
-  filelist <- filelist[order(filelist$pkodeaar, filelist$pkodemonth, filelist$uttrekk_dato, decreasing = TRUE), ]
-
-  if ("last" %in% Pkode_year) {
-    filelist <- filelist[c(1:2), ]
-    if (!"both" %in% Pkode_month) {
-      if ("last" %in% Pkode_month) {
-        filelist <- filelist[1, ]
-      } else {
-        filelist <- subset(filelist, filelist$pkodemonth %in% Pkode_month)
-      }
-    }
-  }
-  if (!"last" %in% Pkode_year) {
-    filelist <- subset(filelist, filelist$pkodeaar %in% Pkode_year)
-    if (!"both" %in% Pkode_month) {
-      if ("last" %in% Pkode_month) {
-        filelist <- filelist[1, ]
-      } else {
-        filelist <- subset(filelist, filelist$pkodemonth %in% Pkode_month)
-      }
-    }
-  }
-
-  return(filelist)
-}

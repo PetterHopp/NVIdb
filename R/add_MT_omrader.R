@@ -5,7 +5,7 @@
 #'     function can also be used to translate MT_avdelingnr into MT_avdeling, MT_regionnr and MT_region or to translate MT_regionnr into
 #'     MT_region. When the \code{code_column =} in the dataframe is not equal to one of c("komnr", "MT_avdelingnr", "MT_regionnr") the
 #'     \code{code_column =} can be input as a named vector. Likewise, if the new columns should be given other names than
-#'     c("MT_avdelingnr","MT_avdeling","MT_regionnr","MT_region"), the \code{new_column =} can be input as a named vector, see examples.
+#'     c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region"), the \code{new_column =} can be input as a named vector, see examples.
 #'
 #'     \code{add_MT_omrader} uses a premade translation table (komnr_2_MT_avdeling.csv). These data need to be loaded by \code{read_MT_omrader}
 #'     before running \code{add_MT_omrader}, see example. "komnr_2_MT_avdeling.csv" is made based on information in PJS adresseregister.
@@ -29,24 +29,27 @@
 #' @param translation_table Data frame with the table for translating from komnr to MT_areas
 #' @param code_column The column with the coded value. Valid values are one of c("komnr", "MT_avdelingnr", "MT_regionnr"). If the column in
 #'     data has another name, it can be input as a named vector, see examples.
-#' @param new_column The new columns that should be included into the dataframe. The new columns can be up to
-#'     c("MT_avdelingnr","MT_avdeling","MT_regionnr","MT_region") depending on \code{code_column}. If the new columns in the result dataframe
+#' @param new_column The new columns that should be included into the data frame. The new columns can be up to
+#'     c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region") depending on
+#'     \code{code_column}. If the new columns in the result data frame
 #'     should have other names, \code{new_column} can be input as a named vector, see examples.
-#' @param position position for the new columns, can be one of c("first", "left", "right", "last", "keep")
-#' @param overwrite When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
-#'     If the new columns already exists and overwrite = FALSE, then an error is issued.
+#' @template position
+#' @template overwrite
 #' @param filename a list with the filenames of the source files with the tables for generating the translation table.
 #' @param from_path Path for the source files for the translation table.
 #' @param to_path Path to where the source files for the translation table should be copied.
 #'
-#' @return \code{add_MT_omrader} A dataframe where the MT_avdelingnr has been added in the column to the
+#' @return \code{add_MT_omrader} A data frame where the MT_avdelingnr has been added in the column to the
 #'     right of the column with the komnr.
 #'
-#'     \code{read_MT_omrader} A dataframe with the table for translating from komnr to c("MT_avdelingnr","MT_avdeling","MT_regionnr","MT_region") as
-#'     read from the source csv file. If not changing standard input to the function, the standard files at NVI's internal network is read.
+#'     \code{read_MT_omrader} A data frame with the table for translating from komnr to
+#'     c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region") as read from the source
+#'     csv file. If not changing standard input to the function, the standard files at
+#'     NVI's internal network is read.
 #'
-#'     \code{copy_MT_omrader} Copies the csv-files "komnr_2_MT_avdeling.csv" and "MT_omrader.csv" to another directory. If the target
-#'     files already exists the source files are only copied if they are newer than the target files.
+#'     \code{copy_MT_omrader} Copies the csv-files "komnr_2_MT_avdeling.csv" and "MT_omrader.csv"
+#'     to another directory. If the target files already exists the source files are only
+#'     copied if they are newer than the target files.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @export
@@ -63,7 +66,7 @@
 #' komnr_2_MT_omrader <- read_MT_omrader(from_path = "./Data/")
 #'
 #' # Add new columns with MT_avdelingnr, MT_avdeling, MT_regionnr, and MT_region based on komnr
-#' # Remember to load "komnr_2_MT_omrader" by "read_MT_omrader()" before running "add_MT_omrader", 
+#' # Remember to load "komnr_2_MT_omrader" by "read_MT_omrader()" before running "add_MT_omrader",
 #' # see above.
 #' newdata <- add_MT_omrader(olddata,
 #'                        translation_table = list(komnr_2_MT_omrader),
@@ -72,7 +75,7 @@
 #'
 #' # Add new columns with MT_avdelingnr and MT_avdeling based on komnr. The colname of the column
 #' # with komnr is komnr and the new columns are renamed to MT_avdnr and MT_avd.
-#' # Remember to load "komnr_2_MT_omrader" by "read_MT_omrader()" before running "add_MT_omrader", 
+#' # Remember to load "komnr_2_MT_omrader" by "read_MT_omrader()" before running "add_MT_omrader",
 #' # see above.
 #' newdata <- add_MT_omrader(olddata,
 #'                        translation_table = list(komnr_2_MT_omrader),
@@ -80,7 +83,7 @@
 #'                        new_column = c("MT_avdnr" = "MT_avdelingnr", "MT_avd" = "MT_avdeling"))
 #'
 #' # Add new columns with MT_region based on MT_regionnr. MT_region is renamed to MT_regionnavn
-#' # Remember to load "komnr_2_MT_omrader" by "read_MT_omrader()" before running "add_MT_omrader", 
+#' # Remember to load "komnr_2_MT_omrader" by "read_MT_omrader()" before running "add_MT_omrader",
 #' # see above.
 #' newdata <- add_MT_omrader(olddata,
 #'                        translation_table = list(komnr_2_MT_omrader),
@@ -100,14 +103,32 @@ add_MT_omrader <- function(data,
   code_column <- set_name_vector(code_column)
   new_column <- set_name_vector(new_column)
 
+  # # ARGUMENT CHECKING ----
+  # assert_add_function(data = data,
+  #                     translation_table = translation_table,
+  #                     code_column = code_column,
+  #                     new_column = new_column,
+  #                     position = position,
+  #                     overwrite = overwrite)
   # ARGUMENT CHECKING ----
-  assert_add_function(data = data,
-                      translation_table = translation_table,
-                      code_column = code_column,
-                      new_column = new_column,
-                      position = position,
-                      overwrite = overwrite)
-  
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+  # Perform checks
+  checks <- assert_add_functions(data = data,
+                                 translation_table = translation_table,
+                                 code_column = code_column,
+                                 new_column = new_column,
+                                 overwrite = overwrite,
+                                 add = checks)
+  # position
+  position <- NVIcheckmate::match_arg(x = position,
+                                      choices = c("first", "left", "right", "last", "keep"),
+                                      several.ok = TRUE,
+                                      ignore.case = FALSE,
+                                      add = checks)
+  # Report check-results
+  checkmate::reportAssertions(checks)
+
   # PREPARE TRANSLATION TABLE ----
   # Makes the translation table with code_column and new_column. unique() is necessary to avoid duplicate
   # rows when code_column is not "komnr"

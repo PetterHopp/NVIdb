@@ -1,7 +1,7 @@
 Package: NVIdb
 Title: Tools to facilitate the use of NVI's databases
-Version: 0.7.1
-Date: 2022-08-24
+Version: 0.8.0
+Date: 2022-10-25
 Authors@R: 
   c(person(given = "Petter",
            family = "Hopp",
@@ -42,10 +42,11 @@ Imports:
     rlang,
     rmarkdown,
     RODBC,
+    R.rsp,
     shiny,
     snakecase,
     svDialogs,
-    NVIcheckmate (>= 0.3.0),
+    NVIcheckmate (>= 0.4.0),
     NVIrpackages
 Suggests:
     covr,
@@ -61,5 +62,8 @@ Remotes:
 LazyData: true
 Encoding: UTF-8
 Language: en-GB
+Roxygen: list(markdown = FALSE)
 RoxygenNote: 7.1.2
-VignetteBuilder: knitr
+VignetteBuilder: 
+    knitr,
+    R.rsp

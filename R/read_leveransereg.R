@@ -10,6 +10,7 @@
 #'
 #' @param from_path Path for Leveranseregisteret
 #' @param filename The name of the file with Leveranseregisteret
+#' @param \dots	Other arguments to be passed to \code{data.table::fread}.
 #'
 #' @return \code{read_LevReg} A data frame with Leveranseregisteret as in selected csv-file.
 #'
@@ -18,34 +19,32 @@
 #' @examples
 #' \dontrun{
 #' # Reading from standard directory at NVI's network
-#' Lev>>Reg2019 <- read_leveransereg(filename = "LevReg_201901_201912.csv")
+#' LevReg2019 <- read_leveransereg(filename = "LevReg_201901_201912.csv")
 #' }
 #'
-
 read_leveransereg <- function(filename,
-                              from_path = paste0(set_dir_NVI("LevReg"), "FormaterteData/")) {
+                              from_path = paste0(set_dir_NVI("LevReg"), "FormaterteData/"),
+                              ...) {
 
-  # Argument checking
+  # Removing ending "/" and "\\" from pathnames
+  from_path <- sub("/+$|\\\\+$", "", from_path)
+
+  # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
   # Perform checks
-  checkmate::assert_character(filename, len = 1, min.chars = 1, add = checks)
-  checkmate::assert_character(from_path, len = 1, min.chars = 1, add = checks)
-  if (endsWith(from_path, "/")) {
-    checkmate::assert_directory_exists(substr(from_path, 1, nchar(from_path) - 1), access = "r", add = checks)
-  } else {
-    checkmate::assert_directory_exists(from_path, access = "r", add = checks)
-  }
-  checkmate::assert_file_exists(paste0(from_path, filename), access = "r", add = checks)
+  checks <- assert_read_functions(filename = filename, from_path = from_path, add = checks)
   # Report check-results
   checkmate::reportAssertions(checks)
 
+  # READ DATA ----
   # reads header and identifies characters by using NVIdb::standardize_columns
-  colclasses <- standardize_columns(data = paste0(from_path, filename), property = "colclasses")
+  colclasses <- standardize_columns(data = file.path(from_path, filename), property = "colclasses")
 
   # Read leveranseregisteret
   levreg <- read_csv_file(filename = filename,
                           from_path = from_path,
                           options = list(colClasses = colclasses, fileEncoding = "UTF-8"),
-                          dec = ",")
+                          dec = ",",
+                          ...)
 }

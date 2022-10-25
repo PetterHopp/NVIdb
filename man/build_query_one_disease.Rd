@@ -56,8 +56,6 @@ build_query_one_disease(year = 2020,
                         analytt = c("01220104\%", "1502010235"),
                         hensikt = c("0100108018", "0100109003", "0100111003", "0800109"),
                         metode = c("070070", "070231", "010057", "060265"))
-
-
 }
 \author{
 Petter Hopp Petter.Hopp@vetinst.no

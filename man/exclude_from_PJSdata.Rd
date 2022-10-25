@@ -9,10 +9,11 @@ exclude_from_PJSdata(PJSdata, abroad = "exclude", quality = "exclude")
 \arguments{
 \item{PJSdata}{Data frame with data extracted from PJS.}
 
-\item{abroad}{If "exclude" are samples from abroad be excluded. Allowed values are c("exclude", "include").}
-
-\item{quality}{If "exclude" are samples registered as quality assurance and ring trials excluded. Allowed
+\item{abroad}{If equal "exclude", samples from abroad are excluded. Allowed
 values are c("exclude", "include").}
+
+\item{quality}{If equal "exclude", samples registered as quality assurance
+and ring trials are excluded. Allowed values are c("exclude", "include").}
 }
 \value{
 data frame without excluded PJS-data.
@@ -21,20 +22,24 @@ data frame without excluded PJS-data.
 Performs common subsetting of PJS-data by excluding rows
 }
 \details{
-Performs common cleaning of PJSdata by removing samples that usually should not be included when
-    analyzing PJSdata. The cleaning is dependent on having the following columns eier_lokalitettype, eierlokalitetnr
-    and hensiktkode.
+Performs common cleaning of PJSdata by removing samples that usually
+    should not be included when analyzing PJSdata. The cleaning is dependent
+    on having the following columns eier_lokalitettype, eierlokalitetnr and
+    hensiktkode.
 
-    \code{abroad = "exclude"} will exclude samples that have eier_lokalitet of type "land" and
-    eier_lokalitetnr being different from NO. Samples registered on other types than LAND are not excluded.
+    \code{abroad = "exclude"} will exclude samples that have eier_lokalitet
+    of type "land" and eier_lokalitetnr being different from NO. Samples
+    registered on other types than LAND are not excluded.
 
-    \code{quality = "exclude"} will exclude all samples registered s quality assurance and ring trials,
-    i.e. hensiktkode starting with "09".
+    \code{quality = "exclude"} will exclude all samples registered s quality
+    assurance and ring trials, i.e. hensiktkode starting with "09".
 }
 \examples{
 \dontrun{
 # cleaning sak_m_res
- sak_m_res <- exclude_from_PJSdata(PJSdata = sak_m_res, abroad = "exclude", quality = "exclude")
+ sak_m_res <- exclude_from_PJSdata(PJSdata = sak_m_res,
+                                   abroad = "exclude",
+                                   quality = "exclude")
 }
 
 }

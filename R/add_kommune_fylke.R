@@ -39,9 +39,8 @@
 #' @param translation_table Data frame with the translation table for old komnr to current komnr
 #' @param code_column The name of the column with the old komnr
 #' @param new_column The name of the new column that should contain the current komnr
-#' @param position position for the new columns, can be one of c("first", "left", "right", "last", "keep")
-#' @param overwrite When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
-#'     If the new columns already exists and overwrite = FALSE, then an error is issued.
+#' @template position
+#' @template overwrite
 #' @param filename Filename of the translation table for old komnr to current komnr
 #' @param from_path Path for the source translation table
 #' @param to_path Path for the target translation table when copying the translation table
@@ -86,45 +85,40 @@ add_kommune_fylke <- function(data,
                               new_column = c("gjeldende_komnr", "gjeldende_kommune", "gjeldende_fylkenr", "gjeldende_fylke"),
                               position = "right",
                               overwrite = FALSE) {
-  
+
   # Ensure that code_column and new_column are named vectors by using the internal function set_name_vector()
   # Thereby, the following code can assume these to be named vectors
   code_column <- set_name_vector(code_column)
   new_column <- set_name_vector(new_column)
-  
+
   # ARGUMENT CHECKING ----
-  assert_add_function(data = data,
-                      translation_table = translation_table,
-                      code_column = code_column,
-                      new_column = new_column,
-                      position = position,
-                      overwrite = overwrite)
-  
-  # # ERROR check
-  # # error:
-  # if (names(code_column) %in% names(new_column)) {
-  #   # issue error if names already exists
-  #   stop(paste0("You cannot give the new column the same name as the code_column '", names(code_column), "' in the data frame '", deparse(substitute(data)), "`."))
-  # }
-  # 
-  # # check_exist_colname(df_name = deparse(substitute(data)), df_columns = colnames(data), new_column = new_column, overwrite = overwrite)
-  # if (length(intersect(colnames(data), names(new_column))) > 0 & overwrite == FALSE) {
-  #   # issue error if names already exists
-  #   stop(paste(paste0("The column name(s): '", intersect(colnames(data), names(new_column)), "' already exist in '", deparse(substitute(data)), "`."),
-  #              paste0("Either give new column name(s) for the column(s) called '", intersect(colnames(data), names(new_column)), "' or"),
-  #              "Specify overwrite = TRUE to replace values in the existing column(s) with new content.", sep = "\n"))
-  # }
-  # 
-  
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+  # Perform checks
+  checks <- assert_add_functions(data = data,
+                                 translation_table = translation_table,
+                                 code_column = code_column,
+                                 new_column = new_column,
+                                 overwrite = overwrite,
+                                 add = checks)
+  # position
+  position <- NVIcheckmate::match_arg(x = position,
+                                      choices = c("first", "left", "right", "last", "keep"),
+                                      several.ok = TRUE,
+                                      ignore.case = FALSE,
+                                      add = checks)
+  # Report check-results
+  checkmate::reportAssertions(checks)
+
   # PREPARE TRANSLATION TABLE ----
   # Makes the translation table with code_column and new_column. unique() is necessary to avoid duplicate
   # rows when code_column is not "komnr"
   code_2_new <- unique(translation_table[, c(unname(code_column), unname(new_column))])
-  
+
   if (code_column == "fylkenr") {
     code_2_new <- merge(code_2_new, translation_table[, c("fylkenr", new_column, "komnr")], by = c("fylkenr", new_column))
     code_2_new <- stats::aggregate(stats::as.formula(paste("komnr", "~", paste(c(code_column, new_column), collapse = " + "))), data = code_2_new, FUN = length)
-    
+
     # For fylkenr, select the fylke where most kommuner is within the fylke. This to avoid fylkenr to be translated to fylker
     # where one or a few kommuner has been relocated.
     code_2_new <- code_2_new %>%
@@ -135,12 +129,12 @@ add_kommune_fylke <- function(data,
       dplyr::ungroup() %>%
       dplyr::filter(.data$maxantall == .data$antall) %>%
       dplyr::select(-.data$antall, -.data$maxantall)
-    
+
     # Removes tibble in case it makes trouble later
     code_2_new <- as.data.frame(code_2_new)
-    
+
   }
-  
+
   # ADD NEW COLUMN(S) ----
   # Set up of parameters for the internal function add_new_column(). names() is used to select the column names
   # in the input data and unname() is used to select the column names in the translation table. n_columns_at_once
@@ -155,7 +149,7 @@ add_kommune_fylke <- function(data,
                          overwrite = overwrite,
                          n_columns_at_once = length(new_column)
   )
-  
-  
+
+
   return(data)
 }

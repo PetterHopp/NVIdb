@@ -6,13 +6,16 @@
 \usage{
 read_leveransereg(
   filename,
-  from_path = paste0(set_dir_NVI("LevReg"), "FormaterteData/")
+  from_path = paste0(set_dir_NVI("LevReg"), "FormaterteData/"),
+  ...
 )
 }
 \arguments{
 \item{filename}{The name of the file with Leveranseregisteret}
 
 \item{from_path}{Path for Leveranseregisteret}
+
+\item{\dots}{Other arguments to be passed to \code{data.table::fread}.}
 }
 \value{
 \code{read_LevReg} A data frame with Leveranseregisteret as in selected csv-file.
@@ -32,7 +35,7 @@ The Leveranseregisteret for slakt includes information on carcasses delivered to
 \examples{
 \dontrun{
 # Reading from standard directory at NVI's network
-Lev>>Reg2019 <- read_leveransereg(filename = "LevReg_201901_201912.csv")
+LevReg2019 <- read_leveransereg(filename = "LevReg_201901_201912.csv")
 }
 
 }

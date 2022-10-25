@@ -8,7 +8,7 @@
 #' @param hensikt Vector with one or more hensiktkoder. Sub-hensikter are not included and must be explicitly mentioned.
 #' @param db The database for which the query is built. Currently only the value "PJS" is accepted.
 #'
-#' @return A list with select-statements for v2_sak_m_res and v_sakskonklusjon, respectively. The statements should
+#' @return A list with select-statements for "v2_sak_m_res" and "v_sakskonklusjon", respectively. The statements should
 #'    be included in a \code{RODBC::sqlQuery}.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
@@ -19,36 +19,34 @@
 #' # SQL-select query for Pancreatic disease (PD)
 #' build_query_hensikt(year = 2020,
 #'                     hensikt = c("0200102"))
-#'
-
 build_query_hensikt <- function(year, hensikt, db = "PJS") {
-  
+
   # Argument checking
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
   # Perform checks
   checkmate::assert_integerish(year, lower = 1990, upper = as.numeric(format(Sys.Date(), "%Y")), min.len = 1, add = checks)
-  checkmate::assert_character(hensikt, min.chars = 2, add = checks)
+  checkmate::assert_character(hensikt, min.chars = 2, any.missing = FALSE, add = checks)
   checkmate::assert_choice(db, choices = c("PJS"), add = checks)
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   select_year <- NVIdb::build_sql_select_year(year = year, varname = "aar")
-  
+
   select_hensikt <- NVIdb::build_sql_select_code(values = hensikt, varname = "hensiktkode")
   # select_hensikt <- paste0("hensiktkode in ('", paste(hensikt, collapse = "', '"), "')")
-  
+
   selection_v2_sak_m_res <- paste("SELECT * FROM v2_sak_m_res",
-                                  "WHERE", select_year , "AND",
+                                  "WHERE", select_year, "AND",
                                   "(",
                                   select_hensikt,
-                                  ")" )
-  
+                                  ")")
+
   select_year <- NVIdb::build_sql_select_year(year = year, varname = "sak.aar")
-  
+
   select_hensikt <- NVIdb::build_sql_select_code(values = hensikt, varname = "sak.hensiktkode")
   # select_hensikt <- paste0("sak.hensiktkode in ('", paste(hensikt, collapse = "', '"), "')")
-  
+
   selection_sakskonklusjon <- paste("SELECT v_sakskonklusjon.*,",
                                     "sak.mottatt_dato, sak.uttaksdato, sak.sak_avsluttet, sak.hensiktkode,",
                                     "sak.eier_lokalitetstype, sak.eier_lokalitetnr",
@@ -60,11 +58,9 @@ build_query_hensikt <- function(year, hensikt, db = "PJS") {
                                     "WHERE", select_year, "AND (",
                                     select_hensikt,
                                     ")")
-  
+
   select_statement <- list("selection_v2_sak_m_res" = selection_v2_sak_m_res,
                            "selection_sakskonklusjon" = selection_sakskonklusjon)
-  
+
   return(select_statement)
 }
-
-

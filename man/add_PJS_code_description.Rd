@@ -14,7 +14,8 @@ add_PJS_code_description(
   code_colname,
   new_column,
   position = "right",
-  overwrite = FALSE
+  overwrite = FALSE,
+  backward = FALSE
 )
 
 copy_PJS_codes_2_text(
@@ -29,12 +30,12 @@ read_PJS_codes_2_text(
 )
 }
 \arguments{
-\item{data}{Data frame with PJS-data with a column with codes for a PJS-variable}
+\item{data}{Data frame with PJS-data with a column with codes for a PJS-variable.}
 
-\item{translation_table}{Data frame with the code and the description for PJS-variables}
+\item{translation_table}{Data frame with the code and the description for PJS-variables.}
 
 \item{PJS_variable_type}{A vector with PJS-variables, for example "hensikt". See details for a list of all PJS-variables included in
-the premade translation table pjscode_2_descriptions.csv. If more than one code should be translated, they can be given in the vector. 
+the premade translation table pjscode_2_descriptions.csv. If more than one code should be translated, they can be given in the vector.
 You may also use "auto", if \code{code_colname} have standardized PJS names only, see details.}
 
 \item{code_colname}{The name of the column with codes that should be translated. If several codes should be translated, a vector with the
@@ -43,23 +44,27 @@ names of the coded variables should be given.}
 \item{new_column}{The name of the new column with the text describing the code. If several codes should be translated, a vector with the
 new column names should be given. You may also use "auto", if \code{code_colname} have standardized PJS names only, see details.}
 
-\item{position}{position for the new columns, can be one of c("first", "left", "right", "last", "keep"). If several codes should be translated,
+\item{position}{Position for the new columns, can be one of c("first", "left", "right", "last", "keep"). If several codes should be translated,
 either one value to be applied for all may be given or a vector with specified position for each code to be translated should be given.}
 
-\item{overwrite}{When the new column(s) already exist, the content in the existing column(s) is replaced by new data if overwrite = TRUE.
-If the new columns already exists and overwrite = FALSE, an error will be issued.}
+\item{overwrite}{[\code{logical(1)}]. When the new column(s) already exist, 
+the content in the existing column(s) is replaced by new data if 
+\code{overwrite = TRUE}. If the new column(s) already exist and 
+\code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
 
-\item{filename}{Filename of the source file for the translation table for PJS-codes}
+\item{backward}{[\code{logical(1)}]. If \code{TRUE}, it translates from descriptive text and back to PJS-code, see details. Defaults to \code{FALSE}.}
 
-\item{from_path}{Path for the source translation table for PJS-codes}
+\item{filename}{File name of the source file for the translation table for PJS-codes.}
 
-\item{to_path}{Path for the target translation table for PJS-codes when copying the table}
+\item{from_path}{Path for the source translation table for PJS-codes.}
+
+\item{to_path}{Path for the target translation table for PJS-codes when copying the table.}
 }
 \value{
-\code{add_PJS_code_description} A dataframe where the description text for the PJS-code has been added in the column to the
-    right of the column with the code. If the input is a tibble, it will be transformed to a dataframe.
+\code{add_PJS_code_description} A data frame where the description text for the PJS-code has been added in the column to the
+    right of the column with the code. If the input is a tibble, it will be transformed to a data frame.
 
-    \code{read_PJS_codes_2_text} A dataframe with the translation table for PJS-codes as read from the source csv-file. If not changing standard
+    \code{read_PJS_codes_2_text} A data frame with the translation table for PJS-codes as read from the source csv-file. If not changing standard
     input, the standard file at NVI's internal network is read.
 
     \code{copy_PJS_codes_2_text} Copies the source translation table for PJS-codes to another location. If the target file already exists
@@ -67,24 +72,25 @@ If the new columns already exists and overwrite = FALSE, an error will be issued
 }
 \description{
 Functions to adds a column with descriptive text for a column with PJS-codes in a data frame with PJS-data.
-   In addition there are functions to read and copy an updated version of the PJS code registers.
+   You may also use backwards translation from descriptive text to PJS-code. In addition there are functions to read and
+   copy an updated version of the PJS code registers.
 }
 \details{
 Export of data from PJS will produce data frames in which many columns have coded data. These need to be translated
     into descriptive text to increase readability.
 
-    \code{add_PJS_code_description} can be used to translate the codes into descriptive text. In a data.frame with coded values,
-    the function can return a data frame with the descriptive text in a new column. As default, the descriptive text is input 
+    \code{add_PJS_code_description} can be used to translate the codes into descriptive text. In a data frame with coded values,
+    the function can return a data frame with the descriptive text in a new column. As default, the descriptive text is input
     in a new column to the right of the column with codes.
 
-    \code{add_PJS_code_description} uses a premade translation table (PJS_codes_2_text.csv). The data need to be loaded by 
-    \code{read_PJS_code_registers} before running \code{add_PJS_code_description}, see example. The file "PJS_codes_2_text.csv" is 
+    \code{add_PJS_code_description} uses a premade translation table (PJS_codes_2_text.csv). The data need to be loaded by
+    \code{read_PJS_code_registers} before running \code{add_PJS_code_description}, see example. The file "PJS_codes_2_text.csv" is
     normally updated every night from PJS.
 
     Currently, the translation table has PJS-codes and the corresponding description for the PJS variable types given
-    in the first column in the table below. The standardized PJS column name is given in the column "code colname" for 
+    in the first column in the table below. The standardized PJS column name is given in the column "code colname" for
     which the "PJS variable type" will translate into descriptive text. The standard new column name is given in the
-    column "new column". 
+    column "new column".
 
 \tabular{llll}{
   \strong{PJS variable type} \tab \strong{code colname} \tab \strong{new column} \tab \strong{remark} \cr
@@ -105,35 +111,51 @@ Export of data from PJS will produce data frames in which many columns have code
   provemateriale \tab provematerialekode \tab provemateriale \tab \cr
   forbehandling \tab forbehandlingkode \tab forbehandling \tab \cr
   metode \tab metodekode \tab metode \tab \cr
+  metode \tab subund_metodekode \tab submetode \tab \cr
   konkl_type \tab konkl_typekode \tab konkl_type \tab \cr
   kjennelse \tab konkl_kjennelsekode \tab konkl_kjennelse \tab \cr
   kjennelse \tab res_kjennelsekode \tab res_kjennelse \tab \cr
+  kjennelse \tab subres_kjennelsekode \tab subres_kjennelse \tab \cr
   analytt \tab konkl_analyttkode \tab konkl_analytt \tab \cr
   analytt \tab res_analyttkode \tab res_analytt \tab \cr
+  analytt \tab subres_analyttkode \tab subres_analytt \tab \cr
+  enhet \tab enhetkode \tab enhet \tab \cr
+  enhet \tab subres_enhetkode \tab subres_enhet \tab \cr
 }
 
     If \code{code_colname = } is a vector of standardized PJS column names and a subset of "code column" in the table above, you may
     facilitate coding by setting \code{PJS_variable_type = "auto"} and/or \code{new_colname = "auto"}. Then the \code{PJS_variable_type}
     will be automatically set according to the table above (for "artkode" \code{PJS_variable_type = "art"} will be chosen). Likewise,
     the \code{new_column} will be automatically set according to the table above.
-    
-    \code{position =} is used to give the position if the new columns in the data.frame. For \code{position = "right"} the new variables are
+
+    \code{position =} is used to give the position if the new columns in the data frame. For \code{position = "right"} the new variables are
     placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
     code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
-    data.frame. A special case occurs for \code{position = "keep"} which only has meaning when the new column has the same name as an existing
+    data frame. A special case occurs for \code{position = "keep"} which only has meaning when the new column has the same name as an existing
     column and overwrite = TRUE. In these cases, the existing column will be overwritten with new data and have the same position.
 
-    \code{read_PJS_code_registers} reads the file "PJS_codes_2_text.csv" into a dataframe that can be used by \code{add_PJS_code_description}.
-    In standard setting will the file read in the latest updated file from NVI's internal network. If changing the \code{from_path}, the function can
-    be used to read the translation file from other directories. This can be useful if having a stand alone app with no connection the NVI's
-    internal network. In other cases, it should be avoided.
+    \code{backward = TRUE} can be used to translate from descriptive text and back to PJS-codes.
+    This intended for cases where the PJS-code has been lost (for example in EOS data) or when
+    data from other sources should be translated to codes to be able to use the code hierarchy
+    for further processing of the data. Back translation ignores case. Be aware that the back
+    translation is most useful for short descriptive text strings, as longer strings may have been
+    shortened and the risk of misspelling and encoding problems is larger. For some descriptive
+    text strings, there are no unique translation. In these cases, the code value is left empty.
 
-    PJS_codes_2_text.csv has the following columns: c("type", "kode", "navn", "utgatt_dato"), where "type" is the PJS variable type
-    as listed above (for example hensikt), "kode" is the variable with the PJS-code, "navn" is the text describing the code, and "utgatt_dato"
-    is the date for last date that the code was valid (NA if still valid). If translation tables are needed for other PJS variables, a dataframe
-    with the same definition can be constructed to translate new variables.
+    \code{read_PJS_code_registers} reads the file "PJS_codes_2_text.csv" into a data frame that can
+    be used by \code{add_PJS_code_description}. In standard setting will the file read in the latest
+    updated file from NVI's internal network. If changing the \code{from_path}, the function can
+    be used to read the translation file from other directories. This can be useful if having a
+    stand alone app with no connection the NVI's internal network. In other cases, it should be avoided.
 
-    \code{copy_PJS_code_registers} copies the file pjsCodeDescriptions.csv to a chosen directory.
+    PJS_codes_2_text.csv has the following columns: c("type", "kode", "navn", "utgatt_dato"), where
+    "type" is the PJS variable type as listed above (for example hensikt), "kode" is the variable
+    with the PJS-code, "navn" is the text describing the code, and "utgatt_dato" is the date for
+    last date that the code was valid (NA if still valid). If translation tables are needed for
+    other PJS variables, a data frame with the same column definition can be constructed to
+    translate new variables.
+
+    \code{copy_PJS_code_registers} copies the file pjsCodeDescriptions.csv to a given directory.
 }
 \examples{
 \dontrun{

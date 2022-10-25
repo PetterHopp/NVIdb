@@ -4,7 +4,7 @@
 #'     counting dates. Since 2017, the counting dates are in March and October. Landbruksdirektoratet provides three to four versions of the
 #'     register for each counting date. The functions automatically selects the last updated version of the register.
 #'
-#'     \code{read_Prodtilskudd} Reads the produksjonstilskuddsregister into a data frame. The function gives options to select year and season The standard
+#'     \code{read_Prodtilskudd} reads the produksjonstilskuddsregister into a data frame. The function gives options to select year and season The standard
 #'     settings will read in the files from NVI's internal network and select the latest updated file for both spring and autumn and combine them
 #'     into one file. If changing the from_path, the function can be used to read the translation file from other directories. This can be useful
 #'     if having a stand alone app with no connection the NVI's internal network. In other cases, it should be avoided.
@@ -14,10 +14,10 @@
 #' @param from_path Path for the produksjonstilskuddsregister.
 #' @param to_path Target path for the files with the produksjonstilskuddsregister.
 #' @param Pkode_year The year(s) from which the register should be read. Options is "last", or a vector with one or more years.
-#' @param Pkode_month the month for which the register should be read. The options are c("05", "10", "both", "last") for Pkode_year = 2017
+#' @param Pkode_month The month for which the register should be read. The options are c("05", "10", "both", "last") for Pkode_year = 2017
 #'     and c("03", "10", "both", "last") for Pkode_year >= 2018.
 #'
-#' @return \code{read_Prodtilskudd} One or more data frame(s) with the produksjonstilskuddsregister for each of the year and seasons selected.
+#' @return \code{read_Prodtilskudd} reads one or more data frame(s) with the produksjonstilskuddsregister for each of the year and seasons selected.
 #'     If the options Pkode_year = "last" and Pkode_month = "last" is given, one file with the last produksjonstilskuddsregister is given.
 #'
 #'     \code{copy_Prodtilskudd} copies the source produksjonstilskuddsregister for each of the year and seasons selected. If the target file
@@ -30,7 +30,8 @@
 #' # Reading from standard directory at NVI's network
 #' Pkode_last <- read_Prodtilskudd()
 #'
-#' # Reading from standard directory at NVI's network and selecting a specific version of the register
+#' # Reading from standard directory at NVI's network and
+#' #     selecting a specific version of the register
 #' Pkode201903 <- read_Prodtilskudd(Pkode_year = "2019", Pkode_month = "03")
 #' }
 #'
@@ -38,27 +39,31 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
                               Pkode_year = "last",
                               Pkode_month = "both") {
 
-  # Argument checking
+  # PREPARE ARGUMENT ----
+  # Removing ending "/" and "\\" from pathnames
+  from_path <- sub("/+$|\\\\+$", "", from_path)
+
+  # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
   # Perform checks
+  # from_path
   checkmate::assert_character(from_path, len = 1, min.chars = 1, add = checks)
-  if (endsWith(from_path, "/")) {
-    checkmate::assert_directory_exists(substr(from_path, 1, nchar(from_path) - 1), access = "r", add = checks)
-  } else {
-    checkmate::assert_directory_exists(from_path, access = "r", add = checks)
-  }
+  checkmate::assert_directory_exists(from_path, access = "r", add = checks)
+  # Pkode_month
   checkmate::assert_subset(Pkode_month, choices = c("both", "last", "01", "03", "05", "07", "10", "12"), add = checks)
-  # Report check-results
-  checkmate::reportAssertions(checks)
-
+  # Pkode_year
   checkmate::assert(checkmate::check_integerish(as.numeric(Pkode_year[which(!grepl('[:alpha:]', Pkode_year))]),
                                                 lower = 1995,
                                                 upper = as.numeric(format(Sys.Date(), "%Y")),
                                                 any.missing = FALSE,
                                                 unique = TRUE),
                     # checkmate::check_character(Pkode_year, min.chars = 4, min.len = 1, any.missing = FALSE),
-                    checkmate::check_choice(Pkode_year, choices = c("last")))
+                    checkmate::check_choice(Pkode_year, choices = c("last")),
+                    add = checks)
+  # Report check-results
+  checkmate::reportAssertions(checks)
+
 
 
   # READ IN ALL FILES IN THE DIRECTORY AND MAKE A LIST OF THE SELECTED VERSIONS OF EXTRACTS FROM PKODEREGISTERET
@@ -71,7 +76,7 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
 
     # Identifies column names with fylke, kommune and prodnr
     # thereby these are flexible if input files changes.
-    colchar <- utils::read.csv2(paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/", filelist[i, "filename"]),
+    colchar <- utils::read.csv2(file.path(set_dir_NVI("Prodtilskudd"), "FormaterteData", filelist[i, "filename"]),
                                 header = FALSE,
                                 nrow = 1,
                                 fileEncoding = "UTF-8")
@@ -86,9 +91,6 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
     # read single files
     tempdf <- read_csv_file(filename = filelist[i, "filename"],
                             from_path = from_path,
-                            # options = list(colClasses = c(gjeldende_fylkenr = "character", gjeldende_komnr = "character",
-                            #                             gjeldende_prodnr8 = "character", komnr = "character",
-                            #                             Prodnr8 = "character", Prodnr10 = "character"),
                             options = list(colClasses = colchars,
                                            fileEncoding = "UTF-8"))
     if (exists("df1")) {
@@ -110,4 +112,83 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
 
   # Return dataframe with data for all selected year and months
   return(df1)
+}
+
+###   ----
+
+### select_prodtilskudd_files ----
+
+
+#' @title List selected files from Søknad om register for produksjonstilskudd
+#' @description List selected files with extracts from Søknad om register for produksjonstilskudd.
+#' @details Reads the filenames of files with extracts from Søknad om register for produksjonstilskudd into a data frame.
+#'     The function gives options to select year and month and path for the files. The function is called from read_Prodtilskudd
+#'     and copy_Prodtilskudd.
+#'
+#' @param from_path Path for the source translation table for PJS-codes
+#' @param Pkode_year The year(s) from which the register should be read. Options is "last", or a vector with one or more years.
+#' @param Pkode_month the month for which the register should be read. The options are c("05", "10", "both", "last") for Pkode_year = 2017
+#'     and c("03", "10", "both", "last") for Pkode_year >= 2018.
+#'
+#' @return A data frame with filenames of the files with the selected extracts of Prodtilskudd.
+#'
+#' @author Petter Hopp Petter.Hopp@@vetinst.no
+#' @examples
+#' \dontrun{
+#' # Making the filelist for read_Prodtilskudd or copy_Prodtilskudd
+#' filelist <- select_prodtilskudd_files(from_path = from_path,
+#'                                       Pkode_year = Pkode_year,
+#'                                       Pkode_month = Pkode_month)
+#' }
+#' @keywords internal
+
+select_prodtilskudd_files <- function(from_path,
+                                      Pkode_year,
+                                      Pkode_month) {
+  # READ IN ALL FILES IN THE DIRECTORY AND MAKE A LIST OF THE LAST VERSION OF ALL UTREKK FRO PKODEREGISTERET
+  filelist <- as.data.frame(list.files(path = from_path, pattern = "csv", ignore.case = TRUE, include.dirs = FALSE),
+                            stringsAsFactors = FALSE)
+  colnames(filelist) <- "filename"
+  filelist$fileinfo <- sub("per ", "", filelist$filename)
+  filelist$fileinfo <- sub("fra ", "", filelist$fileinfo)
+  filelist$fileinfo <- sub(".csv", "", filelist$fileinfo)
+  filelist$pkodeaar <- substr(filelist$fileinfo, 6, 9)
+  filelist$pkodemonth <- substr(filelist$fileinfo, 10, 11)
+  filelist$content <- sapply(filelist$fileinfo, FUN = find_n_th_word, position = 2)
+  filelist <- subset(filelist,
+                     tolower(substr(filelist$fileinfo, 1, 5)) == "pkode" &
+                       filelist$pkodeaar > "1994" & filelist$pkodeaar < "2099" &
+                       filelist$content %in% c("Koordinater", "Uttrekk"))
+  filelist$contenttype <- sapply(filelist$fileinfo, FUN = find_n_th_word, position = 4)
+  filelist <- subset(filelist, filelist$contenttype == "UTF8")
+
+  filelist$uttrekk_dato <- as.Date(sapply(filelist$fileinfo, FUN = find_n_th_word, position = 3), format = "%Y%m%d")
+  max_uttrekk_dato <- stats::aggregate(filelist$uttrekk_dato, by = list(filelist$pkodeaar, filelist$pkodemonth), FUN = max)
+  filelist <- merge(filelist, max_uttrekk_dato, by.x = c("pkodeaar", "pkodemonth"), by.y = c("Group.1", "Group.2"))
+  filelist <- subset(filelist, filelist$uttrekk_dato == filelist$x)
+  filelist <- filelist[, c("filename", "pkodeaar", "pkodemonth", "uttrekk_dato")]
+  filelist <- filelist[order(filelist$pkodeaar, filelist$pkodemonth, filelist$uttrekk_dato, decreasing = TRUE), ]
+
+  if ("last" %in% Pkode_year) {
+    filelist <- filelist[c(1:2), ]
+    if (!"both" %in% Pkode_month) {
+      if ("last" %in% Pkode_month) {
+        filelist <- filelist[1, ]
+      } else {
+        filelist <- subset(filelist, filelist$pkodemonth %in% Pkode_month)
+      }
+    }
+  }
+  if (!"last" %in% Pkode_year) {
+    filelist <- subset(filelist, filelist$pkodeaar %in% Pkode_year)
+    if (!"both" %in% Pkode_month) {
+      if ("last" %in% Pkode_month) {
+        filelist <- filelist[1, ]
+      } else {
+        filelist <- subset(filelist, filelist$pkodemonth %in% Pkode_month)
+      }
+    }
+  }
+
+  return(filelist)
 }

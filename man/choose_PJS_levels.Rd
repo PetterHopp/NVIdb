@@ -16,7 +16,7 @@ choose_PJS_levels(
 \item{data}{Data frame with data from PJS}
 
 \item{levels}{PJS-levels from which data should be chosen. Valid values are c("sak", "prove", "delprove", "undersokelse", "resultat",
-"konklusjon").}
+"konklusjon", "subundersokelse", "subresultat").}
 
 \item{keep_col}{Column names of columns that should be included in addition to the columns defined by levels.}
 
@@ -43,7 +43,7 @@ When reading PJS-data through certain views, data from more levels that needed m
 }
 \examples{
 \dontrun{
-#Attach packages
+# Attach packages
 library(RODBC)
 library(NVIdb)
 
@@ -58,28 +58,29 @@ PJSdata <- sqlQuery(journal_rapp,
 odbcClose(journal_rapp)
 
 # Generate two data frames,
-#   one with sak, prove, konklusjon and one with sak, prove, undersokelse and resultat
-sak_prove_konkl <- choose_PJS_levels(PJSdata,
-                                    levels = c("sak", "prove", "konklusjon"),
-                                    remove_col = c("vet_distriktnr", "karantene",
-                                                   "kartreferanse", "epi_id", "landnr",
-                                                   "uttatt_parprove", "mottatt_parprove",
-                                                   "eksportland", "importdato",
-                                                   "tidl_eier", "avkom_imp_dyr",
-                                                   "okologisk_drift", "skrottnr", "kjonn",
-                                                   "fodselsdato", "konklnr"),
-                                    unique_rows = TRUE)
+#  generates data frame with sak, prove, konklusjon
+s_p_k <- choose_PJS_levels(PJSdata,
+                           levels = c("sak", "prove", "konklusjon"),
+                           remove_col = c("vet_distriktnr", "karantene",
+                                          "kartreferanse", "epi_id", "landnr",
+                                          "uttatt_parprove", "mottatt_parprove",
+                                          "eksportland", "importdato",
+                                          "tidl_eier", "avkom_imp_dyr",
+                                          "okologisk_drift", "skrottnr",
+                                          "kjonn", "fodselsdato", "konklnr"),
+                           unique_rows = TRUE)
 
-sak_prove_und_res <-  choose_PJS_levels(PJSdata,
-                                        levels = c("sak", "prove", "undersokelse", "resultat"),
-                                        remove_col = c("vet_distriktnr", "karantene",
-                                                       "kartreferanse", "epi_id", "landnr",
-                                                       "uttatt_parprove", "mottatt_parprove",
-                                                       "eksportland", "importdato",
-                                                       "tidl_eier", "avkom_imp_dyr",
-                                                       "okologisk_drift", "skrottnr", "kjonn",
-                                                       "fodselsdato"),
-                                        unique_rows = TRUE)
+#  generates data frame with sak, prove, undersokelse and resultat
+s_p_u_r <- choose_PJS_levels(PJSdata,
+                             levels = c("sak", "prove", "undersokelse", "resultat"),
+                             remove_col = c("vet_distriktnr", "karantene",
+                                            "kartreferanse", "epi_id", "landnr",
+                                            "uttatt_parprove", "mottatt_parprove",
+                                            "eksportland", "importdato",
+                                            "tidl_eier", "avkom_imp_dyr",
+                                            "okologisk_drift", "skrottnr",
+                                            "kjonn", "fodselsdato"),
+                             unique_rows = TRUE)
 }
 
 }
