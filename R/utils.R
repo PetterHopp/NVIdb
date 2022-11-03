@@ -368,3 +368,27 @@ set_name_vector <- function(colname_vector) {
 #' @noRd
 
 find_n_th_word <- function(x, position) {strsplit(x, " ")[[1]][position]}
+
+
+### cut_slash ----
+#' @title Cut away ending slash from string
+#' @description Removes ending slash or backslash from string.
+#'     This is used to clean pathnames so that elements in a path
+#'     can be combined using \code{file.path} in stead of \code{\link{paste0}}.
+#'
+#' @param x Object with character strings.
+#'
+#' @return Object without ending slash in character strings.
+#'
+#' @author Petter Hopp Petter.Hopp@@vetinst.no
+#' @export
+#' @examples
+#' # Remove from string
+#' cut_slash("C:/temp/")
+#' cut_slash("C:\\temp\\")
+#' cut_slash(c("C:/temp/", "C:\\temp\\"))
+#' cut_slash(list("C:/temp/", "C:\\temp\\"))
+cut_slash <- function(x) {
+  x <- gsub("/+$|\\\\+$", "", x)
+  return(x)
+}
