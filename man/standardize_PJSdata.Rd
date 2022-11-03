@@ -36,7 +36,7 @@ The function performs the following standardizing of data extracted from PJS:
 \examples{
 \dontrun{
 # Standardizing sak_m_res
- sak_m_res <- standardize_PJSdata(PJSdata = sak_m_res)
+sak_m_res <- standardize_PJSdata(PJSdata = sak_m_res)
 }
 
 }
