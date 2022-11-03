@@ -138,7 +138,7 @@ The NVI has access to several database services. These functions log
 require(RODBC)
 journal_rapp <- login_PJS()
 # Reads hensiktregistret from PJS
-  hensikter <- sqlQuery(journal_rapp,
+hensikter <- sqlQuery(journal_rapp,
                        "select * from v_hensikt",
                        as.is = TRUE,
                        stringsAsFactors = FALSE)
