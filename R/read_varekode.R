@@ -75,9 +75,9 @@ read_varekode <- function(filename = "varekoder.csv",
                          from_path = from_path,
                          options = list(colClasses = "character",
                                         fileEncoding = "UTF-8"))
-    
+
     if (!is.null(periode)) {
-      if (period = "last") {period <- max(df1$leveranseaar)}
+      if (period == "last") {period <- max(df1$leveranseaar)}
       df1 <- df1[which(df1$leveranseaar %in% period), ]
     }
   }

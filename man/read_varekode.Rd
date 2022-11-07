@@ -7,7 +7,7 @@
 read_varekode(
   filename = "varekoder.csv",
   from_path = paste0(set_dir_NVI("LevReg")),
-  period,
+  period = NULL,
   data_source = "formatted"
 )
 }
@@ -51,7 +51,7 @@ The translation table for varekoder comprises the variables:
 \examples{
 \dontrun{
 # Reading from standard directory at NVI's network
-varekoder <- read_varekoder()
+varekoder <- read_varekode()
 }
 
 }
