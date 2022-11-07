@@ -39,7 +39,7 @@
 #'
 read_varekode <- function(filename = "varekoder.csv",
                           from_path = paste0(set_dir_NVI("LevReg")),
-                          period,
+                          period = NULL,
                           data_source = "formatted") {
 
   # PREPARE ARGUMENTS BEFORE ARGUMENT CHECKING ----
@@ -58,8 +58,9 @@ read_varekode <- function(filename = "varekoder.csv",
                                                 lower = 1995,
                                                 upper = as.numeric(format(Sys.Date(), "%Y")),
                                                 any.missing = FALSE,
-                                                unique = TRUE),
-                    checkmate::check_choice(period, choices = c("last")),
+                                                unique = TRUE,
+                                                null.ok = TRUE),
+                    checkmate::check_choice(period, choices = c("last"), null.ok = TRUE),
                     add = checks)
   # Report check-results
   checkmate::reportAssertions(checks)
@@ -74,6 +75,11 @@ read_varekode <- function(filename = "varekoder.csv",
                          from_path = from_path,
                          options = list(colClasses = "character",
                                         fileEncoding = "UTF-8"))
+    
+    if (!is.null(periode)) {
+      if (period = "last") {period <- max(df1$leveranseaar)}
+      df1 <- df1[which(df1$leveranseaar %in% period), ]
+    }
   }
 
   # IMPORT VAREKODEREGISTER RAW DATA ----
