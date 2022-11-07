@@ -34,7 +34,7 @@
 #' @examples
 #' \dontrun{
 #' # Reading from standard directory at NVI's network
-#' varekoder <- read_varekoder()
+#' varekoder <- read_varekode()
 #' }
 #'
 read_varekode <- function(filename = "varekoder.csv",
