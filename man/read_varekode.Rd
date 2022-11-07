@@ -5,17 +5,21 @@
 \title{Manage translation table for varekoder til leveransregisteret}
 \usage{
 read_varekode(
+  filename = "varekoder.csv",
   from_path = paste0(set_dir_NVI("LevReg")),
   period,
   data_source = "formatted"
 )
 }
 \arguments{
+\item{filename}{Name of the translation table, defaults to "varekoder.csv".
+The input is only used when \code{data_source = "formatted"}.}
+
 \item{from_path}{Path for the translation table for varekoder.}
 
-\item{data_source}{Reads formatted data or raw data. deafult is formatted.}
+\item{period}{Year or period for fetching the varekoderegister.}
 
-\item{filename}{Name of the translation table, defaults to "varekoder.csv".}
+\item{data_source}{Reads formatted data or raw data. deafult is formatted.}
 }
 \value{
 \code{read_varekoder} A data frame with the translation table for

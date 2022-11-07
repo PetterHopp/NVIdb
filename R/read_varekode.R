@@ -20,7 +20,9 @@
 #'     and changing the path should be avoided.
 #'
 #' @param filename Name of the translation table, defaults to "varekoder.csv".
+#'     The input is only used when \code{data_source = "formatted"}.
 #' @param from_path Path for the translation table for varekoder.
+#' @param period Year or period for fetching the varekoderegister.
 #' @param data_source Reads formatted data or raw data. deafult is formatted.
 #'
 #' @return \code{read_varekoder} A data frame with the translation table for
@@ -35,7 +37,8 @@
 #' varekoder <- read_varekoder()
 #' }
 #'
-read_varekode <- function(from_path = paste0(set_dir_NVI("LevReg")),
+read_varekode <- function(filename = "varekoder.csv",
+                          from_path = paste0(set_dir_NVI("LevReg")),
                           period,
                           data_source = "formatted") {
 
@@ -67,7 +70,7 @@ read_varekode <- function(from_path = paste0(set_dir_NVI("LevReg")),
     from_path <- file.path(from_path, "FormaterteData")
 
     # READ DATA ----
-    df1 <- read_csv_file(filename = "varekode.csv",
+    df1 <- read_csv_file(filename = filename,
                          from_path = from_path,
                          options = list(colClasses = "character",
                                         fileEncoding = "UTF-8"))
