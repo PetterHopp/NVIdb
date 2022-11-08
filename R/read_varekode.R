@@ -76,7 +76,7 @@ read_varekode <- function(filename = "varekoder.csv",
                          options = list(colClasses = "character",
                                         fileEncoding = "UTF-8"))
 
-    if (!is.null(periode)) {
+    if (!is.null(period)) {
       if (period == "last") {period <- max(df1$leveranseaar)}
       df1 <- df1[which(df1$leveranseaar %in% period), ]
     }
@@ -120,15 +120,15 @@ read_varekode <- function(filename = "varekoder.csv",
       if (grepl(",", check_header)) {delimiter <- ","}
 
       tempdf <- utils::read.delim(paste0(set_dir_NVI("LevReg"), sub_path, "/", filnavn[i, "filnavn"]),
-                           header = header,
-                           sep = delimiter)
+                                  header = header,
+                                  sep = delimiter)
 
       # if no national characters (represented by "å"), then read again using UTF-8 encoding
       if (isFALSE(any(grepl("\u00E5", tempdf[, 2], ignore.case = TRUE)))) {
         tempdf <- utils::read.delim(paste0(set_dir_NVI("LevReg"), sub_path, "/", filnavn[i, "filnavn"]),
-                             header = header,
-                             sep = delimiter,
-                             fileEncoding = "UTF-8")
+                                    header = header,
+                                    sep = delimiter,
+                                    fileEncoding = "UTF-8")
       }
       colnames(tempdf) <- c("varekode", "beskrivelse", "dyreslag")
       if (exists("df1")) {
