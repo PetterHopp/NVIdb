@@ -7,7 +7,7 @@
 read_varekode(
   filename = "varekoder.csv",
   from_path = paste0(set_dir_NVI("LevReg")),
-  period = NULL,
+  year = NULL,
   data_source = "formatted"
 )
 }
@@ -17,7 +17,7 @@ The input is only used when \code{data_source = "formatted"}.}
 
 \item{from_path}{Path for the translation table for varekoder.}
 
-\item{period}{Year or period for fetching the varekoderegister.}
+\item{year}{Year(s) for fetching the varekoderegister.}
 
 \item{data_source}{Reads formatted data or raw data. deafult is formatted.}
 }

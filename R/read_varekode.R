@@ -22,7 +22,7 @@
 #' @param filename Name of the translation table, defaults to "varekoder.csv".
 #'     The input is only used when \code{data_source = "formatted"}.
 #' @param from_path Path for the translation table for varekoder.
-#' @param period Year or period for fetching the varekoderegister.
+#' @param year Year(s) for fetching the varekoderegister.
 #' @param data_source Reads formatted data or raw data. deafult is formatted.
 #'
 #' @return \code{read_varekoder} A data frame with the translation table for
@@ -39,7 +39,7 @@
 #'
 read_varekode <- function(filename = "varekoder.csv",
                           from_path = paste0(set_dir_NVI("LevReg")),
-                          period = NULL,
+                          year = NULL,
                           data_source = "formatted") {
 
   # PREPARE ARGUMENTS BEFORE ARGUMENT CHECKING ----
@@ -54,13 +54,13 @@ read_varekode <- function(filename = "varekoder.csv",
   checkmate::assert_subset(data_source,
                            choices = c("formatted", "raw"),
                            add = checks)
-  checkmate::assert(checkmate::check_integerish(as.numeric(period[which(!grepl("[:alpha:]", period))]),
+  checkmate::assert(checkmate::check_integerish(as.numeric(year[which(!grepl("[:alpha:]", year))]),
                                                 lower = 1995,
                                                 upper = as.numeric(format(Sys.Date(), "%Y")),
                                                 any.missing = FALSE,
                                                 unique = TRUE,
                                                 null.ok = TRUE),
-                    checkmate::check_choice(period, choices = c("last"), null.ok = TRUE),
+                    checkmate::check_choice(year, choices = c("last"), null.ok = TRUE),
                     add = checks)
   # Report check-results
   checkmate::reportAssertions(checks)
@@ -76,9 +76,9 @@ read_varekode <- function(filename = "varekoder.csv",
                          options = list(colClasses = "character",
                                         fileEncoding = "UTF-8"))
 
-    if (!is.null(period)) {
-      if (period == "last") {period <- max(df1$leveranseaar)}
-      df1 <- df1[which(df1$leveranseaar %in% period), ]
+    if (!is.null(year)) {
+      if (year[1] == "last") {year <- max(df1$leveranseaar)}
+      df1 <- df1[which(df1$leveranseaar %in% year), ]
     }
   }
 
@@ -99,11 +99,11 @@ read_varekode <- function(filename = "varekoder.csv",
     # filnavn <- filnavn[c(2:dim(filnavn)[1]), ]
     # Select varekoder for time period
     # Selects from year
-    if (period != "last") {
-      rownr <- which(filnavn[, "n_days"] >= 365 & filnavn[, "aar"] == period)
+    if (year != "last") {
+      rownr <- which(filnavn[, "n_days"] >= 365 & filnavn[, "aar"] == year)
     }
-    # Selects last 12 months
-    if (period == "last") {
+    # Selects from the years covering the last 12 months
+    if (year == "last") {
       if (filnavn[1, "n_days"] >= 365) {rownr <- 1}
       if (filnavn[1, "n_days"] < 365) {rownr <- c(1, 2)}
     }
