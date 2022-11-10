@@ -10,12 +10,12 @@ New features:
 
 Bug fixes:
 
--
+- 
 
 
 Other changes:
 
--
+- Corrected argument checking of pkode_year in read_Prodtilskudd.
 
 
 BREAKING CHANGES:
