@@ -1,4 +1,3 @@
-context("Prodtilskudd")
 library(NVIdb)
 library(testthat)
 
@@ -47,4 +46,41 @@ test_that("Read Prodtilskudd", {
   expect_equal(as.vector(unique(Pkoder[, "S\u00F8knads\u00E5r"])), 2019)
   expect_equal(as.vector(unique(Pkoder$Telledato)), as.integer(as.Date(c("2019-10-01", "2019-03-01"))))
 
+})
+
+
+test_that("errors for read_Prodtilskudd", {
+
+  linewidth <- options("width")
+  options(width = 80)
+
+  expect_error(read_Prodtilskudd(from_path = file.path(tempdir(), "rubbish")),
+               regexp = "rubbish' does not",
+               fixed = TRUE)
+
+  expect_error(read_Prodtilskudd(from_path = paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/"),
+                                 Pkode_year = 1990,
+                                 Pkode_month = "both"),
+               regexp = "Element 1 is not >= 1995",
+               fixed = TRUE)
+
+  expect_error(read_Prodtilskudd(from_path = paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/"),
+                                 Pkode_year = "first",
+                                 Pkode_month = "both"),
+               regexp = "{'last'}, but is 'first'",
+               fixed = TRUE)
+
+  expect_error(read_Prodtilskudd(from_path = paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/"),
+                                 Pkode_year = NULL,
+                                 Pkode_month = "both"),
+               regexp = "Must be a subset of {'last'}",
+               fixed = TRUE)
+
+  expect_error(read_Prodtilskudd(from_path = paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/"),
+                                 Pkode_year = 2020,
+                                 Pkode_month = "xx"),
+               regexp = "Variable 'Pkode_month': Must be a subset of",
+               fixed = TRUE)
+
+  options(width = unlist(linewidth))
 })
