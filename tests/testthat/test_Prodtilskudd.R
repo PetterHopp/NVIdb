@@ -48,6 +48,26 @@ test_that("Read Prodtilskudd", {
 
 })
 
+test_that("errors for copy_Prodtilskudd", {
+
+  linewidth <- options("width")
+  options(width = 80)
+
+  expect_error(copy_Prodtilskudd(filename = NULL, from_path = tempdir(), to_path = "./"),
+               regexp = "(filename): Must be of type 'character', *\n * not 'NULL'",
+               fixed = TRUE)
+
+  expect_error(copy_Prodtilskudd(filename = "filename.csv", from_path = tempdir(), to_path = "./"),
+               regexp = "File does not exist:")
+
+  expect_error(copy_Prodtilskudd(filename = "filename.csv", from_path = tempdir(), to_path = "filepath_does_not_exist"),
+               regexp = "Directory 'filepath_does_not_exist' does not\n * exist.",
+               fixed = TRUE)
+
+  options(width = unlist(linewidth))
+})
+
+
 
 test_that("errors for read_Prodtilskudd", {
 
