@@ -51,17 +51,37 @@ read_varekode <- function(filename = "varekoder.csv",
   # Perform checks
   checkmate::assert_character(from_path, len = 1, min.chars = 1, add = checks)
   checkmate::assert_directory_exists(from_path, access = "r", add = checks)
+  if (data_source == "formatted") {
+    checkmate::assert_character(filename, len = 1, min.chars = 1, null.ok = FALSE, add = checks)
+    checkmate::assert_file_exists(x = file.path(from_path, "FormaterteData", filename), access = "r", add = checks)
+  } else {
+    checkmate::assert_character(filename, len = 1, min.chars = 1, null.ok = TRUE, add = checks)
+  }
   checkmate::assert_subset(data_source,
                            choices = c("formatted", "raw"),
                            add = checks)
-  checkmate::assert(checkmate::check_integerish(as.numeric(year[which(!grepl("[:alpha:]", year))]),
-                                                lower = 1995,
-                                                upper = as.numeric(format(Sys.Date(), "%Y")),
-                                                any.missing = FALSE,
-                                                unique = TRUE,
-                                                null.ok = TRUE),
-                    checkmate::check_choice(year, choices = c("last"), null.ok = TRUE),
-                    add = checks)
+  if (data_source == "formatted") {
+    checkmate::assert(checkmate::check_integerish(as.numeric(year[grep("[[:alpha:]]", year, invert = TRUE)]),
+                                                  lower = 1995,
+                                                  upper = as.numeric(format(Sys.Date(), "%Y")),
+                                                  any.missing = FALSE,
+                                                  all.missing = FALSE,
+                                                  unique = TRUE,
+                                                  null.ok = FALSE),
+                      checkmate::check_choice(year, choices = c("last"), null.ok = TRUE),
+                      add = checks)
+  } else {
+    checkmate::assert(checkmate::check_integerish(as.numeric(year[grep("[[:alpha:]]", year, invert = TRUE)]),
+                                                  lower = 1995,
+                                                  upper = as.numeric(format(Sys.Date(), "%Y")),
+                                                  len = 1,
+                                                  any.missing = FALSE,
+                                                  all.missing = FALSE,
+                                                  unique = TRUE,
+                                                  null.ok = FALSE),
+                      checkmate::check_choice(year, choices = c("last"), null.ok = TRUE),
+                      add = checks)
+  }
   # Report check-results
   checkmate::reportAssertions(checks)
 
@@ -71,14 +91,14 @@ read_varekode <- function(filename = "varekoder.csv",
     from_path <- file.path(from_path, "FormaterteData")
 
     # READ DATA ----
-    df1 <- read_csv_file(filename = filename,
-                         from_path = from_path,
-                         options = list(colClasses = "character",
-                                        fileEncoding = "UTF-8"))
+    df1 <- NVIdb:::read_csv_file(filename = filename,
+                                 from_path = from_path,
+                                 options = list(colClasses = c("varekode" = "character"),
+                                                fileEncoding = "UTF-8"))
 
     if (!is.null(year)) {
       if (year[1] == "last") {year <- max(df1$leveranseaar)}
-      df1 <- df1[which(df1$leveranseaar %in% year), ]
+      df1 <- df1[which(df1$leveranseaar %in% as.numeric(year)), ]
     }
   }
 
@@ -94,13 +114,18 @@ read_varekode <- function(filename = "varekoder.csv",
     filnavn$n_days <- as.numeric(filnavn$til_dato - filnavn$fra_dato + 1)
     filnavn$aar <- as.numeric(format(filnavn$til_dato, "%Y"))
     # Order in decending order by date
-    filnavn <- dplyr::arrange(filnavn, dplyr::desc(.data$fra_dato), dplyr::desc(.data$til_dato))
+    filnavn <- filnavn %>%
+      dplyr::group_by(.data$aar) %>%
+      dplyr::mutate(max_n_days = max(.data$n_days)) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(dplyr::desc(.data$fra_dato), dplyr::desc(.data$til_dato))
 
     # filnavn <- filnavn[c(2:dim(filnavn)[1]), ]
     # Select varekoder for time period
     # Selects from year
     if (year != "last") {
-      rownr <- which(filnavn[, "n_days"] >= 365 & filnavn[, "aar"] == year)
+      # rownr <- which(filnavn[, "n_days"] >= 365 & filnavn[, "aar"] %in% as.numeric(year))
+      rownr <- which(filnavn[, "n_days"] == filnavn[, "max_n_days"] & filnavn[, "aar"] == as.numeric(year))
     }
     # Selects from the years covering the last 12 months
     if (year == "last") {
@@ -109,9 +134,9 @@ read_varekode <- function(filename = "varekoder.csv",
     }
 
     # # Select varekode raw data for import
-    if (exists("df1")) {rm(df1)}
+    # if (exists("df1")) {rm(df1)}
     for (i in rownr) {
-      # i <- 1
+      # i <- 3
       check_header <- readLines(con = paste0(set_dir_NVI("LevReg"), "RaData/", filnavn[i, "filnavn"]), n = 1)
       # "vare" in first line, then header = TRUE
       header <- grepl("vare", check_header, ignore.case = TRUE)
@@ -130,7 +155,7 @@ read_varekode <- function(filename = "varekoder.csv",
                                     sep = delimiter,
                                     fileEncoding = "UTF-8")
       }
-      colnames(tempdf) <- c("varekode", "beskrivelse", "dyreslag")
+      colnames(tempdf) <- c("varekode", "vare", "dyreslag")
       if (exists("df1")) {
         df1 <- rbind(df1, tempdf)
       } else {
