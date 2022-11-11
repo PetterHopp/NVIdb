@@ -15,7 +15,7 @@ Bug fixes:
 
 Other changes:
 
-- Corrected argument checking of pkode_year in read_Prodtilskudd.
+- Corrected argument checking of pkode_year in read_Prodtilskudd and copy_Prodtilskudd.
 
 
 BREAKING CHANGES:
