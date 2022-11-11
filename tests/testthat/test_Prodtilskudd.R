@@ -53,15 +53,27 @@ test_that("errors for copy_Prodtilskudd", {
   linewidth <- options("width")
   options(width = 80)
 
-  expect_error(copy_Prodtilskudd(filename = NULL, from_path = tempdir(), to_path = "./"),
-               regexp = "(filename): Must be of type 'character', *\n * not 'NULL'",
+  expect_error(copy_Prodtilskudd(from_path = "wrong_path", to_path = "./", Pkode_year = "last", Pkode_month = "10"),
+               regexp = "Directory 'wrong_path' does not exist.",
                fixed = TRUE)
 
-  expect_error(copy_Prodtilskudd(filename = "filename.csv", from_path = tempdir(), to_path = "./"),
-               regexp = "File does not exist:")
+  expect_error(copy_Prodtilskudd(from_path = tempdir(), to_path = "wrong_path", Pkode_year = "last", Pkode_month = "10"),
+               regexp = "Directory 'wrong_path' does not exist.")
 
-  expect_error(copy_Prodtilskudd(filename = "filename.csv", from_path = tempdir(), to_path = "filepath_does_not_exist"),
-               regexp = "Directory 'filepath_does_not_exist' does not\n * exist.",
+  expect_error(copy_Prodtilskudd(from_path = tempdir(), to_path = "./", Pkode_year = "1990", Pkode_month = "10"),
+               regexp = "Element 1 is not >= 1995",
+               fixed = TRUE)
+
+  expect_error(copy_Prodtilskudd(from_path = tempdir(), to_path = "./", Pkode_year = "first", Pkode_month = "10"),
+               regexp = "{'last'}, but is 'first'",
+               fixed = TRUE)
+
+  expect_error(copy_Prodtilskudd(from_path = tempdir(), to_path = "./", Pkode_year = NULL, Pkode_month = "10"),
+               regexp = "Must be a subset of {'last'}",
+               fixed = TRUE)
+
+  expect_error(copy_Prodtilskudd(from_path = tempdir(), to_path = "./", Pkode_year = 2020, Pkode_month = "xx"),
+               regexp = "Variable 'Pkode_month': Must be a subset of",
                fixed = TRUE)
 
   options(width = unlist(linewidth))
