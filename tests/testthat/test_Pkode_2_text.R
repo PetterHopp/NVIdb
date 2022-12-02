@@ -34,7 +34,7 @@ test_that("Read Produksjonstilskuddskoder", {
   # read file
   Pkoder <- read_Pkode_2_text(filename = "Produksjonstilskuddskoder2_UTF8.csv")
 
-  expect_subset(x = c("soknadaar", "soknadmnd", "telledato", "art", "Pkode", "beskrivelse",
+  expect_subset(x = c("soknadaar", "soknadmnd", "telledato", "Pkode",  "Pkodetype","Pkodeart", "beskrivelse",
                                 "enhet", "unike_dyr", "sortering"),
                 choices = colnames(Pkoder))
 
