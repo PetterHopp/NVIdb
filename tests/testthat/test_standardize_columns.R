@@ -86,7 +86,7 @@ test_that("colClasses for csv-files", {
   colclasses <- standardize_columns(data = paste0(set_dir_NVI("Prodtilskudd"), "StotteData/Produksjonstilskuddskoder2_UTF8.csv"), property = "colclasses")
 
   # Make a vector with correct column names after translation
-  correct_result <- c("art" = "character", "beskrivelse" = "character", "enhet" = "character", "Pkode_maaned" = "character", "telledato" = "character")
+  correct_result <- c("beskrivelse" = "character", "enhet" = "character", "soknadmnd" = "character", "telledato" = "character")
 
   # Compare Add fylke, current fylkenr and current fylke with correct result
   expect_equivalent(colclasses,
