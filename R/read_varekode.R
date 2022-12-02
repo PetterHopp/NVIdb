@@ -155,7 +155,7 @@ read_varekode <- function(filename = "varekoder.csv",
                                     sep = delimiter,
                                     fileEncoding = "UTF-8")
       }
-      if (dim(tempdf)[2] >3) {tempdf <- tempdf[, c(1:3)]}
+      if (dim(tempdf)[2] > 3) {tempdf <- tempdf[, c(1:3)]}
       colnames(tempdf) <- c("varekode", "vare", "dyreslag")
       if (exists("df1")) {
         df1 <- rbind(df1, tempdf)
