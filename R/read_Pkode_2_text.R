@@ -64,7 +64,7 @@ read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder2_UTF8.csv",
                           options = list(colClasses = colclasses, fileEncoding = "UTF-8"))
 
   if (isTRUE(keep_old_names)) {
-    standard_names <- c("soknadaar", "telledato", "Pkodeart", "Pkode", 
+    standard_names <- c("soknadaar", "telledato", "Pkodeart", "Pkode",
                         "beskrivelse", "enhet", "unike_dyr", "sortering")
     if (isTRUE(checkmate::check_subset(x = standard_names,
                                        choices = colnames(Pkoder)))) {
