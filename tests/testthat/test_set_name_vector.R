@@ -23,4 +23,3 @@ expect_equal(names(y),
              c("Aar", "MT_regionnr", "MT region", "MT avdelingsnr", "MT avdeling"))
 
 })
-
