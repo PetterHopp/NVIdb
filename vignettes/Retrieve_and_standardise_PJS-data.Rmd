@@ -95,12 +95,12 @@ There are four main hensikter, each for one species (group of species). For thre
 # Set selection parameters
 purpose <- "Paratuberkulose"
 aar <- c(2020)
-hensikt2select <- c("0200106%","0200119","0200122%","0200125%")
+hensikt2select <- c("0200106%", "0200119", "0200122%", "0200125%")
 ```
 
 We can use build_query_hensikt to generate the sql syntax for selecting observations from the views v2_sak_res_eier and sakskonklusjon in journal_rapp. The select statement retrieves all observations from one (or more) years AND the hensikter with or without sub-hensikter that you give in the input statement. The select statement is used as input to the query sent to the database.
 ```{r, include = TRUE}
-select_statement <- NVIdb::build_query_hensikt(year = aar, 
+select_statement <- NVIdb::build_query_hensikt(year = aar,
                                                hensikt = hensikt2select)
 ```
 
@@ -149,7 +149,7 @@ Thereafter, samples that are irrelevant for reporting Norwegian data, i.e. quali
 # # STANDARDIZE DATA ----
 # ## Standard cleaning of data
 PJSdata <- standardize_PJSdata(PJSdata = PJSrawdata)
-sakskonklusjon <- standardize_PJSdata(PJSdata = PJSsakskonklusjon) 
+sakskonklusjon <- standardize_PJSdata(PJSdata = PJSsakskonklusjon)
 
 # # Exclude ring trials, quality assurance and samples from abroad
 PJSdata <- exclude_from_PJSdata(PJSdata = PJSdata, abroad = "exclude", quality = "exclude")
@@ -175,7 +175,7 @@ The code below is dependent on the translation table already have been imported 
 # # TRANSLATE CODES INTO DESCRIPTIVE TEXT  ----
 
 # Translate PJS-codes to code descriptions, simplified version
-PJSdata <- add_PJS_code_description(data = PJSdata, 
+PJSdata <- add_PJS_code_description(data = PJSdata,
                                     translation_table = PJS_codes_2_text,
                                     PJS_variable_type = "auto",
                                     code_colname = c("hensiktkode", "artkode", "driftsformkode", "provetypekode",
