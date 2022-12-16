@@ -150,10 +150,15 @@ read_varekode <- function(filename = "varekoder.csv",
 
       # if no national characters (represented by "å"), then read again using UTF-8 encoding
       if (isFALSE(any(grepl("\u00E5", tempdf[, 2], ignore.case = TRUE)))) {
-        tempdf <- utils::read.delim(paste0(set_dir_NVI("LevReg"), sub_path, "/", filnavn[i, "filnavn"]),
+        if (isTRUE(any(grepl("<c5>", tempdf[, 2], ignore.case = TRUE)))) {
+          file_encoding <- "latin1"
+        } else {
+          file_encoding <- "UTF-8"
+        }
+          tempdf <- utils::read.delim(paste0(set_dir_NVI("LevReg"), sub_path, "/", filnavn[i, "filnavn"]),
                                     header = header,
                                     sep = delimiter,
-                                    fileEncoding = "UTF-8")
+                                    fileEncoding = file_encoding)
       }
       if (dim(tempdf)[2] > 3) {tempdf <- tempdf[, c(1:3)]}
       colnames(tempdf) <- c("varekode", "vare", "dyreslag")
