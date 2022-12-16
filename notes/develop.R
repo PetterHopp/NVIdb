@@ -32,7 +32,7 @@ pkg <- stringi::stri_extract_last_words(pkg_path)
 # Should be run before git push when documentation for functions have been changed
 NVIpackager::document_NVIpkg(pkg = pkg,
                              pkg_path = pkg_path,
-                             style = TRUE,
+                             style = FALSE,
                              contributing = FALSE,
                              readme = FALSE,
                              manual = "update",
