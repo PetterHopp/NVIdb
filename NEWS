@@ -10,7 +10,7 @@ New features:
 
 Bug fixes:
 
-- 
+- add_PJS_code_description fixed when argument backwards = TRUE for R > 4.2.
 
 
 Other changes:
