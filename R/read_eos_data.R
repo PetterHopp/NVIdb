@@ -22,7 +22,7 @@
 # eos_table_name er det samme som TABLE_NAME i EOS-databasen 
 # (Se all_views_eos.csv i RaData-mappen)
 read_eos_data <- function(eos_table_name, 
-                          from_path = paste0(set_dir_NVI("OKprogrammer"), "OKstatistikkApp/RaData"),
+                          from_path = paste0(set_dir_NVI("EOS"), "RaData"),
                           year = NULL,
                           colClasses = "character", 
                           encoding = "UTF-8",
