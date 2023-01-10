@@ -44,7 +44,7 @@ test_that("Read Prodtilskudd", {
   expect_equal(dim(Pkoder), c(55803, 89))
   # check correct version
   expect_equal(as.vector(unique(Pkoder[, "S\u00F8knads\u00E5r"])), 2019)
-  expect_equal(as.vector(unique(Pkoder$Telledato)), as.integer(as.Date(c("2019-10-01", "2019-03-01"))))
+  expect_equal(as.vector(as.integer(as.Date(unique(Pkoder$Telledato)))), as.integer(as.Date(c("2019-10-01", "2019-03-01"))))
 
 })
 
