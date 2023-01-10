@@ -42,9 +42,9 @@ test_that("Standardize colnames from EOS scrapie", {
                             "mottatt_dato" = "2019-02-27 00:00:00", "uttaks_dato_inns" = "2019-02-26 00:00:00",
                             "fodselsdato" = NA, "skrottnr" = "210861",
                             "aar" = "2019", "ansvarlig_seksjon" = "04", "innsendelsesnummer" = "6832", "saksnr" = "2019-04-6832/SC 1437",
-                            "eier_type" = "PROD", "eier_navn" = "EO", "eier_nummer" = "###########", "annen_aktør_type" = "AUTO", "annen_aktør_navn" = "Slakthuset Eidsmo Dullum AS avd Oppdal",
-                            "id_nr" = "60203", "art" = "Sau", "kjennelse" = "Ikke påvist", "sist_oppdatert" = "2020-10-06 01:30:03.427", "annen_aktør_nr" = "123",
-                            "rekvirent_type" = "MTA", "rekvirent_nr" = "M22110", "rekvirent" = "Glåmdal og Østerdal", "avvik_i_registrering" = "0", "antall_und_prover" = "1"))
+                            "eier_type" = "PROD", "eier_navn" = "EO", "eier_nummer" = "###########", "annen_akt\u00F8r_type" = "AUTO", "annen_akt\u00F8r_navn" = "Slakthuset Eidsmo Dullum AS avd Oppdal",
+                            "id_nr" = "60203", "art" = "Sau", "kjennelse" = "Ikke p\u00E5vist", "sist_oppdatert" = "2020-10-06 01:30:03.427", "annen_akt\u00F8r_nr" = "123",
+                            "rekvirent_type" = "MTA", "rekvirent_nr" = "M22110", "rekvirent" = "Gl\u00E5mdal og \u00D8sterdal", "avvik_i_registrering" = "0", "antall_und_prover" = "1"))
 
 
   # Make a vector with correct column names after translation
@@ -181,7 +181,7 @@ test_that("Standardize English collabels", {
 
 
   # Make a vector with correct column names after translation
-  correct_result <- c("Søknadsår", "Gjeldende produsentnr", "Producer no.", "Producer no.", "Organisation number",
+  correct_result <- c("S\u00F8knads\u00E5r", "Gjeldende produsentnr", "Producer no.", "Producer no.", "Organisation number",
                       "Municipality no.", "Municipality")
 
   # Compare Add fylke, current fylkenr and current fylke with correct result
@@ -197,7 +197,7 @@ test_that("Column order", {
   # Generate column labels
   # Example with produksjonstilskudd in English
   df <- as.data.frame(cbind("soknadaar" = "2020", "gjeldende_prodnr8" = "30303030", "Orgnr" = 99999999,
-                            "prodnr10" = "3030303030", "Fjørfe" = 1, "prodnr8" = "30303030",
+                            "prodnr10" = "3030303030", "Fj\u00F8rfe" = 1, "prodnr8" = "30303030",
                             "orgnr" = "988888888", "komnr" = "3030",
                             "kommune" = "Nesbyen"))
 
