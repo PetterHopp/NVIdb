@@ -19,7 +19,8 @@ read_sonetilhorighet <- function(filename = "sonetilhorighet.txt",
   df1 <- read_csv_file(filename = filename,
                        from_path = from_path,
                        options = list(colClasses = c("LokNr" = "character"),
-                                      fileEncoding = "UTF-8"))
+                                      fileEncoding = "UTF-8"), 
+                       sep = "\t")
 
   return(df1)
 }
