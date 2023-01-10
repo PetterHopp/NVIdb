@@ -5,8 +5,8 @@
 \title{Read EOS data from RaData}
 \usage{
 read_eos_data(
-  eos_table_name,
-  from_path = paste0(set_dir_NVI("OKprogrammer"), "OKstatistikkApp/RaData"),
+  eos_table,
+  from_path = paste0(set_dir_NVI("EOS"), "RaData"),
   year = NULL,
   colClasses = "character",
   encoding = "UTF-8",
@@ -14,12 +14,12 @@ read_eos_data(
 )
 }
 \arguments{
-\item{eos_table_name}{The name of the table with eos raw data}
+\item{eos_table}{The name of the table with eos raw data}
 
 \item{from_path}{Path for raw data from eos_data}
 
-\item{year}{The years to be included in the result. Defaults to 
-\code{NULL}, i.e. no selection.}
+\item{year}{The years to be included in the result. Can be both numeric
+or character. Defaults to \code{NULL}, i.e. no selection.}
 
 \item{colClasses}{The class of the columns, as in utils::read.table, Defaults to 
 \code{"character"}.}

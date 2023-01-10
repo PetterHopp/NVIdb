@@ -6,9 +6,9 @@
 #'     arguments can be passed to \code{data.table::fread} if necessary.
 #' 
 #' @param from_path Path for raw data from eos_data
-#' @param eos_table_name The name of the table with eos raw data
-#' @param year The years to be included in the result. Defaults to 
-#'     \code{NULL}, i.e. no selection.
+#' @param eos_table The name of the table with eos raw data
+#' @param year The years to be included in the result. Can be both numeric
+#'     or character. Defaults to \code{NULL}, i.e. no selection.
 #' @param colClasses The class of the columns, as in utils::read.table, Defaults to 
 #'     \code{"character"}.
 #' @param encoding The encoding. Defaults to \code{"UTF-8"}.
@@ -19,34 +19,37 @@
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @export
 #### Function for reading EOS data from RaData. Also reads historic data if file exists
-# eos_table_name er det samme som TABLE_NAME i EOS-databasen 
+# eos_table er det samme som TABLE_NAME i EOS-databasen 
 # (Se all_views_eos.csv i RaData-mappen)
-read_eos_data <- function(eos_table_name, 
+read_eos_data <- function(eos_table, 
                           from_path = paste0(set_dir_NVI("EOS"), "RaData"),
                           year = NULL,
                           colClasses = "character", 
                           encoding = "UTF-8",
                           ...) {
   
-  
+  # PREPARE ARGUMENTS BEFORE ARGUMENT CHECKING
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
+  # Change any character year to numeric
+  if (!is.null(year)) {year <- as.numeric(year)}
   
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
   # Perform checks
-  ## eos_table_name
-  checkmate::assert_string(eos_table_name, min.chars = 1, add = checks)
+  ## eos_table
+  checkmate::assert_string(eos_table, min.chars = 1, add = checks)
   ## from_path / filename
-  checkmate::assert_file_exists(file.path(from_path, paste0(eos_table_name, ".csv")), access = "r", add = checks)
+  checkmate::assert_file_exists(file.path(from_path, paste0(eos_table, ".csv")), access = "r", add = checks)
   ## year
-  checkmate::assert_integerish(as.numeric(year),
+  checkmate::assert_integerish(year,
                                lower = 1995,
                                upper = as.numeric(format(Sys.Date(), "%Y")),
                                any.missing = FALSE,
                                all.missing = FALSE,
                                unique = TRUE,
+                               null.ok = TRUE,
                                add = checks)
   ## colClasses
   checkmate::assert_character(colClasses, min.chars = 1, min.len = 1, 
@@ -64,7 +67,7 @@ read_eos_data <- function(eos_table_name,
   
   # Import of data from csv-files retrieved from EOS
   # EOS inneholder data fra siste og foregående år og antas å være i kontinuerlig endring
-  eos_data <-  data.table::fread(file = file.path(from_path, paste0(eos_table_name, ".csv")), 
+  eos_data <-  data.table::fread(file = file.path(from_path, paste0(eos_table, ".csv")), 
                                  colClasses = colClasses, 
                                  encoding = encoding,
                                  showProgress = FALSE,
@@ -77,8 +80,8 @@ read_eos_data <- function(eos_table_name,
   # Import av historiske data fra EOS
   # EOS-historikkfiler oppdateres 1 x årlig. Data hentes ut etter oppdatering og lagres i csv-filer
   # Hentes derfor fra csv-filen for bruk i OK-statistikken
-  if (file.exists(file.path(from_path, paste0(eos_table_name, "_historikk.csv")))) {
-    eos_data_historikk <-  data.table::fread(file = file.path(from_path, paste0(eos_table_name, "_historikk.csv")), 
+  if (file.exists(file.path(from_path, paste0(eos_table, "_historikk.csv")))) {
+    eos_data_historikk <-  data.table::fread(file = file.path(from_path, paste0(eos_table, "_historikk.csv")), 
                                              colClasses = colClasses, 
                                              encoding = encoding,
                                              showProgress = FALSE,
