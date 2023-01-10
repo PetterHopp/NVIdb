@@ -28,13 +28,13 @@
 #' @keywords internal
 
 copy_file_if_updated <- function(filename, from_path, to_path) {
-
+  
   # Check if from_path and to_path ends in "/". If not, "/" is added.
   from_path <- sub("/+$|\\\\+$", "", from_path)
   to_path <- sub("/+$|\\\\+$", "", to_path)
   # if (!endsWith(from_path, "/")) { from_path <- paste0(from_path, "/") }
   # if (!endsWith(to_path, "/")) { to_path <- paste0(to_path, "/") }
-
+  
   # Get creation date of source file
   if (dir.exists(from_path)) {
     files <- list.files(from_path, pattern = filename, ignore.case = TRUE)
@@ -42,7 +42,7 @@ copy_file_if_updated <- function(filename, from_path, to_path) {
       source_file_created <- file.mtime(file.path(from_path, filename))
     }
   }
-
+  
   # Get creation date of target file
   target_file_created <- 0
   if (dir.exists(to_path)) {
@@ -55,14 +55,14 @@ copy_file_if_updated <- function(filename, from_path, to_path) {
       }
     }
   }
-
+  
   # Copies the source file if source file is newer
   if (source_file_created > target_file_created) {
     file.copy(from = file.path(from_path, filename),
               to = to_path,
               overwrite = TRUE,
               copy.date = TRUE)
-
+    
   }
 }
 
@@ -106,38 +106,38 @@ add_new_column <- function(data,
                            overwrite = FALSE,
                            impute_old_when_missing = FALSE,
                            n_columns_at_once = 1) {
-
+  
   # Transforms the data to a data.frame and removes other classes
   # I'm afraid that this might be dependent on packages making the alternative classes (i.e. dplyr) must be loaded
   #   if it is dplyr that makes is.data.frame to work for these classes
   if (is.data.frame(data) & length(class(data)) > 1) {
     data <- as.data.frame(data)
   }
-
+  
   # Add row to keep original sort order of data
   data$original_sort_order <- seq_len(nrow(data))
-
-
+  
+  
   for (i in 1:length(ID_column)) {
-
+    
     # First and last column in the translation table if a code should be translated to more than one variable at once
     # This used in add_MT_area to add several MT area desciptions based on komnr
     first_to_colnum <- (1 + (n_columns_at_once * (i - 1)))
     last_to_colnum <- i * n_columns_at_once
-
+    
     # Make a subset with only the codes that is relevant for the actual variable
     translation_table <- translation_tables[[i]]
     code_2_new_text <- translation_table[, c(ID_column_translation_table[i], to_column_translation_table[c(first_to_colnum:last_to_colnum)])]
-
+    
     # Changes the name of the new column in the translation table to the name wanted in the df
     # Rename ID_column_translation_table[i] in translation table to ID_column_name_zz
     #   that is supposed to be unique and thereby avoid column name conflicts
     colnames(code_2_new_text) <- c("ID_column_name_zz", new_colname[c(first_to_colnum:last_to_colnum)])
-
+    
     # If new variable names already exists in data frame and overwrite = TRUE
     # Identifies all columns with common names in data and in new columns to add
     existing_names <- intersect(colnames(data), new_colname[c(first_to_colnum:last_to_colnum)])
-
+    
     # Replace position = keep with right if overwrite = FALSE
     if (!overwrite | length(existing_names) == 0) {position <- gsub("keep", "right", position)}
     if (length(existing_names) > 0 & overwrite) {
@@ -151,11 +151,11 @@ add_new_column <- function(data,
     }
     # Finds the column number for the code variable
     code_colnum <- which(colnames(data) == ID_column[i])
-
+    
     # Trim trailing spaces from the coded variable
     # This may be necessary for data taken from PJS before merging
     data[, ID_column[i]] <- trimws(data[, ID_column[i]])
-
+    
     # joins the dataset with the code description
     data <- merge(data,
                   code_2_new_text,
@@ -163,13 +163,13 @@ add_new_column <- function(data,
                   # by.y  = ID_column_translation_table[i],
                   by.y  = "ID_column_name_zz",
                   all.x = TRUE)
-
+    
     # Imputes with values in code variable in old dataset in the case that no merge was performed
     # Only if impute_old_when_missing = TRUE
     if (impute_old_when_missing) {
       data[which(is.na(data[, new_colname])), new_colname] <- data[which(is.na(data[, new_colname])), ID_column]
     }
-
+    
     # Rearrange columns
     # Merge places the by-columns first and the new columns last in the data frame
     # 1. Put by-column back to original place (= code_colnum). If code_colnum == 1, the column is already correct placed
@@ -180,10 +180,10 @@ add_new_column <- function(data,
     }
     # 2. Move the new columns to their new position.
     #    The new position is specified by the parameter position = c("first", "left", "right", "last")
-
+    
     # Identifies column number of first new column
     new_colnum <- which(colnames(data) == new_colname[first_to_colnum])
-
+    
     # position == "right" Move column with description to the right of the column with code
     if (position == "right") {
       # If already to the right, no need to do any change
@@ -228,14 +228,14 @@ add_new_column <- function(data,
                          (keep_colnum):(new_colnum - 1))]
       }
     }
-
+    
   }
-
-
+  
+  
   # Sorts data in original order and removes sort key
   data <- data[order(data$original_sort_order), ]
   data$original_sort_order <- NULL
-
+  
   return(data)
 }
 
@@ -263,13 +263,15 @@ add_new_column <- function(data,
 #' @keywords internal
 
 read_csv_file <- function(filename, from_path, options = NULL, ...) {
-
+  
   # Removes trailing "/" and "\\".
   from_path <- sub("/+$|\\\\+$", "", from_path)
   # # Check if from_path ends in "/". If not, "/" is added.
   # if (!endsWith(from_path, "/")) { from_path <- paste0(from_path, "/") }
-
-
+  
+  # if (is.null(sep)) {sep <- ";"}
+  # if (!exists("dec")) {dec <- ","}
+  
   if (is.null(options)) {
     options <- list(colClasses = NA, fileEncoding = "UTF-8", stringsAsFactors = FALSE)
   } else {
@@ -281,15 +283,24 @@ read_csv_file <- function(filename, from_path, options = NULL, ...) {
   if (dir.exists(from_path)) {
     if (file.exists(file.path(from_path, filename))) {
       df <- data.table::fread(file = file.path(from_path, filename),
-                             colClasses = options$colClasses,
-                             encoding = options$fileEncoding,
-                             stringsAsFactors = options$stringsAsFactors,
-                             showProgress = FALSE,
-                             ...)
+                              colClasses = options$colClasses,
+                              encoding = options$fileEncoding,
+                              stringsAsFactors = options$stringsAsFactors,
+                              showProgress = FALSE,
+                              data.table = FALSE,
+                              ...)
+      # df <- utils::read.table(file = file.path(from_path, filename),
+      #                         colClasses = options$colClasses,
+      #                        fileEncoding = options$fileEncoding,
+      #                         stringsAsFactors = options$stringsAsFactors,
+      #                        sep = sep,
+      #                        dec = dec,
+      #                        header = TRUE,
+      #                        ...)
     }
   }
-
-  return(as.data.frame(df))
+  return(df)
+  # return(as.data.frame(df))
 }
 
 ###   ----
@@ -322,20 +333,20 @@ read_csv_file <- function(filename, from_path, options = NULL, ...) {
 set_name_vector <- function(colname_vector) {
   # Existing names to the vector name
   name <- names(colname_vector)
-
+  
   # vector values to unnamed vector
   column <- unname(colname_vector)
-
+  
   # Check if any elements are named
   if (!is.null(name)) {
     # if some elements are named, move element value to unnamed elements
     for (i in 1:length(name)) {
       if (name[i] == "") {name[i] <- column[i]}
     }
-
+    
     # if no elements are named, set element values as names
   } else {name <- column }
-
+  
   return(stats::setNames(colname_vector, name))
 }
 
