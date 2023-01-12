@@ -6,7 +6,8 @@ login_by_credentials <- function(dbservice,
                                  db = NULL,
                                  dbserver = NULL,
                                  dbport = NULL,
-                                 dbprotocol = NULL) {
+                                 dbprotocol = NULL,
+                                 R_package = "RODBC") {
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
@@ -27,7 +28,9 @@ login_by_credentials <- function(dbservice,
                                  add = checks)
 
     if (isTRUE(NVIcheckmate::check_package(x = "NVIconfig"))) {
-      NVIcheckmate::assert_choice_character(x = dbservice, choices = NVIconfig:::dbconnect$dbservice, ignore.case = TRUE,
+      NVIcheckmate::assert_choice_character(x = dbservice,
+                                            choices = NVIconfig:::dbconnect$dbservice,
+                                            ignore.case = TRUE,
                                             comment = paste0("Predefined parameters for logging into the database '",
                                                              dbservice,
                                                              "' is not available in your version of NVIconfig"),
@@ -49,16 +52,18 @@ login_by_credentials <- function(dbservice,
   # # if predefined connection parameters don't exist for dbservice
   # # TO DO: include possibility for extra message in assert_character
   # if (x_msg != TRUE) {
-    # dbdriver
-    checkmate::assert_character(dbdriver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
-    # db
-    checkmate::assert_character(db, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
-    # dbserver
-    checkmate::assert_character(dbserver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
-    # dbport
-    checkmate::assert_character(dbport, len = 1, any.missing = FALSE, add = checks)
-    # dbprotocol
-    checkmate::assert_character(dbprotocol, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # dbdriver
+  checkmate::assert_character(dbdriver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # db
+  checkmate::assert_character(db, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # dbserver
+  checkmate::assert_character(dbserver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # dbport
+  checkmate::assert_character(dbport, len = 1, any.missing = FALSE, add = checks)
+  # dbprotocol
+  checkmate::assert_character(dbprotocol, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # R_package
+  checkmate::assert_choice(R_package, choices = c("PostgreSQL", "RODBC"), add = checks)
   # }
 
   # credentials
@@ -94,16 +99,28 @@ login_by_credentials <- function(dbservice,
   # This is used in Connect-statement below to ensure correct spelling when fetching User ID and Password
   dbservice <- keyring::key_list()[which(tolower(keyring::key_list()[, 1]) == tolower(dbservice)), 1]
 
-  # Connects to journal_rapp using ODBC
-  odbcConnection <- RODBC::odbcDriverConnect(paste0("DRIVER=", dbdriver,
-                                                    ";Database=", db,
-                                                    ";Server=", dbserver,
-                                                    ";Port=", dbport,
-                                                    ";PROTOCOL=", dbprotocol,
-                                                    ";UID=", as.character(keyring::key_list(dbservice)[2]),
-                                                    ";PWD=", keyring::key_get(dbservice, as.character(keyring::key_list(dbservice)[2]))))
+  if (R_package == "RODBC") {
+    # Connects to journal_rapp using ODBC
+    connection <- RODBC::odbcDriverConnect(paste0("DRIVER=", dbdriver,
+                                                  ";Database=", db,
+                                                  ";Server=", dbserver,
+                                                  ";Port=", dbport,
+                                                  ";PROTOCOL=", dbprotocol,
+                                                  ";UID=", as.character(keyring::key_list(dbservice)[2]),
+                                                  ";PWD=", keyring::key_get(dbservice, as.character(keyring::key_list(dbservice)[2]))))
+  }
 
-  return(odbcConnection)
+  if (R_package == "PostgreSQL") {
+    # Connects to journal_rapp using ODBC
+    connection <- PostgreSQL::dbConnect(drv = dbDriver(dbdriver),
+                                        host = dbserver,
+                                        dbname = db,
+                                        user = as.character(keyring::key_list(dbservice)[2]),
+                                        password = keyring::key_get(dbservice, as.character(keyring::key_list(dbservice)[2])),
+                                        port = dbport)
+  }
+
+  return(connection)
 }
 
 
@@ -130,9 +147,9 @@ login_by_credentials_PJS <- function() {
   checkmate::reportAssertions(checks)
 
 
-  odbcConnection <- NVIdb::login_by_credentials(dbservice = "PJS")
+  connection <- NVIdb::login_by_credentials(dbservice = "PJS")
 
-  return(odbcConnection)
+  return(connection)
 }
 
 
@@ -157,7 +174,7 @@ login_by_credentials_EOS <- function() {
   # Report check-results
   checkmate::reportAssertions(checks)
 
-  odbcConnection <- NVIdb::login_by_credentials(dbservice = "EOS")
+  connection <- NVIdb::login_by_credentials(dbservice = "EOS")
 
-  return(odbcConnection)
+  return(connection)
 }
