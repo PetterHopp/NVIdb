@@ -32,16 +32,18 @@ Imports:
     utils,
     checkmate,
     data.table,
+    DBI,
     dplyr,
     getPass,
     keyring,
     knitr,
     magrittr,
-    poorman (>= 0.2.3),
+    odbc,
     remotes,
     rlang,
     rmarkdown,
     RODBC,
+    RPostgreSQL,
     R.rsp,
     shiny,
     snakecase,
@@ -63,7 +65,7 @@ LazyData: true
 Encoding: UTF-8
 Language: en-GB
 Roxygen: list(markdown = FALSE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 VignetteBuilder: 
     knitr,
     R.rsp
