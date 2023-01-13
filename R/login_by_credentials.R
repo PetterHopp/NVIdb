@@ -19,7 +19,7 @@ login_by_credentials <- function(dbservice,
 
 
   # Identifies if predefined connection parameters are needed
-  if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) {
+  if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol) | is.null(dbinterface)) {
     # Identify if NVIconfig are installed and parameters for dbservice exists.
     NVIcheckmate::assert_package(x = "NVIconfig",
                                  comment = paste0("Parameters for logging into the database '",
@@ -64,7 +64,7 @@ login_by_credentials <- function(dbservice,
   # dbprotocol
   checkmate::assert_character(dbprotocol, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
   # dbinterface
-  checkmate::assert_choice(dbinterface, choices = c("odbc", "PostgreSQL", "RODBC"), add = checks)
+  checkmate::assert_choice(dbinterface, choices = c("odbc", "RODBC", "RPostgreSQL"), add = checks)
   # }
 
   # credentials
@@ -124,7 +124,7 @@ login_by_credentials <- function(dbservice,
 
   if (dbinterface == "RPostgreSQL") {
     # Connects to journal_rapp using ODBC
-    connection <- RPostgreSQL::dbConnect(drv = dbDriver(dbdriver),
+    connection <- RPostgreSQL::dbConnect(drv = DBI::dbDriver(dbdriver),
                                          host = dbserver,
                                          port = dbport,
                                          dbname = db,
@@ -152,13 +152,13 @@ login_by_credentials_PJS <- function(dbinterface = NULL) {
   # credentials
   NVIcheckmate::assert_credentials(x = "PJS", add = checks)
   # dbinterface
-  checkmate::assert_choice(dbinterface, choices = c("odbc", "PostgreSQL", "RODBC"), add = checks)
+  checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
 
   # Report check-results
   checkmate::reportAssertions(checks)
 
 
-  connection <- NVIdb::login_by_credentials(dbservice = "PJS")
+  connection <- NVIdb::login_by_credentials(dbservice = "PJS", dbinterface = dbinterface)
 
   return(connection)
 }
@@ -179,12 +179,12 @@ login_by_credentials_EOS <- function(dbinterface = NULL) {
   # credentials
   NVIcheckmate::assert_credentials(x = "EOS", add = checks)
   # dbinterface
-  checkmate::assert_choice(dbinterface, choices = c("odbc", "PostgreSQL", "RODBC"), add = checks)
+  checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
   
   # Report check-results
   checkmate::reportAssertions(checks)
 
-  connection <- NVIdb::login_by_credentials(dbservice = "EOS")
+  connection <- NVIdb::login_by_credentials(dbservice = "EOS", dbinterface = dbinterface)
 
   return(connection)
 }
