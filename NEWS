@@ -7,6 +7,8 @@ New features:
 
 - Created cut_slash to remove ending slash from path. This is useful if pathnames should be created using `base::file.path`.
 
+- login, login_by_credentials and login_by_input accepts argument dbinterface with the options RODBC, odb and, RPostgreSQL.
+
 
 Bug fixes:
 
