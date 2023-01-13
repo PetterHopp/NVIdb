@@ -39,7 +39,8 @@ NVIpackager::document_NVIpkg(pkg = pkg,
                              scope = c("spaces", "line_breaks"))
 
 # spelling::spell_check_package(vignettes = TRUE, use_wordlist = TRUE)
-
+filename <- "login_by_credentials.R"
+styler::style_file(path = file.path(pkg_path, "R", filename), scope = I(c("spaces")))
 
 # TEST PACKAGE ----
 # Run tests included in ./tests.
