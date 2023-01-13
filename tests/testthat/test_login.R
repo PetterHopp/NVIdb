@@ -31,7 +31,8 @@ test_that("Errors or warnings for login", {
                        db = "y",
                        dbserver = "z",
                        dbport = "x",
-                       dbprotocol = "y"),
+                       dbprotocol = "y",
+                       dbinterface = NULL),
                  regexpr = "ODBC connection failed")
 
   options(width = unlist(linewidth))
