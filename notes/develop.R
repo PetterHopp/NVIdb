@@ -16,22 +16,29 @@ pkg <- stringi::stri_extract_last_words(pkg_path)
 
 
 # CREATE PACKAGE SKELETON ----
-# create_NVIpkg_skeleton(license_keyword = "CC BY 4.0")
+# create_NVIpkg_skeleton(license_keyword = "BSD_3_clause") # BSD_3_clause # CC BY 4.0
 
+# INCREASE PACKAGE VERSION IN DESCRIPTION AND NEWS ----
+# NVIpackager::increase_NVIpkg_version(pkg = pkg,
+#                                   pkg_path = pkg_path,
+#                                   type = "develop",
+#                                   document = FALSE)
 
 # DOCUMENTATION AND STYLING ----
-# update_loge should be run if a logo has been created (or updated). Thereafter use "readme = TRUE"
+# update_logo should be run if a logo has been created (or updated). Thereafter run "document_NVIpkg" with "readme = TRUE".
 # update_logo(pkg = pkg, pkg_path = pkg_path)
 
 # Creates new help files
 # Should be run before git push when documentation for functions have been changed
 NVIpackager::document_NVIpkg(pkg = pkg,
                              pkg_path = pkg_path,
-                             style = TRUE,
+                             style = FALSE,
                              contributing = FALSE,
                              readme = FALSE,
                              manual = "update",
                              scope = c("spaces", "line_breaks"))
+# filename <- "xxxx.R"
+# styler::style_file(path = file.path(pkg_path, "R", filename), scope = I(c("spaces")))
 
 # spelling::spell_check_package(vignettes = TRUE, use_wordlist = TRUE)
 

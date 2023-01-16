@@ -6,7 +6,8 @@ login_by_credentials <- function(dbservice,
                                  db = NULL,
                                  dbserver = NULL,
                                  dbport = NULL,
-                                 dbprotocol = NULL) {
+                                 dbprotocol = NULL,
+                                 dbinterface = NULL) {
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
@@ -18,7 +19,7 @@ login_by_credentials <- function(dbservice,
 
 
   # Identifies if predefined connection parameters are needed
-  if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) {
+  if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol) | is.null(dbinterface)) {
     # Identify if NVIconfig are installed and parameters for dbservice exists.
     NVIcheckmate::assert_package(x = "NVIconfig",
                                  comment = paste0("Parameters for logging into the database '",
@@ -27,7 +28,9 @@ login_by_credentials <- function(dbservice,
                                  add = checks)
 
     if (isTRUE(NVIcheckmate::check_package(x = "NVIconfig"))) {
-      NVIcheckmate::assert_choice_character(x = dbservice, choices = NVIconfig:::dbconnect$dbservice, ignore.case = TRUE,
+      NVIcheckmate::assert_choice_character(x = dbservice,
+                                            choices = NVIconfig:::dbconnect$dbservice,
+                                            ignore.case = TRUE,
                                             comment = paste0("Predefined parameters for logging into the database '",
                                                              dbservice,
                                                              "' is not available in your version of NVIconfig"),
@@ -40,6 +43,7 @@ login_by_credentials <- function(dbservice,
       if (is.null(dbserver)) {dbserver <- connect[, "dbserver"]}
       if (is.null(dbport)) {dbport <- connect[, "dbport"]}
       if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
+      if (is.null(dbinterface)) {dbinterface <- connect[, "dbinterface"]}
     }
   }
 
@@ -49,16 +53,18 @@ login_by_credentials <- function(dbservice,
   # # if predefined connection parameters don't exist for dbservice
   # # TO DO: include possibility for extra message in assert_character
   # if (x_msg != TRUE) {
-    # dbdriver
-    checkmate::assert_character(dbdriver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
-    # db
-    checkmate::assert_character(db, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
-    # dbserver
-    checkmate::assert_character(dbserver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
-    # dbport
-    checkmate::assert_character(dbport, len = 1, any.missing = FALSE, add = checks)
-    # dbprotocol
-    checkmate::assert_character(dbprotocol, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # dbdriver
+  checkmate::assert_character(dbdriver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # db
+  checkmate::assert_character(db, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # dbserver
+  checkmate::assert_character(dbserver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # dbport
+  checkmate::assert_character(dbport, len = 1, any.missing = FALSE, add = checks)
+  # dbprotocol
+  checkmate::assert_character(dbprotocol, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # dbinterface
+  checkmate::assert_choice(dbinterface, choices = c("odbc", "RODBC", "RPostgreSQL"), add = checks)
   # }
 
   # credentials
@@ -94,16 +100,39 @@ login_by_credentials <- function(dbservice,
   # This is used in Connect-statement below to ensure correct spelling when fetching User ID and Password
   dbservice <- keyring::key_list()[which(tolower(keyring::key_list()[, 1]) == tolower(dbservice)), 1]
 
-  # Connects to journal_rapp using ODBC
-  odbcConnection <- RODBC::odbcDriverConnect(paste0("DRIVER=", dbdriver,
-                                                    ";Database=", db,
-                                                    ";Server=", dbserver,
-                                                    ";Port=", dbport,
-                                                    ";PROTOCOL=", dbprotocol,
-                                                    ";UID=", as.character(keyring::key_list(dbservice)[2]),
-                                                    ";PWD=", keyring::key_get(dbservice, as.character(keyring::key_list(dbservice)[2]))))
+  if (dbinterface == "odbc") {
+    # Connects to journal_rapp using ODBC
+    connection <- DBI::dbConnect(drv = odbc::odbc(),
+                                 Driver = dbdriver,
+                                 Server = dbserver,
+                                 port = dbport,
+                                 Database = db,
+                                 UID = as.character(keyring::key_list(dbservice)[2]),
+                                 PWD = keyring::key_get(dbservice, as.character(keyring::key_list(dbservice)[2])))
+  }
+  
+  if (dbinterface == "RODBC") {
+    # Connects to journal_rapp using ODBC
+    connection <- RODBC::odbcDriverConnect(paste0("DRIVER=", dbdriver,
+                                                  ";Database=", db,
+                                                  ";Server=", dbserver,
+                                                  ";Port=", dbport,
+                                                  ";PROTOCOL=", dbprotocol,
+                                                  ";UID=", as.character(keyring::key_list(dbservice)[2]),
+                                                  ";PWD=", keyring::key_get(dbservice, as.character(keyring::key_list(dbservice)[2]))))
+  }
 
-  return(odbcConnection)
+  if (dbinterface == "RPostgreSQL") {
+    # Connects to journal_rapp using ODBC
+    connection <- RPostgreSQL::dbConnect(drv = DBI::dbDriver(dbdriver),
+                                         host = dbserver,
+                                         port = dbport,
+                                         dbname = db,
+                                         user = as.character(keyring::key_list(dbservice)[2]),
+                                         password = keyring::key_get(dbservice, as.character(keyring::key_list(dbservice)[2])))
+  }
+
+  return(connection)
 }
 
 
@@ -112,27 +141,26 @@ login_by_credentials <- function(dbservice,
 #' @export
 #' @rdname login
 
-login_by_credentials_PJS <- function() {
+login_by_credentials_PJS <- function(dbinterface = NULL) {
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
 
-
   # Identify if NVIconfig are installed.
   NVIcheckmate::assert_package(x = "NVIconfig", add = checks)
-
-
   # credentials
   NVIcheckmate::assert_credentials(x = "PJS", add = checks)
+  # dbinterface
+  checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
 
   # Report check-results
   checkmate::reportAssertions(checks)
 
 
-  odbcConnection <- NVIdb::login_by_credentials(dbservice = "PJS")
+  connection <- NVIdb::login_by_credentials(dbservice = "PJS", dbinterface = dbinterface)
 
-  return(odbcConnection)
+  return(connection)
 }
 
 
@@ -140,24 +168,23 @@ login_by_credentials_PJS <- function() {
 #' @export
 #' @rdname login
 
-login_by_credentials_EOS <- function() {
+login_by_credentials_EOS <- function(dbinterface = NULL) {
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
 
-
   # Identify if NVIconfig are installed.
   NVIcheckmate::assert_package(x = "NVIconfig", add = checks)
-
-
   # credentials
   NVIcheckmate::assert_credentials(x = "EOS", add = checks)
-
+  # dbinterface
+  checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
+  
   # Report check-results
   checkmate::reportAssertions(checks)
 
-  odbcConnection <- NVIdb::login_by_credentials(dbservice = "EOS")
+  connection <- NVIdb::login_by_credentials(dbservice = "EOS", dbinterface = dbinterface)
 
-  return(odbcConnection)
+  return(connection)
 }

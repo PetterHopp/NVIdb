@@ -27,7 +27,7 @@
 #' @examples
 #' \dontrun{
 #' # Standardizing sak_m_res
-#'  sak_m_res <- standardize_PJSdata(PJSdata = sak_m_res)
+#' sak_m_res <- standardize_PJSdata(PJSdata = sak_m_res)
 #' }
 #'
 standardize_PJSdata <- function(PJSdata, dbsource = "v2_sak_m_res") {

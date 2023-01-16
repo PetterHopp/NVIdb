@@ -13,7 +13,10 @@ test_that("Log in to db services", {
   expect_true(as.vector(odbc_connected) >= 1)
   RODBC::odbcClose(odbc_connected)
 
-  })
+  odbc_connected <- login_by_credentials_PJS()
+  expect_true(as.vector(odbc_connected) >= 1)
+  RODBC::odbcClose(odbc_connected)
+})
 
 
 test_that("Errors or warnings for login", {
@@ -28,7 +31,8 @@ test_that("Errors or warnings for login", {
                        db = "y",
                        dbserver = "z",
                        dbport = "x",
-                       dbprotocol = "y"),
+                       dbprotocol = "y",
+                       dbinterface = NULL),
                  regexpr = "ODBC connection failed")
 
   options(width = unlist(linewidth))

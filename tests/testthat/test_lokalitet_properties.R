@@ -38,6 +38,8 @@ test_that("Correct merging of lokalitet and sone", {
   correct_result <- cbind(lokaliteter,
                           as.data.frame(c("5,244133012708", "5,06988301405342", "20,3290669999275", "23,2844499984564"), stringsAsFactors = FALSE),
                           as.data.frame(c("59,8665000008897", "61,758017000812", "69,6618500000011", "70,2409500000325"), stringsAsFactors = FALSE)
+                          # as.data.frame(c(5.244133012708, 5.06988301405342, 20.3290669999275, 23.2844499984564), stringsAsFactors = FALSE),
+                          # as.data.frame(c(59.8665000008897, 61.758017000812, 69.6618500000011, 70.2409500000325), stringsAsFactors = FALSE)
   )
   colnames(correct_result) <- c("eier_lokalitetnr", "longitude", "latitude")
 

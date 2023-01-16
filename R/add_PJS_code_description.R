@@ -272,7 +272,7 @@ add_PJS_code_description <- function(data,
 
       # Transforms code_colname in data to lower case.
       data$code_colname_org_case <- data[, code_colname[i]]
-      data[, code_colname[i]] <- tolower(data[, code_colname[i]])
+      data[, code_colname[i]] <- sapply(data[, code_colname[i]], FUN = tolower)
     }
 
     # code_2_description <- translation_table[base::which(translation_table$type == PJS_variable_type[i] & is.na(translation_table$utgatt_dato)), ]

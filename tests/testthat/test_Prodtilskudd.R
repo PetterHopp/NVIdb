@@ -1,4 +1,3 @@
-context("Prodtilskudd")
 library(NVIdb)
 library(testthat)
 
@@ -45,6 +44,75 @@ test_that("Read Prodtilskudd", {
   expect_equal(dim(Pkoder), c(55803, 89))
   # check correct version
   expect_equal(as.vector(unique(Pkoder[, "S\u00F8knads\u00E5r"])), 2019)
-  expect_equal(as.vector(unique(Pkoder$Telledato)), as.integer(as.Date(c("2019-10-01", "2019-03-01"))))
+  expect_equal(as.vector(as.integer(as.Date(unique(Pkoder$Telledato)))), as.integer(as.Date(c("2019-10-01", "2019-03-01"))))
 
+})
+
+test_that("errors for copy_Prodtilskudd", {
+
+  linewidth <- options("width")
+  options(width = 80)
+
+  expect_error(copy_Prodtilskudd(from_path = "wrong_path", to_path = "./", Pkode_year = "last", Pkode_month = "10"),
+               regexp = "Directory 'wrong_path' does not exist.",
+               fixed = TRUE)
+
+  expect_error(copy_Prodtilskudd(from_path = tempdir(), to_path = "wrong_path", Pkode_year = "last", Pkode_month = "10"),
+               regexp = "Directory 'wrong_path' does not exist.")
+
+  expect_error(copy_Prodtilskudd(from_path = tempdir(), to_path = "./", Pkode_year = "1990", Pkode_month = "10"),
+               regexp = "Element 1 is not >= 1995",
+               fixed = TRUE)
+
+  expect_error(copy_Prodtilskudd(from_path = tempdir(), to_path = "./", Pkode_year = "first", Pkode_month = "10"),
+               regexp = "{'last'}, but is 'first'",
+               fixed = TRUE)
+
+  expect_error(copy_Prodtilskudd(from_path = tempdir(), to_path = "./", Pkode_year = NULL, Pkode_month = "10"),
+               regexp = "Must be a subset of {'last'}",
+               fixed = TRUE)
+
+  expect_error(copy_Prodtilskudd(from_path = tempdir(), to_path = "./", Pkode_year = 2020, Pkode_month = "xx"),
+               regexp = "Variable 'Pkode_month': Must be a subset of",
+               fixed = TRUE)
+
+  options(width = unlist(linewidth))
+})
+
+
+
+test_that("errors for read_Prodtilskudd", {
+
+  linewidth <- options("width")
+  options(width = 80)
+
+  expect_error(read_Prodtilskudd(from_path = file.path(tempdir(), "rubbish")),
+               regexp = "rubbish' does not",
+               fixed = TRUE)
+
+  expect_error(read_Prodtilskudd(from_path = paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/"),
+                                 Pkode_year = 1990,
+                                 Pkode_month = "both"),
+               regexp = "Element 1 is not >= 1995",
+               fixed = TRUE)
+
+  expect_error(read_Prodtilskudd(from_path = paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/"),
+                                 Pkode_year = "first",
+                                 Pkode_month = "both"),
+               regexp = "{'last'}, but is 'first'",
+               fixed = TRUE)
+
+  expect_error(read_Prodtilskudd(from_path = paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/"),
+                                 Pkode_year = NULL,
+                                 Pkode_month = "both"),
+               regexp = "Must be a subset of {'last'}",
+               fixed = TRUE)
+
+  expect_error(read_Prodtilskudd(from_path = paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/"),
+                                 Pkode_year = 2020,
+                                 Pkode_month = "xx"),
+               regexp = "Variable 'Pkode_month': Must be a subset of",
+               fixed = TRUE)
+
+  options(width = unlist(linewidth))
 })

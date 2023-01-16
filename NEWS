@@ -1,32 +1,56 @@
+NVIdb 0.9.0 - (2023-01-16)
+----------------------------------------
+
+New features:
+
+- Created `read_eos_data` for reading one or more years from EOS data for one surveillance programme from exported csv-files.
+
+- Created `read_varekode` for reading the formatted varekoderegister or the raw data to update the formatted varekoderegister.
+
+- `login`, `login_by_credentials` and `login_by_input` now accept the argument `dbinterface` with the R-package names "RODBC", "odbc" or, "RPostgreSQL" as input.
+
+- Created `cut_slash` to remove ending slash from path. This is useful if pathnames should be created using `base::file.path`.
+
+
+Bug fixes:
+
+- Fixed `add_PJS_code_description` when argument `backwards` = "TRUE" for R > 4.2.
+
+
+Other changes:
+
+- Corrected argument checking of `pkode_year` in `read_Prodtilskudd` and `copy_Prodtilskudd`.
+
+
 NVIdb 0.8.0 - (2022-10-25)
 --------------------------
 
 New features:
 
-- build_query_outbreak builds a query for retrieving outbreak data from PJS. Potential inputs are period, hensiktkode, utbrudd_id, analyttkode and metodekode. 
+- `build_query_outbreak` builds a query for retrieving outbreak data from PJS. Potential inputs arguments are `period`, `hensiktkode`, `utbrudd_id`, `analyttkode` and `metodekode`. 
 
-- set_disease_selection_parameters creates a list object with selection parameters from input arguments or by sourcing an R script that sets the input values (a "purpose" file).
+- `set_disease_selection_parameters` creates a list object with selection parameters from input arguments or by sourcing an R script that sets the input values (a "purpose" file).
 
-- read_Pkode_2_text now reads translation table for Pkoder from 1995 to current year as default. Column names are changed in accord with standard conventions. Use keep_old_names = TRUE to keep old names. 
+- `read_Pkode_2_text` now reads translation table for Pkoder from 1995 to current year as default. Column names are changed in accord with standard conventions. Use `keep_old_names` = "TRUE" to keep old names. 
 
-- add_PJS_code_description can now perform backward translation from PJS description text to PJS-code. Use 'backward = TRUE'. Backward translation only works when the description text is unique per code. Case is ignored for backward translation.
+- `add_PJS_code_description` can now perform backward translation from PJS description text to PJS-code. Use `backward` = "TRUE". Backward translation only works when the description text is unique per code. Case is ignored for backward translation.
 
-- add_PJS_code_description, choose_PJS_levels, and standardize_PJS_data now handles the levels subundersokelse and subresultat. 
+- `add_PJS_code_description`, `choose_PJS_levels`, and `standardize_PJS_data` now handles the levels subundersokelse and subresultat. 
 
-- set_dir_NVI now accepts abbreviated input for datasource. The abbreviation must be unique.
+- `set_dir_NVI` now accepts abbreviated input for `datasource`. The abbreviation must be unique.
 
-- add-functions (add_kommune_fylke, add_MT_omrader, add_PJS_code_description, add_poststed and add_produsent_properties) now accepts abbreviated input for position. The abbreviation must be unique.
+- add-functions (`add_kommune_fylke`, `add_MT_omrader`, `add_PJS_code_description`, `add_poststed` and `add_produsent_properties`) now accepts abbreviated input for `position`. The abbreviation must be unique.
 
 
 Bug fixes:
 
-- add_produsent_properties replaces add_produsent. add_produsent_properties now correctly adds geo-coordinates also when information on geo-coordinates is missing.
+- `add_produsent_properties` replaces `add_produsent`. `add_produsent_properties` now correctly adds geo-coordinates also when information on geo-coordinates is missing.
 
-- copy-functions (copy_kommune_fylke, copy_MT_omrader, copy_PJS_code_2_text, copy_Pkode_2_text, copy_poststed, copy_prodnr_2_current_prodnr, and copy_Prodtilskudd),  now accepts "from_path" and "to_path" that ends with "\\".
+- copy-functions (`copy_kommune_fylke`, `copy_MT_omrader`, `copy_PJS_code_2_text`, `copy_Pkode_2_text`, `copy_poststed`, `copy_prodnr_2_current_prodnr`, and `copy_Prodtilskudd`),  now accepts `from_path` and `to_path` that ends with "\\".
 
-- read-functions (read_kommune_fylke, read_leveransereg, read_MT_omrader, read_PJS_code_2_text, read_Pkode_2_text, read_poststed, read_prodnr_2_coordinates, read_prodnr_2_current_prodnr, read_Prodtilskudd, and read_sonetilhorighet),  now accepts "from_path" that ends with "\\".
+- read-functions (`read_kommune_fylke`, `read_leveransereg`, `read_MT_omrader`, `read_PJS_code_2_text`, `read_Pkode_2_text`, `read_poststed`, `read_prodnr_2_coordinates`, `read_prodnr_2_current_prodnr`, `read_Prodtilskudd`, and `read_sonetilhorighet`),  now accepts `from_path` that ends with "\\".
 
-- exclude_from_PJSdata now returns correct data frame if quality = "include".
+- `exclude_from_PJSdata` now returns correct data frame if `quality` = "include".
 
 
 Other changes:
@@ -44,9 +68,9 @@ Other changes:
 
 BREAKING CHANGES:
 
-- add_produsent is deprecated, use add_produsent_properties instead. See NVIdb-deprecated (help("NVIdb-deprecated")).
+- `add_produsent` is deprecated, use `add_produsent_properties` instead. See NVIdb-deprecated (help("NVIdb-deprecated")).
 
-- Default translation table read by read_Pkode_2_text has new default column names. Use keep_old_names = TRUE to keep old names. 
+- Default translation table read by `read_Pkode_2_text` has new default column names. Use `keep_old_names` = "TRUE" to keep old names. 
 
 
 NVIdb 0.7.1 - (2022-08-24)
@@ -54,7 +78,7 @@ NVIdb 0.7.1 - (2022-08-24)
 
 Bug fixes:
 
-- fixed problem with installation when build_vignette = TRUE.
+- fixed problem with installation when `build_vignette` = "TRUE".
 
 
 NVIdb 0.7.0 - (2022-03-14)

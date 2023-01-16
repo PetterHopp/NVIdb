@@ -25,12 +25,12 @@ copy_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
     checkmate::assert_directory_exists(to_path, access = "r", add = checks)
   }
   checkmate::assert_subset(Pkode_month, choices = c("both", "last", "01", "03", "05", "07", "10", "12"), add = checks)
-  NVIcheckmate::assert(checkmate::check_integerish(as.numeric(Pkode_year[which(!grepl('[:alpha:]', Pkode_year))]),
+  checkmate::assert(checkmate::check_integerish(as.numeric(Pkode_year[grep('[[:alpha:]]', Pkode_year, invert = TRUE)]),
                                                 lower = 1995,
                                                 upper = as.numeric(format(Sys.Date(), "%Y")),
                                                 any.missing = FALSE,
+                                                all.missing = FALSE,
                                                 unique = TRUE),
-                    # checkmate::check_character(Pkode_year, min.chars = 4, min.len = 1, any.missing = FALSE),
                     checkmate::check_choice(Pkode_year, choices = c("last")),
                     add = checks)
 

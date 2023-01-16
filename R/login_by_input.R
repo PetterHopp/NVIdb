@@ -7,32 +7,97 @@ login_by_input <- function(dbservice,
                            dbserver = NULL,
                            dbport = NULL,
                            dbprotocol = NULL,
+                           dbinterface = NULL,
                            dbtext = NULL) {
 
-  # Error handling
-  # 1. Parameters for db-connection is missing
-  if ((is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) &
-      !tolower(dbservice) %in% tolower(NVIconfig:::dbconnect$dbservice)) {
-    stop(paste("Parameters for connection to",
-               dbservice,
-               "are missing and predefined parameters are not available"))
+  # ARGUMENT CHECKING ----
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+  
+  # Perform checks
+  # dbservice
+  checkmate::assert_character(dbservice, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  
+  
+  # # Error handling
+  # # 1. Parameters for db-connection is missing
+  # if ((is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol) | is.null(dbinterface)) &
+  #     !tolower(dbservice) %in% tolower(NVIconfig:::dbconnect$dbservice)) {
+  #   stop(paste("Parameters for connection to",
+  #              dbservice,
+  #              "are missing and predefined parameters are not available"))
+  # }
+  # Identifies if predefined connection parameters are needed
+  if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol) | is.null(dbinterface)) {
+    # Identify if NVIconfig are installed and parameters for dbservice exists.
+    NVIcheckmate::assert_package(x = "NVIconfig",
+                                 comment = paste0("Parameters for logging into the database '",
+                                                  dbservice,
+                                                  "' is lacking and NVIconfig with predefined parameters is not installed"),
+                                 add = checks)
+    
+    if (isTRUE(NVIcheckmate::check_package(x = "NVIconfig"))) {
+      NVIcheckmate::assert_choice_character(x = dbservice, choices = NVIconfig:::dbconnect$dbservice, ignore.case = TRUE,
+                                            comment = paste0("Predefined parameters for logging into the database '",
+                                                             dbservice,
+                                                             "' is not available in your version of NVIconfig"),
+                                            add = checks)
+      
+      # Uses the predefined parameters only for parameters with NULL-value
+      connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
+      if (is.null(dbdriver)) {dbdriver <- connect[, "dbdriver"]}
+      if (is.null(db)) {db <- connect[, "db"]}
+      if (is.null(dbserver)) {dbserver <- connect[, "dbserver"]}
+      if (is.null(dbport)) {dbport <- connect[, "dbport"]}
+      if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
+      if (is.null(dbinterface)) {dbinterface <- connect[, "dbinterface"]}
+    }
   }
-
-  # Identifies connection parameters for predefined dbservices
-  # Uses the predefined parameters only for parameters with NULL-value
-  if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) {
-    connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
-    if (is.null(dbdriver)) {dbdriver <- connect[, "dbdriver"]}
-    if (is.null(db)) {db <- connect[, "db"]}
-    if (is.null(dbserver)) {dbserver <- connect[, "dbserver"]}
-    if (is.null(dbport)) {dbport <- connect[, "dbport"]}
-    if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
-  }
+  
+  # dbdriver
+  checkmate::assert_character(dbdriver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # db
+  checkmate::assert_character(db, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # dbserver
+  checkmate::assert_character(dbserver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # dbport
+  checkmate::assert_character(dbport, len = 1, any.missing = FALSE, add = checks)
+  # dbprotocol
+  checkmate::assert_character(dbprotocol, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # dbinterface
+  checkmate::assert_choice(dbinterface, choices = c("odbc", "RODBC", "RPostgreSQL"), add = checks)
+  
+  # Report check-results
+  checkmate::reportAssertions(checks)
+  
+  # # Identifies connection parameters for predefined dbservices
+  # # Uses the predefined parameters only for parameters with NULL-value
+  # if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol) | is.null(dbinterface)) {
+  #   connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
+  #   if (is.null(dbdriver)) {dbdriver <- connect[, "dbdriver"]}
+  #   if (is.null(db)) {db <- connect[, "db"]}
+  #   if (is.null(dbserver)) {dbserver <- connect[, "dbserver"]}
+  #   if (is.null(dbport)) {dbport <- connect[, "dbport"]}
+  #   if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
+  #   if (is.null(dbinterface)) {dbinterface <- connect[, "dbinterface"]}
+  # }
 
   if (is.null(dbtext)) {dbtext <- dbservice}
 
   # Connects to database service using ODBC
-  odbcConnection <- RODBC::odbcDriverConnect(paste0("DRIVER=", dbdriver,
+  if (dbinterface == "odbc") {
+    # Connects to journal_rapp using ODBC
+    connection <- DBI::dbConnect(drv = odbc::odbc(),
+                                 Driver = dbdriver,
+                                 Server = dbserver,
+                                 port = dbport,
+                                 Database = db,
+                                 UID = svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
+                                 PWD = getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
+  }
+  
+  if (dbinterface == "RODBC") {
+    connection <- RODBC::odbcDriverConnect(paste0("DRIVER=", dbdriver,
                                                     ";Database=", db,
                                                     ";Server=", dbserver,
                                                     ";Port=", dbport,
@@ -42,18 +107,39 @@ login_by_input <- function(dbservice,
                                                     ";PWD=",
                                                     getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
   )
-
-  return(odbcConnection)
+  }
+  
+  if (dbinterface == "RPostgreSQL") {
+    # Connects to journal_rapp using ODBC
+    connection <- RPostgreSQL::dbConnect(drv = DBI::dbDriver(dbdriver),
+                                         host = dbserver,
+                                         port = dbport,
+                                         dbname = db,
+                                         user = svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
+                                         password = getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
+  }
+  
+  return(connection)
 }
 
 
 #' @export
 #' @rdname login
 
-login_by_input_PJS <- function() {
+login_by_input_PJS <- function(dbinterface = NULL) {
 
+  # ARGUMENT CHECKING ----
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+
+    # dbinterface
+  checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
+  
+  # Report check-results
+  checkmate::reportAssertions(checks)
+  
   # Oppretterknytning mot journal_rapp
-  odbcConnection <- login_by_input(dbservice = "PJS")
+  odbcConnection <- login_by_input(dbservice = "PJS", dbinterface = dbinterface)
 
   return(odbcConnection)
 }
@@ -62,10 +148,20 @@ login_by_input_PJS <- function() {
 #' @export
 #' @rdname login
 
-login_by_input_EOS <- function() {
+login_by_input_EOS <- function(dbinterface = NULL) {
 
+  # ARGUMENT CHECKING ----
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+  
+  # dbinterface
+  checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
+  
+  # Report check-results
+  checkmate::reportAssertions(checks)
+  
   # Oppretterknytning mot EOS
-  odbcConnection <- login_by_input(dbservice = "EOS")
+  odbcConnection <- login_by_input(dbservice = "EOS", dbinterface = dbinterface)
 
   return(odbcConnection)
 }

@@ -49,7 +49,10 @@
 #'     \code{\link{set_credentials_EOS}}, no input is needed.
 #'
 #'     The login functions returns an open ODBC-channel to the database service.
-#'     The database can then be queried by using functions in the package \code{RODBC}.
+#'     The database can then be queried by using functions in the package used for 
+#'     data base interface. The data base interface must be one of \code{odbc}, 
+#'     \code{RODBC} or, \code{RPostgreSQL}. The default is given in NVIconfig and is 
+#'     \code{RODBC} for "SQL server" and \code{RPostgreSQL} for "PostgreSQL".
 #'
 #'     When the session is finished, the script shall close the ODBC-channel by
 #'     \code{odbcClose("myodbcchannel")} or \code{odbcCloseAll}.
@@ -62,6 +65,8 @@
 #' @param dbserver Name of database server.
 #' @param dbport Port.
 #' @param dbprotocol Protocol to be used.
+#' @param dbinterface The R-package that is used for interface towards the data 
+#'     base.
 #' @param dbtext used in login with input. Gives the possibility of showing
 #'     another name than the dbservice in the windows asking for username and
 #'     password.
@@ -75,7 +80,7 @@
 #' require(RODBC)
 #' journal_rapp <- login_PJS()
 #' # Reads hensiktregistret from PJS
-#'   hensikter <- sqlQuery(journal_rapp,
+#' hensikter <- sqlQuery(journal_rapp,
 #'                        "select * from v_hensikt",
 #'                        as.is = TRUE,
 #'                        stringsAsFactors = FALSE)
@@ -88,7 +93,8 @@ login <- function(dbservice,
                   db = NULL,
                   dbserver = NULL,
                   dbport = NULL,
-                  dbprotocol = NULL) {
+                  dbprotocol = NULL,
+                  dbinterface = NULL) {
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
@@ -100,7 +106,7 @@ login <- function(dbservice,
 
 
   # Identifies if predefined connection parameters are needed
-  if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) {
+  if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol) | is.null(dbinterface)) {
     # Identify if NVIconfig are installed and parameters for dbservice exists.
     NVIcheckmate::assert_package(x = "NVIconfig",
                                  comment = paste0("Parameters for logging into the database '",
@@ -122,6 +128,7 @@ login <- function(dbservice,
       if (is.null(dbserver)) {dbserver <- connect[, "dbserver"]}
       if (is.null(dbport)) {dbport <- connect[, "dbport"]}
       if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
+      if (is.null(dbinterface)) {dbinterface <- connect[, "dbinterface"]}
     }
   }
 
@@ -135,6 +142,8 @@ login <- function(dbservice,
   checkmate::assert_character(dbport, len = 1, any.missing = FALSE, add = checks)
   # dbprotocol
   checkmate::assert_character(dbprotocol, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+  # dbinterface
+  checkmate::assert_choice(dbinterface, choices = c("odbc", "RODBC", "RPostgreSQL"), add = checks)
 
   # Report check-results
   checkmate::reportAssertions(checks)
@@ -186,7 +195,8 @@ login <- function(dbservice,
                          db,
                          dbserver,
                          dbport,
-                         dbprotocol)
+                         dbprotocol,
+                         dbinterface)
   } else {
     # If credentials are missing from the user profile
     login_by_input(dbservice,
@@ -204,32 +214,28 @@ login <- function(dbservice,
 #' @export
 #' @rdname login
 
-login_PJS <- function() {
+login_PJS <- function(dbinterface = NULL) {
 
+  # ARGUMENT CHECKING ----
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+  
+  # dbinterface
+  checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
+  
+  # Report check-results
+  checkmate::reportAssertions(checks)
+  
   # Set service to PJS
   dbservice <- "PJS"
 
-  # # Check if credentials for PJS is stored in the user profile
-  # # 1. keyring package is missing
-  # # Use of require is avoided as loading packages should be avoided in package functions
-  # # This implies that there is no check if keyring is correctly installed
-  # if (!is.element("keyring", utils::installed.packages()[, 1])) {
-  #   login_by_input(dbservice)
-  # } else {
-  #   if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
-  #     # 2. Credentials for PJS are missing from the user profile
-  #     login_by_input(dbservice)
-  #   } else {
-  #     login_by_credentials(dbservice)
-  #   }
-  # }
   # Use check for saved credentials to chose between login_by_input and login_by_credentials
   if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
     # If credentials are saved for the user profile
-    login_by_credentials(dbservice)
+    login_by_credentials(dbservice, dbinterface = dbinterface)
   } else {
     # If credentials are missing from the user profile
-    login_by_input(dbservice)
+    login_by_input(dbservice, dbinterface = dbinterface)
   }
 }
 
@@ -237,31 +243,27 @@ login_PJS <- function() {
 #' @export
 #' @rdname login
 
-login_EOS <- function() {
+login_EOS <- function(dbinterface = NULL) {
 
+  # ARGUMENT CHECKING ----
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+  
+  # dbinterface
+  checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
+  
+  # Report check-results
+  checkmate::reportAssertions(checks)
+  
   # Set service to EOS
   dbservice <- "EOS"
 
-  # # Check if credentials for EOS is stored in the user profile
-  # # 1. keyring package is missing
-  # # Use of require is avoided as loading packages should be avoided in package functions
-  # # This implies that there is no check if keyring is correctly installed
-  # if (!is.element("keyring", utils::installed.packages()[, 1])) {
-  #   login_by_input(dbservice)
-  # } else {
-  #   if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
-  #     # 2. Credentials for PJS are missing from the user profile
-  #     login_by_input(dbservice)
-  #   } else {
-  #     login_by_credentials(dbservice)
-  #   }
-  # }
   # Use check for saved credentials to chose between login_by_input and login_by_credentials
   if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
     # If credentials are saved for the user profile
-    login_by_credentials(dbservice)
+    login_by_credentials(dbservice, dbinterface = dbinterface)
   } else {
     # If credentials are missing from the user profile
-    login_by_input(dbservice)
+    login_by_input(dbservice, dbinterface = dbinterface)
   }
 }

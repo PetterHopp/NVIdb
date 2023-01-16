@@ -64,7 +64,7 @@ read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder2_UTF8.csv",
                           options = list(colClasses = colclasses, fileEncoding = "UTF-8"))
 
   if (isTRUE(keep_old_names)) {
-    standard_names <- c("soknadaar", "telledato", "art", "Pkode",
+    standard_names <- c("soknadaar", "telledato", "Pkodeart", "Pkode",
                         "beskrivelse", "enhet", "unike_dyr", "sortering")
     if (isTRUE(checkmate::check_subset(x = standard_names,
                                        choices = colnames(Pkoder)))) {
@@ -73,6 +73,8 @@ read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder2_UTF8.csv",
                             "Beskrivelse", "Enhet", "Seleksjon", "Sortering",
                             base::setdiff(colnames(Pkoder), standard_names))
       Pkoder$Telledato <- format(as.Date(Pkoder$Telledato), "%d.%m")
+      Pkoder[which(Pkoder$Art == "Svin"), "Art"] <- "Gris"
+      Pkoder$Enhet <- snakecase::to_sentence_case(Pkoder$Enhet)
     }
   }
   return(Pkoder)

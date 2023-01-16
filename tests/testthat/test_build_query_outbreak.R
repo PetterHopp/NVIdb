@@ -54,7 +54,7 @@ test_that("build query HPAI outbreak", {
 
   correct_result <- paste("SELECT *",
                           "FROM v2_sak_m_res",
-                          "WHERE aar >= 2020 AND",
+                          "WHERE aar >= 2020 AND aar <= 2022 AND",
                           "(hensiktkode IN ('0100101007', '0100102003', '0100103003', '0200130001', '0200130', '0200130002') OR",
                           "utbrudd_id = '22' OR",
                           "metodekode IN ('070027', '070127', '070130', '070137', '070138', '070149',",
@@ -72,7 +72,7 @@ test_that("build query HPAI outbreak", {
                           "ON (v_sakskonklusjon.aar = sak.aar AND",
                           "v_sakskonklusjon.ansvarlig_seksjon = sak.ansvarlig_seksjon AND",
                           "v_sakskonklusjon.innsendelsesnummer = sak.innsendelsesnummer)",
-                          "WHERE sak.aar >= 2020 AND (analyttkode LIKE '01150101%')")
+                          "WHERE sak.aar >= 2020 AND sak.aar <= 2022 AND (analyttkode LIKE '01150101%')")
 
   expect_equivalent(query["selection_sakskonklusjon"], correct_result)
 
@@ -87,7 +87,7 @@ test_that("build query P. ovis outbreak", {
 
   correct_result <- paste("SELECT *",
                           "FROM v2_sak_m_res",
-                          "WHERE aar >= 2019 AND",
+                          "WHERE aar >= 2019 AND aar <= 2022 AND",
                           "(hensiktkode IN ('0100101044', '0100101023', '0100102007', '0100102',",
                                             "'0100103007', '0100103', '0200152', '0200147') OR",
                           "konkl_analyttkode LIKE '0302060104050102%' OR analyttkode_funn LIKE '0302060104050102%')")
@@ -101,7 +101,7 @@ test_that("build query P. ovis outbreak", {
                           "ON (v_sakskonklusjon.aar = sak.aar AND",
                           "v_sakskonklusjon.ansvarlig_seksjon = sak.ansvarlig_seksjon AND",
                           "v_sakskonklusjon.innsendelsesnummer = sak.innsendelsesnummer)",
-                          "WHERE sak.aar >= 2019 AND (analyttkode LIKE '0302060104050102%')")
+                          "WHERE sak.aar >= 2019 AND sak.aar <= 2022 AND (analyttkode LIKE '0302060104050102%')")
 
   expect_equivalent(query["selection_sakskonklusjon"], correct_result)
 
@@ -115,7 +115,7 @@ test_that("build query maedi outbreak", {
 
   correct_result <- paste("SELECT *",
                           "FROM v2_sak_m_res",
-                          "WHERE aar >= 2019 AND",
+                          "WHERE aar >= 2019 AND aar <= 2022 AND",
                           "(hensiktkode IN ('0100104020', '0100104054', '0100105007', '0100105008', '0100106007',",
                           "'0700605', '0400101', '0400109001', '0200113', '0200135', '0200141', '0200163'))")
 
@@ -128,7 +128,7 @@ test_that("build query maedi outbreak", {
                           "ON (v_sakskonklusjon.aar = sak.aar AND",
                           "v_sakskonklusjon.ansvarlig_seksjon = sak.ansvarlig_seksjon AND",
                           "v_sakskonklusjon.innsendelsesnummer = sak.innsendelsesnummer)",
-                          "WHERE sak.aar >= 2019")
+                          "WHERE sak.aar >= 2019 AND sak.aar <= 2022")
 
   expect_equivalent(query["selection_sakskonklusjon"], correct_result)
 
