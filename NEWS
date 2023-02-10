@@ -3,7 +3,7 @@ NVIdb 0.9.0.9000 - (2023-##-##)
 
 New features:
 
--
+- Created standardize_eos_data for standardisation of column names etc. in eos-data.
 
 
 Bug fixes:
