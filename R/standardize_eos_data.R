@@ -65,62 +65,57 @@ standardize_eos_data <- function(data,
   
   # Change to numeric for ID-numbers and counts
   # Performed before trimming character variables to reduce variables that needs to be trimmed
-  cols_2_modify <- intersect(colnames(data), c("aar", "ant_prover", grep("ant_und", colnames(data), value = TRUE)))
+  cols_2_modify <- intersect(colnames(data), c("lopenr", "aar", "innsendelsenr", "avvik_i_registrering", 
+                                               "ant_prover", grep("ant_und", colnames(data), value = TRUE)))
   data[, cols_2_modify] <- lapply(data[, cols_2_modify], as.numeric)
   
   # Change to date for date-variables
   # Performed before trimming character variables to reduce variables that needs to be trimmed
   cols_2_modify <- intersect(colnames(data), c("mottatt", "uttatt", "avsluttet", "sist_endret"))
-  data[, cols_2_modify] <- lapply(data[, cols_2_modify], as.Date, format = "%d.%m.%y")
+  for (dato in cols_2_modify) {
+  data[, dato] <- substr(data[, dato], 1, 10)
+  }
+  data[, cols_2_modify] <- lapply(data[, cols_2_modify], as.Date, format = "%Y-%m-%d")
   
-  # Trim character variables
-  cols_2_modify <- names(data)[vapply(data, is.character, logical(1))]
-  data[, cols_2_modify] <- lapply(data[, cols_2_modify], trimws)
+  # # Trim character variables
+  # cols_2_modify <- names(data)[vapply(data, is.character, logical(1))]
+  # data[, cols_2_modify] <- lapply(data[, cols_2_modify], trimws)
   
   # remove double rows due to one Sak being assigned to two MT offices 
   data <- data %>% 
     dplyr::add_count(saksnr, name = "ant_per_sak") %>% 
-    dplyr::add_count(saksnr, rekvirent_nr, name = "ant_per_MT") 
+    dplyr::add_count(saksnr, rekvirentnr, name = "ant_per_MT") 
   
-  rownums <- data[which(data$ant_per_sak == (2 * data$ant_per_MT) )]
-  data[rownums, c("id", "rekvirent_type", "rekvirent_nr", "rekvirent")] <- c(NA_integer_, NA_character_, NA_character_, NA_character_)
+  rownums <- which(data$ant_per_sak == (2 * data$ant_per_MT) )
+  data[rownums, c("lopenr", "rekvirenttype", "rekvirentnr", "rekvirent")] <- c(NA_integer_, NA_character_, NA_character_, NA_character_)
   data[, c("ant_per_sak", "ant_per_MT")] <- c(NULL, NULL)
   data <- unique(data)
-  # %>% 
-  #   dplyr::mutate(id = dplyr::case_when(ant_per_sak == (2 * ant_per_MT) ~ NA_integer_, 
-  #                                       TRUE ~ as.integer(id))) %>%
-  #   dplyr::mutate(rekvirent_type = dplyr::case_when(ant_per_sak == (2 * ant_per_MT) ~ NA_character_, 
-  #                                                   TRUE ~ rekvirent_type)) %>%
-  #   dplyr::mutate(rekvirent_nr = dplyr::case_when(ant_per_sak == (2 * ant_per_MT) ~ NA_character_, 
-  #                                                 TRUE ~ rekvirent_nr)) %>%
-  #   dplyr::mutate(rekvirent = dplyr::case_when(ant_per_sak == (2 * ant_per_MT) ~ NA_character_, 
-  #                                              TRUE ~ rekvirent)) %>%
-  #   dplyr::select(-c(ant_per_sak, ant_per_MT)) %>%
-  #   dplyr::distinct() 
-  
+
   # backtranslate breed to species
   if (isTRUE(breed_to_species)) {
-    add_PJS_code_description(data = data, 
+    PJS_codes_2_text <- read_PJS_codes_2_text()
+    data <- add_PJS_code_description(data = data, 
                              PJS_variable_type = "artrase",
                              code_colname = "art",
                              new_column = "artkode",
                              backward = TRUE) 
     
-    add_PJS_code_description(data = data, 
+    data <- add_PJS_code_description(data = data, 
                              PJS_variable_type = "art",
                              code_colname = "artkode",
                              new_column = "art",
+                             position = "keep",
                              overwrite = TRUE)
     data$artkode <- NULL
   } 
   
-  # adjust number of examined
-  if (isTRUE(adjust_n_examined)) {
-    ant_und <- grep("ant_und", colnames(data), value = TRUE) 
-    for (i in ant_und) {
-      data[, i] <- pmin(data[, c("antall_prover", i)]) 
-    } 
-  } 
+  # # adjust number of examined
+  # if (isTRUE(adjust_n_examined)) {
+  #   ant_und <- grep("ant_und", colnames(data), value = TRUE) 
+  #   for (i in ant_und) {
+  #     data[, i] <- pmin(data[, c("ant_prover", i)]) 
+  #   } 
+  # } 
   return(data) 
 }
 
