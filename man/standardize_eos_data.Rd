@@ -14,52 +14,54 @@ standardize_eos_data(
 )
 }
 \arguments{
-\item{data}{Data frame with data retrieved from EOS.}
+\item{data}{[\code{data.frame}]. The data retrieved from EOS.}
 
-\item{dbsource}{If specified, this will be used for fetching standard column
-names by \code{\link{standardize_columns}}. Defaults to the name of data.}
+\item{dbsource}{[\code{character(1)}]. If specified, this will be used for 
+fetching standard column names by \code{\link{standardize_columns}}. 
+Defaults to the name of data.}
 
-\item{standards}{data.frame The translation table to standard column names. 
+\item{standards}{[\code{data.frame}].   The translation table to standard column names. 
 Defaults to \code{NULL}.}
 
-\item{breed_to_species}{[logical(1)] If \code{TRUE}, breed is translated back 
+\item{breed_to_species}{[\code{logical(1)}]. If \code{TRUE}, breed is translated back 
 to species. Defaults to \code{TRUE)}.}
 
-\item{adjust_n_examined}{[logical(1)] If \code{TRUE}, the number of examined 
-samples is adjusted so it is maximum number of received samples. Defaults 
+\item{adjust_n_examined}{[\code{logical(1)}]. If \code{TRUE}, the number of examined 
+samples is adjusted so it is at maximum the number of received samples. Defaults 
 to \code{TRUE)}.}
 
 \item{\dots}{Other arguments to be passed to \code{standardize_columns}.}
 }
 \value{
-data frame with standardized EOS-data.
+\code{data.frame} with standardized EOS-data.
 }
 \description{
 Standardising EOS-data. This standardising should always be performed.
-    Otherwise the summary numbers can be wrong.
+    Otherwise summary numbers can be wrong.
 }
 \details{
 The function performs the following standardising of data extracted from EOS:
 \itemize{
   \item The column names are standardised using \code{\link{standardize_columns}}.
   \item Numeric variables are transformed to numbers.
-  \item Date variables are transformed to date format.
-  \item Character variables are trimmed for leading and trailing spaces.
-  \item Double registrations of a Sak due to the municipality being divided 
-        between two Food Safety Authority offices are merged into one and for 
-        these the information on Food Safety Authority office is removed.
+  \item Date variables are transformed to dates.
+  \item Double registrations of a "Sak" due to the municipality being divided 
+        between two Food Safety Authority office, are merged into one and for 
+        these, the information on Food Safety Authority office is removed.
   \item Breed is transformed to species. 
+  \item Number of examined samples are corrected so it don't exceed the number 
+        of received samples.
   }
+Correction of number of tested samples is only done when both
+    number of received and number of tested are included in the data.
 }
 \examples{
 \dontrun{
-# Standardizing sak_m_res
+# Standardizing proveresultat_bse
 proveresultat_bse <- standardize_eos_data(data = proveresultat_bse)
 }
 
 }
 \author{
 Petter Hopp Petter.Hopp@vetinst.no
-
-Johan Åkerstedt Johan.Akerstedt@vetinst.no
 }
