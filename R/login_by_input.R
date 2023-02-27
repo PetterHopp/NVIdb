@@ -9,7 +9,7 @@ login_by_input <- function(dbservice,
                            dbprotocol = NULL,
                            dbinterface = NULL,
                            dbtext = NULL) {
-
+  
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
@@ -81,9 +81,9 @@ login_by_input <- function(dbservice,
   #   if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
   #   if (is.null(dbinterface)) {dbinterface <- connect[, "dbinterface"]}
   # }
-
+  
   if (is.null(dbtext)) {dbtext <- dbservice}
-
+  
   # Connects to database service using ODBC
   if (dbinterface == "odbc") {
     # Connects to journal_rapp using ODBC
@@ -93,20 +93,22 @@ login_by_input <- function(dbservice,
                                  port = dbport,
                                  Database = db,
                                  UID = svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
-                                 PWD = getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
+                                 # PWD = getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
+                                 PWD =  askpass::askpass(prompt = paste("Oppgi passord for", dbtext)))
   }
   
   if (dbinterface == "RODBC") {
     connection <- RODBC::odbcDriverConnect(paste0("DRIVER=", dbdriver,
-                                                    ";Database=", db,
-                                                    ";Server=", dbserver,
-                                                    ";Port=", dbport,
-                                                    ";PROTOCOL=", dbprotocol,
-                                                    ";UID=",
-                                                    svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
-                                                    ";PWD=",
-                                                    getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
-  )
+                                                  ";Database=", db,
+                                                  ";Server=", dbserver,
+                                                  ";Port=", dbport,
+                                                  ";PROTOCOL=", dbprotocol,
+                                                  ";UID=",
+                                                  svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
+                                                  ";PWD=",
+                                                  # getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
+                                                  askpass::askpass(prompt = paste("Oppgi passord for", dbtext)))
+    )
   }
   
   if (dbinterface == "RPostgreSQL") {
@@ -116,7 +118,8 @@ login_by_input <- function(dbservice,
                                          port = dbport,
                                          dbname = db,
                                          user = svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
-                                         password = getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
+                                         # PWD = getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
+                                         PWD =  askpass::askpass(prompt = paste("Oppgi passord for", dbtext)))
   }
   
   return(connection)
@@ -127,12 +130,12 @@ login_by_input <- function(dbservice,
 #' @rdname login
 
 login_by_input_PJS <- function(dbinterface = NULL) {
-
+  
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-
-    # dbinterface
+  
+  # dbinterface
   checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
   
   # Report check-results
@@ -140,7 +143,7 @@ login_by_input_PJS <- function(dbinterface = NULL) {
   
   # Oppretterknytning mot journal_rapp
   odbcConnection <- login_by_input(dbservice = "PJS", dbinterface = dbinterface)
-
+  
   return(odbcConnection)
 }
 
@@ -149,7 +152,7 @@ login_by_input_PJS <- function(dbinterface = NULL) {
 #' @rdname login
 
 login_by_input_EOS <- function(dbinterface = NULL) {
-
+  
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
@@ -162,6 +165,6 @@ login_by_input_EOS <- function(dbinterface = NULL) {
   
   # Oppretterknytning mot EOS
   odbcConnection <- login_by_input(dbservice = "EOS", dbinterface = dbinterface)
-
+  
   return(odbcConnection)
 }
