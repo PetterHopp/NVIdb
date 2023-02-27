@@ -28,13 +28,11 @@ BugReports: https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues
 Depends: R (>= 3.5.0)
 License: BSD_3_clause + file LICENSE
 Imports:
-    stats,
-    utils,
+    askpass,
     checkmate,
     data.table,
     DBI,
     dplyr,
-    getPass,
     keyring,
     knitr,
     magrittr,
@@ -47,7 +45,9 @@ Imports:
     R.rsp,
     shiny,
     snakecase,
+    stats,
     svDialogs,
+    utils,
     NVIcheckmate (>= 0.4.0),
     NVIrpackages
 Suggests:
