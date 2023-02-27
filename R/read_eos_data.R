@@ -4,9 +4,11 @@
 #' @details read_eos_data uses \code{data.table::fread} to read the data with the 
 #'     settings \code{showProgress = FALSE} and \code{data.table = FALSE}. Other 
 #'     arguments can be passed to \code{data.table::fread} if necessary.
+#'     
+#'     The eos_table name is the same name as the name as in the EOS data base.
 #' 
 #' @param from_path Path for raw data from eos_data
-#' @param eos_table The name of the table with eos raw data
+#' @param eos_table The name of the table with eos raw data.
 #' @param year The years to be included in the result. Can be both numeric
 #'     or character. Defaults to \code{NULL}, i.e. no selection.
 #' @param colClasses The class of the columns, as in utils::read.table, Defaults to 
@@ -18,9 +20,7 @@
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @export
-#### Function for reading EOS data from RaData. Also reads historic data if file exists
-# eos_table er det samme som TABLE_NAME i EOS-databasen 
-# (Se all_views_eos.csv i RaData-mappen)
+#' 
 read_eos_data <- function(eos_table, 
                           from_path = paste0(set_dir_NVI("EOS"), "RaData"),
                           year = NULL,
