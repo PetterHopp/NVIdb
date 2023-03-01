@@ -101,7 +101,9 @@ login_by_credentials <- function(dbservice,
   dbservice <- keyring::key_list()[which(tolower(keyring::key_list()[, 1]) == tolower(dbservice)), 1]
 
   if (dbinterface == "odbc") {
-    # Connects to journal_rapp using ODBC
+    # Connects to db using odbc
+    # use tryCatch to remove warning, 
+    #   look at https://stackoverflow.com/questions/12193779/how-to-write-trycatch-in-r
     connection <- DBI::dbConnect(drv = odbc::odbc(),
                                  Driver = dbdriver,
                                  Server = dbserver,
@@ -109,6 +111,19 @@ login_by_credentials <- function(dbservice,
                                  Database = db,
                                  UID = as.character(keyring::key_list(dbservice)[2]),
                                  PWD = keyring::key_get(dbservice, as.character(keyring::key_list(dbservice)[2])))
+
+    if(Sys.getenv("RSTUDIO") == "1"){
+      # Opens connection pane in Rstudio. 
+      # This is not opened automatically when running dbconnect from within a function
+      code <- c(match.call())   # This saves what was typed into R
+      
+      odbc:::on_connection_opened(
+        connection,                                
+        paste(c("library(internal_package)",                                        
+                paste("connection <-", gsub(", ", ",\n\t", code))),
+              collapse = "\n"))  
+    }
+    
   }
   
   if (dbinterface == "RODBC") {
