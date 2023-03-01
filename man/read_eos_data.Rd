@@ -14,7 +14,7 @@ read_eos_data(
 )
 }
 \arguments{
-\item{eos_table}{The name of the table with eos raw data}
+\item{eos_table}{The name of the table with eos raw data.}
 
 \item{from_path}{Path for raw data from eos_data}
 
@@ -39,6 +39,8 @@ Reads EOS data from RaData. Includes historical data if these exists.
 read_eos_data uses \code{data.table::fread} to read the data with the 
     settings \code{showProgress = FALSE} and \code{data.table = FALSE}. Other 
     arguments can be passed to \code{data.table::fread} if necessary.
+    
+    The eos_table name is the same name as the name as in the EOS data base.
 }
 \author{
 Petter Hopp Petter.Hopp@vetinst.no
