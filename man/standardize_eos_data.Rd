@@ -14,23 +14,23 @@ standardize_eos_data(
 )
 }
 \arguments{
-\item{data}{[\code{data.frame}]. The data retrieved from EOS.}
+\item{data}{[\code{data.frame}]\cr The data retrieved from EOS.}
 
-\item{dbsource}{[\code{character(1)}]. If specified, this will be used for 
+\item{dbsource}{[\code{character(1)}]\cr If specified, this will be used for 
 fetching standard column names by \code{\link{standardize_columns}}. 
 Defaults to the name of data.}
 
-\item{standards}{[\code{data.frame}].   The translation table to standard column names. 
+\item{standards}{[\code{data.frame}]\cr   The translation table to standard column names. 
 Defaults to \code{NULL}.}
 
-\item{breed_to_species}{[\code{logical(1)}]. If \code{TRUE}, breed is translated back 
+\item{breed_to_species}{[\code{logical(1)}]\cr If \code{TRUE}, breed is translated back 
 to species. Defaults to \code{TRUE)}.}
 
-\item{adjust_n_examined}{[\code{logical(1)}]. If \code{TRUE}, the number of examined 
+\item{adjust_n_examined}{[\code{logical(1)}]\cr If \code{TRUE}, the number of examined 
 samples is adjusted so it is at maximum the number of received samples. Defaults 
-to \code{TRUE)}.}
+to \code{TRUE}.}
 
-\item{\dots}{Other arguments to be passed to \code{standardize_columns}.}
+\item{\dots}{Other arguments to be passed to \code{\link{standardize_columns}}.}
 }
 \value{
 \code{data.frame} with standardized EOS-data.
