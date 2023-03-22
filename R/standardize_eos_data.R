@@ -86,16 +86,18 @@ standardize_eos_data <- function(data,
   
   # remove double rows due to one Sak being assigned to two MT offices 
   data <- data %>% 
-    dplyr::add_count(saksnr, name = "ant_per_sak") %>% 
-    dplyr::add_count(saksnr, rekvirentnr, name = "ant_per_MT") 
+    dplyr::add_count(dplyr::across("saksnr"), name = "ant_per_sak") %>% 
+    dplyr::add_count(dplyr::across(c("saksnr", "mt_avdelingnr")), name = "ant_per_MT") 
   
   rownums <- which(data$ant_per_sak == (2 * data$ant_per_MT) )
-  data[rownums, c("lopenr", "rekvirenttype", "rekvirentnr", "rekvirent")] <- c(NA_integer_, NA_character_, NA_character_, NA_character_)
+  column_names <- intersect(c("lopenr", "rekvirenttype", "mt_avdelingnr", "mt_avdeling"), 
+                            colnames(data))
+  data[rownums, column_names] <- rep(NA_integer_, length(column_names))
   data[, c("ant_per_sak", "ant_per_MT")] <- c(NULL, NULL)
   data <- unique(data)
 
   # backtranslate breed to species
-  if (isTRUE(breed_to_species)) {
+  if (isTRUE(breed_to_species) & "art" %in% colnames(data)) {
     PJS_codes_2_text <- read_PJS_codes_2_text()
     data <- add_PJS_code_description(data = data, 
                              PJS_variable_type = "artrase",
@@ -112,13 +114,13 @@ standardize_eos_data <- function(data,
     data$artkode <- NULL
   } 
   
-  # # adjust number of examined
-  # if (isTRUE(adjust_n_examined)) {
-  #   ant_und <- grep("ant_und", colnames(data), value = TRUE) 
-  #   for (i in ant_und) {
-  #     data[, i] <- pmin(data[, c("ant_prover", i)]) 
-  #   } 
-  # } 
+  # adjust number of examined
+  if (isTRUE(adjust_n_examined)) {
+    ant_und <- grep("ant_und", colnames(data), value = TRUE)
+    for (i in ant_und) {
+      data[, i] <- pmin(data[, "ant_prover"], data[, i])
+    }
+  }
   return(data) 
 }
 
