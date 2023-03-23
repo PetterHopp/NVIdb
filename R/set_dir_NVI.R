@@ -4,10 +4,19 @@
 #'     directories. The function returns the standard directory for the given
 #'     data source. Thereby hard coding of the paths may be avoided.
 #'
-#' @param datasource The data source that one want to access. The input can be
-#'      abbreviated and case is ignored. To identify short names for the available
+#' The path ends with a slash as default. To facilitate the use of 
+#'     \code{\link[base:file.path]{file.path}} you can use the argument 
+#'     \code{slash = FALSE} to avoid ending slash.
+#'
+#' @param datasource [\code{character(1)}]\cr
+#'      The data source that one want to access. The input can be abbreviated
+#'      and case is ignored. To identify short names for the available
 #'      directories, use \code{set_dir_NVI(datasource = "?")}.
-#' @return The full path for the directory at NVI's network. The path ends with "/".
+#' @param slash [\code{logical(1)}]\cr
+#'      If \code{TRUE} the path ends with a slash, Defaults to \code{TRUE}.
+#'      
+#' @return The full path for the directory at NVI's network. The path ends with
+#'      "/" as default, see details.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #'
@@ -16,35 +25,36 @@
 #' \dontrun{
 #' # Set path_ProdTilskudd to path for Prodtilskudd at the NVI network
 #' prodtilskudd_path <- set_dir_NVI(datasource = "ProdTilskudd")
+#'
+#' # Set pathname to a file using 'file.path'
+#' pathname <- file.path(set_dir_NVI(datasource = "ProdTilskudd", slash = FALSE), 
+#'                       "subdir", 
+#'                       "filename")
 #' }
 #'
-set_dir_NVI <- function(datasource) {
-
-  # ARGUMENT CHECKING
+set_dir_NVI <- function(datasource,
+                        slash = TRUE) {
+  
+  # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-
   # Perform checks
   datasource <- NVIcheckmate::match_arg(x = datasource,
                                         choices = names(NVIconfig:::path_NVI),
                                         several.ok = FALSE,
                                         ignore.case = TRUE,
                                         add = checks)
-
+  # slash
+  checkmate::assert_flag(x = slash, add = checks)
   # Report check-results
   checkmate::reportAssertions(checks)
-
-  # # ERROR checking
-  # # Check function input
-  # datasource <- trimws(tolower(datasource))
-  # if (!datasource %in% tolower(names(NVIconfig:::path_NVI))) {
-  #   stop(paste0(datasource, " is not a valid input for datasource.","\n",
-  #              "Valid inputs are (case insensitive): ", paste(names (NVIconfig:::path_NVI), collapse = ", "),"."))
-  # }
-
+  
+  # SETTING THE PATH ----
   # The paths are defined in the package NVIconfig
-  # pathname <- unname(NVIconfig:::path_NVI[which(names(NVIconfig:::path_NVI) == datasource)])
   pathname <- unname(NVIconfig:::path_NVI[datasource])
-
+  if (isFALSE(slash)) {
+    pathname <- cut_slash(pathname)
+  }
   return(pathname)
 }
+
