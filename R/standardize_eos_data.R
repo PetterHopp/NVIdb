@@ -85,12 +85,15 @@ standardize_eos_data <- function(data,
   # data[, cols_2_modify] <- lapply(data[, cols_2_modify], trimws)
   
   # remove double rows due to one Sak being assigned to two MT offices 
+  # It varies which variables keep the information on MT office
+  groupvar <- intersect(c("rekvirent", "rekvirentnr", "mt_avdelingnr", "mt_avdeling"), 
+                            colnames(data))
   data <- data %>% 
     dplyr::add_count(dplyr::across("saksnr"), name = "ant_per_sak") %>% 
-    dplyr::add_count(dplyr::across(c("saksnr", "mt_avdelingnr")), name = "ant_per_MT") 
+    dplyr::add_count(dplyr::across(c("saksnr", groupvar)), name = "ant_per_MT") 
   
   rownums <- which(data$ant_per_sak == (2 * data$ant_per_MT) )
-  column_names <- intersect(c("lopenr", "rekvirenttype", "mt_avdelingnr", "mt_avdeling"), 
+  column_names <- intersect(c("lopenr", "rekvirent", "rekvirentnr", "mt_avdelingnr", "mt_avdeling"), 
                             colnames(data))
   data[rownums, column_names] <- rep(NA_integer_, length(column_names))
   data[, c("ant_per_sak", "ant_per_MT")] <- c(NULL, NULL)
