@@ -5,6 +5,8 @@ New features:
 
 - Created standardize_eos_data for standardisation of column names etc. in eos-data.
 
+- set_dir_NVI now accepts argument slash. set 'slash = FALSE' to remove ending slash.
+
 
 Bug fixes:
 
@@ -13,7 +15,7 @@ Bug fixes:
 
 Other changes:
 
--
+- Some updates of help.
 
 
 BREAKING CHANGES:
