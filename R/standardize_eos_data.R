@@ -82,9 +82,9 @@ standardize_eos_data <- function(data,
   # Performed before trimming character variables to reduce variables that needs to be trimmed
   cols_2_modify <- intersect(colnames(data), c("mottatt", "uttatt", "avsluttet", "sist_endret"))
   for (dato in cols_2_modify) {
-  data[, dato] <- substr(data[, dato], 1, 10)
+    data[, dato] <- as.Date(substr(data[, dato], 1, 10), format = "%Y-%m-%d")
   }
-  data[, cols_2_modify] <- lapply(data[, cols_2_modify], as.Date, format = "%Y-%m-%d")
+  # data[, cols_2_modify] <- lapply(data[, cols_2_modify], as.Date, format = "%Y-%m-%d")
   
   # # Trim character variables
   # cols_2_modify <- names(data)[vapply(data, is.character, logical(1))]
@@ -92,11 +92,13 @@ standardize_eos_data <- function(data,
   
   # remove double rows due to one Sak being assigned to two MT offices 
   # It varies which variables keep the information on MT office
+  proveid <- intersect(c("saksnr", "id_nr", "art", "driftsform"), 
+                       colnames(data))
   groupvar <- intersect(c("rekvirent", "rekvirentnr", "mt_avdelingnr", "mt_avdeling"), 
-                            colnames(data))
+                        colnames(data))
   data <- data %>% 
-    dplyr::add_count(dplyr::across("saksnr"), name = "ant_per_sak") %>% 
-    dplyr::add_count(dplyr::across(c("saksnr", groupvar)), name = "ant_per_MT") 
+    dplyr::add_count(dplyr::across(proveid), name = "ant_per_sak") %>% 
+    dplyr::add_count(dplyr::across(c(proveid, groupvar)), name = "ant_per_MT") 
   
   rownums <- which(data$ant_per_sak == (2 * data$ant_per_MT) )
   column_names <- intersect(c("lopenr", "rekvirent", "rekvirentnr", "mt_avdelingnr", "mt_avdeling"), 
@@ -104,22 +106,22 @@ standardize_eos_data <- function(data,
   data[rownums, column_names] <- rep(NA_integer_, length(column_names))
   data[, c("ant_per_sak", "ant_per_MT")] <- c(NULL, NULL)
   data <- unique(data)
-
+  
   # backtranslate breed to species
   if (isTRUE(breed_to_species) & "art" %in% colnames(data)) {
     PJS_codes_2_text <- read_PJS_codes_2_text()
     data <- add_PJS_code_description(data = data, 
-                             PJS_variable_type = "artrase",
-                             code_colname = "art",
-                             new_column = "artkode",
-                             backward = TRUE) 
+                                     PJS_variable_type = "artrase",
+                                     code_colname = "art",
+                                     new_column = "artkode",
+                                     backward = TRUE) 
     
     data <- add_PJS_code_description(data = data, 
-                             PJS_variable_type = "art",
-                             code_colname = "artkode",
-                             new_column = "art",
-                             position = "keep",
-                             overwrite = TRUE)
+                                     PJS_variable_type = "art",
+                                     code_colname = "artkode",
+                                     new_column = "art",
+                                     position = "keep",
+                                     overwrite = TRUE)
     data$artkode <- NULL
   } 
   
