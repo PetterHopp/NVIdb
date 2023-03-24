@@ -14,21 +14,22 @@ standardize_eos_data(
 )
 }
 \arguments{
-\item{data}{[\code{data.frame}]\cr The data retrieved from EOS.}
+\item{data}{[\code{data.frame}]\cr
+The data retrieved from EOS.}
 
-\item{dbsource}{[\code{character(1)}]\cr If specified, this will be used for 
-fetching standard column names by \code{\link{standardize_columns}}. 
-Defaults to the name of data.}
+\item{dbsource}{[\code{character(1)}]\cr
+ If specified, this will be used for fetching standard column names by  
+\code{\link{standardize_columns}}. Defaults to the name of data.}
 
-\item{standards}{[\code{data.frame}]\cr   The translation table to standard column names. 
-Defaults to \code{NULL}.}
+\item{standards}{[\code{data.frame}]\cr
+The translation table to standard column names. Defaults to \code{NULL}.}
 
-\item{breed_to_species}{[\code{logical(1)}]\cr If \code{TRUE}, breed is translated back 
-to species. Defaults to \code{TRUE)}.}
+\item{breed_to_species}{[\code{logical(1)}]\cr
+If \code{TRUE}, breed is translated back to species. Defaults to \code{TRUE)}.}
 
-\item{adjust_n_examined}{[\code{logical(1)}]\cr If \code{TRUE}, the number of examined 
-samples is adjusted so it is at maximum the number of received samples. Defaults 
-to \code{TRUE}.}
+\item{adjust_n_examined}{[\code{logical(1)}]\cr
+If \code{TRUE}, the number of examined samples is adjusted so it is at maximum 
+the number of received samples. Defaults to \code{TRUE}.}
 
 \item{\dots}{Other arguments to be passed to \code{\link{standardize_columns}}.}
 }
@@ -52,12 +53,17 @@ The function performs the following standardising of data extracted from EOS:
   \item Number of examined samples are corrected so it don't exceed the number 
         of received samples.
   }
-Correction of number of tested samples is only done when both
-    number of received and number of tested are included in the data.
+Transformation from breed to species is only performed when species is included
+    in the data. You need to import the translation table for PJS-codes to perform
+    the translation, use \code{PJS_codes_2_text <- read_PJS_codes_2_text()}.
+    
+Correction of number of tested samples is only done when both number of received
+    and number of tested are included in the data.
 }
 \examples{
 \dontrun{
 # Standardizing proveresultat_bse
+PJS_codes_2_text <- read_PJS_codes_2_text()
 proveresultat_bse <- standardize_eos_data(data = proveresultat_bse)
 }
 
