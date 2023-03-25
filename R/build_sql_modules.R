@@ -15,26 +15,32 @@
 #'     this will be interpreted as first and last years and all years in between
 #'     will be included.
 #'
-#' `build_sql_select_code` builds the SQL syntax to select observations
-#'     with the given code values from one variabel in PJS with hierarchical codes.
+#' \code{build_sql_select_code} builds the SQL syntax to select observations
+#'     with the given code values from one variable in PJS with hierarchical codes.
 #'     When the code value including sub codes  should be selected, add "%" to the
 #'     code, see example.
 #'
 #' Be aware that these functions only builds an sql building block to be
 #'     included into a select statement. It will not build a complete select
 #'     statement. These functions are mainly intended for internal use and
-#'     are called from \code{\link{build_query_hensikt}} and \code{\link{build_query_one_disease}}.
-#'     If generating own select statements, these can be used to facilitate the
-#'     coding. The building blocks can be combined with "AND" and "OR" and
-#'     brackets to get the intended select statement.
+#'     are called from \code{\link{build_query_hensikt}}, \code{\link{build_query_one_disease}},
+#'     and \code{\link{build_query_outbreak}}. If generating own select 
+#'     statements, these can be used to facilitate the coding. The building 
+#'     blocks can be combined with "AND" and "OR" and brackets to get the 
+#'     intended select statement.
 #'
-#' @param db The database for which the query is built. Currently only the value "PJS" is accepted.
-#' @param year One year or a vector with the first and last year that should
-#'     be selected as integer vector.
-#' @param values The value of the codes that should be selected given as character.
-#'     If sub-codes should be included, add "%" after the code, see example.
-#' @param varname The PJS variable name of the variable in PJS from which the
+#' @param year [\code{numeric}] \cr
+#'     One year or a vector giving the first and last years that should 
+#'     be selected.
+#' @param values [\code{character}] \cr
+#'     The value of the codes that should be selected. If sub-codes should be 
+#'     included, add "%" after the code, see example.
+#' @param varname [\code{character(1)}] \cr
+#'     The PJS variable name of the variable in PJS from which the
 #'     coded values should be selected.
+#' @param db [\code{character(1)}] \cr
+#'     The database for which the query is built. Currently only 
+#'     the value "PJS" is accepted.
 #'
 #' @return SQL-code to be included when building select-statements for PJS.
 #'
