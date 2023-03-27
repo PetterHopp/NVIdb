@@ -10,6 +10,7 @@
 #'   \item Double registrations of a "Sak" due to the municipality being divided 
 #'         between two Food Safety Authority office, are merged into one and for 
 #'         these, the information on Food Safety Authority office is removed.
+#'   \item Splits saksnr into saksnr and fagnr if saksnr combines both. 
 #'   \item Breed is transformed to species. 
 #'   \item Number of examined samples are corrected so it don't exceed the number 
 #'         of received samples.
@@ -106,6 +107,12 @@ standardize_eos_data <- function(data,
   data[rownums, column_names] <- rep(NA_integer_, length(column_names))
   data[, c("ant_per_sak", "ant_per_MT")] <- c(NULL, NULL)
   data <- unique(data)
+  
+  # Split saksnr into saksnr and fagnr if saksnr combines both
+  if (any(grepl("/", data$saksnr))) {
+    data$fagnr <- gsub(pattern = "[[:digit:]]*/", replacement = "", x = data$saksnr)
+    data$saksnr <- gsub(pattern = "/[[:alnum:]' ']*", replacement = "", x = data$saksnr)
+  }
   
   # backtranslate breed to species
   if (isTRUE(breed_to_species) & "art" %in% colnames(data)) {

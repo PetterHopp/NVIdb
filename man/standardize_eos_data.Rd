@@ -49,6 +49,7 @@ The function performs the following standardising of data extracted from EOS:
   \item Double registrations of a "Sak" due to the municipality being divided 
         between two Food Safety Authority office, are merged into one and for 
         these, the information on Food Safety Authority office is removed.
+  \item Splits saksnr into saksnr and fagnr if saksnr combines both. 
   \item Breed is transformed to species. 
   \item Number of examined samples are corrected so it don't exceed the number 
         of received samples.
