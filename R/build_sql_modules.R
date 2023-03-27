@@ -29,16 +29,16 @@
 #'     blocks can be combined with "AND" and "OR" and brackets to get the 
 #'     intended select statement.
 #'
-#' @param year [\code{numeric}] \cr
+#' @param year \[\code{numeric}\] \\cr
 #'     One year or a vector giving the first and last years that should 
 #'     be selected.
-#' @param values [\code{character}] \cr
+#' @param values \[\code{character}\] \\cr
 #'     The value of the codes that should be selected. If sub-codes should be 
 #'     included, add "%" after the code, see example.
-#' @param varname [\code{character(1)}] \cr
+#' @param varname \[\code{character(1)}\] \\cr
 #'     The PJS variable name of the variable in PJS from which the
 #'     coded values should be selected.
-#' @param db [\code{character(1)}] \cr
+#' @param db \[\code{character(1)}\] \\cr
 #'     The database for which the query is built. Currently only 
 #'     the value "PJS" is accepted.
 #'
