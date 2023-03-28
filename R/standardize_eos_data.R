@@ -81,7 +81,7 @@ standardize_eos_data <- function(data,
   
   # Change to date for date-variables
   # Performed before trimming character variables to reduce variables that needs to be trimmed
-  cols_2_modify <- intersect(colnames(data), c("mottatt", "uttatt", "avsluttet", "sist_endret"))
+  cols_2_modify <- intersect(colnames(data), c("mottatt", "uttatt", "avsluttet", "sist_endret", "sist_overfort", "sist_overfort2"))
   for (dato in cols_2_modify) {
     data[, dato] <- as.Date(substr(data[, dato], 1, 10), format = "%Y-%m-%d")
   }
@@ -116,19 +116,20 @@ standardize_eos_data <- function(data,
   
   # backtranslate breed to species
   if (isTRUE(breed_to_species) & "art" %in% colnames(data)) {
-    PJS_codes_2_text <- read_PJS_codes_2_text()
     data <- add_PJS_code_description(data = data, 
                                      PJS_variable_type = "artrase",
                                      code_colname = "art",
                                      new_column = "artkode",
-                                     backward = TRUE) 
+                                     backward = TRUE,
+                                     impute_old_when_missing = TRUE) 
     
     data <- add_PJS_code_description(data = data, 
                                      PJS_variable_type = "art",
                                      code_colname = "artkode",
                                      new_column = "art",
                                      position = "keep",
-                                     overwrite = TRUE)
+                                     overwrite = TRUE,
+                                     impute_old_when_missing = TRUE)
     data$artkode <- NULL
   } 
   
