@@ -15,7 +15,8 @@ add_PJS_code_description(
   new_column,
   position = "right",
   overwrite = FALSE,
-  backward = FALSE
+  backward = FALSE,
+  impute_old_when_missing = FALSE
 )
 
 copy_PJS_codes_2_text(
@@ -52,7 +53,13 @@ the content in the existing column(s) is replaced by new data if
 \code{overwrite = TRUE}. If the new column(s) already exist and 
 \code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
 
-\item{backward}{[\code{logical(1)}]. If \code{TRUE}, it translates from descriptive text and back to PJS-code, see details. Defaults to \code{FALSE}.}
+\item{backward}{[\code{logical(1)}] \cr
+If \code{TRUE}, it translates from descriptive text and back to PJS-code, 
+see details. Defaults to \code{FALSE}.}
+
+\item{impute_old_when_missing}{[\code{logical(1)}] \cr
+Should existing value be transferred if no value for the code is found?
+Defaults to \code{FALSE}.}
 
 \item{filename}{File name of the source file for the translation table for PJS-codes.}
 

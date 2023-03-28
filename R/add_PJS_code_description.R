@@ -96,7 +96,12 @@
 #' @param position Position for the new columns, can be one of c("first", "left", "right", "last", "keep"). If several codes should be translated,
 #'     either one value to be applied for all may be given or a vector with specified position for each code to be translated should be given.
 #' @template overwrite
-#' @param backward [\code{logical(1)}]. If \code{TRUE}, it translates from descriptive text and back to PJS-code, see details. Defaults to \code{FALSE}.
+#' @param backward [\code{logical(1)}] \cr
+#'     If \code{TRUE}, it translates from descriptive text and back to PJS-code, 
+#'     see details. Defaults to \code{FALSE}.
+#' @param impute_old_when_missing [\code{logical(1)}] \cr
+#'     Should existing value be transferred if no value for the code is found?
+#'     Defaults to \code{FALSE}.
 #' @param filename File name of the source file for the translation table for PJS-codes.
 #' @param from_path Path for the source translation table for PJS-codes.
 #' @param to_path Path for the target translation table for PJS-codes when copying the table.
@@ -149,8 +154,9 @@ add_PJS_code_description <- function(data,
                                      new_column,
                                      position = "right",
                                      overwrite = FALSE,
-                                     backward = FALSE) {
-
+                                     backward = FALSE,
+                                     impute_old_when_missing = FALSE) {
+  
   if (PJS_variable_type[1] == "auto" | new_column[1] == "auto") {
     code_description_colname <- NVIdb::PJS_code_description_colname
     if (isTRUE(backward)) {
@@ -160,11 +166,11 @@ add_PJS_code_description <- function(data,
       dplyr::left_join(code_description_colname, by = "code_colname")
     PJS_types_selected <- subset(PJS_types_selected, !is.na(PJS_types_selected$type))
   }
-
+  
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-
+  
   # Perform checks
   # data
   checkmate::assert_data_frame(data, add = checks)
@@ -223,33 +229,42 @@ add_PJS_code_description <- function(data,
                                               # deparse(substitute(data)), "`"
                              ),
                              add = checks)
-
+  
   # position
   NVIcheckmate::assert_subset_character(x = unique(position), choices = c("first", "left", "right", "last", "keep"), add = checks)
   # overwrite
   checkmate::assert_logical(overwrite, any.missing = FALSE, len = 1, add = checks)
   # backward
   checkmate::assert_logical(backward, any.missing = FALSE, len = 1, add = checks)
-
+  
   # Report check-results
   checkmate::reportAssertions(checks)
-
+  
+  # PREPARE ARGUMENTS ----
   # Generates PJS_variable_type if "auto".
   # new_column was generated above because the new column names should be checked in the argument checking
   if (PJS_variable_type[1] == "auto") {
     PJS_variable_type <- PJS_types_selected$type
   }
-
-
+  
+  
   # Transforms position to a vector with the same length as number of PJS-variables to be translated
   if (length(position) == 1 & length(code_colname) > 1) {position <- rep(position, length(code_colname))}
-
+  
+  # In bakcward translation, imputation of old if missing must be performed after original case have been restored,
+  #  i.e. it cannot be done by add_new_column, but must be done afterwards.
+  impute_old_when_missing_backward <- impute_old_when_missing
+  if (isTRUE(backward) & isTRUE(impute_old_when_missing)) {
+    impute_old_when_missing <- FALSE
+  }
+  
+  
   # runs the translation for several PJS-variables at a time if wanted
   for (i in 1:length(code_colname)) {
-
+    
     # Make a subset with only the codes that is relevant for the actual variabel
     code_2_description <- translation_table[base::which(translation_table$type == PJS_variable_type[i]), ]
-
+    
     # Transform the translation file in the case that backward translation should be used
     if (isTRUE(backward)) {
       # Removes breeds from table if type = "art"
@@ -265,21 +280,21 @@ add_PJS_code_description <- function(data,
         dplyr::mutate(navn = tolower(.data$navn)) %>%
         dplyr::distinct() %>%
         dplyr::rename(kode = .data$navn, navn = .data$kode) %>%
-        dplyr::filter(is.na(.data$utgatt_dato)) %>%
+        # dplyr::filter(is.na(.data$utgatt_dato)) %>%
         dplyr::add_count(.data$type, .data$kode, name = "antall") %>%
         dplyr::filter(.data$antall == 1) %>%
         dplyr::select(-.data$antall)
-
+      
       # Transforms code_colname in data to lower case.
       data$code_colname_org_case <- data[, code_colname[i]]
       data[, code_colname[i]] <- sapply(data[, code_colname[i]], FUN = tolower)
     }
-
+    
     # code_2_description <- translation_table[base::which(translation_table$type == PJS_variable_type[i] & is.na(translation_table$utgatt_dato)), ]
-
+    
     # # Changes the name of navn to text wanted in the df (txtvarname)
     # base::colnames(code_2_description)[base::which(base::colnames(code_2_description)=="navn")] <- new_column
-
+    
     # Calls function that adds description at the position = position in the relation to the code
     data <- add_new_column(data,
                            ID_column = code_colname[i],
@@ -288,12 +303,18 @@ add_PJS_code_description <- function(data,
                            ID_column_translation_table = c("kode"),
                            to_column_translation_table = c("navn"),
                            position = position[i],
-                           overwrite = overwrite
-    )
+                           overwrite = overwrite,
+                           impute_old_when_missing = impute_old_when_missing)
+    
+
     if (isTRUE(backward)) {
       # Restores original case in code_colname
       data[, code_colname[i]] <- data$code_colname_org_case
       data$code_colname_org_case <- NULL
+      # Imputes old if missing for backward translation
+      if (isTRUE(impute_old_when_missing_backward)) {
+        data[which(is.na(data[, new_column[i]])), new_column[i]] <- data[which(is.na(data[, new_column[i]])), code_colname[i]]
+      }
       # Fix of difficulties translating NA correct. Should probably be fixed elsewhere
       data[which(is.na(data[, code_colname[i]])), new_column[i]] <- NA
     }
