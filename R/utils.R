@@ -90,8 +90,12 @@ copy_file_if_updated <- function(filename, from_path, to_path) {
 #' @param position position for the new columns, can be one of c("first", "left", "right", "last")
 #' @param overwrite When the new column(s) already exist, the content in the existing column(s) is replaced by new data if TRUE. When FALSE,
 #'     a warning is issued and new variables are created.
+#' @param impute_old_when_missing [\code{logical(1)}] \cr
+#'     Should existing value be transferred if no value for the code is found?
+#'     Defaults to \code{FALSE}.
 #'
-#' @return A data.frame with a new column with the translated value. The new column is placed to the right of the old column.
+#' @return A data.frame with a new column with the translated value. The new 
+#'     column is placed in the position given in position.
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #'
 #' @keywords internal
@@ -166,7 +170,7 @@ add_new_column <- function(data,
     
     # Imputes with values in code variable in old dataset in the case that no merge was performed
     # Only if impute_old_when_missing = TRUE
-    if (impute_old_when_missing) {
+    if (isTRUE(impute_old_when_missing)) {
       data[which(is.na(data[, new_colname])), new_colname] <- data[which(is.na(data[, new_colname])), ID_column]
     }
     

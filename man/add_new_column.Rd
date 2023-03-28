@@ -35,9 +35,14 @@ be merged with the ID column in the data, i.e. the column in the translation tab
 
 \item{overwrite}{When the new column(s) already exist, the content in the existing column(s) is replaced by new data if TRUE. When FALSE,
 a warning is issued and new variables are created.}
+
+\item{impute_old_when_missing}{[\code{logical(1)}] \cr
+Should existing value be transferred if no value for the code is found?
+Defaults to \code{FALSE}.}
 }
 \value{
-A data.frame with a new column with the translated value. The new column is placed to the right of the old column.
+A data.frame with a new column with the translated value. The new 
+    column is placed in the position given in position.
 }
 \description{
 Add a new column with content based on a column in the dataset.
