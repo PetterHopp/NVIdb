@@ -52,7 +52,7 @@ test_that("Standardize colnames from EOS scrapie", {
                       "fodselsdato", "skrottnr",
                       "aar", "ansvarlig_seksjon", "innsendelsenr", "saksnr",
                       "eier_lokalitettype", "eier_lokalitet", "eier_lokalitetnr", "annen_aktortype", "annen_aktor",
-                      "id_nr", "art", "scrapie", "sist_endret", "annen_aktornr",
+                      "id_nr", "art", "scrapie", "sist_overfort", "annen_aktornr",
                       "rekvirenttype", "rekvirentnr", "rekvirent", "avvik_i_registrering", "ant_und_prover")
 
   # Compare Add fylke, current fylkenr and current fylke with correct result
