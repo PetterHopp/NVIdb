@@ -5,17 +5,19 @@ New features:
 
 - Created standardize_eos_data for standardisation of column names etc. in eos-data.
 
-- set_dir_NVI now accepts argument slash. set 'slash = FALSE' to remove ending slash.
+- set_dir_NVI now accepts argument `slash`. set `slash = FALSE` to remove ending slash.
+
+- add_PJS_code_description now accepts the argument `imput_old_when_missing`.
 
 
 Bug fixes:
 
--
+- add_PJS_code_description now performs back translation also in the case that the code has expired ("utg\u00E5tt").
 
 
 Other changes:
 
-- Some updates of help.
+- Minor updates of help.
 
 
 BREAKING CHANGES:
