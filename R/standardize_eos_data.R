@@ -6,7 +6,7 @@
 #' \itemize{
 #'   \item The column names are standardised using \code{\link{standardize_columns}}.
 #'   \item Numeric variables are transformed to numbers.
-#'   \item Date variables are transformed to dates.
+#'   \item Datetime variables are transformed to dates.
 #'   \item Double registrations of a "Sak" due to the municipality being divided 
 #'         between two Food Safety Authority office, are merged into one and for 
 #'         these, the information on Food Safety Authority office is removed.
@@ -14,26 +14,43 @@
 #'   \item Breed is transformed to species. 
 #'   \item Number of examined samples are corrected so it don't exceed the number 
 #'         of received samples.
+#'   \item Redundant variables are deleted. 
 #'   }
+#' Standardisation of column names may be set to \code{FALSE}. This should only be 
+#'     done if the column names have been standardised previously as a new 
+#'     standardisation of column names may give unpredicted results. Remark that all 
+#'     other standardisations are dependent on standard column names, so the function 
+#'     will not work if the data do not have standard column names.
+#'     
 #' Transformation from breed to species is only performed when species is included
 #'     in the data. You need to import the translation table for PJS-codes to perform
 #'     the translation, use \code{PJS_codes_2_text <- read_PJS_codes_2_text()}.
 #'     
 #' Correction of number of tested samples is only done when both number of received
 #'     and number of tested are included in the data.
+#'     
+#' There are a few reduntant varibles in some data sets. In CWD data both "sist_overfort"
+#'     and "sist_endret" keeps the same information. "sist_endret" is deleted. In 
+#'     Salmonella and Campylobacter data, "prove_identitet" is always \code{NULL} and 
+#'     "prove_id" is \code{NULL} for salmonella data and equal ti "id_nr" for Campylobacter
+#'     data. Both are deleted. Set \code{delete_redundant = FALSE} to keep them.
 #' 
 #' @param data [\code{data.frame}]\cr
 #'     The data retrieved from EOS.
 #' @param dbsource [\code{character(1)}]\cr
 #'     If specified, this will be used for fetching standard column names by  
-#'    \code{\link{standardize_columns}}. Defaults to the name of data. 
+#'    \code{\link{standardize_columns}}. Defaults to the name of the input data. 
 #' @param standards [\code{data.frame}]\cr
 #'     The translation table to standard column names. Defaults to \code{NULL}. 
+#' @param standardize_colnames [\code{logical(1)}]\cr
+#'     If \code{TRUE}, the column names will be standardised. Defaults to \code{TRUE)}. 
 #' @param breed_to_species [\code{logical(1)}]\cr
 #'     If \code{TRUE}, breed is translated back to species. Defaults to \code{TRUE)}. 
 #' @param adjust_n_examined [\code{logical(1)}]\cr
 #'     If \code{TRUE}, the number of examined samples is adjusted so it is at maximum 
 #'     the number of received samples. Defaults to \code{TRUE}. 
+#' @param delete_redundant [\code{logical(1)}]\cr
+#'     If \code{TRUE}, redundant variables in the data is deleted. Defaults to \code{TRUE}. 
 #' @param \dots Other arguments to be passed to \code{\link{standardize_columns}}.
 #' 
 #' @return \code{data.frame} with standardized EOS-data.
@@ -50,8 +67,10 @@
 standardize_eos_data <- function(data,
                                  dbsource = deparse(substitute(data)), 
                                  standards = NULL, 
+                                 standardize_colnames = TRUE,
                                  breed_to_species = TRUE, 
                                  adjust_n_examined = TRUE,
+                                 delete_redundant = TRUE,
                                  ...) {
   
   # ARGUMENT CHECKING ----
@@ -61,17 +80,28 @@ standardize_eos_data <- function(data,
   checkmate::assert_data_frame(data)
   checkmate::assert_character(dbsource, len = 1, min.chars = 1, add = checks)
   checkmate::assert_data_frame(standards, null.ok = TRUE, add = checks)
+  checkmate::assert_flag(standardize_colnames, add = checks) 
   checkmate::assert_flag(breed_to_species, add = checks) 
   checkmate::assert_flag(adjust_n_examined, add = checks)
+  checkmate::assert_flag(delete_redundant, add = checks) 
   # Report check-results
   checkmate::reportAssertions(checks)
   
-  # standardize_columns
-  data <- standardize_columns(data = data,
-                              dbsource = dbsource,
-                              standards = standards,
-                              property = "colnames",
-                              ...) 
+  # STANDARDISE DATA ----
+  # Standardise column names
+  if (isTRUE(standardize_colnames)) {
+    data <- standardize_columns(data = data,
+                                dbsource = dbsource,
+                                standards = standards,
+                                property = "colnames",
+                                ...) 
+  }
+  
+  if (isTRUE(delete_redundant)) {
+    data$sist_overfort2 <- NULL 
+    data$prove_id <- NULL 
+    data$prove_identitet <- NULL 
+  }
   
   # Change to numeric for ID-numbers and counts
   # Performed before trimming character variables to reduce variables that needs to be trimmed
@@ -85,11 +115,6 @@ standardize_eos_data <- function(data,
   for (dato in cols_2_modify) {
     data[, dato] <- as.Date(substr(data[, dato], 1, 10), format = "%Y-%m-%d")
   }
-  # data[, cols_2_modify] <- lapply(data[, cols_2_modify], as.Date, format = "%Y-%m-%d")
-  
-  # # Trim character variables
-  # cols_2_modify <- names(data)[vapply(data, is.character, logical(1))]
-  # data[, cols_2_modify] <- lapply(data[, cols_2_modify], trimws)
   
   # remove double rows due to one Sak being assigned to two MT offices 
   # It varies which variables keep the information on MT office
