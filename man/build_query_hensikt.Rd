@@ -7,22 +7,31 @@
 build_query_hensikt(year, hensikt, db = "PJS")
 }
 \arguments{
-\item{year}{The year that should be selected as integer. Can be given as one year, the first and last year or a range of years.}
+\item{year}{[\code{numeric}] \cr
+One year or a vector giving the first and last years that should 
+be selected.}
 
-\item{hensikt}{Vector with one or more hensiktkoder. Sub-hensikter are not included and must be explicitly mentioned.}
+\item{hensikt}{[\code{character}] \cr
+Vector with one or more specific hensiktkoder. If sub-hensikter 
+should be included, end the code with \%.}
 
-\item{db}{The database for which the query is built. Currently only the value "PJS" is accepted.}
+\item{db}{[\code{character(1)}] \cr
+The database for which the query is built. Currently only 
+the value "PJS" is accepted.}
 }
 \value{
-A list with select-statements for "v2_sak_m_res" and "v_sakskonklusjon", respectively. The statements should
-   be included in a \code{RODBC::sqlQuery}.
+A list with select-statements for "v2_sak_m_res" and 
+    "v_sakskonklusjon", respectively. The statements should be
+    included in a \code{RODBC::sqlQuery}.
 }
 \description{
-Builds the query for selecting all data for one or more hensikt within one year from PJS. The query is
-   written in T-SQL as used by MS-SQL.
+Builds the query for selecting all data for one or 
+    more hensikt within one year from PJS. The query is written
+    in T-SQL as used by MS-SQL.
 }
 \details{
-The function builds the SQL syntax to select all PJS-journals concerning the hensiktkoder from PJS.
+The function builds the SQL syntax to select all 
+    PJS-journals concerning the hensiktkoder from PJS.
 }
 \examples{
 # SQL-select query for Pancreatic disease (PD)

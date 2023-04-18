@@ -1,3 +1,25 @@
+NVIdb 0.10.0 - (2023-04-18)
+----------------------------------------
+
+New features:
+
+- Created standardize_eos_data for standardisation of column names etc. in eos-data.
+
+- set_dir_NVI now accepts argument `slash`. set `slash = FALSE` to remove ending slash.
+
+- add_PJS_code_description now accepts the argument `impute_old_when_missing`.
+
+
+Bug fixes:
+
+- add_PJS_code_description now performs back translation also in the case that the code has expired ("utg\u00E5tt").
+
+
+Other changes:
+
+- Minor updates of help.
+
+
 NVIdb 0.9.0 - (2023-01-16)
 ----------------------------------------
 
@@ -7,7 +29,7 @@ New features:
 
 - Created `read_varekode` for reading the formatted varekoderegister or the raw data to update the formatted varekoderegister.
 
-- `login`, `login_by_credentials` and `login_by_input` now accept the argument `dbinterface` with the R-package names "RODBC", "odbc" or, "RPostgreSQL" as input.
+- `login`, `login_by_credentials` and `login_by_input` now accept the argument `dbinterface` with the R-package names "RODBC", "odbc" or, "RPostgreSQL" as input.Thanks to @krdean for providing code for logging in by odbc.
 
 - Created `cut_slash` to remove ending slash from path. This is useful if pathnames should be created using `base::file.path`.
 

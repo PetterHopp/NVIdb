@@ -34,7 +34,7 @@ for more information.
 [GitHub](https://github.com/NorwegianVeterinaryInstitute). To install
 `NVIdb` you will need:
 
--   R version > 4.0.0
+-   R version &gt; 4.0.0
 -   R package `remotes`
 -   Rtools 4.0 or Rtools 4.2 depending on R version
 
@@ -105,6 +105,8 @@ with codes into names and others. You can translate
 -   kommunenr into Mattilsynets avdeling and region
 -   postnr into poststed and poststedets kommunenr
 -   old produsentnr into current produsentnr
+
+#### Help
 
 The full list of all available functions and datasets can be accessed by
 typing

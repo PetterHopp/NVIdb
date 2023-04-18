@@ -21,11 +21,12 @@
   # Print a startup message if not required version is installed
   if (!isTRUE(msg)) {
     msg <- paste(msg,
-                 "You can install 'NVIconfig' with remotes::install_github('NorwegianVeterinaryInstitute/NVIconfig',",
-                 "                                                         auth_token = 'your_GitHub-PAT',",
-                 "                                                         upgrade = FALSE,",
-                 "                                                         build = TRUE,",
-                 "                                                         build_vignettes = TRUE)",
+                 "You can install 'NVIconfig' by using:",
+                 "  remotes::install_github('NorwegianVeterinaryInstitute/NVIconfig',",
+                 "                          auth_token = 'your_GitHub-PAT',",
+                 "                          upgrade = FALSE,",
+                 "                          build = TRUE,",
+                 "                          build_vignettes = TRUE)",
                  sep = "\n")
     packageStartupMessage(msg)
   }

@@ -49,6 +49,7 @@ set_PAT <- function(service) {
   # Use the service name as input to username
   keyring::key_set_with_value(service = service,
                               username = service,
-                              password = getPass::getPass(paste("Enter your PAT for", service)),
+                              # password = getPass::getPass(paste("Enter your PAT for", service)),
+                              password = askpass::askpass(prompt = paste("Enter your PAT for", service)),
                               keyring = NULL)
 }

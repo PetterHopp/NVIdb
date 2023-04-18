@@ -4,15 +4,20 @@
 \alias{set_dir_NVI}
 \title{Set directories for data sources at NVI}
 \usage{
-set_dir_NVI(datasource)
+set_dir_NVI(datasource, slash = TRUE)
 }
 \arguments{
-\item{datasource}{The data source that one want to access. The input can be
-abbreviated and case is ignored. To identify short names for the available
+\item{datasource}{[\code{character(1)}]\cr
+The data source that one want to access. The input can be abbreviated
+and case is ignored. To identify short names for the available
 directories, use \code{set_dir_NVI(datasource = "?")}.}
+
+\item{slash}{[\code{logical(1)}]\cr
+If \code{TRUE} the path ends with a slash, Defaults to \code{TRUE}.}
 }
 \value{
-The full path for the directory at NVI's network. The path ends with "/".
+The full path for the directory at NVI's network. The path ends with
+     "/" as default, see details.
 }
 \description{
 Set the directories for various data sources at NVI's network.
@@ -21,11 +26,20 @@ Set the directories for various data sources at NVI's network.
 The Norwegian Veterinary Institute has standard data sources at fixed
     directories. The function returns the standard directory for the given
     data source. Thereby hard coding of the paths may be avoided.
+
+The path ends with a slash as default. To facilitate the use of 
+    \code{\link[base:file.path]{file.path}} you can use the argument 
+    \code{slash = FALSE} to avoid ending slash.
 }
 \examples{
 \dontrun{
 # Set path_ProdTilskudd to path for Prodtilskudd at the NVI network
 prodtilskudd_path <- set_dir_NVI(datasource = "ProdTilskudd")
+
+# Set pathname to a file using 'file.path'
+pathname <- file.path(set_dir_NVI(datasource = "ProdTilskudd", slash = FALSE), 
+                      "subdir", 
+                      "filename")
 }
 
 }
