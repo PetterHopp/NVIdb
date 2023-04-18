@@ -91,6 +91,9 @@
 #'                        new_column = c("MT_regionnavn" = "MT_region"))
 #' }
 #'
+# To avoid checking of the variable kommune_fylke as default input argument in the function
+utils::globalVariables("komnr_2_MT_omrader")
+
 add_MT_omrader <- function(data,
                            translation_table = komnr_2_MT_omrader,
                            code_column = c("komnr"),
