@@ -107,6 +107,9 @@ standardize_eos_data <- function(data,
   # Performed before trimming character variables to reduce variables that needs to be trimmed
   cols_2_modify <- intersect(colnames(data), c("lopenr", "aar", "innsendelsenr", "avvik_i_registrering", 
                                                "ant_prover", grep("ant_und", colnames(data), value = TRUE)))
+  # for (number in cols_2_modify) {
+  #   data[, number] <- as.numeric(data[, number])
+  # }
   data[, cols_2_modify] <- lapply(data[, cols_2_modify], as.numeric)
   
   # Change to date for date-variables
@@ -123,8 +126,8 @@ standardize_eos_data <- function(data,
   groupvar <- intersect(c("rekvirent", "rekvirentnr", "mt_avdelingnr", "mt_avdeling"), 
                         colnames(data))
   data <- data %>% 
-    dplyr::add_count(dplyr::across(proveid), name = "ant_per_sak") %>% 
-    dplyr::add_count(dplyr::across(c(proveid, groupvar)), name = "ant_per_MT") 
+    dplyr::add_count(dplyr::across(dplyr::all_of(proveid)), name = "ant_per_sak") %>% 
+    dplyr::add_count(dplyr::across(dplyr::all_of(c(proveid, groupvar))), name = "ant_per_MT") 
   
   rownums <- which(data$ant_per_sak == (2 * data$ant_per_MT) )
   column_names <- intersect(c("lopenr", "rekvirent", "rekvirentnr", "mt_avdelingnr", "mt_avdeling"), 
