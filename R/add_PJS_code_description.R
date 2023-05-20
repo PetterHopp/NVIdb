@@ -208,9 +208,6 @@
 #'                                      impute_old_when_missing = TRUE)
 #' }
 #'
-# To avoid checking of the variable kommune_fylke as default input argument in the function
-utils::globalVariables("PJS_codes_2_text")
-
 add_PJS_code_description <- function(data,
                                      translation_table = PJS_codes_2_text,
                                      PJS_variable_type,
@@ -387,3 +384,7 @@ add_PJS_code_description <- function(data,
   }
   return(data)
 }
+
+# To avoid checking of the variable kommune_fylke as default input argument in the function
+utils::globalVariables("PJS_codes_2_text")
+
