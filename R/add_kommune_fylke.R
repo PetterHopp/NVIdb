@@ -79,9 +79,6 @@
 #'                                             "kommune" = "gjeldende_kommune"))
 #' }
 #'
-# To avoid checking of the variable kommune_fylke as default input argument in the function
-utils::globalVariables("kommune_fylke")
-
 add_kommune_fylke <- function(data,
                               translation_table = kommune_fylke,
                               code_column = c("komnr"),
@@ -156,3 +153,7 @@ add_kommune_fylke <- function(data,
 
   return(data)
 }
+
+# To avoid checking of the variable kommune_fylke as default input argument in the function
+utils::globalVariables("kommune_fylke")
+
