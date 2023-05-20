@@ -71,8 +71,6 @@
 #'                         new_column = c("poststed", "postkomnr" = "komnr"))
 #' }
 #'
-# To avoid checking of the variable kommune_fylke as default input argument in the function
-utils::globalVariables("poststed")
 
 add_poststed <- function(data,
                          translation_table = poststed,
@@ -127,3 +125,7 @@ add_poststed <- function(data,
 
   return(data)
 }
+
+
+# To avoid checking of the variable kommune_fylke as default input argument in the function
+utils::globalVariables("poststed")
