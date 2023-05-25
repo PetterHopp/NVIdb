@@ -3,7 +3,9 @@
 # GENERATE rda-file with the corresponding standard colnames for description to PJS code variables
 
 # GENERATE DATA ----
-PJS_code_description_colname <- as.data.frame(matrix(rbind(c("ansvarlig_seksjon", "seksjon", "ansvarlig_seksjon_navn"),
+PJS_code_description_colname <- as.data.frame(matrix(rbind(c("sakskonkl_kjennelsekode", "kjennelse", "sakskonkl_kjennelse"),
+                                                           c("sakskonkl_analyttkode", "analytt", "sakskonkl_analytt"),
+                                                           c("ansvarlig_seksjon", "seksjon", "ansvarlig_seksjon_navn"),
                                                            c("utf_seksjon", "seksjon", "utforende_seksjon_navn"),
                                                            c("hensiktkode", "hensikt", "hensikt"),
                                                            c("utbruddnr", "utbrudd", "utbrudd"),
