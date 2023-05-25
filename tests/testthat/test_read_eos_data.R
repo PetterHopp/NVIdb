@@ -19,16 +19,16 @@ test_that("read eos_data", {
   ila <- read_eos_data(eos_table = "proveresultat_ila",
                        from_path = paste0(set_dir_NVI("EOS"), "RaData/"), 
                        year = c(2017:2019))
-  expect_equal(min(substr(ila$Saksnr, 1, 4)), "2017")
+  expect_equal(min(substr(ila$saksnr, 1, 4)), "2017")
   
-  expect_equal(max(substr(ila$Saksnr, 1, 4)), "2019")
+  expect_equal(max(substr(ila$saksnr, 1, 4)), "2019")
   
   ila <- read_eos_data(eos_table = "proveresultat_ila",
                        from_path = paste0(set_dir_NVI("EOS"), "RaData/"), 
                        year = as.numeric(format(Sys.Date(), "%Y")) - 1)
-  expect_equal(as.numeric(min(substr(ila$Saksnr, 1, 4))), as.numeric(format(Sys.Date(), "%Y")) - 1)
+  expect_equal(as.numeric(min(substr(ila$saksnr, 1, 4))), as.numeric(format(Sys.Date(), "%Y")) - 1)
   
-  expect_equal(as.numeric(max(substr(ila$Saksnr, 1, 4))), as.numeric(format(Sys.Date(), "%Y")) - 1)
+  expect_equal(as.numeric(max(substr(ila$saksnr, 1, 4))), as.numeric(format(Sys.Date(), "%Y")) - 1)
   
 })
 
