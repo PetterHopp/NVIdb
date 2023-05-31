@@ -1,3 +1,26 @@
+NVIdb 0.10.1 - (2023-05-31)
+----------------------------------------
+
+New features:
+
+- add_PJS_code_description is extended so that analytt and kjennelse at sakskonklusjon-level can be translated when using the arguments `PJS_variable_type` = "auto" and `new_column` = "auto". 
+
+
+Bug fixes:
+
+-
+
+
+Other changes:
+
+- Improved help by standardising argument description for a few functions.
+
+
+BREAKING CHANGES:
+
+-
+
+
 NVIdb 0.10.0 - (2023-04-18)
 ----------------------------------------
 

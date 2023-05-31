@@ -20,16 +20,18 @@ read_sonetilhorighet(
 )
 }
 \arguments{
-\item{data}{Data frame with data with a column with a aquaculture site number ("LokNr")}
+\item{data}{[\code{data.frame}]\cr
+Data with a column with an aquaculture site number ("LokNr")}
 
-\item{translation_table}{Data frame with the table for translating from loknr to the property in question.}
+\item{translation_table}{[\code{data.frame}]\cr
+Table for translating from loknr to the property in question.}
 
-\item{code_column}{The column with the coded value. Valid values are one of c("LokNr"). If the column in
-data has another name, it can be input as a named vector, see examples.}
+\item{code_column}{[\code{character(1)}]\cr
+The column with the coded value. Valid values are one of c("LokNr"). If the column in
+    data has another name, it can be input as a named vector, see examples.}
 
-\item{new_column}{The new columns that should be included into the data frame. The new columns can be one ore more of
-c("sone", "EastUTM_33N_WGS84", "NorthUTM_33N_WGS84", "Longitude_WGS84", "Latitude_WGS84"). If the new columns in the result
-data frame should have other names, \code{new_column} can be input as a named vector, see examples.}
+\item{new_column}{[\code{character}]\cr
+The new columns that should be included into the data frame.}
 
 \item{position}{[\code{character(1)}]. The position for the new columns, can 
 be one of c("first", "left", "right", "last", "keep"). The input can be 
@@ -40,31 +42,57 @@ the content in the existing column(s) is replaced by new data if
 \code{overwrite = TRUE}. If the new column(s) already exist and 
 \code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
 
-\item{filename}{a list with the filenames of the source files with the tables for generating the translation table.}
+\item{filename}{[\code{list}]\cr
+The filenames of the source files with the tables for generating the translation table.}
 
-\item{from_path}{Path for the source files for the translation table.}
+\item{from_path}{[\code{character(1)}]\cr
+Path for the source files for the translation table.}
 }
 \value{
-\code{add_lokalitet} A data frame where the aquaculture zone and / or coordinates have been added in the column to the
+\code{add_lokalitet}: \code{data.frame} where the aquaculture 
+    zone and / or geo-coordinates have been added in the column to the
     right of the column with the LokNr.
+
+\code{read_sonetilhorighet}: \code{data.frame} with "LokNr", 
+    aquaculture zone and geo-coordinates. If not changing standard 
+    input to the function, the standard file at NVI's internal 
+    network is read.
 }
 \description{
-Function to add a column with current aquaculture zone and/or coordinates. In addition there are
-   function to read the translation table.
+Function to add a column with current aquaculture
+   zone and/or geo-coordinates. In addition there are function
+   to read the translation table.
 }
 \details{
-\code{add_lokalitet} can be used to add aquaculture zone to aquaculture sites.
+\code{add_lokalitet} can be used to add aquaculture
+   zone and/or geo-coordinates to aquaculture sites. The new 
+   columns can be one or more of c("sone", "EastUTM_33N_WGS84",
+   "NorthUTM_33N_WGS84", "Longitude_WGS84", "Latitude_WGS84").
+   If the new columns in the result data frame should have 
+   other names, \code{new_column} can be input as a named 
+   vector, see examples.
 
-    \code{position =} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
-    placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
-    code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
-    data.frame. A special case occurs for \code{position = "keep"} which only has meaning when the new column has the same name as an existing
-    column and overwrite = TRUE. In these cases, the existing column will be overwritten with new data and have the same position.
+\code{position} is used to give the position if the new columns 
+    in the data.frame. For \code{position = "right"} the new 
+    variables are placed to the right of the code_variable. 
+    Likewise, for \code{position = "left"} the new variables 
+    are placed to the left of the code_variable. If 
+    \code{position = "first"} or \code{position = "last"} the 
+    new columns are placed first or last, respectively, in the
+    data frame. A special case occurs for \code{position = "keep"} 
+    which only has meaning when the new column has the same name 
+    as an existing column and \code{overwrite = TRUE}. In these 
+    cases, the existing column will be overwritten with new data 
+    and have the same position.
 
-    \code{read_sonetilhorighet} reads the file "sonetilhorighet.txt" into a data frame that can be used by other routines. Standard setting
-    will the file read in the latest updated file from NVI's internal network. If changing the from_path, the function can be used to read
-    the translation file from other directories. This can be useful if having a stand alone app with no connection the NVI's internal
-    network. In other cases, it should be avoided.
+\code{read_sonetilhorighet} reads the file "sonetilhorighet.txt" 
+    into a data frame that can be used by other routines. Standard 
+    setting will the file read in the latest updated file from 
+    NVI's internal network. If changing the from_path, the 
+    function can be used to read the translation file from 
+    other directories. This can be useful if having a stand 
+    alone app with no connection the NVI's internal network. 
+    In other cases, it should be avoided.
 }
 \examples{
 \dontrun{

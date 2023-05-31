@@ -15,7 +15,7 @@
 #'
 #'     \code{add_PJS_code_description} uses the pre made translation table 
 #'     "PJS_codes_2_text.csv". The data need to be loaded by 
-#'     \code{read_PJS_code_registers} before running \code{add_PJS_code_description},
+#'     \code{read_PJS_codes_2_text} before running \code{add_PJS_code_description},
 #'     see example. The file "PJS_codes_2_text.csv" is normally updated every night 
 #'     from PJS.
 #'
@@ -46,9 +46,11 @@
 #'   metode \tab metodekode \tab metode \tab \cr
 #'   metode \tab subund_metodekode \tab submetode \tab \cr
 #'   konkl_type \tab konkl_typekode \tab konkl_type \tab \cr
+#'   kjennelse \tab sakskonkl_kjennelsekode \tab sakskonkl_kjennelse \tab \cr
 #'   kjennelse \tab konkl_kjennelsekode \tab konkl_kjennelse \tab \cr
 #'   kjennelse \tab res_kjennelsekode \tab res_kjennelse \tab \cr
 #'   kjennelse \tab subres_kjennelsekode \tab subres_kjennelse \tab \cr
+#'   analytt \tab sakskonkl_analyttkode \tab sakskonkl_analytt \tab \cr
 #'   analytt \tab konkl_analyttkode \tab konkl_analytt \tab \cr
 #'   analytt \tab res_analyttkode \tab res_analytt \tab \cr
 #'   analytt \tab subres_analyttkode \tab subres_analytt \tab \cr
@@ -85,7 +87,7 @@
 #'     descriptive text strings, there are no unique translation. In these cases, 
 #'     the code value is left empty.
 #'
-#'     \code{read_PJS_code_registers} reads the file "PJS_codes_2_text.csv" into a 
+#'     \code{read_PJS_codes_2_text} reads the file "PJS_codes_2_text.csv" into a 
 #'     data frame that can be used by \code{add_PJS_code_description}. In standard 
 #'     setting will the file read in the latest updated file from NVI's internal 
 #'     network. If changing the \code{from_path}, the function can be used to read 
@@ -101,7 +103,7 @@
 #'     other PJS variables, a data frame with the same column definition can be 
 #'     constructed to translate new variables.
 #'
-#'     \code{copy_PJS_code_registers} copies the file pjsCodeDescriptions.csv to 
+#'     \code{copy_PJS_codes_2_text} copies the file pjsCodeDescriptions.csv to 
 #'     a given directory.
 #'
 #' @param data [\code{data.frame}] \cr
@@ -208,9 +210,6 @@
 #'                                      impute_old_when_missing = TRUE)
 #' }
 #'
-# To avoid checking of the variable kommune_fylke as default input argument in the function
-utils::globalVariables("PJS_codes_2_text")
-
 add_PJS_code_description <- function(data,
                                      translation_table = PJS_codes_2_text,
                                      PJS_variable_type,
@@ -387,3 +386,7 @@ add_PJS_code_description <- function(data,
   }
   return(data)
 }
+
+# To avoid checking of the variable kommune_fylke as default input argument in the function
+utils::globalVariables("PJS_codes_2_text")
+

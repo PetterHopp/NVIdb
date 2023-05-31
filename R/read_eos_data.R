@@ -1,20 +1,30 @@
 #' @title Read EOS data from RaData
 #' @description Reads EOS data from RaData. Includes historical data if these exists.
 #'     It is possible to limit the data to one or more years.
-#' @details read_eos_data uses \code{data.table::fread} to read the data with the 
-#'     settings \code{showProgress = FALSE} and \code{data.table = FALSE}. Other 
-#'     arguments can be passed to \code{data.table::fread} if necessary.
+#' @details read_eos_data uses 
+#'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}
+#'     to read the data with the settings \code{showProgress = FALSE} and 
+#'     \code{data.table = FALSE}. Other arguments can be passed to  
+#'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}
+#'     if necessary.
 #'     
-#'     The eos_table name is the same name as the name as in the EOS data base.
+#' The eos_table name is the same name as the name as in the EOS data base.
 #' 
-#' @param from_path Path for raw data from eos_data
-#' @param eos_table The name of the table with eos raw data.
-#' @param year The years to be included in the result. Can be both numeric
+#' @param from_path [\code{character(1)}]\cr
+#'     Path for raw data from eos_data.
+#' @param eos_table [\code{character(1)}]\cr
+#'     The name of the table with eos raw data.
+#' @param year [\code{character} | \code{numeric}]\cr
+#'     The years to be included in the result. Can be both numeric
 #'     or character. Defaults to \code{NULL}, i.e. no selection.
-#' @param colClasses The class of the columns, as in utils::read.table, Defaults to 
-#'     \code{"character"}.
-#' @param encoding The encoding. Defaults to \code{"UTF-8"}.
-#' @param \dots	Other arguments to be passed to \code{data.table::fread}.
+#' @param colClasses [\code{character}]\cr
+#'     The class of the columns, as in  
+#'     \ifelse{html}{\code{\link[utils:read.table]{utils::read.table}}}{\code{utils::read.table}}.
+#'     Defaults to \code{"character"}.
+#' @param encoding [\code{character(1)}]\cr
+#'     The encoding, one of c("UTF-8", "latin1"). Defaults to \code{"UTF-8"}.
+#' @param \dots	Other arguments to be passed to  
+#'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}.
 #'
 #' @return A data frame with data from EOS.
 #'
