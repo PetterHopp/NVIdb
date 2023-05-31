@@ -148,9 +148,11 @@ Export of data from PJS will produce data frames in which many columns
   metode \tab metodekode \tab metode \tab \cr
   metode \tab subund_metodekode \tab submetode \tab \cr
   konkl_type \tab konkl_typekode \tab konkl_type \tab \cr
+  kjennelse \tab sakskonkl_kjennelsekode \tab sakskonkl_kjennelse \tab \cr
   kjennelse \tab konkl_kjennelsekode \tab konkl_kjennelse \tab \cr
   kjennelse \tab res_kjennelsekode \tab res_kjennelse \tab \cr
   kjennelse \tab subres_kjennelsekode \tab subres_kjennelse \tab \cr
+  analytt \tab sakskonkl_analyttkode \tab sakskonkl_analytt \tab \cr
   analytt \tab konkl_analyttkode \tab konkl_analytt \tab \cr
   analytt \tab res_analyttkode \tab res_analytt \tab \cr
   analytt \tab subres_analyttkode \tab subres_analytt \tab \cr
