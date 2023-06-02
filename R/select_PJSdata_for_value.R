@@ -1,9 +1,27 @@
-
+#' @title Selects a subset of PJSdata based on a vector of values 
+#' @description Selects a subset of PJSdata based on a vector of values. 
+#' @details Selects a subset of PJSdata based on a vector of values. 
+#'
+#' @param data \[\code{data.frame}\]\cr
+#' PJS data from which a subset should be selected. 
+#' @param code_column \[\code{character}\]\cr
+#' Vector with the column names for the variables that is used in the selection.
+#' @param value_2_check \[\code{character}\]\cr
+#' Vector with the values that should be selected, see details and examples.
+#' @param keep_selected \[\code{logical(1)}\]\cr
+#' If `TRUE`, the selected rows are included, if `FALSE`, the selected columns 
+#'     are excluded. Defaults to `TRUE`.
+#'
+#' @return A `data.frame`.
+#'
+#' @author Petter Hopp Petter.Hopp@@vetinst.no
+#' @md
+#' @export
 
 select_PJSdata_for_value <- function(data,
                                      code_column,
                                      value_2_check,
-                                     include_missing_for = NULL, 
+                                     # include_missing_for = NULL, 
                                      keep_selected = TRUE) {
   
   # data <- PJSdata
@@ -12,6 +30,8 @@ select_PJSdata_for_value <- function(data,
   # include_missing_for = NULL
   # keep_selected = TRUE
   
+  
+  data$sPfv_sort_order <- 1:nrow(data)
   
   
   # transform value_2_check to regular expressions
@@ -57,12 +77,15 @@ select_PJSdata_for_value <- function(data,
   ktr$select <- as.logical(ktr$select)
   if (isFALSE(keep_selected)) {ktr$select <- !ktr$select}
   
-  ktr <- subset(ktr, select == TRUE)
+  ktr <- subset(ktr, ktr$select == TRUE)
   ktr[, c("combined_codes", "select")] <- c(NULL, NULL)
   
   column_names <- colnames(data)
   data <- merge(x = ktr, y = data, by = c(index, code_column), all.x = TRUE, all.y = FALSE, sort = TRUE)
   data <- data[, column_names]
+  
+  data <- data[order(data$sPfv_sort_order), ]
+  data$sPfv_sort_order <- NULL
   
   return(data)
 }
