@@ -2,7 +2,7 @@
 % Please edit documentation in R/select_PJSdata_for_value.R
 \name{select_PJSdata_for_value}
 \alias{select_PJSdata_for_value}
-\title{Selects a subset of PJSdata based on a vector of values}
+\title{Selects a subset of PJSdata based on code values}
 \usage{
 select_PJSdata_for_value(
   data,
@@ -29,10 +29,19 @@ are excluded. Defaults to \code{TRUE}.}
 A \code{data.frame}.
 }
 \description{
-Selects a subset of PJSdata based on a vector of values.
+Selects a subset of PJSdata based on code values.
+The function accepts code values ending with "\%" to indicate
+that sub levels should be included.
 }
 \details{
-Selects a subset of PJSdata based on a vector of values.
+The function is intended for cases where the select
+query sent to PJS will be very complicated if the selection
+is included and it can be easier to read the script if the
+subset is selected in a second step.
+
+The function selects according to different values. The default
+action is to include the selected rows. But when \code{keep_selected}
+= \code{FALSE}, the selected rows are excluded from the data.
 }
 \author{
 Petter Hopp Petter.Hopp@vetinst.no
