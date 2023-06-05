@@ -3,7 +3,9 @@ NVIdb 0.10.1.9001 - (2023-##-##)
 
 New features:
 
--
+- Created transform_code_values to easy transform few code combinations into other values.
+
+- Created select_PJSdata_for_values to perform inclusion/exclusion of rows in PJSdata based on coded values. For codes ending with "%", sub levels are included.
 
 
 Bug fixes:
