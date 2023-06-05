@@ -74,6 +74,38 @@ to impute. Normally this will be the same as the \code{from_columns.} However,
 if the number of columns in \code{to_columns} is less than in from_columns, it
 will be necessary to give the columns from which to keep the code.
 }
+\examples{
+library(NVIdb)
+
+#  A code combination of two is tranformed to another code combination of two
+  data <- as.data.frame(cbind(
+c("Detected", "Detected", "Not detected", NA),
+                              c("M. bovis", "M. kansasii", "M. bovis", NA)
+))
+  colnames(data) <- c("kjennelse", "analytt")
+  data <- transform_code_combinations(data = data,
+                              from_values = list(c("Detected"),
+                                                 c("M. kansasii")),
+                              to_values = list(c("Not detected"),
+                                               c("M. bovis")),
+                              from_columns = c("kjennelse", "analytt"),
+                              to_columns = c("kjennelse", "analytt"),
+                              impute_when_missing_from = c("kjennelse", "analytt"))
+
+# two code values to one new variable
+data <- as.data.frame(cbind(c("hjort", "rein", "elg", "hjort", NA),
+                            c("produksjonsdyr", "ville dyr", "ville dyr", "ville dyr", NA)))
+colnames(data) <- c("art", "driftsform")
+
+data <- transform_code_combinations(data = data,
+                                    from_values = list(c("hjort", "rein", NA),
+                                                       c("produksjonsdyr", "ville dyr", NA)),
+                                    to_values = list(c("oppdrettshjort", "villrein", "ukjent")),
+                                    from_columns = c("art", "driftsform"),
+                                    to_columns = c("art2"),
+                                    impute_when_missing_from = "art")
+
+}
 \author{
 Petter Hopp Petter.Hopp@vetinst.no
 }
