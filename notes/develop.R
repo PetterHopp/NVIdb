@@ -37,8 +37,8 @@ NVIpackager::document_NVIpkg(pkg = pkg,
                              readme = FALSE,
                              manual = "update",
                              scope = c("spaces", "line_breaks"))
-# filename <- "xxxx.R"
-# styler::style_file(path = file.path(pkg_path, "R", filename), scope = I(c("spaces")))
+# filename <- "transform_code_combinations.R"
+# styler::style_file(path = file.path(pkg_path, "R", filename), scope = I(c("spaces", "line_breaks")))
 
 # spelling::spell_check_package(vignettes = TRUE, use_wordlist = TRUE)
 
