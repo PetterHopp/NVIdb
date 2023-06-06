@@ -84,7 +84,6 @@ standardize_columns <- function(data,
                                 language = "no",
                                 exclude = FALSE,
                                 ...) {
-
   # TO DO: replace reading column standards with including column standards in sysdata for the package.
 
   # ARGUMENT CHECKING ----
@@ -105,8 +104,10 @@ standardize_columns <- function(data,
 
   checkmate::assert_data_frame(standards, null.ok = TRUE, add = checks)
 
-  checkmate::assert_subset(tolower(property), choices = c("colnames", "colclasses", "collabels", "colwidths_excel",
-                                                          "colwidths_DT", "colorder"), add = checks)
+  checkmate::assert_subset(tolower(property), choices = c(
+"colnames", "colclasses", "collabels", "colwidths_excel",
+                                                          "colwidths_DT", "colorder"
+), add = checks)
 
   checkmate::assert_subset(language, choices = c("no", "en"), add = checks)
 
@@ -120,8 +121,10 @@ standardize_columns <- function(data,
 
   # Reading column standards from a csv-file based on in an Excel file
   if (is.null(standards)) {
-    column_standards <- utils::read.csv2(file = paste0(NVIdb::set_dir_NVI("ProgrammeringR"), "standardization/column_standards.csv"),
-                                         fileEncoding = "UTF-8")
+    column_standards <- utils::read.csv2(
+file = paste0(NVIdb::set_dir_NVI("ProgrammeringR"), "standardization/column_standards.csv"),
+                                         fileEncoding = "UTF-8"
+)
   } else {
     column_standards <- standards
   }
@@ -140,8 +143,8 @@ standardize_columns <- function(data,
     #   dplyr::filter(!is.na(.data$colname)) %>%
     #   dplyr::select(.data$table_db, .data$colname_db, .data$colname) %>%
     #   dplyr::distinct()
-    standard <- column_standards 
-      # Filter to include only information for relevant column names and with property information
+    standard <- column_standards
+    # Filter to include only information for relevant column names and with property information
     standard <- subset(standard, standard$colname_db %in% columnnames$V1)
     standard <- subset(standard, !is.na(standard$colname))
     standard <- standard[, c("table_db", "colname_db", "colname")]
@@ -156,14 +159,14 @@ standardize_columns <- function(data,
         # Identify column names with only one suggested column width
         dplyr::add_count(.data$colname_db, name = "n") %>%
         dplyr::ungroup() # %>%
-        # # Select column width either if only one suggested or for the current table
-        # dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
-        # dplyr::select(.data$colname_db, .data$colname) %>%
-        # dplyr::distinct()
+      # # Select column width either if only one suggested or for the current table
+      # dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
+      # dplyr::select(.data$colname_db, .data$colname) %>%
+      # dplyr::distinct()
       # Select column width either if only one suggested or for the current table
       standard <- subset(standard, standard$n == 1 | (standard$table_db == dbsource & standard$n > 1))
-    standard <- standard[, c("colname_db", "colname")]
-    standard <- unique(standard)
+      standard <- standard[, c("colname_db", "colname")]
+      standard <- unique(standard)
     }
 
     # # Standardize column names
@@ -201,13 +204,14 @@ standardize_columns <- function(data,
 
   # READ FIRST LINE OF CSV-FILE, IDENTIFY COLUMN CLASSES AND PRODUCE A NAMED VECTOR FOR THE colclasses PARAMETER ----
   if (property == "colclasses") {
-
     # Read standard colclasses for database variable names
     stand_character <- unique(column_standards[which(!is.na(column_standards$colclasses)), c("colname_db", "colclasses")])
 
     # Identifies columns that can look like numbers but should be treated as characters, usually because of leading zero
     # Read first line of csv-file
-    if (!exists("fileEncoding")) {fileEncoding <- "UTF-8"}
+    if (!exists("fileEncoding")) {
+fileEncoding <- "UTF-8"
+}
     colcharacter <- utils::read.csv2(file = data, header = FALSE, nrow = 1, fileEncoding = fileEncoding)
     # Transform the header into a data frame with one column
     colcharacter <- as.data.frame(matrix(colcharacter, ncol = 1))
@@ -238,13 +242,13 @@ standardize_columns <- function(data,
     #   dplyr::filter(!is.na(.data$label_1_no)) %>%
     #   dplyr::select(.data$table_db, .data$colname, .data$label_1_no) %>%
     #   dplyr::distinct()
-    standard <- column_standards 
+    standard <- column_standards
     # Filter to include only information for relevant column names and with property information
     standard <- subset(standard, standard$colname %in% collabels$V1)
     standard <- subset(standard, !is.na(standard$label_1_no))
     standard <- standard[, c("table_db", "colname", "label_1_no")]
     # standard <- unique(standard)
-    
+
     # Keep information on relevant table name and combine information for all other tables
     standard[which(standard$table_db != dbsource), "table_db"] <- NA
     standard <- unique(standard)
@@ -294,9 +298,12 @@ standardize_columns <- function(data,
     # Impute with Sentence case of column name in case standard column name isn't defined
     collabels[which(is.na(collabels$label)), "label"] <-
       snakecase::to_sentence_case(collabels[which(is.na(collabels$label)), "V1"],
-                                  transliterations = c("aa" = "\u00e5", "Aa" = "\u00e5", "AA" = "\u00e5", "aA" = "\u00e5",
+                                  transliterations = c(
+"aa" = "\u00e5", "Aa" = "\u00e5", "AA" = "\u00e5", "aA" = "\u00e5",
                                                        "oe" = "\u00f8", "Oe" = "\u00f8", "OE" = "\u00f8", "oE" = "\u00f8",
-                                                       "ae" = "\u00e6", "Ae" = "\u00e6", "AE" = "\u00e6", "aE" = "\u00e6"))
+                                                       "ae" = "\u00e6", "Ae" = "\u00e6", "AE" = "\u00e6", "aE" = "\u00e6"
+)
+)
 
     ## Make vector with column labels
     # Sorts data in original order
@@ -307,7 +314,6 @@ standardize_columns <- function(data,
 
     # Return data frame with standardized column names
     return(collabels)
-
   }
 
   # STANDARDIZE COLUMN WIDTHS FOR EXCEL ----
@@ -328,7 +334,7 @@ standardize_columns <- function(data,
     #   dplyr::filter(!is.na(.data$colwidth_Excel)) %>%
     #   dplyr::select(.data$table_db, .data$colname, colwidth = .data$colwidth_Excel)
     # dplyr::distinct()
-    standard <- column_standards 
+    standard <- column_standards
     # Filter to include only information for relevant column names and with property information
     standard <- subset(standard, standard$colname %in% colwidths$V1)
     standard <- subset(standard, !is.na(standard$colwidth_Excel))
@@ -343,16 +349,15 @@ standardize_columns <- function(data,
       standard <- standard %>%
         # Identify column names with only one suggested column width
         dplyr::add_count(.data$colname, name = "n") %>%
-        dplyr::ungroup()  # %>%
-        # # Select column width either if only one suggested or for the current table
-        # dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
-        # dplyr::select(.data$colname, .data$colwidth) %>%
-        # dplyr::distinct()
+        dplyr::ungroup() # %>%
+      # # Select column width either if only one suggested or for the current table
+      # dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
+      # dplyr::select(.data$colname, .data$colwidth) %>%
+      # dplyr::distinct()
       # Select column width either if only one suggested or for the current table
       standard <- subset(standard, standard$n == 1 | (standard$table_db == dbsource & standard$n > 1))
       standard <- standard[, c("colname", "colwidth")]
       standard <- unique(standard)
-      
     }
 
     # New column with standard column names¨
@@ -372,7 +377,6 @@ standardize_columns <- function(data,
 
   # STANDARDIZE COLUMN ORDER ----
   if (property == "colorder") {
-
     if (!dbsource %in% column_standards[which(!is.na(column_standards$colorder)), "table_db"]) {
       warning("No sorting done as column order is not known for this table. Please update column_standards or use another dbsource")
     } else {
