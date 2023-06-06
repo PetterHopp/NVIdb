@@ -1,57 +1,113 @@
 #' @title Standardize columns for scripts and reports
-#' @description Standardizes column names, labels, column width for variables in external databases.
+#' @description Standardizes column names, labels, column width
+#'     for variables in external databases.
 #'
-#' @details Experimental, the standardization table is under development. This version only works when being connected to the NVI network.
+#' @details The standardization table is under development. This
+#'     function only works when being connected to the NVI network.
 #'
-#'     Variables in internal and external data sources uses different variable names for the same content.
-#'     \code{Standarddize_columns} standardizes column names for use in scripts. It will be further developed to standardize  column labels
-#'     and column widths for both Excel and DT. Furthermore, input values for the parameter \code{colClasses = } for \code{read.csv2} can be
-#'     generated.
+#' Variables in internal and external data sources uses
+#'     different variable names for the same content.
+#'     \code{Standardize_columns} standardizes column names for
+#'     use in scripts. In addition, it standardises column labels
+#'     and column widths for Excel. Furthermore, input values for
+#'     the parameter \code{colClasses} for
+#'     \ifelse{html}{\code{\link[utils:read.csv2]{read.csv2}}}{\code{read.csv2}}
+#'     and
+#'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}
+#'     can be generated.
 #'
-#'     \code{property = "colnames"} will replace the column names in a data frame with standardized column names.
-#'     All standard column names is snake_case. If no standard name is defined for a variable name, the variable
-#'     name is translated to snake_case and the national characters \code{c("æ", "ø", "å")} are translated to \code{c("ae", "oe", "aa")}.
+#' \code{property = "colnames"} will replace the column names
+#'     in a data frame with standardized column names. All
+#'     standard column names is snake_case. If no standard name
+#'     is defined for a variable name, the variable
+#'     name is translated to snake_case and the national characters
+#'     c("\u00E6", "\u00F8", "\u00E5") are translated to
+#'     c("ae", "oe", "aa").
 #'
-#'     \code{property = "colclasses"} will generate a named vector with the column classes for variables that may not be read correct when importing
-#'     data from a csv-file. This applies for example to numbers with leading zero that must be imported as character. This vector can be used as a
-#'     parameter for \code{colClasses = }.
+#' \code{property = "colclasses"} will generate a named vector
+#'     with the column classes for variables that may not be read
+#'     correct when importing data from a csv-file. This applies
+#'     for example to numbers with leading zero that must be imported
+#'     as character. This vector can be used as a parameter for
+#'     \code{colClasses}.
 #'
-#'     The default fileEncoding is assumed to be "UTF-8". If another encoding one must give an additional argument like \code{fileEncoding = "latin"}.
+#' The default \code{fileEncoding} is assumed to be "UTF-8".
+#'     If another encoding is needed, one must give an additional
+#'     argument like \code{fileEncoding = "latin1"}.
 #'
-#'     \code{property = "collabels"} will generate a vector with column labels that can be used to replace the column names in the header of the data
-#'     table. The column names are not changed automatiacally but can be changed by using a colname statement (see help). If no standard column label
-#'     is defined, the column name as Sentence case is used as column label. If English names are used and no English column label exists, the Norwegian
-#'     column label is used instead.
+#' \code{property = "collabels"} will generate a vector with column
+#'     labels that can be used to replace the column names in the
+#'     header of the data table. The column names are not standardised
+#'     automatically but can be standardised by first using
+#'     \code{standardize_colnames} with \code{property = "colname"}.
+#'     If no standard column label for the column name is defined,
+#'     the column name as Sentence case is used as column label.
+#'     If English names are used and no English column label exists,
+#'     the Norwegian column label is used instead.
 #'
-#'     \code{property = "colwidths_Excel"} will generate a vector with column widths for Excel. To be used as input parameter to \code{openxlsx::.colwidth()}.
-#'     If no standard column width is defined, the Excel standard width of 10.78 is used. Be aware that the generation of column widths are based on the
-#'     column names. Do not change the column names to labels before the column widths are generated.
+#' \code{property = "colwidths_Excel"} will generate a vector with
+#'     column widths for Excel. To be used as input parameter to
+#'     \ifelse{html}{\code{\link[openxlsx:setColWidths]{openxlsx::setColWidths}}}{\code{openxlsx::setColWidths}}.
+#'     If no standard column width is defined, the Excel standard
+#'     width of 10.78 is used. Be aware that the generation of column
+#'     widths are based on the column names. Do not change the column
+#'     names to labels before the column widths are generated.
 #'
-#'     \code{property = "colorder"} will generate a data frame with  the column names in a predefined order. The column names should first have been standardized.
-#'     No standard order will be given unless the dbsource is defined in the column_standards table. If \code{exclude = FALSE} (the standard) the columns with no
-#'     predefined order will be moved to the last columns in the same order as they appeared in the original data frame. If \code{exclude = TRUE} all columns with
-#'     no predefined order is excluded from the data frame. This option is mainly intended for well defined and worked through routines like making selections lists
-#'     for the Food Safety Authority. Do not use \code{exclude = TRUE} unless you are certain that all columns that should be included are defined in the
-#'     column_standards table for this dbsource. If uncertain, you may first try with \code{exclude = FALSE} and thereafter compare with \code{exclude = TRUE} to
-#'     check if you loose important information.
+#' \code{property = "colorder"} will generate a data frame with
+#'     the column names in a predefined order. The column names
+#'     should first have been standardised. No standard order will
+#'     be given unless the dbsource is defined in the column_standards
+#'     table. If \code{exclude = FALSE} (the standard) the columns
+#'     with no predefined order will be moved to the last columns
+#'     in the same order as they appeared in the original data frame.
+#'     If \code{exclude = TRUE} all columns with no predefined order
+#'     is excluded from the data frame. This option is mainly
+#'     intended for well defined and worked through routines like
+#'     making selections lists for the Food Safety Authority. Do
+#'     not use \code{exclude = TRUE} unless you are certain that
+#'     all columns that should be included are defined in the
+#'     column_standards table for this dbsource. If uncertain,
+#'     you may first try with \code{exclude = FALSE} and thereafter
+#'     compare with \code{exclude = TRUE} to check if you loose
+#'     important information.
 #'
-#' @param data Data frame or if \code{property = "colclasses"} the path and filname of the  csv-file used as data source
-#' @param dbsource database source of data. Set to data if not specifically specified. Needed if translation to column names is dependent on data source
-#' @param standards to input alternative standard tables to column_standards
-#' @param property Property of the column that should be standardized, currently c("colnames", "colclasses", "collabels", "colwidths_Excel", "colorder").
-#' @param language Language for labels. Valid input are c("no", "en")
-#' @param exclude Used in combination with \code{property = "colorder"}. \code{exclude = TRUE} excludes all columns with no predefinedcolorder.
-#' @param \dots	Other arguments to be passed read.csv2 when \code{property = "colclasses"}.
+#' @param data [\code{data.frame} | \code{character(1)}]\cr
+#' The data source. If \code{property = "colclasses"} the path and
+#'     file name of the csv-file used as data source should be given. 
+#' @param dbsource [\code{character(1)}]\cr
+#' The database that is the source of data. Should be the name of
+#'     the data source as registered in column_standards table. Defaults
+#'     to \code{deparse(substitute(data))}.
+#' @param standards [\code{character(1)}]\cr
+#' For giving alternative standard tables to column_standards.
+#' @param property [\code{character(1)}]\cr
+#' Property of the column that should be standardized, must be one
+#'     of c("colnames", "colclasses", "collabels", "colwidths_Excel",
+#'     "colorder"). Defaults to \code{NULL}.
+#' @param language [\code{character(1)}]\cr
+#' Language for labels. Must be one of c("no", "en"). Defaults to "no".
+#' @param exclude [\code{logical(1)}]\cr
+#' Used in combination with \code{property = "colorder"}. If \code{TRUE},
+#'     all columns with no predefined column order are excluded.
+#'     Defaults to \code{FALSE}.
+#' @param \dots	Other arguments to be passed to
+#'     \ifelse{html}{\code{\link[utils:read.csv2]{read.csv2}}}{\code{read.csv2}}
+#'     when \code{property = "colclasses"}.
 #'
-#' @return \code{property = "colnames"}. A data frame with standard column names.
+#' @return \code{property = "colnames"}: A data frame with standard column names.
 #'
-#'     \code{property = "colclasses"}. a named vector of column classes to be used as input to functions for reading csv-files.
+#' \code{property = "colclasses"}: A named vector of column classes to
+#'     be used as input to functions for reading csv-files, see details.
 #'
-#'     \code{property = "collabels"}. a vector with labels for the columns in the data frame.
+#' \code{property = "collabels"}: A vector with labels for the columns
+#'     in the data frame.
 #'
-#'     \code{property = "colwidths_Excel"}. a vector with column widths for Excel. To be used as input parameter to \code{openxlsx::.colwidth()}.
+#' \code{property = "colwidths_Excel"}: A vector with column widths for Excel.
+#'      To be used as input parameter to
+#'     \ifelse{html}{\code{\link[openxlsx:setColWidths]{openxlsx::setColWidths}}}{\code{openxlsx::setColWidths}}.
 #'
-#'     \code{property = "colorder"}. A data frame with column names in predefined order. If exclude = TRUEonly columns withh a defined order is included
+#' \code{property = "colorder"}: A data frame with column names in predefined
+#'     order. If \code{exclude = TRUE} only columns with a defined order is included.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @importFrom rlang .data
@@ -104,10 +160,11 @@ standardize_columns <- function(data,
 
   checkmate::assert_data_frame(standards, null.ok = TRUE, add = checks)
 
-  checkmate::assert_subset(tolower(property), choices = c(
-"colnames", "colclasses", "collabels", "colwidths_excel",
-                                                          "colwidths_DT", "colorder"
-), add = checks)
+  checkmate::assert_subset(tolower(property), 
+                           choices = c("colnames", "colclasses",
+                                       "collabels", "colwidths_excel",
+                                       "colwidths_DT", "colorder"),
+                           add = checks)
 
   checkmate::assert_subset(language, choices = c("no", "en"), add = checks)
 
@@ -298,11 +355,12 @@ fileEncoding <- "UTF-8"
     # Impute with Sentence case of column name in case standard column name isn't defined
     collabels[which(is.na(collabels$label)), "label"] <-
       snakecase::to_sentence_case(collabels[which(is.na(collabels$label)), "V1"],
-                                  transliterations = c(
-"aa" = "\u00e5", "Aa" = "\u00e5", "AA" = "\u00e5", "aA" = "\u00e5",
-                                                       "oe" = "\u00f8", "Oe" = "\u00f8", "OE" = "\u00f8", "oE" = "\u00f8",
-                                                       "ae" = "\u00e6", "Ae" = "\u00e6", "AE" = "\u00e6", "aE" = "\u00e6"
-)
+                                  transliterations = c("aa" = "\u00e5", "Aa" = "\u00e5",
+                                                       "AA" = "\u00e5", "aA" = "\u00e5",
+                                                       "oe" = "\u00f8", "Oe" = "\u00f8",
+                                                       "OE" = "\u00f8", "oE" = "\u00f8",
+                                                       "ae" = "\u00e6", "Ae" = "\u00e6",
+                                                       "AE" = "\u00e6", "aE" = "\u00e6")
 )
 
     ## Make vector with column labels
