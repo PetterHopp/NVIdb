@@ -28,7 +28,7 @@ The database that is the source of data. Should be the name of
 For giving alternative standard tables to column_standards.}
 
 \item{property}{[\code{character(1)}]\cr
-Property of the column that should be standardized, must be one
+Property of the column that should be standardized. Must be one
     of c("colnames", "colclasses", "collabels", "colwidths_Excel",
     "colorder"). Defaults to \code{NULL}.}
 
@@ -84,7 +84,7 @@ Variables in internal and external data sources uses
     standard column names is snake_case. If no standard name
     is defined for a variable name, the variable
     name is translated to snake_case and the national characters
-    c("\u00E6", "\u00F8", "\u00E5") are translated to
+    c("æ", "ø", "å") are translated to
     c("ae", "oe", "aa").
 
 \code{property = "colclasses"} will generate a named vector
