@@ -134,12 +134,18 @@ standardize_columns <- function(data,
     #  Necessary to avoid change in order when using merge
     columnnames$original_sort_order <- seq_len(nrow(columnnames))
 
-    standard <- column_standards %>%
+    # standard <- column_standards %>%
+    #   # Filter to include only information for relevant column names and with property information
+    #   dplyr::filter(.data$colname_db %in% columnnames$V1) %>%
+    #   dplyr::filter(!is.na(.data$colname)) %>%
+    #   dplyr::select(.data$table_db, .data$colname_db, .data$colname) %>%
+    #   dplyr::distinct()
+    standard <- column_standards 
       # Filter to include only information for relevant column names and with property information
-      dplyr::filter(.data$colname_db %in% columnnames$V1) %>%
-      dplyr::filter(!is.na(.data$colname)) %>%
-      dplyr::select(.data$table_db, .data$colname_db, .data$colname) %>%
-      dplyr::distinct()
+    standard <- subset(standard, standard$colname_db %in% columnnames$V1)
+    standard <- subset(standard, !is.na(standard$colname))
+    standard <- standard[, c("table_db", "colname_db", "colname")]
+    # standard <- unique(standard)
 
     # Keep information on relevant table name and combine information for all other tables
     standard[which(standard$table_db != dbsource), "table_db"] <- NA
@@ -149,11 +155,15 @@ standardize_columns <- function(data,
       standard <- standard %>%
         # Identify column names with only one suggested column width
         dplyr::add_count(.data$colname_db, name = "n") %>%
-        dplyr::ungroup() %>%
-        # Select column width either if only one suggested or for the current table
-        dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
-        dplyr::select(.data$colname_db, .data$colname) %>%
-        dplyr::distinct()
+        dplyr::ungroup() # %>%
+        # # Select column width either if only one suggested or for the current table
+        # dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
+        # dplyr::select(.data$colname_db, .data$colname) %>%
+        # dplyr::distinct()
+      # Select column width either if only one suggested or for the current table
+      standard <- subset(standard, standard$n == 1 | (standard$table_db == dbsource & standard$n > 1))
+    standard <- standard[, c("colname_db", "colname")]
+    standard <- unique(standard)
     }
 
     # # Standardize column names
@@ -222,13 +232,19 @@ standardize_columns <- function(data,
 
     ## Norwegian column labels ----
     # Standard labels in Norwegian is always generated as is used to impute missing labels in other languages
-    standard <- column_standards %>%
-      # Filter to include only information for relevant column names and with property information
-      dplyr::filter(.data$colname %in% collabels$V1) %>%
-      dplyr::filter(!is.na(.data$label_1_no)) %>%
-      dplyr::select(.data$table_db, .data$colname, .data$label_1_no) %>%
-      dplyr::distinct()
-
+    # standard <- column_standards %>%
+    #   # Filter to include only information for relevant column names and with property information
+    #   dplyr::filter(.data$colname %in% collabels$V1) %>%
+    #   dplyr::filter(!is.na(.data$label_1_no)) %>%
+    #   dplyr::select(.data$table_db, .data$colname, .data$label_1_no) %>%
+    #   dplyr::distinct()
+    standard <- column_standards 
+    # Filter to include only information for relevant column names and with property information
+    standard <- subset(standard, standard$colname %in% collabels$V1)
+    standard <- subset(standard, !is.na(standard$label_1_no))
+    standard <- standard[, c("table_db", "colname", "label_1_no")]
+    # standard <- unique(standard)
+    
     # Keep information on relevant table name and combine information for all other tables
     standard[which(standard$table_db != dbsource), "table_db"] <- NA
     standard <- unique(standard)
@@ -239,7 +255,7 @@ standardize_columns <- function(data,
         dplyr::add_count(.data$colname, name = "n") %>%
         dplyr::ungroup() %>%
         # Select column width either if only one suggested or for the current table
-        dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
+        dplyr::filter(.data$n == 1 | (.data$table_db == dbsource & .data$n > 1)) %>%
         dplyr::select(.data$colname, label = .data$label_1_no) %>%
         dplyr::distinct()
     }
@@ -261,7 +277,7 @@ standardize_columns <- function(data,
           # Identify column names with only one suggested column width
           dplyr::add_count(.data$colname, name = "n") %>%
           dplyr::ungroup() %>%
-          dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
+          dplyr::filter(.data$n == 1 | (.data$table_db == dbsource & .data$n > 1)) %>%
           dplyr::select(.data$colname, .data$label_1_en) %>%
           dplyr::distinct()
       }
@@ -306,15 +322,18 @@ standardize_columns <- function(data,
     # print(head(column_standards))
 
     # Standardize colwidths
-    standard <- column_standards %>%
-      # Filter to include only information for relevant column names and with property information
-      dplyr::filter(.data$colname %in% colwidths$V1) %>%
-      dplyr::filter(!is.na(.data$colwidth_Excel)) %>%
-      dplyr::select(.data$table_db, .data$colname, colwidth = .data$colwidth_Excel)
-    # uses which below as there seem to be a bug so that case_when doesn't work properly within a function
-    # dplyr::mutate(table_db = dplyr::case_when(table_db == "dbsource" ~ table_db,
-    #                                               TRUE ~ as.character(NA))) %>%
+    # standard <- column_standards %>%
+    #   # Filter to include only information for relevant column names and with property information
+    #   dplyr::filter(.data$colname %in% colwidths$V1) %>%
+    #   dplyr::filter(!is.na(.data$colwidth_Excel)) %>%
+    #   dplyr::select(.data$table_db, .data$colname, colwidth = .data$colwidth_Excel)
     # dplyr::distinct()
+    standard <- column_standards 
+    # Filter to include only information for relevant column names and with property information
+    standard <- subset(standard, standard$colname %in% colwidths$V1)
+    standard <- subset(standard, !is.na(standard$colwidth_Excel))
+    standard <- standard[, c("table_db", "colname", "colwidth_Excel")]
+    colnames(standard) <- c("table_db", "colname", "colwidth")
     # Keep information on relevant table name and combine information for all other tables
     standard[which(standard$table_db != dbsource), "table_db"] <- NA
     standard <- unique(standard)
@@ -324,11 +343,16 @@ standardize_columns <- function(data,
       standard <- standard %>%
         # Identify column names with only one suggested column width
         dplyr::add_count(.data$colname, name = "n") %>%
-        dplyr::ungroup() %>%
-        # Select column width either if only one suggested or for the current table
-        dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
-        dplyr::select(.data$colname, .data$colwidth) %>%
-        dplyr::distinct()
+        dplyr::ungroup()  # %>%
+        # # Select column width either if only one suggested or for the current table
+        # dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
+        # dplyr::select(.data$colname, .data$colwidth) %>%
+        # dplyr::distinct()
+      # Select column width either if only one suggested or for the current table
+      standard <- subset(standard, standard$n == 1 | (standard$table_db == dbsource & standard$n > 1))
+      standard <- standard[, c("colname", "colwidth")]
+      standard <- unique(standard)
+      
     }
 
     # New column with standard column names¨
