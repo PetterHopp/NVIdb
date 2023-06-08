@@ -14,21 +14,27 @@ build_query_outbreak(
 )
 }
 \arguments{
-\item{period}{Time period given as year. One year or a vector with years giving the first and last years
-that should be selected as integer.}
+\item{period}{[\code{numeric}]\cr
+Time period given as year. One year or a vector giving the first 
+and last years that should be selected.}
 
-\item{utbrudd}{One or more utbrudd id given as a character. Can be \code{NULL}.}
+\item{utbrudd}{[\code{character}]\cr
+Utbruddsid(er) that should be selected. Defaults to \code{NULL}.}
 
-\item{hensikt}{Vector with specific hensikter. If sub-hensikter should be
-included, end the code with \%. Can be \code{NULL}.}
+\item{hensikt}{[\code{character}]\cr
+Specific hensiktkoder. If sub-hensikter should be included, 
+end the code with \%. Defaults to \code{NULL}.}
 
-\item{analytt}{One or more analyttkode given as a character. If sub-analytter
-should be included, end the code with \%. Can be \code{NULL}.}
+\item{analytt}{[\code{character}]\cr
+Analyttkoder that should be selected. If sub-analytter should be included, 
+end the code with \%. Defaults to \code{NULL}.}
 
-\item{metode}{Vector with specific metoder. Can be \code{NULL}.}
+\item{metode}{[\code{character}]\cr
+Specific metodekoder. Defaults to \code{NULL}.}
 
-\item{db}{The database for which the query is built. Currently only the value
-"PJS" is accepted.}
+\item{db}{[\code{character(1)}]\cr
+The database for which the query is built. Defaults to "PJS" that currently
+is the only valid value.}
 }
 \value{
 A list with select-statement for v2_sak_m_res and v_sakskonklusjon to

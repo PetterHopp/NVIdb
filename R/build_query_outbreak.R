@@ -27,16 +27,20 @@
 #'     cannot be sufficient to define the outbreak, but is included if the
 #'     outbreak is defined as all samples examined for a specific analytt.
 #'
-#' @param period Time period given as year. One year or a vector with years giving the first and last years
-#'     that should be selected as integer.
-#' @param utbrudd One or more utbrudd id given as a character. Can be \code{NULL}.
-#' @param hensikt Vector with specific hensikter. If sub-hensikter should be
-#'     included, end the code with \%. Can be \code{NULL}.
-#' @param analytt One or more analyttkode given as a character. If sub-analytter
-#'     should be included, end the code with \%. Can be \code{NULL}.
-#' @param metode Vector with specific metoder. Can be \code{NULL}.
-#' @param db The database for which the query is built. Currently only the value
-#'     "PJS" is accepted.
+#' @param period [\code{numeric}]\cr
+#'     Time period given as year. One year or a vector giving the first 
+#'     and last years that should be selected.
+#' @param utbrudd  [\code{character}]\cr
+#'     Utbruddsid(er) that should be selected. Defaults to \code{NULL}.
+#' @param hensikt [\code{character}]\cr
+#'     Specific hensiktkoder. If sub-hensikter should be included, 
+#'     end the code with \%. Defaults to \code{NULL}.
+#' @param analytt [\code{character}]\cr
+#'     Analyttkoder that should be selected. If sub-analytter should be included, 
+#'     end the code with \%. Defaults to \code{NULL}.
+#' @param metode [\code{character}]\cr
+#'     Specific metodekoder. Defaults to \code{NULL}.
+#' @template build_query_db
 #'
 #' @return A list with select-statement for v2_sak_m_res and v_sakskonklusjon to
 #'     be included in a \code{RODBC::sqlQuery}.
