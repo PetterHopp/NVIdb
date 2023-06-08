@@ -13,15 +13,24 @@ build_query_one_disease(
 )
 }
 \arguments{
-\item{year}{One year or a vector with years giving the first and last years that should be selected as integer.}
+\item{year}{[\code{numeric}]\cr
+One year or a vector giving the first and last years that should 
+be selected.}
 
-\item{analytt}{One or more analyttkode given as a character. If sub-analytter should be included, end the code with \%.}
+\item{analytt}{[\code{character}]\cr
+Analyttkoder that should be selected. If sub-analytter should be included, 
+end the code with \%.}
 
-\item{hensikt}{Vector with specific hensikter. If sub-hensikter should be included, end the code with \%. Can be \code{NULL}.}
+\item{hensikt}{[\code{character}]\cr
+Specific hensiktkoder. If sub-hensikter should be included, 
+end the code with \%. Defaults to \code{NULL}.}
 
-\item{metode}{Vector with specific metoder. Can be \code{NULL}.}
+\item{metode}{[\code{character}]\cr
+Specific metodekoder. Defaults to \code{NULL}.}
 
-\item{db}{The database for which the query is built. Currently only the value "PJS" is accepted.}
+\item{db}{[\code{character(1)}]\cr
+The database for which the query is built. Defaults to "PJS" that currently
+is the only valid value.}
 }
 \value{
 A list with select-statement fom v2_sak_m_res and v_sakskonklusjon to be included in a \code{RODBC::sqlQuery}.
