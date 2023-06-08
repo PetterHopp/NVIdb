@@ -11,20 +11,20 @@ build_sql_select_year(year, varname, db = "PJS")
 build_sql_select_code(values, varname, db = "PJS")
 }
 \arguments{
-\item{year}{[\code{numeric}] \\cr
-One year or a vector giving the first and last years that should
+\item{year}{[\code{numeric}]\cr
+One year or a vector giving the first and last years that should 
 be selected.}
 
-\item{varname}{[\code{character(1)}] \\cr
+\item{varname}{[\code{character(1)}]\cr
 The PJS variable name of the variable in PJS from which the
 coded values should be selected.}
 
-\item{db}{[\code{character(1)}] \\cr
-The database for which the query is built. Currently only
-the value "PJS" is accepted.}
+\item{db}{[\code{character(1)}]\cr
+The database for which the query is built. Defaults to "PJS" that currently
+is the only valid value.}
 
-\item{values}{[\code{character}] \\cr
-The value of the codes that should be selected. If sub-codes should be
+\item{values}{[\code{character}]\cr
+The value of the codes that should be selected. If sub-codes should be 
 included, add "\%" after the code, see example.}
 }
 \value{
@@ -32,30 +32,33 @@ SQL-code to be included when building select-statements for PJS.
 }
 \description{
 Builds sql modules to be included in select statements for PJS
-when building queries for selecting data. The functions takes the values
-for which observations should be selected as input and builds the
-sql syntax.
+   when building queries for selecting data. The functions takes the values
+   for which observations should be selected as input and builds the
+   sql syntax.
 }
 \details{
 \code{build_sql_select_year} builds the SQL syntax to select observations
-from one or more consecutive years from PJS. The input can be given as
-one year, the first and last year or a range of years. If a range is given,
-this will be interpreted as first and last years and all years in between
-will be included.
+    from one or more consecutive years from PJS. The input can be given as
+    one year, the first and last year or a range of years. If a range is given,
+    this will be interpreted as first and last years and all years in between
+    will be included.
 
 \code{build_sql_select_code} builds the SQL syntax to select observations
-with the given code values from one variable in PJS with hierarchical codes.
-When the code value including sub codes  should be selected, add "\%" to the
-code, see example.
+    with the given code values from one variable in PJS with hierarchical codes.
+    When the code value including sub codes  should be selected, add "%" to the
+    code, see example.
 
 Be aware that these functions only builds an sql building block to be
-included into a select statement. It will not build a complete select
-statement. These functions are mainly intended for internal use and
-are called from \code{\link{build_query_hensikt}}, \code{\link{build_query_one_disease}},
-and \code{\link{build_query_outbreak}}. If generating own select
-statements, these can be used to facilitate the coding. The building
-blocks can be combined with "AND" and "OR" and brackets to get the
-intended select statement.
+    included into a select statement. It will not build a complete select
+    statement. These functions are mainly intended for internal use and
+    are called from 
+    \ifelse{html}{\code{\link[build_query_hensikt]{build_query_hensikt}}}{\code{build_query_hensikt}},
+    \ifelse{html}{\code{\link[build_query_one_disease]{build_query_one_disease}}}{\code{build_query_one_disease}}
+    and
+    \ifelse{html}{\code{\link[build_query_outbreak]{build_query_outbreak}}}{\code{build_query_outbreak}}.
+    If generating own select statements, these can be used to facilitate
+    the coding. The building blocks can be combined with "AND" and "OR" 
+    and brackets to get the intended select statement.
 }
 \examples{
 # SQL-select module for selecting year from PJS
@@ -73,6 +76,7 @@ build_sql_select_code(values = "0100101\%", varname = "hensiktkode", db = "PJS")
 build_sql_select_code(values = c("0100101", "0100101007", "0100102\%", "0100202\%"),
                       varname = "hensiktkode",
                       db = "PJS")
+                      
 }
 \author{
 Petter Hopp Petter.Hopp@vetinst.no
