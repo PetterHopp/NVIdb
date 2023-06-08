@@ -5,8 +5,8 @@
 #'     data source. Thereby hard coding of the paths may be avoided.
 #'
 #' The path ends with a slash as default. To facilitate the use of 
-#'     \code{\link[base:file.path]{file.path}} you can use the argument 
-#'     \code{slash = FALSE} to avoid ending slash.
+#'     \ifelse{html}{\code{\link[base:file.path]{file.path}}}{\code{file.path}}
+#'     you can use the argument \code{slash = FALSE} to avoid ending slash.
 #'
 #' @param datasource [\code{character(1)}]\cr
 #'      The data source that one want to access. The input can be abbreviated
