@@ -7,17 +7,17 @@
 build_query_hensikt(year, hensikt, db = "PJS")
 }
 \arguments{
-\item{year}{[\code{numeric}] \cr
+\item{year}{[\code{numeric}]\cr
 One year or a vector giving the first and last years that should 
 be selected.}
 
-\item{hensikt}{[\code{character}] \cr
+\item{hensikt}{[\code{character}]\cr
 Vector with one or more specific hensiktkoder. If sub-hensikter 
 should be included, end the code with \%.}
 
-\item{db}{[\code{character(1)}] \cr
-The database for which the query is built. Currently only 
-the value "PJS" is accepted.}
+\item{db}{[\code{character(1)}]\cr
+The database for which the query is built. Defaults to "PJS" that currently
+is the only valid value.}
 }
 \value{
 A list with select-statements for "v2_sak_m_res" and 

@@ -6,15 +6,11 @@
 #' @details The function builds the SQL syntax to select all 
 #'     PJS-journals concerning the hensiktkoder from PJS.
 #'
-#' @param year [\code{numeric}] \cr
-#'     One year or a vector giving the first and last years that should 
-#'     be selected.
-#' @param hensikt [\code{character}] \cr
+#' @template build_query_year
+#' @param hensikt [\code{character}]\cr
 #'     Vector with one or more specific hensiktkoder. If sub-hensikter 
 #'     should be included, end the code with \%.
-#' @param db [\code{character(1)}] \cr
-#'     The database for which the query is built. Currently only 
-#'     the value "PJS" is accepted.
+#' @template build_query_db
 #'
 #' @return A list with select-statements for "v2_sak_m_res" and 
 #'     "v_sakskonklusjon", respectively. The statements should be
