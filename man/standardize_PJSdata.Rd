@@ -7,13 +7,17 @@
 standardize_PJSdata(PJSdata, dbsource = "v2_sak_m_res")
 }
 \arguments{
-\item{PJSdata}{Data frame with data extracted from PJS.}
+\item{PJSdata}{[\code{data.frame}]\cr
+Data retrieved from PJS.}
 
-\item{dbsource}{If specified, this will be used for fetching standard column
-names by \code{\link{standardize_columns}}.}
+\item{dbsource}{[\code{character(1)}]\cr
+The table that is the source of data. This will be used for fetching 
+    standard column names by \code{\link{standardize_columns}} and
+    should be the name of the data source as registered in the 
+    "column_standards" table. Defaults to "v2_sak_m_res".}
 }
 \value{
-data frame with standardized PJS-data.
+\code{data.frame} with standardized PJS-data.
 }
 \description{
 Standardizing PJS-data. This standardizing should always be performed.

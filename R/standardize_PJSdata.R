@@ -15,11 +15,15 @@
 #'   \item Test data, i.e. saker with ansvarlig_seksjon in c("14", "99") are deleted.
 #'   }
 #'
-#' @param PJSdata Data frame with data extracted from PJS.
-#' @param dbsource If specified, this will be used for fetching standard column
-#'     names by \code{\link{standardize_columns}}.
+#' @param PJSdata [\code{data.frame}]\cr
+#' Data retrieved from PJS.
+#' @param dbsource [\code{character(1)}]\cr
+#' The table that is the source of data. This will be used for fetching 
+#'     standard column names by \code{\link{standardize_columns}} and
+#'     should be the name of the data source as registered in the 
+#'     "column_standards" table. Defaults to "v2_sak_m_res".
 #'
-#' @return data frame with standardized PJS-data.
+#' @return \code{data.frame} with standardized PJS-data.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @author Johan Åkerstedt Johan.Akerstedt@@vetinst.no
