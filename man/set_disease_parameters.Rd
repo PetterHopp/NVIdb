@@ -11,34 +11,41 @@ set_disease_parameters(
   metode2select = NULL,
   analytt2select = NULL,
   art2select = NULL,
-  missing_art = NULL,
+  include_missing_art = NULL,
   file = NULL
 )
 }
 \arguments{
-\item{hensikt2select}{Vector with specific "hensikter". If sub-codes should
-be included, end the code with \%. Can be \code{NULL}.}
+\item{hensikt2select}{[\code{character}]\cr
+Specific "hensiktkoder" for the "analytt" in question. If sub-codes should
+    be included, end the code with \%. Can be \code{NULL}.}
 
-\item{hensikt2delete}{Vector with "hensikter" for which saker should be excluded
-If sub-codes should be included, end the code with \%. Can be \code{NULL}.}
+\item{hensikt2delete}{[\code{character}]\cr
+"hensiktkoder" for which saker should be excluded
+    If sub-codes should be included, end the code with \%. Can be \code{NULL}.}
 
-\item{utbrudd2select}{String with an "utbruddsID". Can be \code{NULL}.}
+\item{utbrudd2select}{[\code{character(1)}]\cr
+"utbruddsID". Can be \code{NULL}.}
 
-\item{metode2select}{Vector with specific "metoder." Can be \code{NULL}.}
+\item{metode2select}{[\code{character}]\cr
+Specific "metodekoder for the "analytt" in question." Can be \code{NULL}.}
 
-\item{analytt2select}{Vector with  one or more "analyttkode" given as a character.
-If sub-codes should be included, end the code with \%. Can be \code{NULL}.}
+\item{analytt2select}{[\code{character}]\cr
+"analyttkoder". If sub-codes should be included, end the code with \%.
+    Can be \code{NULL}.}
 
-\item{art2select}{Vector with  one or more "artkode" given as a character.
-If sub-codes should be included, end the code with \%.  \code{NA} can be
-combined with another "artkode". Can be \code{NULL}.}
+\item{art2select}{[\code{character}]\cr
+"artkoder". If sub-codes should be included, end the code with \%.  \code{NA} can be
+    combined with another "artkode". Can be \code{NULL}.}
 
-\item{missing_art}{Should missing art be included if one or more arter should
-be selected. Character one of c("never", "always", "non_selected_hensikt").}
+\item{include_missing_art}{[\code{character(1)}]\cr
+Should missing art be included. Must be one of c("never", "always", "for_selected_hensikt").
+    If NULL, it is set to "always" when \code{art2select} includes NA, else it is set to "never".}
 
-\item{file}{path and file name for an R script that can be sourced and that
-sets the parameters \code{hensikt2select}, \code{utbrudd2select}, \code{metode2select}, and
-\code{analytt2select}. Can be \code{NULL}.}
+\item{file}{[\code{character(1)}]\cr
+path and file name for an R script that can be sourced and that
+    sets the parameters \code{hensikt2select}, \code{utbrudd2select}, \code{metode2select}, and
+    \code{analytt2select}. Can be \code{NULL}.}
 }
 \value{
 A named list with selection parameters that can be used to generate
@@ -56,19 +63,20 @@ Saker in PJS that concern one infection / disease can be characterised
     a relevant "utbrudds_ID" and/or specific "metoder." These can be used to select
     saker in PJS and/or to structure and simplify the output from PJS.
 
-    One or more specific "hensikter" may be input to the selection statement.
-    With specific "hensikt" is meant a "hensikt" that will imply that the sample
+    One or more specific "hensiktkoder" may be input to the selection statement.
+    With specific "hensiktkode" is meant a "hensiktkode" that will imply that the sample
     will be examined for specific infectious agent(s) or disease. One or more
-    specific "metoder" may be input to the selection statement. With specific
-    "metode" is meant a "metode" that implies an examination that will give one
-    of the input 2 as a result. If sub-codes of "analytt" or "hensikt"
+    specific "metodekoder" may be input to the selection statement. With specific
+    "metodekode" is meant a "metodekode" that implies an examination that will give one
+    of the input 2 as a result. If sub-codes of "analyttkode" or "hensiktkode"
     should be included, end the code with \%.
 
     The selection parameters can be input values for dedicated arguments. For input parameters
-    \code{hensikt2select}, \code{utbrudd2select}, \code{metode2select}, and
-    \code{analytt2select}, the input may be given in a source file. This may be handy if the
+    \code{hensikt2select}, \code{utbrudd2select}, \code{metode2select}, 
+    \code{analytt2select}, \code{art2select}, and \code{include_missing_art}, 
+    the input may be given in a source file. This may be handy if the
     selection will be performed many times. It also gives the possibility of
-    using a for loop that selects PJS-data and performs similar analyses at one
+    using a for loop that selects PJS-data and performs similar analyses for one
     disease at a time.
 }
 \examples{
