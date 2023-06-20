@@ -326,7 +326,7 @@ add_PJS_code_description <- function(data,
   
   # runs the translation for several PJS variables at a time if wanted
   for (i in 1:length(code_colname)) {
-    
+
     # Make a subset with only the codes that is relevant for the actual variabel
     code_2_description <- translation_table[base::which(translation_table$type == PJS_variable_type[i]), ]
     
@@ -341,14 +341,27 @@ add_PJS_code_description <- function(data,
       }
       # Removes non-unique description text, usually levels without name, i.e. "-"
       # Swips navn - kode
+      code_2_description$navn <- tolower(code_2_description$navn)
+      code_2_description <- unique(code_2_description)
+      column_names <- colnames(code_2_description)
+      navn_nr <- which(column_names == "navn")
+      kode_nr <- which(column_names == "kode")
+      column_names[c(navn_nr, kode_nr)] <- c("kode", "navn")
+      colnames(code_2_description) <- column_names
       code_2_description <- code_2_description %>%
-        dplyr::mutate(navn = tolower(.data$navn)) %>%
-        dplyr::distinct() %>%
-        dplyr::rename(kode = .data$navn, navn = .data$kode) %>%
+        dplyr::add_count(dplyr::across(c("type", "kode")), name = "antall")
+      
+      
+      # code_2_description <- code_2_description %>%
+        # dplyr::mutate(navn = tolower(.data$navn)) %>%
+        # dplyr::distinct() %>%
+        # dplyr::rename(kode = .data$navn, navn = .data$kode) %>%
         # dplyr::filter(is.na(.data$utgatt_dato)) %>%
-        dplyr::add_count(.data$type, .data$kode, name = "antall") %>%
-        dplyr::filter(.data$antall == 1) %>%
-        dplyr::select(-.data$antall)
+        # dplyr::add_count(.data$type, .data$kode, name = "antall") %>%
+        # dplyr::filter(.data$antall == 1) %>%
+        # dplyr::select(-.data$antall)
+      code_2_description <- subset(code_2_description, code_2_description$antall == 1)
+      code_2_description$antall <- NULL
       
       # Transforms code_colname in data to lower case.
       data$code_colname_org_case <- data[, code_colname[i]]
