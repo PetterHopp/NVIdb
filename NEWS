@@ -15,12 +15,14 @@ Bug fixes:
 
 Other changes:
 
-- Updated help for several functions.
+- Modified help for several functions.
+
+- Modified set_disease_parameters to make the input to include_missing_art easier to comprehend.
 
 
 BREAKING CHANGES:
 
--
+- In set_disease_parameters the argument include_missing_art replaces missing_art and the allowed input values are modified.
 
 
 NVIdb 0.10.1 - (2023-05-31)
