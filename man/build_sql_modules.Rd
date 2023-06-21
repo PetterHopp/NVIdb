@@ -52,10 +52,10 @@ Be aware that these functions only builds an sql building block to be
     included into a select statement. It will not build a complete select
     statement. These functions are mainly intended for internal use and
     are called from 
-    \ifelse{html}{\code{\link[build_query_hensikt]{build_query_hensikt}}}{\code{build_query_hensikt}},
-    \ifelse{html}{\code{\link[build_query_one_disease]{build_query_one_disease}}}{\code{build_query_one_disease}}
+    \ifelse{html}{\code{\link{build_query_hensikt}}}{\code{build_query_hensikt}},
+    \ifelse{html}{\code{\link{build_query_one_disease}}}{\code{build_query_one_disease}}
     and
-    \ifelse{html}{\code{\link[build_query_outbreak]{build_query_outbreak}}}{\code{build_query_outbreak}}.
+    \ifelse{html}{\code{\link{build_query_outbreak}}}{\code{build_query_outbreak}}.
     If generating own select statements, these can be used to facilitate
     the coding. The building blocks can be combined with "AND" and "OR" 
     and brackets to get the intended select statement.
