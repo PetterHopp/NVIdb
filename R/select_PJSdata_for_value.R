@@ -60,8 +60,7 @@ select_PJSdata_for_value <- function(data,
   # Identifies all variables in the index taking into consideration the PJS-levels of the code_column(s)
   index <- c("aar", "ansvarlig_seksjon", "innsendelsenr", "saksnr")
   for (k in 1:length(code_column)) {
-    index <- union(
-index,
+    index <- union(index,
                    NVIdb::PJS_levels[which(NVIdb::PJS_levels[1:10, which(NVIdb::PJS_levels[which(NVIdb::PJS_levels$variable == code_column[k]), ] == 1)[1]] == 1), "variable"]
 )
   }
