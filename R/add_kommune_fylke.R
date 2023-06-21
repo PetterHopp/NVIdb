@@ -122,14 +122,17 @@ add_kommune_fylke <- function(data,
     # For fylkenr, select the fylke where most kommuner is within the fylke. This to avoid fylkenr to be translated to fylker
     # where one or a few kommuner has been relocated.
     code_2_new <- code_2_new %>%
-      dplyr::rename(antall = .data$komnr) %>%
+      dplyr::rename(antall = dplyr::all_of("komnr")) %>%
       dplyr::distinct() %>%
       dplyr::group_by(.data$fylkenr) %>%
       dplyr::mutate(maxantall = max(.data$antall)) %>%
-      dplyr::ungroup() %>%
-      dplyr::filter(.data$maxantall == .data$antall) %>%
-      dplyr::select(-.data$antall, -.data$maxantall)
-
+      dplyr::ungroup() # %>%
+    
+    code_2_new <- subset(code_2_new, code_2_new$maxantall == code_2_new$antall)
+    code_2_new[, c("antall", "maxantall")] <- c(NULL, NULL)
+      # dplyr::filter(.data$maxantall == .data$antall) %>%
+    # dplyr::select(-.data$antall, -.data$maxantall)
+    
     # Removes tibble in case it makes trouble later
     code_2_new <- as.data.frame(code_2_new)
 
