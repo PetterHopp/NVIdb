@@ -8,12 +8,10 @@ test_that("transform code combinations, from 2 columns to 2 columns", {
   colnames(data) <- c("kjennelse", "analytt")
   
   data <- transform_code_combinations(data = data,
-                                      from_values = list(c("Detected"),
-                                                         c("M. kansasii")),
-                                      to_values = list(c("Not detected"),
-                                                       c("M. bovis")),
-                                      from_columns = c("kjennelse", "analytt"),
-                                      to_columns = c("kjennelse", "analytt"),
+                                      from_values = list("kjennelse" = c("Detected"),
+                                                         "analytt" = c("M. kansasii")),
+                                      to_values = list("kjennelse" = c("Not detected"),
+                                                       "analytt" = c("M. bovis")),
                                       impute_when_missing_from = c("kjennelse", "analytt"))
   
   correct_result <- as.data.frame(cbind(c("Detected", "Not detected", "Not detected", NA),
@@ -21,7 +19,7 @@ test_that("transform code combinations, from 2 columns to 2 columns", {
   colnames(correct_result) <- c("kjennelse", "analytt")
   expect_identical(data, correct_result) 
   
-  #  A code combination of two is tranformed to another code combination of two into new columns
+  #  A code combination of two is transformed to another code combination of two into new columns
   data <- as.data.frame(cbind(c("Detected", "Detected", "Not detected", NA),
                               c("M. bovis", "M. kansasii", "M. bovis", NA)))
   colnames(data) <- c("kjennelse", "analytt")
@@ -32,12 +30,10 @@ test_that("transform code combinations, from 2 columns to 2 columns", {
   colnames(correct_result) <- c("kjennelse", "analytt", "kjennelse2", "analytt2")  
   
   data <- transform_code_combinations(data = data,
-                                      from_values = list(c("Detected"),
-                                                         c("M. kansasii")),
-                                      to_values = list(c("Not detected"),
-                                                       c("M. bovis")),
-                                      from_columns = c("kjennelse", "analytt"),
-                                      to_columns = c("kjennelse2", "analytt2"),
+                                      from_values = list("kjennelse" = c("Detected"),
+                                                         "analytt" = c("M. kansasii")),
+                                      to_values = list("kjennelse2" = c("Not detected"),
+                                                       "analytt2" = c("M. bovis")),
                                       impute_when_missing_from = c("kjennelse", "analytt"))
   
   expect_identical(data, correct_result) 
@@ -56,11 +52,9 @@ test_that("transform_code_combinations: two variables to one", {
   colnames(correct_result) <- c("art", "driftsform", "art2")
   
   data <- transform_code_combinations(data = data, 
-                                      from_values = list(c("hjort", "rein", "rein", NA), 
-                                                         c("produksjonsdyr", "ville dyr", "produksjonsdyr", NA)), 
-                                      to_values = list(c("oppdrettshjort", "villrein", "tamrein", "ukjent")), 
-                                      from_columns = c("art", "driftsform"), 
-                                      to_columns = c("art2"), 
+                                      from_values = list("art" = c("hjort", "rein", "rein", NA), 
+                                                         "driftsform" = c("produksjonsdyr", "ville dyr", "produksjonsdyr", NA)), 
+                                      to_values = list("art2" = c("oppdrettshjort", "villrein", "tamrein", "ukjent")), 
                                       impute_when_missing_from = "art") 
   
   expect_identical(data, correct_result) 
@@ -79,12 +73,10 @@ test_that("transform_code_combinations: one variable to three", {
   colnames(correct_result) <- c("material", "material_type", "sample_type", "preparation")
   
   data <- transform_code_combinations(data = data, 
-                                      from_values = list(c("fixed organs", "fresh bulk milk", "blood sample", NA)), 
-                                      to_values = list(c("organs", "milk", "blood", NA), 
-                                                       c("single sample", "bulk milk", "single sample", NA), 
-                                                       c("fixed", "fresh", "fresh", NA)), 
-                                      from_columns = c("material"), 
-                                      to_columns = c("material_type", "sample_type", "preparation"), 
+                                      from_values = list("material" = c("fixed organs", "fresh bulk milk", "blood sample", NA)), 
+                                      to_values = list("material_type" = c("organs", "milk", "blood", NA), 
+                                                       "sample_type" = c("single sample", "bulk milk", "single sample", NA), 
+                                                       "preparation" = c("fixed", "fresh", "fresh", NA)), 
                                       impute_when_missing_from = "material") 
   
   expect_identical(data, correct_result) 
