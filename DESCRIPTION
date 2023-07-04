@@ -52,6 +52,7 @@ Imports:
     NVIrpackages
 Suggests:
     covr,
+    desc,
     devtools,
     spelling,
     testthat,
