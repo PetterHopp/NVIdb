@@ -94,6 +94,9 @@ set_disease_parameters <- function(hensikt2select = NULL,
         eval(parse(text = script[i]))
       }
     }
+    if (is.TRUE(checkmate::check_list(x = selection_parameters))) {
+      
+    }
   }
   
   # PREPARE INPUT BEFORE ARGUMENT CHECKING ----
