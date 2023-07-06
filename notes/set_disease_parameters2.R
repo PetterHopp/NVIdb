@@ -71,9 +71,16 @@ set_disease_parameters <- function(hensikt2select = NULL,
                                    analytt2select = NULL,
                                    art2select = NULL,
                                    include_missing_art = NULL,
-                                   selection_parameters = NULL) {
+                                   selection_parameters = NULL,
+                                   ...) {
   
   # SET SELECTION PARAMETERS ----
+  # Vector with possible selection parameter names
+  # missing_art is deprecated 
+  var2select_template <- c("hensikt2select", "hensikt2delete", "utbrudd2select",
+                           "metode2select", "analytt2select", "art2select",
+                           "include_missing_art", "missing_art")
+  
   # Import values from parameter file if exists
   if (!is.null(selection_parameters)) {
     NVIcheckmate::assert(checkmate::check_file(x = selection_parameters),
@@ -84,8 +91,11 @@ set_disease_parameters <- function(hensikt2select = NULL,
     if (is.TRUE(checkmate::check_file(x = selection_parameters))) {
       script <- as.character(parse(file = selection_parameters, encoding = "UTF-8"))
       
-      script <- script[grepl(pattern = paste0("[^hensikt2select|^hensikt2delete|^analytt2select|^metode2select|",
-                                              "^art2select|^utbrudd2select|^missing_art]",
+      script <- script[grepl(pattern = paste0("[^",
+                                              paste(var2select_template, collapse = "|^"),
+                                              # hensikt2select|^hensikt2delete|^analytt2select|^metode2select|",
+                                              # "^art2select|^utbrudd2select|^include_missing_art|^missing_art
+                                              "]",
                                               "[[:blank:]]*",
                                               "[=|<\\-]"),
                              script)]
@@ -94,7 +104,12 @@ set_disease_parameters <- function(hensikt2select = NULL,
         eval(parse(text = script[i]))
       }
     }
-    if (is.TRUE(checkmate::check_list(x = selection_parameters))) {
+    if (isTRUE(checkmate::check_list(x = selection_parameters))) {
+      var2select <- intersect(names(selection_parameters[!sapply(selection_parameters, is.null)]), 
+                              var2select_template) 
+      for (i in var2select) {
+        assign(i, unlist(selection_parameters[i]))
+      } 
       
     }
   }
