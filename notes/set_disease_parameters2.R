@@ -81,6 +81,19 @@ set_disease_parameters <- function(hensikt2select = NULL,
                            "metode2select", "analytt2select", "art2select",
                            "include_missing_art", "missing_art")
   
+  # PREPARE ARGUMENTS BEFORE CHECKING ----
+  if ("file" %in% ...names() & is.null(selection_parameters) ) {
+    selection_parameters <- unlist(list(...)$file)
+    warning <- "The argument 'file' of set_disease_parameters is deprecated. Use 'selection_parameters' instead"
+  }
+  
+  if ("missing_art" %in% ...names() & is.null(include_missing_art) ) {
+    include_missing_art <- unlist(list(...)$missing_art)
+    if (include_missing_art == "non_selected_hensikt") {include_missing_art <- "for_selected_hensikt"}
+    warning <- "The argument 'missing_art' of set_disease_parameters is deprecated. Use 'include_missing_art' instead"
+    }
+    
+    
   # Import values from parameter file if exists
   if (!is.null(selection_parameters)) {
     NVIcheckmate::assert(checkmate::check_file(x = selection_parameters),
@@ -110,7 +123,6 @@ set_disease_parameters <- function(hensikt2select = NULL,
       for (i in var2select) {
         assign(i, unlist(selection_parameters[i]))
       } 
-      
     }
   }
   
