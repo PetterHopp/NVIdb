@@ -84,17 +84,17 @@ set_disease_parameters <- function(hensikt2select = NULL,
   # PREPARE ARGUMENTS BEFORE CHECKING ----
   if ("file" %in% ...names() & is.null(selection_parameters) ) {
     selection_parameters <- unlist(list(...)$file)
-    warning(paste("The argument 'file' of set_disease_parameters is deprecated.",
+    warning(paste("The argument 'file' is deprecated.",
                   "Use 'selection_parameters' instead",
-                  "The input to 'file' has been transferred to 'selection_parameters'."))
+                  "The input to 'file' has been transferred to 'selection_parameters' if this is NULL."))
   }
   
   if ("missing_art" %in% ...names() & is.null(include_missing_art) ) {
     include_missing_art <- unlist(list(...)$missing_art)
     if (include_missing_art == "non_selected_hensikt") {include_missing_art <- "for_selected_hensikt"}
-    warning(paste("The argument 'missing_art' of set_disease_parameters is deprecated.",
+    warning(paste("The argument 'missing_art' is deprecated.",
                   "Use 'include_missing_art' instead",
-                  "The input to 'missing_art' has been transferred to 'include_missing_art'."))
+                  "The input to 'missing_art' has been transferred to 'include_missing_art' if this is NULL."))
   }
   
   
