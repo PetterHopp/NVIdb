@@ -21,36 +21,43 @@
 #'     should be included, end the code with \%.
 #'
 #'     The selection parameters can be input values for dedicated arguments. For input parameters
-#'     \code{hensikt2select}, \code{utbrudd2select}, \code{metode2select}, 
+#'     \code{hensikt2select}, \code{hensikt2delete}, \code{utbrudd2select}, \code{metode2select}, 
 #'     \code{analytt2select}, \code{art2select}, and \code{include_missing_art}, 
 #'     the input may be given in a source file. This may be handy if the
 #'     selection will be performed many times. It also gives the possibility of
 #'     using a for loop that selects PJS-data and performs similar analyses for one
 #'     disease at a time.
+#'     
+#'     The possibility of input other arguments are kept to make it possible to use the
+#'     deprecated arguments \code{missing_art} and \code{file}. If these are used, a
+#'     warning is issued and the input is transferred to \code{include_missing_art} and
+#'     \code{selection_parameters}, respectively.
 #'
 #' @param hensikt2select [\code{character}]\cr
 #' Specific "hensiktkoder" for the "analytt" in question. If sub-codes should
-#'     be included, end the code with \%. Can be \code{NULL}.
+#'     be included, end the code with \%.Defaults to \code{NULL}.
 #' @param hensikt2delete [\code{character}]\cr
-#' "hensiktkoder" for which saker should be excluded
-#'     If sub-codes should be included, end the code with \%. Can be \code{NULL}.
+#' "hensiktkoder" for which saker should be excluded.
+#'     If sub-codes should be included, end the code with \%. Defaults to \code{NULL}.
 #' @param utbrudd2select [\code{character(1)}]\cr
-#' "utbruddsID". Can be \code{NULL}.
+#' "utbruddsID". Defaults to \code{NULL}.
 #' @param metode2select [\code{character}]\cr
-#' Specific "metodekoder for the "analytt" in question." Can be \code{NULL}.
+#' Specific "metodekoder for the "analytt" in question." Defaults to \code{NULL}.
 #' @param analytt2select [\code{character}]\cr
 #' "analyttkoder". If sub-codes should be included, end the code with \%.
-#'     Can be \code{NULL}.
+#'     Defaults to \code{NULL}.
 #' @param art2select [\code{character}]\cr
 #' "artkoder". If sub-codes should be included, end the code with \%.  \code{NA} can be
-#'     combined with another "artkode". Can be \code{NULL}.
+#'     combined with another "artkode". Defaults to \code{NULL}.
 #' @param include_missing_art [\code{character(1)}]\cr
 #' Should missing art be included. Must be one of c("never", "always", "for_selected_hensikt").
 #'     If NULL, it is set to "always" when \code{art2select} includes NA, else it is set to "never". 
-#' @param file [\code{character(1)}]\cr
-#' path and file name for an R script that can be sourced and that
-#'     sets the parameters \code{hensikt2select}, \code{utbrudd2select}, \code{metode2select}, and
-#'     \code{analytt2select}. Can be \code{NULL}.
+#'     Defaults to \code{NULL}.
+#' @param selection_parameters [\code{character(1)}]\cr
+#' Either the path and file name for an R script that can be sourced and that
+#'     sets the selection parameters or a named list with the selection parameters
+#'     (i.e. equal to the output of this function). Defaults to \code{NULL}.
+#' @param \dots Other arguments to be passed to `set_disease_parameters`.
 #'
 #' @return A named list with selection parameters that can be used to generate
 #'     SQL selection-statements and facilitate structuring output from PJS.
@@ -71,17 +78,46 @@ set_disease_parameters <- function(hensikt2select = NULL,
                                    analytt2select = NULL,
                                    art2select = NULL,
                                    include_missing_art = NULL,
-                                   file = NULL) {
+                                   selection_parameters = NULL,
+                                   ...) {
   
   # SET SELECTION PARAMETERS ----
+  # Vector with possible selection parameter names
+  # missing_art is deprecated 
+  var2select_template <- c("hensikt2select", "hensikt2delete", "utbrudd2select",
+                           "metode2select", "analytt2select", "art2select",
+                           "include_missing_art", "missing_art")
+  
+  # PREPARE ARGUMENTS BEFORE CHECKING ----
+  if ("file" %in% ...names() & is.null(selection_parameters) ) {
+    selection_parameters <- unlist(list(...)$file)
+    warning(paste("The argument 'file' is deprecated.",
+                  "Use 'selection_parameters' instead",
+                  "The input to 'file' has been transferred to 'selection_parameters' if this is NULL."))
+  }
+  
+  if ("missing_art" %in% ...names() & is.null(include_missing_art) ) {
+    include_missing_art <- unlist(list(...)$missing_art)
+    if (include_missing_art == "non_selected_hensikt") {include_missing_art <- "for_selected_hensikt"}
+    warning(paste("The argument 'missing_art' is deprecated.",
+                  "Use 'include_missing_art' instead",
+                  "The input to 'missing_art' has been transferred to 'include_missing_art' if this is NULL."))
+  }
+  
+  
   # Import values from parameter file if exists
-  if (!is.null(file)) {
-    checkmate::assert_file(x = file)
-    if (!is.null(file)) {
-      script <- as.character(parse(file = file, encoding = "UTF-8"))
+  if (!is.null(selection_parameters)) {
+    NVIcheckmate::assert(checkmate::check_file(x = selection_parameters),
+                         checkmate::check_list(x = selection_parameters),
+                         combine = "or",
+                         comment = "The argument selection_parameter must either be a file with selection parameters or a list with selection parameters",
+                         add = checks)
+    if (is.TRUE(checkmate::check_file(x = selection_parameters))) {
+      script <- as.character(parse(file = selection_parameters, encoding = "UTF-8"))
       
-      script <- script[grepl(pattern = paste0("[^hensikt2select|^hensikt2delete|^analytt2select|^metode2select|",
-                                              "^art2select|^utbrudd2select|^missing_art]",
+      script <- script[grepl(pattern = paste0("[^",
+                                              paste(var2select_template, collapse = "|^"),
+                                              "]",
                                               "[[:blank:]]*",
                                               "[=|<\\-]"),
                              script)]
@@ -89,6 +125,16 @@ set_disease_parameters <- function(hensikt2select = NULL,
       for (i in 1:length(script)) {
         eval(parse(text = script[i]))
       }
+    }
+    if (isTRUE(checkmate::check_list(x = selection_parameters))) {
+      checkmate::assert_subset(x = names(selection_parameters),
+                               choices = var2select_template,
+                               empty.ok = FALSE)
+      var2select <- intersect(names(selection_parameters[!sapply(selection_parameters, is.null)]), 
+                              var2select_template) 
+      for (i in var2select) {
+        assign(i, unlist(selection_parameters[i]))
+      } 
     }
   }
   
@@ -101,35 +147,34 @@ set_disease_parameters <- function(hensikt2select = NULL,
       include_missing_art <- "never"
     }
   }
-    
-    # ARGUMENT CHECKING ----
-    # Object to store check-results
-    checks <- checkmate::makeAssertCollection()
-    
-    # Perform checks
-    NVIcheckmate::assert_non_null(list(analytt2select, hensikt2select, utbrudd2select, file), add = checks)
-    checkmate::assert_character(hensikt2select, min.chars = 2, max.chars = 15, any.missing = FALSE, null.ok = TRUE, add = checks)
-    checkmate::assert_character(hensikt2delete, min.chars = 2, max.chars = 15, any.missing = FALSE, null.ok = TRUE, add = checks)
-    checkmate::assert_character(utbrudd2select, max.chars = 5, any.missing = FALSE, null.ok = TRUE, add = checks)
-    checkmate::assert_character(metode2select, n.chars = 6, any.missing = FALSE, null.ok = TRUE, add = checks)
-    checkmate::assert_character(analytt2select, min.chars = 2, max.chars = 20, any.missing = FALSE, null.ok = TRUE, add = checks)
-    checkmate::assert_character(art2select, min.chars = 2, max.chars = 20, all.missing = FALSE, null.ok = TRUE, add = checks)
-    # if (!is.null(art2select) && any(is.na(art2select))) {
-      checkmate::assert_choice(include_missing_art, 
-                               choices = c("never", "always", "for_selected_hensikt"), 
-                               add = checks)
-    # }
-    
-    # Report check-results
-    checkmate::reportAssertions(checks)
-    
-    # CREATE LIST WITH PARAMETER VALUES ----
-    return(list("hensikt2select" = hensikt2select,
-                "hensikt2delete" = hensikt2delete,
-                "utbrudd2select" = utbrudd2select,
-                "metode2select" = metode2select,
-                "analytt2select" = analytt2select,
-                "art2select" = art2select,
-                "include_missing_art" = include_missing_art))
-  }
   
+  # ARGUMENT CHECKING ----
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+  
+  # Perform checks
+  NVIcheckmate::assert_non_null(list(analytt2select, hensikt2select, utbrudd2select, file), add = checks)
+  checkmate::assert_character(hensikt2select, min.chars = 2, max.chars = 15, any.missing = FALSE, null.ok = TRUE, add = checks)
+  checkmate::assert_character(hensikt2delete, min.chars = 2, max.chars = 15, any.missing = FALSE, null.ok = TRUE, add = checks)
+  checkmate::assert_character(utbrudd2select, max.chars = 5, any.missing = FALSE, null.ok = TRUE, add = checks)
+  checkmate::assert_character(metode2select, n.chars = 6, any.missing = FALSE, null.ok = TRUE, add = checks)
+  checkmate::assert_character(analytt2select, min.chars = 2, max.chars = 20, any.missing = FALSE, null.ok = TRUE, add = checks)
+  checkmate::assert_character(art2select, min.chars = 2, max.chars = 20, all.missing = FALSE, null.ok = TRUE, add = checks)
+  # if (!is.null(art2select) && any(is.na(art2select))) {
+  checkmate::assert_choice(include_missing_art, 
+                           choices = c("never", "always", "for_selected_hensikt"), 
+                           add = checks)
+  # }
+  
+  # Report check-results
+  checkmate::reportAssertions(checks)
+  
+  # CREATE LIST WITH PARAMETER VALUES ----
+  return(list("hensikt2select" = hensikt2select,
+              "hensikt2delete" = hensikt2delete,
+              "utbrudd2select" = utbrudd2select,
+              "metode2select" = metode2select,
+              "analytt2select" = analytt2select,
+              "art2select" = art2select,
+              "include_missing_art" = include_missing_art))
+}
