@@ -14,6 +14,17 @@ test_that("set disease parameters by direct input", {
                     "art2select" = NULL,
                     "include_missing_art" = "never"))
   
+  parameters2 <- set_disease_parameters(selection_parameters = parameters)
+  expect_equal(parameters2,
+               list("hensikt2select" = c("0100108018", "0100109003", "0100111003", "0800109"),
+                    "hensikt2delete" = NULL,
+                    "utbrudd2select" = NULL,
+                    "metode2select" = c("070070", "070231", "010057", "060265"),
+                    "analytt2select" = c("01220104%", "1502010235"),
+                    "art2select" = NULL,
+                    "include_missing_art" = "never"))
+  
+    
   parameters <- set_disease_parameters(hensikt2select = c("0100108018", "0100109003", "0100111003"),
                                        hensikt2delete = c("0800109"),
                                        utbrudd2select = "22",
@@ -27,7 +38,17 @@ test_that("set disease parameters by direct input", {
                     "analytt2select" = c("01220104%", "1502010235"),
                     "art2select" = NULL,
                     "include_missing_art" = "never"))
-
+  
+  parameters2 <- set_disease_parameters(selection_parameters = parameters)
+  expect_equal(parameters2,
+               list("hensikt2select" = c("0100108018", "0100109003", "0100111003"),
+                    "hensikt2delete" = c("0800109"),
+                    "utbrudd2select" = "22",
+                    "metode2select" = c("070070", "070231", "010057", "060265"),
+                    "analytt2select" = c("01220104%", "1502010235"),
+                    "art2select" = NULL,
+                    "include_missing_art" = "never"))
+               
   parameters <- set_disease_parameters(hensikt2select = c("0100108018", "0100109003", "0100111003"),
                                        hensikt2delete = c("0800109"),
                                        utbrudd2select = "22",
@@ -72,7 +93,18 @@ test_that("set disease parameters by direct input", {
                     "analytt2select" = NULL,
                     "art2select" = c("01%", NA),
                     "include_missing_art" = "always"))
-})
+  
+  parameters2 <- set_disease_parameters(selection_parameters = parameters)
+  expect_equal(parameters2,
+               list("hensikt2select" = c("0100108018", "0100109003", "0100111003"),
+                    "hensikt2delete" = c("0800109"),
+                    "utbrudd2select" = "22",
+                    "metode2select" = NULL,
+                    "analytt2select" = NULL,
+                    "art2select" = c("01%", NA),
+                    "include_missing_art" = "always"))
+               
+  })
 
 test_that("set disease parameters using parameter file", {
 writeLines(
@@ -127,7 +159,7 @@ test_that("errors for set_disease_parameters", {
   expect_error(set_disease_parameters(hensikt2select = NULL,
                                       analytt2select = NULL,
                                       utbrudd2select = NULL),
-               regexp = "At least one of the arguments must have input different from")
+               regexp = "have input different from NULL and NA")
 
   expect_error(set_disease_parameters(hensikt2delete = "01001080180100108018",
                                       analytt2select = "01220104%",
