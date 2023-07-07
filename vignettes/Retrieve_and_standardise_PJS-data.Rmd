@@ -1,6 +1,9 @@
 --- 
 title: "Retrieve and standardise PJS-data"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    css: "NVI_vignette_style.css"
+    
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Retrieve and standardise PJS-data}
