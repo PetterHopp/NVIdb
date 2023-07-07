@@ -71,46 +71,17 @@ set_disease_parameters <- function(hensikt2select = NULL,
                                    analytt2select = NULL,
                                    art2select = NULL,
                                    include_missing_art = NULL,
-                                   selection_parameters = NULL,
-                                   ...) {
+                                   file = NULL) {
   
   # SET SELECTION PARAMETERS ----
-  # Vector with possible selection parameter names
-  # missing_art is deprecated 
-  var2select_template <- c("hensikt2select", "hensikt2delete", "utbrudd2select",
-                           "metode2select", "analytt2select", "art2select",
-                           "include_missing_art", "missing_art")
-  
-  # PREPARE ARGUMENTS BEFORE CHECKING ----
-  if ("file" %in% ...names() & is.null(selection_parameters) ) {
-    selection_parameters <- unlist(list(...)$file)
-    warning(paste("The argument 'file' is deprecated.",
-                  "Use 'selection_parameters' instead",
-                  "The input to 'file' has been transferred to 'selection_parameters' if this is NULL."))
-  }
-  
-  if ("missing_art" %in% ...names() & is.null(include_missing_art) ) {
-    include_missing_art <- unlist(list(...)$missing_art)
-    if (include_missing_art == "non_selected_hensikt") {include_missing_art <- "for_selected_hensikt"}
-    warning(paste("The argument 'missing_art' is deprecated.",
-                  "Use 'include_missing_art' instead",
-                  "The input to 'missing_art' has been transferred to 'include_missing_art' if this is NULL."))
-  }
-  
-  
   # Import values from parameter file if exists
-  if (!is.null(selection_parameters)) {
-    NVIcheckmate::assert(checkmate::check_file(x = selection_parameters),
-                         checkmate::check_list(x = selection_parameters),
-                         combine = "or",
-                         comment = "The argument selection_parameter must either be a file with selection parameters or a list with selection parameters",
-                         add = checks)
-    if (is.TRUE(checkmate::check_file(x = selection_parameters))) {
-      script <- as.character(parse(file = selection_parameters, encoding = "UTF-8"))
+  if (!is.null(file)) {
+    checkmate::assert_file(x = file)
+    if (!is.null(file)) {
+      script <- as.character(parse(file = file, encoding = "UTF-8"))
       
-      script <- script[grepl(pattern = paste0("[^",
-                                              paste(var2select_template, collapse = "|^"),
-                                              "]",
+      script <- script[grepl(pattern = paste0("[^hensikt2select|^hensikt2delete|^analytt2select|^metode2select|",
+                                              "^art2select|^utbrudd2select|^missing_art]",
                                               "[[:blank:]]*",
                                               "[=|<\\-]"),
                              script)]
@@ -118,16 +89,6 @@ set_disease_parameters <- function(hensikt2select = NULL,
       for (i in 1:length(script)) {
         eval(parse(text = script[i]))
       }
-    }
-    if (isTRUE(checkmate::check_list(x = selection_parameters))) {
-      checkmate::assert_subset(x = names(selection_parameters),
-                               choices = var2select_template,
-                               empty.ok = FALSE)
-      var2select <- intersect(names(selection_parameters[!sapply(selection_parameters, is.null)]), 
-                              var2select_template) 
-      for (i in var2select) {
-        assign(i, unlist(selection_parameters[i]))
-      } 
     }
   }
   
@@ -171,3 +132,4 @@ set_disease_parameters <- function(hensikt2select = NULL,
               "art2select" = art2select,
               "include_missing_art" = include_missing_art))
 }
+
