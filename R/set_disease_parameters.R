@@ -107,12 +107,12 @@ set_disease_parameters <- function(hensikt2select = NULL,
   
   # Import values from parameter file if exists
   if (!is.null(selection_parameters)) {
-    NVIcheckmate::assert(checkmate::check_file(x = selection_parameters),
+    NVIcheckmate::assert(checkmate::check_file_exists(x = selection_parameters, access = "r"),
                          checkmate::check_list(x = selection_parameters),
                          combine = "or",
                          comment = "The argument selection_parameter must either be a file with selection parameters or a list with selection parameters",
                          add = checks)
-    if (is.TRUE(checkmate::check_file(x = selection_parameters))) {
+    if (isTRUE(checkmate::check_file_exists(x = selection_parameters, access = "r"))) {
       script <- as.character(parse(file = selection_parameters, encoding = "UTF-8"))
       
       script <- script[grepl(pattern = paste0("[^",
@@ -133,7 +133,7 @@ set_disease_parameters <- function(hensikt2select = NULL,
       var2select <- intersect(names(selection_parameters[!sapply(selection_parameters, is.null)]), 
                               var2select_template) 
       for (i in var2select) {
-        assign(i, unlist(selection_parameters[i]))
+        assign(i, unname(unlist(selection_parameters[i])))
       } 
     }
   }
@@ -153,7 +153,7 @@ set_disease_parameters <- function(hensikt2select = NULL,
   checks <- checkmate::makeAssertCollection()
   
   # Perform checks
-  NVIcheckmate::assert_non_null(list(analytt2select, hensikt2select, utbrudd2select, file), add = checks)
+  NVIcheckmate::assert_non_null(list(analytt2select, hensikt2select, utbrudd2select, unlist(selection_parameters)), add = checks)
   checkmate::assert_character(hensikt2select, min.chars = 2, max.chars = 15, any.missing = FALSE, null.ok = TRUE, add = checks)
   checkmate::assert_character(hensikt2delete, min.chars = 2, max.chars = 15, any.missing = FALSE, null.ok = TRUE, add = checks)
   checkmate::assert_character(utbrudd2select, max.chars = 5, any.missing = FALSE, null.ok = TRUE, add = checks)
