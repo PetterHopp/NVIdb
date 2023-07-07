@@ -12,40 +12,44 @@ set_disease_parameters(
   analytt2select = NULL,
   art2select = NULL,
   include_missing_art = NULL,
-  file = NULL
+  selection_parameters = NULL,
+  ...
 )
 }
 \arguments{
 \item{hensikt2select}{[\code{character}]\cr
 Specific "hensiktkoder" for the "analytt" in question. If sub-codes should
-    be included, end the code with \%. Can be \code{NULL}.}
+    be included, end the code with \%.Defaults to \code{NULL}.}
 
 \item{hensikt2delete}{[\code{character}]\cr
-"hensiktkoder" for which saker should be excluded
-    If sub-codes should be included, end the code with \%. Can be \code{NULL}.}
+"hensiktkoder" for which saker should be excluded.
+    If sub-codes should be included, end the code with \%. Defaults to \code{NULL}.}
 
 \item{utbrudd2select}{[\code{character(1)}]\cr
-"utbruddsID". Can be \code{NULL}.}
+"utbruddsID". Defaults to \code{NULL}.}
 
 \item{metode2select}{[\code{character}]\cr
-Specific "metodekoder for the "analytt" in question." Can be \code{NULL}.}
+Specific "metodekoder for the "analytt" in question." Defaults to \code{NULL}.}
 
 \item{analytt2select}{[\code{character}]\cr
 "analyttkoder". If sub-codes should be included, end the code with \%.
-    Can be \code{NULL}.}
+    Defaults to \code{NULL}.}
 
 \item{art2select}{[\code{character}]\cr
 "artkoder". If sub-codes should be included, end the code with \%.  \code{NA} can be
-    combined with another "artkode". Can be \code{NULL}.}
+    combined with another "artkode". Defaults to \code{NULL}.}
 
 \item{include_missing_art}{[\code{character(1)}]\cr
 Should missing art be included. Must be one of c("never", "always", "for_selected_hensikt").
-    If NULL, it is set to "always" when \code{art2select} includes NA, else it is set to "never".}
+    If NULL, it is set to "always" when \code{art2select} includes NA, else it is set to "never". 
+    Defaults to \code{NULL}.}
 
-\item{file}{[\code{character(1)}]\cr
-path and file name for an R script that can be sourced and that
-    sets the parameters \code{hensikt2select}, \code{utbrudd2select}, \code{metode2select}, and
-    \code{analytt2select}. Can be \code{NULL}.}
+\item{selection_parameters}{[\code{character(1)}]\cr
+Either the path and file name for an R script that can be sourced and that
+    sets the selection parameters or a named list with the selection parameters
+    (i.e. equal to the output of this function). Defaults to \code{NULL}.}
+
+\item{\dots}{Other arguments to be passed to `set_disease_parameters`.}
 }
 \value{
 A named list with selection parameters that can be used to generate
@@ -75,12 +79,17 @@ Saker in PJS that concern one infection / disease can be characterised
     should be included, end the code with \%.
 
     The selection parameters can be input values for dedicated arguments. For input parameters
-    \code{hensikt2select}, \code{utbrudd2select}, \code{metode2select}, 
+    \code{hensikt2select}, \code{hensikt2delete}, \code{utbrudd2select}, \code{metode2select}, 
     \code{analytt2select}, \code{art2select}, and \code{include_missing_art}, 
     the input may be given in a source file. This may be handy if the
     selection will be performed many times. It also gives the possibility of
     using a for loop that selects PJS-data and performs similar analyses for one
     disease at a time.
+    
+    The possibility of input other arguments are kept to make it possible to use the
+    deprecated arguments \code{missing_art} and \code{file}. If these are used, a
+    warning is issued and the input is transferred to \code{include_missing_art} and
+    \code{selection_parameters}, respectively.
 }
 \examples{
 # Selection parameters for Pancreatic disease (PD)
