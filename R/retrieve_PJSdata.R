@@ -63,19 +63,25 @@ retrieve_PJSdata <- function(year,
   
   selection_parameters <- set_disease_parameters(selection_parameters = selection_parameters) 
   
-    # List with arguments and default values
-    FUN_args <- formals(args(NVIdb::build_query_one_disease))
-    # Character vector with arguments only
-    FUN_args <- names(FUN_args)
-    # Remove first argument (either year or period)
-    # Identify only relevant arguments from selection parameters
-    # Input relevant arguments in correct order; do.call??
-    select_statement <- FUN(year = year,
-                            analytt = selection_parameters$analytt2select, 
-                            hensikt = selection_parameters$hensikt2select,
-                            utbrudd = selection_parameters$utbrudd2select,
-                            metode = selection_parameters$metode2select)
-    
+  # Character vector with arguments for FUN
+  FUN_args <- names(formals(args(FUN))) 
+  
+  # Create FUN_input for modifications, 
+  #  keep the original selection_parameters. 
+  FUN_input <- selection_parameters
+  # Rename list objects to input for FUN
+  names(FUN_input) <- gsub("2select", "", names(FUN_input)) 
+  # Include year and period in FUN_input
+  FUN_input <- append(FUN_input,
+                      values = c("year" = year, "period" = year)) 
+  FUN_input <- append(FUN_input,
+                      values = c("db" = "PJS")) 
+  
+  # Keep only relevant arguments for FUN in FUN_input
+  FUN_input <- FUN_input[FUN_args] 
+  select_statement <- do.call(FUN, FUN_input) 
+  
+  
     
     # READ DATA FROM PJS ----
     journal_rapp <- login_PJS()
