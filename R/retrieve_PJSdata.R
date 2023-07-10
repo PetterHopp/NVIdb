@@ -1,4 +1,4 @@
-#' @title Sets disease selection parameters
+#' @title Retrieves data from PJS
 #' @description Sets the disease selection parameters and store them in a list
 #'     object. The list follows a standardised named format and the elements can
 #'     be used as input to 
@@ -25,19 +25,21 @@
 #' @param selection_parameters [\code{character(1)}]\cr
 #' Either the path and file name for an R script that can be sourced and that
 #'     sets the selection parameters or a named list with the selection parameters
-#'     (i.e. equal to the output of this function). Defaults to \code{NULL}.
+#'     (i.e. similar to the output of 
+#'     \ifelse{html}{\code{\link{set_disease_parameters}}}{\code{set_disease_parameters}}).
+#'     Defaults to \code{NULL}.
 #' @param FUN [\code{function}]\cr
-#' Function to build the selection statement. 
+#' Function to build the selection statement, see details. Defaults to \code{NULL}.
 #' @param select_statement [\code{character(1)}]\cr
-#' "utbruddsID". Defaults to \code{NULL}.
-#' @param \dots Other arguments to be passed to `set_disease_parameters`.
+#' A written select statement, see details. Defaults to \code{NULL}.
+#' @param \dots Other arguments to be passed to underlying functions.
 #'
 #' @return A named list with PJS data.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @export
 #' @examples
-#' # Selection parameters for Pancreatic disease (PD)
+#' 
 # 
 retrieve_PJSdata <- function(year, 
                              selection_parameters, 
@@ -56,7 +58,10 @@ retrieve_PJSdata <- function(year,
                        combine = "or",
                        comment = "The argument selection_parameter must either be a file with selection parameters or a list with selection parameters",
                        add = checks)
-  
+  checkmate::assert_function(FUN, null.ok = TRUE)
+  checkmate::assert_choice(deparse(substitute(FUN)),
+                           choices = c("build_query_one_disease", "build_query_hensikt", "build_query_outbreak"), 
+                           null.ok = TRUE)
   
   # Report check-results
   checkmate::reportAssertions(checks)
