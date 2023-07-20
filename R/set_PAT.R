@@ -25,7 +25,11 @@
 #'     \code{remove_PAT} The PAT for a internet service are deleted from the user profile at the current computer.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
-#'
+#' @name set_PAT-deprecated
+#' @usage set_PAT(service)
+#' @usage get_PAT(service)
+#' @usage remove_PAT(service)
+#' @keywords internal
 #' @export
 #' @examples
 #' \dontrun{
@@ -35,10 +39,29 @@
 #'
 #' remove_PAT("GitHub")
 #' }
+NULL
+
+
+#' @title \code{set_PAT}, \code{get_PAT}, and \code{remove_PAT} is deprecated
+#' @description \code{set_PAT}, \code{get_PAT}, and \code{remove_PAT} was 
+#'     deprecated 2023-08-20 in NVIdb v0.11.0. These functions should be replaced 
+#'     by corresponding functions in package 'gitcreds' that are better, more 
+#'     flexible and maintained at cran.
+#' @details The old help pages can be found at \code{help("set_PAT-deprecated")}.
+#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
+#' @param service Name of the internet service, for example "GitHub". For internet services where one don't use the premade wrappers, the name can
+#'     be chosen freely, but must be the same as used in \code{get_PAT}
+#' @export
+#' @keywords internal
 #'
 set_PAT <- function(service) {
 
-
+  .Deprecated(new = "set_PAT",
+              package = "NVIdb",
+              msg = paste("'set_PAT', 'get_PAT', and 'remove_PAT' shouild be replaced by",
+                          "corresponding functions in package 'gitcreds'. These functions",
+                          "are better, more flexible and maintained at cran."))
+  
   # ARGUMENT CHECKING service ----
   checkmate::assert_character(x = service, min.chars = 1, len = 1, any.missing = FALSE)
 
@@ -52,4 +75,72 @@ set_PAT <- function(service) {
                               # password = getPass::getPass(paste("Enter your PAT for", service)),
                               password = askpass::askpass(prompt = paste("Enter your PAT for", service)),
                               keyring = NULL)
+}
+
+
+#' @export
+#' @rdname set_PAT
+
+get_PAT <- function(service) {
+  
+  .Deprecated(new = "get_PAT",
+              package = "NVIdb",
+              msg = paste("'set_PAT', 'get_PAT', and 'remove_PAT' shouild be replaced by",
+                          "corresponding functions in package 'gitcreds'. These functions",
+                          "are better, more flexible and maintained at cran."))
+  
+  # Error handling
+  # 1. keyring package is missing
+  # Use of require is avoided as loading packages should be avoided in package functions
+  # This implies that there is no check of keyring is correctly installed
+  if (!is.element("keyring", utils::installed.packages()[, 1])) {
+    stop("Package keyring need to be installed for this function to work")
+  }
+  
+  # 2. Credentials for service are missing from the user profile
+  if (!is.element(tolower(service), tolower(keyring::key_list()[, 1]))) {
+    stop(paste("PAT for",
+               service,
+               "is not available for the current user on this computer"))
+  }
+  
+  # Identifies the spelling of service with regard to lower and upper case
+  # This is used in Connect-statement below to ensure correct spelling when fetching User ID and Password
+  service <- keyring::key_list()[which(tolower(keyring::key_list()[, 1]) == tolower(service)), 1]
+  
+  # fetch the PAT
+  PAT <- keyring::key_get(service, as.character(keyring::key_list(service)[2]))
+  
+  return(PAT)
+}
+
+
+#' @export
+#' @rdname set_PAT
+
+remove_PAT <- function(service) {
+  
+  .Deprecated(new = "remove_PAT",
+              package = "NVIdb",
+              msg = paste("'set_PAT', 'get_PAT', and 'remove_PAT' shouild be replaced by",
+                          "corresponding functions in package 'gitcreds'. These functions",
+                          "are better, more flexible and maintained at cran."))
+  
+  # ARGUMENT CHECKING ----
+  checkmate::assert_character(x = service, min.chars = 1, len = 1, any.missing = FALSE)
+  
+  # REMOVE ALL EXISTING CREDENTIALS FOR service
+  # Checks if there are registered PAT for the database service
+  # Removes the service until no more service are registered
+  while (is.element(tolower(service), tolower(keyring::key_list()[, 1]))) {
+    # Identifies the spelling of service with regard to lower and upper case
+    # This is used in Connect-statement below to ensure correct spelling when fetching User ID
+    services <- keyring::key_list()[which(tolower(keyring::key_list()[, 1]) == tolower(service)), 1]
+    usernames <- keyring::key_list()[which(tolower(keyring::key_list()[, 1]) == tolower(service)), 2]
+    
+    # Removes the key for all combinations of service and username
+    for (i in 1:length(services)) {
+      keyring::key_delete(service = services[i], username = usernames[i])
+    }
+  }
 }
