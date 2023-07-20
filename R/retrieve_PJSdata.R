@@ -1,25 +1,39 @@
-#' @title Retrieves data from PJS
-#' @description Sets the disease selection parameters and store them in a list
-#'     object. The list follows a standardised named format and the elements can
-#'     be used as input to 
-#'     \ifelse{html}{\code{\link{build_query_hensikt}}}{\code{build_query_hensikt}},
-#'     \ifelse{html}{\code{\link{build_query_one_disease}}}{\code{build_query_one_disease}}
-#'     or
-#'     \ifelse{html}{\code{\link{build_query_outbreak}}}{\code{build_query_outbreak}}.
+#' @title Retrieves data from PJS 
+#' @description Retrieves and standardises PJS data. The intention of
+#'     \code{retrieve_PJSdata} is to shorten code and to ensure that a standard 
+#'     procedure is followed for retriving PJS-data. \code{retrieve_PJSdata} 
+#'     constructs the select statement by a build_query-function (see details) 
+#'     and selection parameters. An open ODBC-channel is created using 
+#'     \ifelse{html}{\code{\link{login_by_credentials_PJS}}}{\code{login_by_credentials_PJS}},
+#'     and the data is retrieved using the select statement. Thereafter, the 
+#'     data is standardised using
+#'     \ifelse{html}{\code{\link{standardize_PJSdata}}}{\code{standardize_PJSdata}}
+#'     and
+#'     \ifelse{html}{\code{\link{exclude_from_PJSdata}}}{\code{exclude_from_PJSdata}}.
 #'
-#' @details Retrieves saker in PJS 
+#' @details The function is dependant that credentials for PJS have been saved using 
+#'     \ifelse{html}{\code{\link{set_credentials_PJS}}}{\code{set_credentials_PJS}}.
+#'     else, an open ODBC channel to PJS won't be established. 
 #' 
-#' Be aware that these functions only builds an sql building block to be
-#'     included into a select statement. It will not build a complete select
-#'     statement. These functions are mainly intended for internal use and
-#'     are called from 
+#' The select statement for PJS can be built giving the selection parameters and 
+#'     input to one of the build_query-functions, i.e. 
 #'     \ifelse{html}{\code{\link{build_query_hensikt}}}{\code{build_query_hensikt}},
 #'     \ifelse{html}{\code{\link{build_query_one_disease}}}{\code{build_query_one_disease}}
 #'     and
 #'     \ifelse{html}{\code{\link{build_query_outbreak}}}{\code{build_query_outbreak}}.
-#'     If generating own select statements, these can be used to facilitate
-#'     the coding. The building blocks can be combined with "AND" and "OR" 
-#'     and brackets to get the intended select statement.
+#'     The selection parameters can be set by using 
+#'     \ifelse{html}{\code{\link{set_disease_parameters}}}{\code{set_disease_parameters}}.
+#'     or by giving a list of similar format for input to 
+#'     \code{selection_parameters}, see the build_query-functions for necessary 
+#'     input.
+#' 
+#' \code{retrieve_PJSdata} gives the possibilty of giving the select_statement 
+#'     as a string. This should only by done for select statements that 
+#'     previously have been tested and is know to have correct syntax. 
+#'     \code{retrieve_PJSdata} has no possibility of checking the syntax before 
+#'     it is submitted to PJS and untested select statements can take a lot of 
+#'     time or stop the function without proper error messages. 
+
 #'
 #' @template build_query_year
 #' @param selection_parameters [\code{character(1)}]\cr
