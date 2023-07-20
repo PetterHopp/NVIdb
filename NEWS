@@ -22,7 +22,9 @@ Other changes:
 
 BREAKING CHANGES:
 
-- In set_disease_parameters the arguments missing_art and file is deprecated. These are replaced by include_missing_art and selection_parameters, respectively. The input will be transferred to the new arguments.  
+- In set_disease_parameters the arguments missing_art and file is deprecated. These are replaced by include_missing_art and selection_parameters, respectively. The input will be transferred to the new arguments. 
+
+- set_PAT, get_PAT, and remove_PAT was deprecated.These should be replaced by corresponding functions in package `gitcreds`.
 
 
 NVIdb 0.10.1 - (2023-05-31)
