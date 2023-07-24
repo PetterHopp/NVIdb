@@ -1,7 +1,7 @@
 #' @title Retrieves data from PJS 
 #' @description Retrieves and standardises PJS data. The intention of
 #'     \code{retrieve_PJSdata} is to shorten code and to ensure that a standard 
-#'     procedure is followed for retriving PJS-data. \code{retrieve_PJSdata} 
+#'     procedure is followed for retrieving PJS-data. \code{retrieve_PJSdata} 
 #'     constructs the select statement by a build_query-function (see details) 
 #'     and selection parameters. An open ODBC-channel is created using 
 #'     \ifelse{html}{\code{\link{login_by_credentials_PJS}}}{\code{login_by_credentials_PJS}},
@@ -11,9 +11,9 @@
 #'     and
 #'     \ifelse{html}{\code{\link{exclude_from_PJSdata}}}{\code{exclude_from_PJSdata}}.
 #'
-#' @details The function is dependant that credentials for PJS have been saved using 
+#' @details The function is dependent that credentials for PJS have been saved using 
 #'     \ifelse{html}{\code{\link{set_credentials_PJS}}}{\code{set_credentials_PJS}}.
-#'     else, an open ODBC channel to PJS won't be established. 
+#'     else, an open ODBC channel to PJS cannot be established. 
 #' 
 #' The select statement for PJS can be built giving the selection parameters and 
 #'     input to one of the build_query-functions, i.e. 
@@ -27,9 +27,10 @@
 #'     \code{selection_parameters}, see the build_query-functions for necessary 
 #'     input.
 #' 
-#' \code{retrieve_PJSdata} gives the possibilty of giving the select_statement 
-#'     as a string. This should only by done for select statements that 
-#'     previously have been tested and is know to have correct syntax. 
+#' \code{retrieve_PJSdata} gives the possibility of giving the select_statement 
+#'     as a string instead of using the build_query-functions. This should only 
+#'     by done for select statements that 
+#'     previously have been tested and are known to have correct syntax. 
 #'     \code{retrieve_PJSdata} has no possibility of checking the syntax before 
 #'     it is submitted to PJS and untested select statements can take a lot of 
 #'     time or stop the function without proper error messages. 
@@ -66,20 +67,28 @@ retrieve_PJSdata <- function(year,
   checks <- checkmate::makeAssertCollection()
   
   # Perform checks
-  checkmate::assert_integerish(year, lower = 1990, upper = as.numeric(format(Sys.Date(), "%Y")), min.len = 1, add = checks)
+  checkmate::assert_integerish(year, 
+                               lower = 1990, upper = as.numeric(format(Sys.Date(), "%Y")), 
+                               min.len = 1, 
+                               add = checks)
   NVIcheckmate::assert(checkmate::check_file_exists(x = selection_parameters, access = "r"),
-                       checkmate::check_list(x = selection_parameters),
+                       checkmate::check_list(x = selection_parameters, null.ok = TRUE),
                        combine = "or",
                        comment = "The argument selection_parameter must either be a file with selection parameters or a list with selection parameters",
                        add = checks)
-  checkmate::assert_function(FUN, null.ok = TRUE)
+  checkmate::assert_function(FUN, null.ok = TRUE, add = checks)
   checkmate::assert_choice(deparse(substitute(FUN)),
                            choices = c("build_query_one_disease", "build_query_hensikt", "build_query_outbreak"), 
-                           null.ok = TRUE)
+                           null.ok = TRUE, 
+                           add = checks)
+  NVIcheckmate::assert_non_null(list(selection_parameters, select_statement, add = checks))
+  NVIcheckmate::assert_non_null(list(FUN, select_statement), add = checks)
   
   # Report check-results
   checkmate::reportAssertions(checks)
   
+  # GENERATE SELECT STATEMENT ----
+  if (!is.null(selection_parameters) & !is.null(FUN)) {
   selection_parameters <- set_disease_parameters(selection_parameters = selection_parameters) 
   
   # Character vector with arguments for FUN
@@ -99,7 +108,7 @@ retrieve_PJSdata <- function(year,
   # Keep only relevant arguments for FUN in FUN_input
   FUN_input <- FUN_input[FUN_args] 
   select_statement <- do.call(FUN, FUN_input) 
-  
+  }
   
     
     # READ DATA FROM PJS ----
@@ -131,9 +140,9 @@ retrieve_PJSdata <- function(year,
     
     # Exclude ring trials, quality assurance and samples from abroad
     # PJSdata
-    PJSdata <- exclude_from_PJSdata(PJSdata = PJSdata, abroad = "exclude", quality = "exclude")
+    PJSdata <- exclude_from_PJSdata(PJSdata = PJSdata, ...)
     # sakskonklusjon
-    sakskonklusjon <- exclude_from_PJSdata(PJSdata = sakskonklusjon, abroad = "exclude", quality = "exclude") 
+    sakskonklusjon <- exclude_from_PJSdata(PJSdata = sakskonklusjon, ...) 
     
     return(list(PJSdata, sakskonklusjon)) 
   } 
