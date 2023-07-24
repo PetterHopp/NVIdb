@@ -89,62 +89,69 @@ retrieve_PJSdata <- function(year,
   
   # GENERATE SELECT STATEMENT ----
   if (!is.null(selection_parameters) & !is.null(FUN)) {
-  selection_parameters <- set_disease_parameters(selection_parameters = selection_parameters) 
-  
-  # Character vector with arguments for FUN
-  FUN_args <- names(formals(args(FUN))) 
-  
-  # Create FUN_input for modifications, 
-  #  keep the original selection_parameters. 
-  FUN_input <- selection_parameters
-  # Rename list objects to input for FUN
-  names(FUN_input) <- gsub("2select", "", names(FUN_input)) 
-  # Include year and period in FUN_input
-  FUN_input <- append(FUN_input,
-                      values = c("year" = year, "period" = year)) 
-  FUN_input <- append(FUN_input,
-                      values = c("db" = "PJS")) 
-  
-  # Keep only relevant arguments for FUN in FUN_input
-  FUN_input <- FUN_input[FUN_args] 
-  select_statement <- do.call(FUN, FUN_input) 
+    selection_parameters <- set_disease_parameters(selection_parameters = selection_parameters) 
+    
+    # Character vector with arguments for FUN
+    FUN_args <- names(formals(args(FUN))) 
+    
+    # Create FUN_input for modifications, 
+    #  keep the original selection_parameters. 
+    FUN_input <- selection_parameters
+    # Rename list objects to input for FUN
+    names(FUN_input) <- gsub("2select", "", names(FUN_input)) 
+    # Include year and period in FUN_input
+    FUN_input <- append(FUN_input,
+                        values = c("year" = year, "period" = year)) 
+    FUN_input <- append(FUN_input,
+                        values = c("db" = "PJS")) 
+    
+    # Keep only relevant arguments for FUN in FUN_input
+    FUN_input <- FUN_input[FUN_args] 
+    select_statement <- do.call(FUN, FUN_input) 
   }
   
+  # OPEN ODBC CHANNEL ---- 
+  journal_rapp <- login_PJS()
+  PJSdata <- list()
+  dbsource_names <- rep(NA, length(select_statement))
+  
+  for (i in c(1:length(select_statement))) {
     
     # READ DATA FROM PJS ----
-    journal_rapp <- login_PJS()
+    dbsource <- sub(pattern = "^[[:print:]]from ", replacement = "", select_statement[i], ignore_case = TRUE)
+    dbsource <- stringi::stri_extract_first_words(dbsource)
+    dbsource_names[i] <- dbsource
     
-    PJSrawdata <- sqlQuery(journal_rapp,
-                           select_statement["selection_v2_sak_m_res"],
+    PJSdata[i] <- sqlQuery(journal_rapp,
+                           select_statement[i],
                            as.is = TRUE,
                            stringsAsFactors = FALSE)
     
-    
-    
-    PJSsakskonklusjon <- sqlQuery(journal_rapp,
-                                  select_statement["selection_sakskonklusjon"],
-                                  as.is = TRUE,
-                                  stringsAsFactors = FALSE)
-    
-    odbcClose(journal_rapp)
-    
-    
-    
     # STANDARDIZE DATA ----
-    
     # PJSdata
-    PJSdata <- standardize_PJSdata(PJSdata = PJSrawdata)
-    # sakskonklusjon
-    sakskonklusjon <- standardize_PJSdata(PJSdata = PJSsakskonklusjon) 
-    
+    PJSdata[i]<- standardize_PJSdata(PJSdata = PJSdata[i], dbsource = dbsource)
     
     # Exclude ring trials, quality assurance and samples from abroad
     # PJSdata
-    PJSdata <- exclude_from_PJSdata(PJSdata = PJSdata, ...)
-    # sakskonklusjon
-    sakskonklusjon <- exclude_from_PJSdata(PJSdata = sakskonklusjon, ...) 
+    PJSdata[i] <- exclude_from_PJSdata(PJSdata = PJSdata[i], ...)
     
-    return(list(PJSdata, sakskonklusjon)) 
-  } 
+    # # sakskonklusjon
+    # PJSsakskonklusjon <- sqlQuery(journal_rapp,
+    #                               select_statement["selection_sakskonklusjon"],
+    #                               as.is = TRUE,
+    #                               stringsAsFactors = FALSE)
+    # 
+    # sakskonklusjon <- standardize_PJSdata(PJSdata = PJSsakskonklusjon) 
+    # 
+    # sakskonklusjon <- exclude_from_PJSdata(PJSdata = sakskonklusjon, ...) 
+  }
   
+  # CLOSE ODBC CHANNEL ---- 
+  odbcClose(journal_rapp)
   
+  PJSdata <- setNames(PJSdata, dbsource_names)
+  
+  # RETURN RESULT ----
+  return(PJSdata) 
+} 
+
