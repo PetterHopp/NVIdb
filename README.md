@@ -106,15 +106,32 @@ with codes into names and others. You can translate
 -   postnr into poststed and poststedets kommunenr
 -   old produsentnr into current produsentnr
 
-#### Help
+#### Further documentation
+
+##### Help
 
 The full list of all available functions and datasets can be accessed by
 typing
 
     help(package = "NVIdb")
 
-Please check the NEWS for information on new features, bug fixes and
-other changes.
+##### Vignettes
+
+Consult the vignettes for task-oriented help.
+
+    vignette(package = "NVIdb")
+
+Vignettes in package `NVIdb`:
+
+-   Contribute to NVIdb (html)  
+-   NVIdb reference manual (pdf)  
+-   Retrieve and standardise PJS-data (html)
+
+##### NEWS
+
+Please check the
+[NEWS](https://github.com/NorwegianVeterinaryInstitute/NVIdb/blob/main/NEWS)
+for information on new features, bug fixes and other changes.
 
 ## Copyright and license
 
