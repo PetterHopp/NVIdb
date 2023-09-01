@@ -71,7 +71,7 @@ can be chosen freely, but must be the same as used in \code{\link{set_credential
 
 \item{dbprotocol}{Protocol to be used.}
 
-\item{dbinterface}{The R-package that is used for interface towards the data 
+\item{dbinterface}{The R-package that is used for interface towards the data
 base.}
 
 \item{dbtext}{used in login with input. Gives the possibility of showing
@@ -134,9 +134,9 @@ The NVI has access to several database services. These functions log
     \code{\link{set_credentials_EOS}}, no input is needed.
 
     The login functions returns an open ODBC-channel to the database service.
-    The database can then be queried by using functions in the package used for 
-    data base interface. The data base interface must be one of \code{odbc}, 
-    \code{RODBC} or, \code{RPostgreSQL}. The default is given in NVIconfig and is 
+    The database can then be queried by using functions in the package used for
+    data base interface. The data base interface must be one of \code{odbc},
+    \code{RODBC} or, \code{RPostgreSQL}. The default is given in NVIconfig and is
     \code{RODBC} for "SQL server" and \code{RPostgreSQL} for "PostgreSQL".
 
     When the session is finished, the script shall close the ODBC-channel by

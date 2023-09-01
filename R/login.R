@@ -49,9 +49,9 @@
 #'     \code{\link{set_credentials_EOS}}, no input is needed.
 #'
 #'     The login functions returns an open ODBC-channel to the database service.
-#'     The database can then be queried by using functions in the package used for 
-#'     data base interface. The data base interface must be one of \code{odbc}, 
-#'     \code{RODBC} or, \code{RPostgreSQL}. The default is given in NVIconfig and is 
+#'     The database can then be queried by using functions in the package used for
+#'     data base interface. The data base interface must be one of \code{odbc},
+#'     \code{RODBC} or, \code{RPostgreSQL}. The default is given in NVIconfig and is
 #'     \code{RODBC} for "SQL server" and \code{RPostgreSQL} for "PostgreSQL".
 #'
 #'     When the session is finished, the script shall close the ODBC-channel by
@@ -65,7 +65,7 @@
 #' @param dbserver Name of database server.
 #' @param dbport Port.
 #' @param dbprotocol Protocol to be used.
-#' @param dbinterface The R-package that is used for interface towards the data 
+#' @param dbinterface The R-package that is used for interface towards the data
 #'     base.
 #' @param dbtext used in login with input. Gives the possibility of showing
 #'     another name than the dbservice in the windows asking for username and
@@ -219,13 +219,13 @@ login_PJS <- function(dbinterface = NULL) {
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-  
+
   # dbinterface
   checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
-  
+
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # Set service to PJS
   dbservice <- "PJS"
 
@@ -248,13 +248,13 @@ login_EOS <- function(dbinterface = NULL) {
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-  
+
   # dbinterface
   checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
-  
+
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # Set service to EOS
   dbservice <- "EOS"
 

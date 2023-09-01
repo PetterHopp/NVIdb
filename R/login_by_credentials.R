@@ -102,7 +102,7 @@ login_by_credentials <- function(dbservice,
 
   if (dbinterface == "odbc") {
     # Connects to db using odbc
-    # use tryCatch to remove warning, 
+    # use tryCatch to remove warning,
     #   look at https://stackoverflow.com/questions/12193779/how-to-write-trycatch-in-r
     connection <- DBI::dbConnect(drv = odbc::odbc(),
                                  Driver = dbdriver,
@@ -112,20 +112,20 @@ login_by_credentials <- function(dbservice,
                                  UID = as.character(keyring::key_list(dbservice)[2]),
                                  PWD = keyring::key_get(dbservice, as.character(keyring::key_list(dbservice)[2])))
 
-    if(Sys.getenv("RSTUDIO") == "1"){
-      # Opens connection pane in Rstudio. 
+    if (Sys.getenv("RSTUDIO") == "1") {
+      # Opens connection pane in Rstudio.
       # This is not opened automatically when running dbconnect from within a function
-      code <- c(match.call())   # This saves what was typed into R
-      
+      code <- c(match.call()) # This saves what was typed into R
+
       odbc:::on_connection_opened(
-        connection,                                
-        paste(c("library(internal_package)",                                        
+        connection,
+        paste(c("library(internal_package)",
                 paste("connection <-", gsub(", ", ",\n\t", code))),
-              collapse = "\n"))  
+              collapse = "\n"))
     }
-    
+
   }
-  
+
   if (dbinterface == "RODBC") {
     # Connects to journal_rapp using ODBC
     connection <- RODBC::odbcDriverConnect(paste0("DRIVER=", dbdriver,
@@ -195,7 +195,7 @@ login_by_credentials_EOS <- function(dbinterface = NULL) {
   NVIcheckmate::assert_credentials(x = "EOS", add = checks)
   # dbinterface
   checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
-  
+
   # Report check-results
   checkmate::reportAssertions(checks)
 
