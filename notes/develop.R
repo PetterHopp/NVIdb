@@ -24,6 +24,12 @@ pkg <- stringi::stri_extract_last_words(pkg_path)
 #                                   type = "develop",
 #                                   document = FALSE)
 
+# UPDATE LICENSE
+# NVIpackager::update_license(pkg = pkg,
+#                             pkg_path = pkg_path,
+#                             copyright_owner = "Norwegian Veterinary Institute")
+
+
 # DOCUMENTATION AND STYLING ----
 # update_logo should be run if a logo has been created (or updated). Thereafter run "document_NVIpkg" with "readme = TRUE".
 # update_logo(pkg = pkg, pkg_path = pkg_path)
@@ -32,13 +38,13 @@ pkg <- stringi::stri_extract_last_words(pkg_path)
 # Should be run before git push when documentation for functions have been changed
 NVIpackager::document_NVIpkg(pkg = pkg,
                              pkg_path = pkg_path,
-                             style = FALSE,
+                             style = TRUE,
                              contributing = FALSE,
                              readme = FALSE,
                              manual = "update",
                              scope = c("spaces", "line_breaks"))
-# filename <- "transform_code_combinations.R"
-# styler::style_file(path = file.path(pkg_path, "R", filename), scope = I(c("spaces", "line_breaks")))
+# filename <- "xxxx.R"
+# styler::style_file(path = file.path(pkg_path, "R", filename), scope = I(c("spaces")))
 
 # spelling::spell_check_package(vignettes = TRUE, use_wordlist = TRUE)
 
