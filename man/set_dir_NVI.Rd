@@ -27,7 +27,7 @@ The Norwegian Veterinary Institute has standard data sources at fixed
     directories. The function returns the standard directory for the given
     data source. Thereby hard coding of the paths may be avoided.
 
-The path ends with a slash as default. To facilitate the use of 
+The path ends with a slash as default. To facilitate the use of
     \ifelse{html}{\code{\link[base:file.path]{file.path}}}{\code{file.path}}
     you can use the argument \code{slash = FALSE} to avoid ending slash.
 }
@@ -37,8 +37,8 @@ The path ends with a slash as default. To facilitate the use of
 prodtilskudd_path <- set_dir_NVI(datasource = "ProdTilskudd")
 
 # Set pathname to a file using 'file.path'
-pathname <- file.path(set_dir_NVI(datasource = "ProdTilskudd", slash = FALSE), 
-                      "subdir", 
+pathname <- file.path(set_dir_NVI(datasource = "ProdTilskudd", slash = FALSE),
+                      "subdir",
                       "filename")
 }
 
