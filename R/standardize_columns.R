@@ -73,7 +73,7 @@
 #'
 #' @param data [\code{data.frame} | \code{character(1)}]\cr
 #' The data source. If \code{property = "colclasses"} the path and
-#'     file name of the csv-file used as data source should be given. 
+#'     file name of the csv-file used as data source should be given.
 #' @param dbsource [\code{character(1)}]\cr
 #' The database that is the source of data. Should be the name of
 #'     the data source as registered in column_standards table. Defaults
@@ -160,7 +160,7 @@ standardize_columns <- function(data,
 
   checkmate::assert_data_frame(standards, null.ok = TRUE, add = checks)
 
-  checkmate::assert_subset(tolower(property), 
+  checkmate::assert_subset(tolower(property),
                            choices = c("colnames", "colclasses",
                                        "collabels", "colwidths_excel",
                                        "colwidths_DT", "colorder"),
