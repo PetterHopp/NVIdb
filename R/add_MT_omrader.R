@@ -155,4 +155,3 @@ add_MT_omrader <- function(data,
 
 # To avoid checking of the variable kommune_fylke as default input argument in the function
 utils::globalVariables("komnr_2_MT_omrader")
-

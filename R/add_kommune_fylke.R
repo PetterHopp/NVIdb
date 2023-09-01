@@ -127,12 +127,12 @@ add_kommune_fylke <- function(data,
       dplyr::group_by(.data$fylkenr) %>%
       dplyr::mutate(maxantall = max(.data$antall)) %>%
       dplyr::ungroup() # %>%
-    
+
     code_2_new <- subset(code_2_new, code_2_new$maxantall == code_2_new$antall)
     code_2_new[, c("antall", "maxantall")] <- c(NULL, NULL)
       # dplyr::filter(.data$maxantall == .data$antall) %>%
     # dplyr::select(-.data$antall, -.data$maxantall)
-    
+
     # Removes tibble in case it makes trouble later
     code_2_new <- as.data.frame(code_2_new)
 
@@ -159,4 +159,3 @@ add_kommune_fylke <- function(data,
 
 # To avoid checking of the variable kommune_fylke as default input argument in the function
 utils::globalVariables("kommune_fylke")
-
