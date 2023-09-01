@@ -41,7 +41,7 @@ Specific "metodekoder for the "analytt" in question." Defaults to \code{NULL}.}
 
 \item{include_missing_art}{[\code{character(1)}]\cr
 Should missing art be included. Must be one of c("never", "always", "for_selected_hensikt").
-    If NULL, it is set to "always" when \code{art2select} includes NA, else it is set to "never". 
+    If NULL, it is set to "always" when \code{art2select} includes NA, else it is set to "never".
     Defaults to \code{NULL}.}
 
 \item{selection_parameters}{[\code{character(1)}]\cr
@@ -58,7 +58,7 @@ A named list with selection parameters that can be used to generate
 \description{
 Sets the disease selection parameters and store them in a list
     object. The list follows a standardised named format and the elements can
-    be used as input to 
+    be used as input to
     \ifelse{html}{\code{\link{build_query_hensikt}}}{\code{build_query_hensikt}},
     \ifelse{html}{\code{\link{build_query_one_disease}}}{\code{build_query_one_disease}}
     or
@@ -79,13 +79,13 @@ Saker in PJS that concern one infection / disease can be characterised
     should be included, end the code with \%.
 
     The selection parameters can be input values for dedicated arguments. For input parameters
-    \code{hensikt2select}, \code{hensikt2delete}, \code{utbrudd2select}, \code{metode2select}, 
-    \code{analytt2select}, \code{art2select}, and \code{include_missing_art}, 
+    \code{hensikt2select}, \code{hensikt2delete}, \code{utbrudd2select}, \code{metode2select},
+    \code{analytt2select}, \code{art2select}, and \code{include_missing_art},
     the input may be given in a source file. This may be handy if the
     selection will be performed many times. It also gives the possibility of
     using a for loop that selects PJS-data and performs similar analyses for one
     disease at a time.
-    
+
     The possibility of input other arguments are kept to make it possible to use the
     deprecated arguments \code{missing_art} and \code{file}. If these are used, a
     warning is issued and the input is transferred to \code{include_missing_art} and

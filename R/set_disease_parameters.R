@@ -1,7 +1,7 @@
 #' @title Sets disease selection parameters
 #' @description Sets the disease selection parameters and store them in a list
 #'     object. The list follows a standardised named format and the elements can
-#'     be used as input to 
+#'     be used as input to
 #'     \ifelse{html}{\code{\link{build_query_hensikt}}}{\code{build_query_hensikt}},
 #'     \ifelse{html}{\code{\link{build_query_one_disease}}}{\code{build_query_one_disease}}
 #'     or
@@ -21,13 +21,13 @@
 #'     should be included, end the code with \%.
 #'
 #'     The selection parameters can be input values for dedicated arguments. For input parameters
-#'     \code{hensikt2select}, \code{hensikt2delete}, \code{utbrudd2select}, \code{metode2select}, 
-#'     \code{analytt2select}, \code{art2select}, and \code{include_missing_art}, 
+#'     \code{hensikt2select}, \code{hensikt2delete}, \code{utbrudd2select}, \code{metode2select},
+#'     \code{analytt2select}, \code{art2select}, and \code{include_missing_art},
 #'     the input may be given in a source file. This may be handy if the
 #'     selection will be performed many times. It also gives the possibility of
 #'     using a for loop that selects PJS-data and performs similar analyses for one
 #'     disease at a time.
-#'     
+#'
 #'     The possibility of input other arguments are kept to make it possible to use the
 #'     deprecated arguments \code{missing_art} and \code{file}. If these are used, a
 #'     warning is issued and the input is transferred to \code{include_missing_art} and
@@ -51,7 +51,7 @@
 #'     combined with another "artkode". Defaults to \code{NULL}.
 #' @param include_missing_art [\code{character(1)}]\cr
 #' Should missing art be included. Must be one of c("never", "always", "for_selected_hensikt").
-#'     If NULL, it is set to "always" when \code{art2select} includes NA, else it is set to "never". 
+#'     If NULL, it is set to "always" when \code{art2select} includes NA, else it is set to "never".
 #'     Defaults to \code{NULL}.
 #' @param selection_parameters [\code{character(1)}]\cr
 #' Either the path and file name for an R script that can be sourced and that
@@ -80,31 +80,31 @@ set_disease_parameters <- function(hensikt2select = NULL,
                                    include_missing_art = NULL,
                                    selection_parameters = NULL,
                                    ...) {
-  
+
   # SET SELECTION PARAMETERS ----
   # Vector with possible selection parameter names
-  # missing_art is deprecated 
+  # missing_art is deprecated
   var2select_template <- c("hensikt2select", "hensikt2delete", "utbrudd2select",
                            "metode2select", "analytt2select", "art2select",
                            "include_missing_art", "missing_art")
-  
+
   # PREPARE ARGUMENTS BEFORE CHECKING ----
-  if ("file" %in% ...names() & is.null(selection_parameters) ) {
+  if ("file" %in% ...names() & is.null(selection_parameters)) {
     selection_parameters <- unlist(list(...)$file)
     warning(paste("The argument 'file' is deprecated.",
                   "Use 'selection_parameters' instead",
                   "The input to 'file' has been transferred to 'selection_parameters' if this is NULL."))
   }
-  
-  if ("missing_art" %in% ...names() & is.null(include_missing_art) ) {
+
+  if ("missing_art" %in% ...names() & is.null(include_missing_art)) {
     include_missing_art <- unlist(list(...)$missing_art)
     if (include_missing_art == "non_selected_hensikt") {include_missing_art <- "for_selected_hensikt"}
     warning(paste("The argument 'missing_art' is deprecated.",
                   "Use 'include_missing_art' instead",
                   "The input to 'missing_art' has been transferred to 'include_missing_art' if this is NULL."))
   }
-  
-  
+
+
   # Import values from parameter file if exists
   if (!is.null(selection_parameters)) {
     NVIcheckmate::assert(checkmate::check_file_exists(x = selection_parameters, access = "r"),
@@ -114,14 +114,14 @@ set_disease_parameters <- function(hensikt2select = NULL,
                          add = checks)
     if (isTRUE(checkmate::check_file_exists(x = selection_parameters, access = "r"))) {
       script <- as.character(parse(file = selection_parameters, encoding = "UTF-8"))
-      
+
       script <- script[grepl(pattern = paste0("[^",
                                               paste(var2select_template, collapse = "|^"),
                                               "]",
                                               "[[:blank:]]*",
                                               "[=|<\\-]"),
                              script)]
-      
+
       for (i in 1:length(script)) {
         eval(parse(text = script[i]))
       }
@@ -130,14 +130,14 @@ set_disease_parameters <- function(hensikt2select = NULL,
       checkmate::assert_subset(x = names(selection_parameters),
                                choices = var2select_template,
                                empty.ok = FALSE)
-      var2select <- intersect(names(selection_parameters[!sapply(selection_parameters, is.null)]), 
-                              var2select_template) 
+      var2select <- intersect(names(selection_parameters[!sapply(selection_parameters, is.null)]),
+                              var2select_template)
       for (i in var2select) {
         assign(i, unname(unlist(selection_parameters[i])))
-      } 
+      }
     }
   }
-  
+
   # PREPARE INPUT BEFORE ARGUMENT CHECKING ----
   # when include_missing_art = NULL, set to "always" if NA included in art2select, else set to "never"
   if (is.null(include_missing_art)) {
@@ -147,11 +147,11 @@ set_disease_parameters <- function(hensikt2select = NULL,
       include_missing_art <- "never"
     }
   }
-  
+
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-  
+
   # Perform checks
   NVIcheckmate::assert_non_null(list(analytt2select, hensikt2select, utbrudd2select, unlist(selection_parameters)), add = checks)
   checkmate::assert_character(hensikt2select, min.chars = 2, max.chars = 15, any.missing = FALSE, null.ok = TRUE, add = checks)
@@ -161,14 +161,14 @@ set_disease_parameters <- function(hensikt2select = NULL,
   checkmate::assert_character(analytt2select, min.chars = 2, max.chars = 20, any.missing = FALSE, null.ok = TRUE, add = checks)
   checkmate::assert_character(art2select, min.chars = 2, max.chars = 20, all.missing = FALSE, null.ok = TRUE, add = checks)
   # if (!is.null(art2select) && any(is.na(art2select))) {
-  checkmate::assert_choice(include_missing_art, 
-                           choices = c("never", "always", "for_selected_hensikt"), 
+  checkmate::assert_choice(include_missing_art,
+                           choices = c("never", "always", "for_selected_hensikt"),
                            add = checks)
   # }
-  
+
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # CREATE LIST WITH PARAMETER VALUES ----
   return(list("hensikt2select" = hensikt2select,
               "hensikt2delete" = hensikt2delete,
