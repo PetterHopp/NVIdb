@@ -10,18 +10,18 @@
 #'     and the `from_columns` and the `to_columns` give the column names for the
 #'     transformation table.
 #'
-#' The `from_values` is a list of one or more vectors. Each vector is named with 
-#'     the column name and represents one column variable with code values. The 
-#'     first entry in each vector constitute one code combination to be 
-#'     transformed, the second entry constitutes the next code combinations. 
-#'     
-#' Likewise, is the `to_values` a list of one or more named vectors. Each 
+#' The `from_values` is a list of one or more vectors. Each vector is named with
+#'     the column name and represents one column variable with code values. The
+#'     first entry in each vector constitute one code combination to be
+#'     transformed, the second entry constitutes the next code combinations.
+#'
+#' Likewise, is the `to_values` a list of one or more named vectors. Each
 #'     vector is named and represents one column variable with
 #'     code values to which the code combinations in the `from_values` should be
 #'     transformed. The name of the vector is the name of the columns with the
 #'     transformed values. The transformed values can be put in the original columns,
 #'     in which case the transformed combinations will replace
-#'     the original entries. If the transformed column names don't exist in data, 
+#'     the original entries. If the transformed column names don't exist in data,
 #'     the columns will be added to the data.
 #'
 #' If the codes are not transformed, these can be kept in the data.
@@ -93,22 +93,22 @@ transform_code_combinations <- function(data,
   checkmate::assert_subset(impute_when_missing_from, choices = names(from_values), add = checks)
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # CREATE TRANSLATION TABLE WITH FROM AND TO VALUES ----
   to_columns_temp <- paste0(rep("tcc_V", length(to_values)), as.character(1:length(to_values)))
   translation_table <- data.frame(to_values)
   colnames(translation_table) <- to_columns_temp
   translation_table <- cbind(data.frame(from_values), translation_table)
-  
+
   # CREATE SUBSET TO TRANSLATE ----
   subdata <- as.data.frame(data[, names(from_values)])
   colnames(subdata) <- names(from_values)
   # subdata[is.na(subdata)] <- "_NA_"
   subdata$sort_order <- 1:nrow(subdata)
-  
+
   # PERFORM TRANSLATION ----
   subdata <- merge(subdata, translation_table, by = names(from_values), all.x = TRUE)
-  
+
   if (!is.null(impute_when_missing_from)) {
     if (length(to_columns_temp) == 1) {
       subdata[is.na(subdata[, to_columns_temp]), to_columns_temp] <-
@@ -119,14 +119,14 @@ transform_code_combinations <- function(data,
     }
   }
   subdata <- subdata[order(subdata$sort_order), ]
-  
+
   # RETURN DATA WITH TRANSLATED COLUMNS
   data[, names(to_values)] <- subdata[, to_columns_temp]
   return(data)
 }
 
-# 
-# 
+#
+#
 # transform_code_combinations <- function(data,
 #                                         from_values,
 #                                         to_values,
@@ -146,7 +146,7 @@ transform_code_combinations <- function(data,
 #   checkmate::assert_subset(impute_when_missing_from, choices = from_columns, add = checks)
 #   # Report check-results
 #   checkmate::reportAssertions(checks)
-# 
+#
 #   # CREATE TRANSLATION TABLE WITH FROM AND TO VALUES ----
 #   to_columns_temp <- paste0(rep("tcc_V", length(to_columns)), as.character(1:length(to_columns)))
 #   translation_table <- data.frame(unlist(from_values[1]))
@@ -160,16 +160,16 @@ transform_code_combinations <- function(data,
 #     translation_table[, to_columns_temp[i]] <- as.data.frame(unlist(to_values[i]))
 #   }
 #   # translation_table[is.na(translation_table)] <- "_NA_"
-# 
+#
 #   # CREATE SUBSET TO TRANSLATE ----
 #   subdata <- as.data.frame(data[, from_columns])
 #   colnames(subdata) <- from_columns
 #   # subdata[is.na(subdata)] <- "_NA_"
 #   subdata$sort_order <- 1:nrow(subdata)
-# 
+#
 #   # PERFORM TRANSLATION ----
 #   subdata <- merge(subdata, translation_table, by = c(from_columns), all.x = TRUE)
-# 
+#
 #   if (!is.null(impute_when_missing_from)) {
 #     if (length(to_columns_temp) == 1) {
 #       subdata[is.na(subdata[, to_columns_temp]), to_columns_temp] <-
@@ -180,9 +180,9 @@ transform_code_combinations <- function(data,
 #     }
 #   }
 #   subdata <- subdata[order(subdata$sort_order), ]
-# 
+#
 #   # RETURN DATA WITH TRANSLATED COLUMNS
 #   data[, to_columns] <- subdata[, to_columns_temp]
 #   return(data)
 # }
-# 
+#
