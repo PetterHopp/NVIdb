@@ -15,18 +15,18 @@ build_query_outbreak(
 }
 \arguments{
 \item{period}{[\code{numeric}]\cr
-Time period given as year. One year or a vector giving the first 
+Time period given as year. One year or a vector giving the first
 and last years that should be selected.}
 
 \item{utbrudd}{[\code{character}]\cr
 Utbruddsid(er) that should be selected. Defaults to \code{NULL}.}
 
 \item{hensikt}{[\code{character}]\cr
-Specific hensiktkoder. If sub-hensikter should be included, 
+Specific hensiktkoder. If sub-hensikter should be included,
 end the code with \%. Defaults to \code{NULL}.}
 
 \item{analytt}{[\code{character}]\cr
-Analyttkoder that should be selected. If sub-analytter should be included, 
+Analyttkoder that should be selected. If sub-analytter should be included,
 end the code with \%. Defaults to \code{NULL}.}
 
 \item{metode}{[\code{character}]\cr

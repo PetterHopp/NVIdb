@@ -23,10 +23,10 @@
 #'
 #' @template build_query_year
 #' @param analytt [\code{character}]\cr
-#'     Analyttkoder that should be selected. If sub-analytter should be included, 
+#'     Analyttkoder that should be selected. If sub-analytter should be included,
 #'     end the code with \%.
 #' @param hensikt [\code{character}]\cr
-#'     Specific hensiktkoder. If sub-hensikter should be included, 
+#'     Specific hensiktkoder. If sub-hensikter should be included,
 #'     end the code with \%. Defaults to \code{NULL}.
 #' @param metode [\code{character}]\cr
 #'     Specific metodekoder. Defaults to \code{NULL}.

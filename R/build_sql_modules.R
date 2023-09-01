@@ -22,18 +22,18 @@
 #' Be aware that these functions only builds an sql building block to be
 #'     included into a select statement. It will not build a complete select
 #'     statement. These functions are mainly intended for internal use and
-#'     are called from 
+#'     are called from
 #'     \ifelse{html}{\code{\link{build_query_hensikt}}}{\code{build_query_hensikt}},
 #'     \ifelse{html}{\code{\link{build_query_one_disease}}}{\code{build_query_one_disease}}
 #'     and
 #'     \ifelse{html}{\code{\link{build_query_outbreak}}}{\code{build_query_outbreak}}.
 #'     If generating own select statements, these can be used to facilitate
-#'     the coding. The building blocks can be combined with "AND" and "OR" 
+#'     the coding. The building blocks can be combined with "AND" and "OR"
 #'     and brackets to get the intended select statement.
 #'
 #' @template build_query_year
 #' @param values [\code{character}]\cr
-#'     The value of the codes that should be selected. If sub-codes should be 
+#'     The value of the codes that should be selected. If sub-codes should be
 #'     included, add "\%" after the code, see example.
 #' @param varname [\code{character(1)}]\cr
 #'     The PJS variable name of the variable in PJS from which the
@@ -64,7 +64,7 @@
 #' build_sql_select_code(values = c("0100101", "0100101007", "0100102%", "0100202%"),
 #'                       varname = "hensiktkode",
 #'                       db = "PJS")
-#'                       
+#'
 build_sql_select_year <- function(year, varname, db = "PJS") {
   # ARGUMENT CHECKING ----
 

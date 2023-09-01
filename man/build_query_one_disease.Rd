@@ -18,11 +18,11 @@ One year or a vector giving the first and last years that should
 be selected.}
 
 \item{analytt}{[\code{character}]\cr
-Analyttkoder that should be selected. If sub-analytter should be included, 
+Analyttkoder that should be selected. If sub-analytter should be included,
 end the code with \%.}
 
 \item{hensikt}{[\code{character}]\cr
-Specific hensiktkoder. If sub-hensikter should be included, 
+Specific hensiktkoder. If sub-hensikter should be included,
 end the code with \%. Defaults to \code{NULL}.}
 
 \item{metode}{[\code{character}]\cr

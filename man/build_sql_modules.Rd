@@ -24,7 +24,7 @@ The database for which the query is built. Defaults to "PJS" that currently
 is the only valid value.}
 
 \item{values}{[\code{character}]\cr
-The value of the codes that should be selected. If sub-codes should be 
+The value of the codes that should be selected. If sub-codes should be
 included, add "\%" after the code, see example.}
 }
 \value{
@@ -51,13 +51,13 @@ Builds sql modules to be included in select statements for PJS
 Be aware that these functions only builds an sql building block to be
     included into a select statement. It will not build a complete select
     statement. These functions are mainly intended for internal use and
-    are called from 
+    are called from
     \ifelse{html}{\code{\link{build_query_hensikt}}}{\code{build_query_hensikt}},
     \ifelse{html}{\code{\link{build_query_one_disease}}}{\code{build_query_one_disease}}
     and
     \ifelse{html}{\code{\link{build_query_outbreak}}}{\code{build_query_outbreak}}.
     If generating own select statements, these can be used to facilitate
-    the coding. The building blocks can be combined with "AND" and "OR" 
+    the coding. The building blocks can be combined with "AND" and "OR"
     and brackets to get the intended select statement.
 }
 \examples{
@@ -76,7 +76,7 @@ build_sql_select_code(values = "0100101\%", varname = "hensiktkode", db = "PJS")
 build_sql_select_code(values = c("0100101", "0100101007", "0100102\%", "0100202\%"),
                       varname = "hensiktkode",
                       db = "PJS")
-                      
+
 }
 \author{
 Petter Hopp Petter.Hopp@vetinst.no
