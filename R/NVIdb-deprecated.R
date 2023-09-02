@@ -11,10 +11,10 @@
 #'     \code{impute_old_when_missing = FALSE} when translating from "prodnr8" to
 #'     other properties.
 #'
-#' \code{set_PAT}, \code{get_PAT}, and \code{remove_PAT} was deprecated 2023-08-22. 
-#'     The functions were never taken into use. Functions from the much better 
+#' \code{set_PAT}, \code{get_PAT}, and \code{remove_PAT} was deprecated 2023-08-22.
+#'     The functions were never taken into use. Functions from the much better
 #'     package \code{gitcreds} should be used instead.
-#' 
+#'
 #' @param \dots (arguments)
 #' @return (results)
 #' @name NVIdb-deprecated
