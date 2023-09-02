@@ -23,10 +23,17 @@ These functions are provided for compatibility with older
     from "prodnr8" to "gjeldende_prodnr8" and set the parameter
     \code{impute_old_when_missing = FALSE} when translating from "prodnr8" to
     other properties.
+
+\code{set_PAT}, \code{get_PAT}, and \code{remove_PAT} was deprecated 2023-08-22.
+    The functions were never taken into use. Functions from the much better
+    package \code{gitcreds} should be used instead.
 }
 \examples{
 \dontrun{
-add_produsent(...) ### -- use \code{\link{add_produsent_properties}}   instead
+add_produsent(...) ### -- use \code{\link{add_produsent_properties}} instead.
+set_PAT(...) ### -- use \code{\link{gitcreds::gitcreds_set}} instead.
+get_PAT(...) ### -- use \code{\link{gitcreds::gitcreds_get}} instead.
+remove_PAT(...) ### -- use \code{\link{gitcreds::gitcreds_delete}} instead.
 }
 }
 \author{
