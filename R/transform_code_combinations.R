@@ -55,7 +55,7 @@
 #'                               c("M. bovis", "M. kansasii", "M. bovis", NA)
 #' ))
 #'   colnames(data) <- c("kjennelse", "analytt")
-
+#'
 #'   data <- transform_code_combinations(data = data,
 #'                                       from_values = list("kjennelse" = c("Detected"),
 #'                                                          "analytt" = c("M. kansasii")),
@@ -74,8 +74,6 @@
 #'                                 "driftsform" = c("produksjonsdyr", "ville dyr", NA)),
 #'              to_values = list("art2" = c("oppdrettshjort", "villrein", "ukjent")),
 #'              impute_when_missing_from = "art")
-#'
-
 transform_code_combinations <- function(data,
                                         from_values,
                                         to_values,

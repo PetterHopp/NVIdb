@@ -72,6 +72,7 @@ c("Detected", "Detected", "Not detected", NA),
                               c("M. bovis", "M. kansasii", "M. bovis", NA)
 ))
   colnames(data) <- c("kjennelse", "analytt")
+
   data <- transform_code_combinations(data = data,
                                       from_values = list("kjennelse" = c("Detected"),
                                                          "analytt" = c("M. kansasii")),
@@ -90,7 +91,6 @@ data <- transform_code_combinations(
                                 "driftsform" = c("produksjonsdyr", "ville dyr", NA)),
              to_values = list("art2" = c("oppdrettshjort", "villrein", "ukjent")),
              impute_when_missing_from = "art")
-
 }
 \author{
 Petter Hopp Petter.Hopp@vetinst.no
