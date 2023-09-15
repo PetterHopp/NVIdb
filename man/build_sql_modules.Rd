@@ -76,7 +76,6 @@ build_sql_select_code(values = "0100101\%", varname = "hensiktkode", db = "PJS")
 build_sql_select_code(values = c("0100101", "0100101007", "0100102\%", "0100202\%"),
                       varname = "hensiktkode",
                       db = "PJS")
-
 }
 \author{
 Petter Hopp Petter.Hopp@vetinst.no
