@@ -105,6 +105,8 @@ set_disease_parameters <- function(hensikt2select = NULL,
   }
 
 
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
   # Import values from parameter file if exists
   if (!is.null(selection_parameters)) {
     NVIcheckmate::assert(checkmate::check_file_exists(x = selection_parameters, access = "r"),
@@ -149,8 +151,8 @@ set_disease_parameters <- function(hensikt2select = NULL,
   }
 
   # ARGUMENT CHECKING ----
-  # Object to store check-results
-  checks <- checkmate::makeAssertCollection()
+  # # Object to store check-results
+  # checks <- checkmate::makeAssertCollection()
 
   # Perform checks
   NVIcheckmate::assert_non_null(list(analytt2select, hensikt2select, utbrudd2select, unlist(selection_parameters)), add = checks)
