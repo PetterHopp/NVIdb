@@ -46,6 +46,7 @@ Imports:
     shiny,
     snakecase,
     stats,
+    stringi,
     svDialogs,
     utils,
     NVIcheckmate (>= 0.4.0),
