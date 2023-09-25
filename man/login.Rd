@@ -23,9 +23,9 @@ login(
   dbinterface = NULL
 )
 
-login_PJS(dbinterface = NULL)
+login_PJS(dbinterface = NULL, ...)
 
-login_EOS(dbinterface = NULL)
+login_EOS(dbinterface = NULL, ...)
 
 login_by_credentials(
   dbservice,
@@ -37,9 +37,9 @@ login_by_credentials(
   dbinterface = NULL
 )
 
-login_by_credentials_PJS(dbinterface = NULL)
+login_by_credentials_PJS(dbinterface = NULL, ...)
 
-login_by_credentials_EOS(dbinterface = NULL)
+login_by_credentials_EOS(dbinterface = NULL, ...)
 
 login_by_input(
   dbservice,
@@ -52,9 +52,9 @@ login_by_input(
   dbtext = NULL
 )
 
-login_by_input_PJS(dbinterface = NULL)
+login_by_input_PJS(dbinterface = NULL, ...)
 
-login_by_input_EOS(dbinterface = NULL)
+login_by_input_EOS(dbinterface = NULL, ...)
 }
 \arguments{
 \item{dbservice}{Name of the database service, for example "PJS" or "EOS".
@@ -73,6 +73,9 @@ can be chosen freely, but must be the same as used in \code{\link{set_credential
 
 \item{dbinterface}{The R-package that is used for interface towards the data
 base.}
+
+\item{\dots}{Other arguments to be passed from the wrappers to
+login_by_credentials or login_by_input}
 
 \item{dbtext}{used in login with input. Gives the possibility of showing
 another name than the dbservice in the windows asking for username and

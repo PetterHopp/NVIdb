@@ -70,7 +70,7 @@
 #' @param dbtext used in login with input. Gives the possibility of showing
 #'     another name than the dbservice in the windows asking for username and
 #'     password.
-#' @param dots Other arguments to be passed from the wrappers to 
+#' @param \dots Other arguments to be passed from the wrappers to
 #'     login_by_credentials or login_by_input
 #' @return An open ODBC-channel to the database service.
 #' @family Log in functions
