@@ -30,7 +30,6 @@
 #' @usage get_PAT(service)
 #' @usage remove_PAT(service)
 #' @keywords internal
-#' @export
 #' @examples
 #' \dontrun{
 #' set_PAT("GitHub")
@@ -52,6 +51,7 @@ NULL
 #' @param service Name of the internet service, for example "GitHub". For internet services where one don't use the premade wrappers, the name can
 #'     be chosen freely, but must be the same as used in \code{get_PAT}
 #' @export
+#' @rdname set_PAT
 #' @keywords internal
 #'
 set_PAT <- function(service) {
