@@ -118,11 +118,11 @@ retrieve_PJSdata <- function(year,
   for (i in c(1:length(select_statement))) {
 
     # READ DATA FROM PJS ----
-    dbsource <- sub(pattern = "^[[:print:]]from ", replacement = "", select_statement[i], ignore_case = TRUE)
+    dbsource <- sub(pattern = "^[[:print:]]from ", replacement = "", tolower(select_statement[i]))
     dbsource <- stringi::stri_extract_first_words(dbsource)
     dbsource_names[i] <- dbsource
 
-    PJSdata[i] <- sqlQuery(journal_rapp,
+    PJSdata[i] <- RODBC::sqlQuery(journal_rapp,
                            select_statement[i],
                            as.is = TRUE,
                            stringsAsFactors = FALSE)
@@ -147,9 +147,9 @@ retrieve_PJSdata <- function(year,
   }
 
   # CLOSE ODBC CHANNEL ----
-  odbcClose(journal_rapp)
+  RODBC::odbcClose(journal_rapp)
 
-  PJSdata <- setNames(PJSdata, dbsource_names)
+  PJSdata <- stats::setNames(PJSdata, dbsource_names)
 
   # RETURN RESULT ----
   return(PJSdata)
