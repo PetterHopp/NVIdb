@@ -156,7 +156,7 @@ login_by_credentials <- function(dbservice,
 #' @export
 #' @rdname login
 
-login_by_credentials_PJS <- function(dbinterface = NULL) {
+login_by_credentials_PJS <- function(dbinterface = NULL, ...) {
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
@@ -173,7 +173,7 @@ login_by_credentials_PJS <- function(dbinterface = NULL) {
   checkmate::reportAssertions(checks)
 
 
-  connection <- NVIdb::login_by_credentials(dbservice = "PJS", dbinterface = dbinterface)
+  connection <- NVIdb::login_by_credentials(dbservice = "PJS", dbinterface = dbinterface, ...)
 
   return(connection)
 }
@@ -183,7 +183,7 @@ login_by_credentials_PJS <- function(dbinterface = NULL) {
 #' @export
 #' @rdname login
 
-login_by_credentials_EOS <- function(dbinterface = NULL) {
+login_by_credentials_EOS <- function(dbinterface = NULL, ...) {
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
@@ -199,7 +199,7 @@ login_by_credentials_EOS <- function(dbinterface = NULL) {
   # Report check-results
   checkmate::reportAssertions(checks)
 
-  connection <- NVIdb::login_by_credentials(dbservice = "EOS", dbinterface = dbinterface)
+  connection <- NVIdb::login_by_credentials(dbservice = "EOS", dbinterface = dbinterface, ...)
 
   return(connection)
 }

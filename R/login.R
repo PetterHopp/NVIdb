@@ -70,6 +70,8 @@
 #' @param dbtext used in login with input. Gives the possibility of showing
 #'     another name than the dbservice in the windows asking for username and
 #'     password.
+#' @param dots Other arguments to be passed from the wrappers to 
+#'     login_by_credentials or login_by_input
 #' @return An open ODBC-channel to the database service.
 #' @family Log in functions
 #' @seealso  \code{\link{set_credentials}}
@@ -214,7 +216,7 @@ login <- function(dbservice,
 #' @export
 #' @rdname login
 
-login_PJS <- function(dbinterface = NULL) {
+login_PJS <- function(dbinterface = NULL, ...) {
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
@@ -232,10 +234,10 @@ login_PJS <- function(dbinterface = NULL) {
   # Use check for saved credentials to chose between login_by_input and login_by_credentials
   if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
     # If credentials are saved for the user profile
-    login_by_credentials(dbservice, dbinterface = dbinterface)
+    login_by_credentials(dbservice, dbinterface = dbinterface, ...)
   } else {
     # If credentials are missing from the user profile
-    login_by_input(dbservice, dbinterface = dbinterface)
+    login_by_input(dbservice, dbinterface = dbinterface, ...)
   }
 }
 
@@ -243,7 +245,7 @@ login_PJS <- function(dbinterface = NULL) {
 #' @export
 #' @rdname login
 
-login_EOS <- function(dbinterface = NULL) {
+login_EOS <- function(dbinterface = NULL, ...) {
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
@@ -261,9 +263,9 @@ login_EOS <- function(dbinterface = NULL) {
   # Use check for saved credentials to chose between login_by_input and login_by_credentials
   if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
     # If credentials are saved for the user profile
-    login_by_credentials(dbservice, dbinterface = dbinterface)
+    login_by_credentials(dbservice, dbinterface = dbinterface, ...)
   } else {
     # If credentials are missing from the user profile
-    login_by_input(dbservice, dbinterface = dbinterface)
+    login_by_input(dbservice, dbinterface = dbinterface, ...)
   }
 }

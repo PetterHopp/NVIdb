@@ -144,7 +144,7 @@ login_by_input <- function(dbservice,
 #' @export
 #' @rdname login
 
-login_by_input_PJS <- function(dbinterface = NULL) {
+login_by_input_PJS <- function(dbinterface = NULL, ...) {
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
@@ -157,7 +157,7 @@ login_by_input_PJS <- function(dbinterface = NULL) {
   checkmate::reportAssertions(checks)
 
   # Oppretterknytning mot journal_rapp
-  odbcConnection <- login_by_input(dbservice = "PJS", dbinterface = dbinterface)
+  odbcConnection <- login_by_input(dbservice = "PJS", dbinterface = dbinterface, ...)
 
   return(odbcConnection)
 }
@@ -166,7 +166,7 @@ login_by_input_PJS <- function(dbinterface = NULL) {
 #' @export
 #' @rdname login
 
-login_by_input_EOS <- function(dbinterface = NULL) {
+login_by_input_EOS <- function(dbinterface = NULL, ...) {
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
@@ -179,7 +179,7 @@ login_by_input_EOS <- function(dbinterface = NULL) {
   checkmate::reportAssertions(checks)
 
   # Oppretterknytning mot EOS
-  odbcConnection <- login_by_input(dbservice = "EOS", dbinterface = dbinterface)
+  odbcConnection <- login_by_input(dbservice = "EOS", dbinterface = dbinterface, ...)
 
   return(odbcConnection)
 }
