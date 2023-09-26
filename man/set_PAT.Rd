@@ -13,14 +13,15 @@ get_PAT(service)
 remove_PAT(service)
 }
 \arguments{
-\item{service}{Name of the internet service, for example "GitHub". For internet services where one don't use the premade wrappers, the name can
-be chosen freely, but must be the same as used in \code{get_PAT}}
+\item{service}{Name of the internet service, for example "GitHub". For
+internet services where one don't use the premade wrappers, the name
+can be chosen freely, but must be the same as used in \code{get_PAT}}
 }
 \description{
 \code{set_PAT}, \code{get_PAT}, and \code{remove_PAT} was
-    deprecated 2023-08-20 in NVIdb v0.11.0. These functions should be replaced
-    by corresponding functions in package 'gitcreds' that are better, more
-    flexible and maintained at cran.
+    deprecated from NVIdb v0.11.0 released 2023-09-22. These functions
+    should be replaced by corresponding functions in package 'gitcreds'
+    that are better, more flexible and maintained at cran.
 }
 \details{
 The old help pages can be found at \code{help("set_PAT-deprecated")}.
