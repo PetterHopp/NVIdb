@@ -1,28 +1,41 @@
 #' @title Manage personal access token (PAT) for internet services
-#' @description Save or remove the current user's PAT for internet services in the  the user profile.
-#' @details For internet services like GitHub, personal access tokens can replace username and password when accessing the service. To simplify
-#'     the access to the internet services when using R, the function \code{set_PAT} makes it possible to save the personal access token (PAT) in
-#'     the user profile at the current machine. When the PAT has been saved in the user profile, the functions \code{get_PAT} will automatically
-#'     get the PAT for use in code accessing the internet service.
+#' @description Save or remove the current user's PAT for internet services
+#'     in the  the user profile.
+#' @details For internet services like GitHub, personal access tokens can
+#'     replace username and password when accessing the service. To simplify
+#'     the access to the internet services when using R, the function
+#'     \code{set_PAT} makes it possible to save the personal access token
+#'     (PAT) in the user profile at the current machine. When the PAT has
+#'     been saved in the user profile, the functions \code{get_PAT} will
+#'     automatically get the PAT for use in code accessing the internet service.
 #'
-#'     The user profile is not copied between computers. Consequently, if a user runs scripts with \code{get_PAT} on different computers,
+#'     The user profile is not copied between computers. Consequently, if a user
+#'     runs scripts with \code{get_PAT} on different computers,
 #'     the PAT has to be saved at each computer separately.
 #'
-#'     \code{set_PAT(service)} is used to set the PAT for a internet service. The PAT are input using windows and saved in the users profile at
-#'     the current computer. When the PAT for the service has been changed, \code{set_PAT(service)} can be used to update the PAT.
+#'     \code{set_PAT(service)} is used to set the PAT for a internet service.
+#'     The PAT are input using windows and saved in the users profile at
+#'     the current computer. When the PAT for the service has been changed,
+#'     \code{set_PAT(service)} can be used to update the PAT.
 #'
-#'     \code{get_PAT(service)} is used to get the PAT for a internet service that previously has been saved in the users profile at the current
+#'     \code{get_PAT(service)} is used to get the PAT for a internet service
+#'     that previously has been saved in the users profile at the current
 #'     computer.
 #'
-#'     \code{remove_PAT(service)} is used to delete the PAT for a internet service from the user's profile.
+#'     \code{remove_PAT(service)} is used to delete the PAT for a internet
+#'     service from the user's profile.
 #'
-#' @param service Name of the internet service, for example "GitHub". For internet services where one don't use the premade wrappers, the name can
-#'     be chosen freely, but must be the same as used in \code{get_PAT}
-#' @return \code{set_PAT} The PAT for a internet service are saved in the user profile at the current computer.
+#' @param service Name of the internet service, for example "GitHub". For
+#'     internet services where one don't use the premade wrappers, the name
+#'     can be chosen freely, but must be the same as used in \code{get_PAT}
+#' @return \code{set_PAT} The PAT for a internet service are saved in the
+#'     user profile at the current computer.
 #'
-#'     \code{get_PAT} The PAT for a internet service are fetched from the user profile at the current computer to be used in R-scripts.
+#'     \code{get_PAT} The PAT for a internet service are fetched from the
+#'     user profile at the current computer to be used in R-scripts.
 #'
-#'     \code{remove_PAT} The PAT for a internet service are deleted from the user profile at the current computer.
+#'     \code{remove_PAT} The PAT for a internet service are deleted from
+#'     the user profile at the current computer.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @name set_PAT-deprecated
@@ -40,16 +53,29 @@
 #' }
 NULL
 
+#' @name get_PAT-deprecated
+#' @rdname set_PAT-deprecated
+#' @keywords internal
+#'
+NULL
+
+#' @name remove_PAT-deprecated
+#' @rdname set_PAT-deprecated
+#' @keywords internal
+#'
+NULL
+
 
 #' @title \code{set_PAT}, \code{get_PAT}, and \code{remove_PAT} is deprecated
 #' @description \code{set_PAT}, \code{get_PAT}, and \code{remove_PAT} was
-#'     deprecated 2023-08-20 in NVIdb v0.11.0. These functions should be replaced
-#'     by corresponding functions in package 'gitcreds' that are better, more
-#'     flexible and maintained at cran.
+#'     deprecated from NVIdb v0.11.0 released 2023-09-22. These functions
+#'     should be replaced by corresponding functions in package 'gitcreds'
+#'     that are better, more flexible and maintained at cran.
 #' @details The old help pages can be found at \code{help("set_PAT-deprecated")}.
 #'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
-#' @param service Name of the internet service, for example "GitHub". For internet services where one don't use the premade wrappers, the name can
-#'     be chosen freely, but must be the same as used in \code{get_PAT}
+#' @param service Name of the internet service, for example "GitHub". For
+#'     internet services where one don't use the premade wrappers, the name
+#'     can be chosen freely, but must be the same as used in \code{get_PAT}
 #' @export
 #' @rdname set_PAT
 #' @keywords internal

@@ -2,6 +2,8 @@
 % Please edit documentation in R/set_PAT-deprecated.R
 \name{set_PAT-deprecated}
 \alias{set_PAT-deprecated}
+\alias{get_PAT-deprecated}
+\alias{remove_PAT-deprecated}
 \title{Manage personal access token (PAT) for internet services}
 \usage{
 set_PAT(service)
@@ -11,35 +13,48 @@ get_PAT(service)
 remove_PAT(service)
 }
 \arguments{
-\item{service}{Name of the internet service, for example "GitHub". For internet services where one don't use the premade wrappers, the name can
-be chosen freely, but must be the same as used in \code{get_PAT}}
+\item{service}{Name of the internet service, for example "GitHub". For
+internet services where one don't use the premade wrappers, the name
+can be chosen freely, but must be the same as used in \code{get_PAT}}
 }
 \value{
-\code{set_PAT} The PAT for a internet service are saved in the user profile at the current computer.
+\code{set_PAT} The PAT for a internet service are saved in the
+    user profile at the current computer.
 
-    \code{get_PAT} The PAT for a internet service are fetched from the user profile at the current computer to be used in R-scripts.
+    \code{get_PAT} The PAT for a internet service are fetched from the
+    user profile at the current computer to be used in R-scripts.
 
-    \code{remove_PAT} The PAT for a internet service are deleted from the user profile at the current computer.
+    \code{remove_PAT} The PAT for a internet service are deleted from
+    the user profile at the current computer.
 }
 \description{
-Save or remove the current user's PAT for internet services in the  the user profile.
+Save or remove the current user's PAT for internet services
+    in the  the user profile.
 }
 \details{
-For internet services like GitHub, personal access tokens can replace username and password when accessing the service. To simplify
-    the access to the internet services when using R, the function \code{set_PAT} makes it possible to save the personal access token (PAT) in
-    the user profile at the current machine. When the PAT has been saved in the user profile, the functions \code{get_PAT} will automatically
-    get the PAT for use in code accessing the internet service.
+For internet services like GitHub, personal access tokens can
+    replace username and password when accessing the service. To simplify
+    the access to the internet services when using R, the function
+    \code{set_PAT} makes it possible to save the personal access token
+    (PAT) in the user profile at the current machine. When the PAT has
+    been saved in the user profile, the functions \code{get_PAT} will
+    automatically get the PAT for use in code accessing the internet service.
 
-    The user profile is not copied between computers. Consequently, if a user runs scripts with \code{get_PAT} on different computers,
+    The user profile is not copied between computers. Consequently, if a user
+    runs scripts with \code{get_PAT} on different computers,
     the PAT has to be saved at each computer separately.
 
-    \code{set_PAT(service)} is used to set the PAT for a internet service. The PAT are input using windows and saved in the users profile at
-    the current computer. When the PAT for the service has been changed, \code{set_PAT(service)} can be used to update the PAT.
+    \code{set_PAT(service)} is used to set the PAT for a internet service.
+    The PAT are input using windows and saved in the users profile at
+    the current computer. When the PAT for the service has been changed,
+    \code{set_PAT(service)} can be used to update the PAT.
 
-    \code{get_PAT(service)} is used to get the PAT for a internet service that previously has been saved in the users profile at the current
+    \code{get_PAT(service)} is used to get the PAT for a internet service
+    that previously has been saved in the users profile at the current
     computer.
 
-    \code{remove_PAT(service)} is used to delete the PAT for a internet service from the user's profile.
+    \code{remove_PAT(service)} is used to delete the PAT for a internet
+    service from the user's profile.
 }
 \examples{
 \dontrun{
