@@ -121,12 +121,18 @@ add_kommune_fylke <- function(data,
 
     # For fylkenr, select the fylke where most kommuner is within the fylke. This to avoid fylkenr to be translated to fylker
     # where one or a few kommuner has been relocated.
-    code_2_new <- code_2_new %>%
-      dplyr::rename(antall = dplyr::all_of("komnr")) %>%
-      dplyr::distinct() %>%
-      dplyr::group_by(.data$fylkenr) %>%
-      dplyr::mutate(maxantall = max(.data$antall)) %>%
-      dplyr::ungroup() # %>%
+    # code_2_new <- code_2_new %>%
+    #   dplyr::rename(antall = dplyr::all_of("komnr")) %>%
+    #   dplyr::distinct() %>%
+    #   dplyr::group_by(.data$fylkenr) %>%
+    #   dplyr::mutate(maxantall = max(.data$antall)) %>%
+    #   dplyr::ungroup() # %>%
+    colnames(code_2_new)[which(colnames(code_2_new) == "komnr")] <- "antall"
+    code_2_new <- unique(code_2_new)
+    aggregated_data <- aggregate(as.formula("antall ~ fylkenr"), data = code_2_new, FUN = max)
+    colnames(aggregated_data)[2] <- "max_antall"
+    code_2_new <- merge(code_2_new, aggregated_data, by = "fylkenr", all.x = TRUE)
+    # code_2_new <- code_2_new[order(filnavn$fra_dato, filnavn$til_dato, decreasing = TRUE), ]
 
     code_2_new <- subset(code_2_new, code_2_new$maxantall == code_2_new$antall)
     code_2_new[, c("antall", "maxantall")] <- c(NULL, NULL)
