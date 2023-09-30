@@ -134,7 +134,7 @@ add_kommune_fylke <- function(data,
     code_2_new <- merge(code_2_new, aggregated_data, by = "fylkenr", all.x = TRUE)
     # code_2_new <- code_2_new[order(filnavn$fra_dato, filnavn$til_dato, decreasing = TRUE), ]
 
-    code_2_new <- subset(code_2_new, code_2_new$maxantall == code_2_new$antall)
+    code_2_new <- subset(code_2_new, code_2_new$max_antall == code_2_new$antall)
     code_2_new[, c("antall", "maxantall")] <- c(NULL, NULL)
       # dplyr::filter(.data$maxantall == .data$antall) %>%
     # dplyr::select(-.data$antall, -.data$maxantall)
