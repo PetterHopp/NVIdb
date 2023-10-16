@@ -101,7 +101,7 @@ retrieve_PJSdata <- function(year,
     names(FUN_input) <- gsub("2select", "", names(FUN_input))
     # Include year and period in FUN_input
     FUN_input <- append(FUN_input,
-                        values = c("year" = year, "period" = year))
+                        values = list("year" = year, "period" = year))
     FUN_input <- append(FUN_input,
                         values = c("db" = "PJS"))
 
@@ -112,28 +112,30 @@ retrieve_PJSdata <- function(year,
 
   # OPEN ODBC CHANNEL ----
   journal_rapp <- login_PJS()
-  PJSdata <- list()
+  PJSdata <- vector("list", length = length(select_statement))
   dbsource_names <- rep(NA, length(select_statement))
 
   for (i in c(1:length(select_statement))) {
 
     # READ DATA FROM PJS ----
-    dbsource <- sub(pattern = "^[[:print:]]from ", replacement = "", tolower(select_statement[i]))
+    dbsource <- substr(select_statement[i], 
+                       gregexpr(pattern = "v_", text = select_statement[i])[[1]][1], 
+                       gregexpr(pattern = "v_", text = select_statement[i])[[1]][2] - 1)
     dbsource <- stringi::stri_extract_first_words(dbsource)
     dbsource_names[i] <- dbsource
 
-    PJSdata[i] <- RODBC::sqlQuery(journal_rapp,
-                           select_statement[i],
-                           as.is = TRUE,
-                           stringsAsFactors = FALSE)
+    PJSdata[[i]] <- RODBC::sqlQuery(journal_rapp,
+                                    select_statement[i],
+                                    as.is = TRUE,
+                                    stringsAsFactors = FALSE)
 
     # STANDARDIZE DATA ----
     # PJSdata
-    PJSdata[i] <- standardize_PJSdata(PJSdata = PJSdata[i], dbsource = dbsource)
+    PJSdata[[i]] <- standardize_PJSdata(PJSdata = PJSdata[[i]], dbsource = dbsource)
 
     # Exclude ring trials, quality assurance and samples from abroad
     # PJSdata
-    PJSdata[i] <- exclude_from_PJSdata(PJSdata = PJSdata[i], ...)
+    PJSdata[[i]] <- exclude_from_PJSdata(PJSdata = PJSdata[[i]], ...)
 
     # # sakskonklusjon
     # PJSsakskonklusjon <- sqlQuery(journal_rapp,
