@@ -59,7 +59,7 @@
 retrieve_PJSdata <- function(year,
                              selection_parameters,
                              FUN,
-                             select_statement,
+                             select_statement = NULL,
                              ...) {
 
   # ARGUMENT CHECKING ----
@@ -113,16 +113,23 @@ retrieve_PJSdata <- function(year,
   # OPEN ODBC CHANNEL ----
   journal_rapp <- login_PJS()
   PJSdata <- vector("list", length = length(select_statement))
-  dbsource_names <- rep(NA, length(select_statement))
+
+  # dbsource_names <- rep(NA, length(select_statement))
+  dbsource <- names(select_statement)
+  names(dbsource) <- names(select_statement)
+  if (!is.null(FUN)) {
+    dbsource <- gsub(pattern = "selection_v2_sak_m_res", replacement = "v2_sak_m_res", x = dbsource)
+    dbsource <- gsub(pattern = "selection_sakskonklusjon", replacement = "v_sakskonklusjon", x = dbsource)
+  }
 
   for (i in c(1:length(select_statement))) {
 
     # READ DATA FROM PJS ----
-    dbsource <- substr(select_statement[i], 
-                       gregexpr(pattern = "v_", text = select_statement[i])[[1]][1], 
-                       gregexpr(pattern = "v_", text = select_statement[i])[[1]][2] - 1)
-    dbsource <- stringi::stri_extract_first_words(dbsource)
-    dbsource_names[i] <- dbsource
+    # dbsource <- substr(select_statement[i],
+    #                    gregexpr(pattern = "v_", text = select_statement[i])[[1]][1],
+    #                    gregexpr(pattern = "v_", text = select_statement[i])[[1]][2] - 1)
+    # dbsource <- stringi::stri_extract_first_words(dbsource)
+    # dbsource_names[i] <- dbsource
 
     PJSdata[[i]] <- RODBC::sqlQuery(journal_rapp,
                                     select_statement[i],
@@ -131,27 +138,18 @@ retrieve_PJSdata <- function(year,
 
     # STANDARDIZE DATA ----
     # PJSdata
-    PJSdata[[i]] <- standardize_PJSdata(PJSdata = PJSdata[[i]], dbsource = dbsource)
+    PJSdata[[i]] <- standardize_PJSdata(PJSdata = PJSdata[[i]], dbsource = dbsource[i])
 
     # Exclude ring trials, quality assurance and samples from abroad
     # PJSdata
     PJSdata[[i]] <- exclude_from_PJSdata(PJSdata = PJSdata[[i]], ...)
 
-    # # sakskonklusjon
-    # PJSsakskonklusjon <- sqlQuery(journal_rapp,
-    #                               select_statement["selection_sakskonklusjon"],
-    #                               as.is = TRUE,
-    #                               stringsAsFactors = FALSE)
-    #
-    # sakskonklusjon <- standardize_PJSdata(PJSdata = PJSsakskonklusjon)
-    #
-    # sakskonklusjon <- exclude_from_PJSdata(PJSdata = sakskonklusjon, ...)
   }
 
   # CLOSE ODBC CHANNEL ----
   RODBC::odbcClose(journal_rapp)
 
-  PJSdata <- stats::setNames(PJSdata, dbsource_names)
+  PJSdata <- stats::setNames(PJSdata, names(dbsource))
 
   # RETURN RESULT ----
   return(PJSdata)
