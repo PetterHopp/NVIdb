@@ -81,6 +81,10 @@ retrieve_PJSdata <- function(year,
                            choices = c("build_query_one_disease", "build_query_hensikt", "build_query_outbreak"),
                            null.ok = TRUE,
                            add = checks)
+  checkmate::assert(checkmate::check_list(x = select_statement, null.ok = TRUE),
+                    checkmate::check_string(x = select_statement),
+                    combine = "or",
+                    add = checks)
   NVIcheckmate::assert_non_null(list(selection_parameters, select_statement, add = checks))
   NVIcheckmate::assert_non_null(list(FUN, select_statement), add = checks)
 
