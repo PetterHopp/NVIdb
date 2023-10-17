@@ -119,11 +119,11 @@ read_varekode <- function(filename = "varekoder.csv",
     #   dplyr::mutate(max_n_days = max(.data$n_days)) %>%
     #   dplyr::ungroup() %>%
     #   dplyr::arrange(dplyr::desc(.data$fra_dato), dplyr::desc(.data$til_dato))
-    max_n_days <- aggregate(n_days ~ aar, data = filnavn, FUN = max)
+    max_n_days <- stats::aggregate(n_days ~ aar, data = filnavn, FUN = max)
     colnames(max_n_days)[2] <- "max_n_days"
     filnavn <- merge(filnavn, max_n_days, by = "aar", all.x = TRUE)
     filnavn <- filnavn[order(filnavn$fra_dato, filnavn$til_dato, decreasing = TRUE), ]
-    
+
 
     # filnavn <- filnavn[c(2:dim(filnavn)[1]), ]
     # Select varekoder for time period
