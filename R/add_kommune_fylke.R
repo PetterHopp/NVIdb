@@ -129,7 +129,7 @@ add_kommune_fylke <- function(data,
     #   dplyr::ungroup() # %>%
     colnames(code_2_new)[which(colnames(code_2_new) == "komnr")] <- "antall"
     code_2_new <- unique(code_2_new)
-    aggregated_data <- aggregate(as.formula("antall ~ fylkenr"), data = code_2_new, FUN = max)
+    aggregated_data <- stats::aggregate(stats::as.formula("antall ~ fylkenr"), data = code_2_new, FUN = max)
     colnames(aggregated_data)[2] <- "max_antall"
     code_2_new <- merge(code_2_new, aggregated_data, by = "fylkenr", all.x = TRUE)
     # code_2_new <- code_2_new[order(filnavn$fra_dato, filnavn$til_dato, decreasing = TRUE), ]
