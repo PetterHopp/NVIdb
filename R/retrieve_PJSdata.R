@@ -115,7 +115,7 @@ retrieve_PJSdata <- function(year,
   }
 
   # OPEN ODBC CHANNEL ----
-  journal_rapp <- login_PJS()
+  journal_rapp <- login_PJS(dbinterface = "odbc")
   PJSdata <- vector("list", length = length(select_statement))
 
   # dbsource_names <- rep(NA, length(select_statement))
@@ -135,11 +135,12 @@ retrieve_PJSdata <- function(year,
     # dbsource <- stringi::stri_extract_first_words(dbsource)
     # dbsource_names[i] <- dbsource
 
-    PJSdata[[i]] <- RODBC::sqlQuery(journal_rapp,
-                                    select_statement[i],
-                                    as.is = TRUE,
-                                    stringsAsFactors = FALSE)
-
+    # PJSdata[[i]] <- RODBC::sqlQuery(journal_rapp,
+    #                                 select_statement[i],
+    #                                 as.is = TRUE,
+    #                                 stringsAsFactors = FALSE)
+    PJSdata[[i]] <- DBI::dbGetQuery(con = journal_rapp,
+                                    statement = select_statement[[i]])
     # STANDARDIZE DATA ----
     # PJSdata
     PJSdata[[i]] <- standardize_PJSdata(PJSdata = PJSdata[[i]], dbsource = dbsource[i])
@@ -151,7 +152,7 @@ retrieve_PJSdata <- function(year,
   }
 
   # CLOSE ODBC CHANNEL ----
-  RODBC::odbcClose(journal_rapp)
+  DBI::dbDisconnect(journal_rapp)
 
   PJSdata <- stats::setNames(PJSdata, names(dbsource))
 
