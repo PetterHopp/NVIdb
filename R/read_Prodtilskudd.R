@@ -16,6 +16,8 @@
 #' @param Pkode_year The year(s) from which the register should be read. Options is "last", or a vector with one or more years.
 #' @param Pkode_month The month for which the register should be read. The options are c("05", "10", "both", "last") for Pkode_year = 2017
 #'     and c("03", "10", "both", "last") for Pkode_year >= 2018.
+#' @param extracted_date The date the data was extracted from the database
+#'     of Norwegian Agricultural Agency. Defaults to \code{NULL}.
 #'
 #' @return \code{read_Prodtilskudd} reads one or more data frame(s) with the produksjonstilskuddsregister for each of the year and seasons selected.
 #'     If the options Pkode_year = "last" and Pkode_month = "last" is given, one file with the last produksjonstilskuddsregister is given.
@@ -37,7 +39,8 @@
 #'
 read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/"),
                               Pkode_year = "last",
-                              Pkode_month = "both") {
+                              Pkode_month = "both",
+                              extracted_date = NULL) {
 
   # PREPARE ARGUMENT ----
   # Removing ending "/" and "\\" from pathnames
@@ -70,7 +73,8 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
   # READ IN ALL FILES IN THE DIRECTORY AND MAKE A LIST OF THE SELECTED VERSIONS OF EXTRACTS FROM PKODEREGISTERET
   filelist <- select_prodtilskudd_files(from_path = from_path,
                                         Pkode_year = as.character(Pkode_year),
-                                        Pkode_month = Pkode_month)
+                                        Pkode_month = Pkode_month,
+                                        extracted_date = extracted_date)
 
   # Read data for the selected year and months from Pkoderegisteret and combine into one dataframe
   for (i in 1:dim(filelist)[1]) {
@@ -145,7 +149,8 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
 
 select_prodtilskudd_files <- function(from_path,
                                       Pkode_year,
-                                      Pkode_month) {
+                                      Pkode_month,
+                                      extracted_date) {
   # READ IN ALL FILES IN THE DIRECTORY AND MAKE A LIST OF THE LAST VERSION OF ALL UTREKK FRO PKODEREGISTERET
   filelist <- as.data.frame(list.files(path = from_path, pattern = "csv", ignore.case = TRUE, include.dirs = FALSE),
                             stringsAsFactors = FALSE)
@@ -166,7 +171,9 @@ select_prodtilskudd_files <- function(from_path,
   filelist$uttrekk_dato <- as.Date(sapply(filelist$fileinfo, FUN = find_n_th_word, position = 3), format = "%Y%m%d")
   max_uttrekk_dato <- stats::aggregate(filelist$uttrekk_dato, by = list(filelist$pkodeaar, filelist$pkodemonth), FUN = max)
   filelist <- merge(filelist, max_uttrekk_dato, by.x = c("pkodeaar", "pkodemonth"), by.y = c("Group.1", "Group.2"))
-  filelist <- subset(filelist, filelist$uttrekk_dato == filelist$x)
+  if (is.null(extracted_date)) {
+    filelist <- subset(filelist, filelist$uttrekk_dato == filelist$x)
+  }
   filelist <- filelist[, c("filename", "pkodeaar", "pkodemonth", "uttrekk_dato")]
   filelist <- filelist[order(filelist$pkodeaar, filelist$pkodemonth, filelist$uttrekk_dato, decreasing = TRUE), ]
 
