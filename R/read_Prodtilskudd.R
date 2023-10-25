@@ -171,9 +171,6 @@ select_prodtilskudd_files <- function(from_path,
   filelist$uttrekk_dato <- as.Date(sapply(filelist$fileinfo, FUN = find_n_th_word, position = 3), format = "%Y%m%d")
   max_uttrekk_dato <- stats::aggregate(filelist$uttrekk_dato, by = list(filelist$pkodeaar, filelist$pkodemonth), FUN = max)
   filelist <- merge(filelist, max_uttrekk_dato, by.x = c("pkodeaar", "pkodemonth"), by.y = c("Group.1", "Group.2"))
-  if (is.null(extracted_date)) {
-    filelist <- subset(filelist, filelist$uttrekk_dato == filelist$x)
-  }
   filelist <- filelist[, c("filename", "pkodeaar", "pkodemonth", "uttrekk_dato")]
   filelist <- filelist[order(filelist$pkodeaar, filelist$pkodemonth, filelist$uttrekk_dato, decreasing = TRUE), ]
 
@@ -197,6 +194,11 @@ select_prodtilskudd_files <- function(from_path,
       }
     }
   }
+  # Selection for uttrekk_dato
+  if (!is.null(extracted_date)) {
+    checkmate::assert_choice(as.Date(extracted_date), choices = filelist$uttrekk_dato)
+    filelist <- subset(filelist, filelist$uttrekk_dato %in% as.Date(extracted_date))
+  } 
 
   return(filelist)
 }
