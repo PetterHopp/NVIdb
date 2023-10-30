@@ -53,18 +53,38 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
   # from_path
   checkmate::assert_character(from_path, len = 1, min.chars = 1, add = checks)
   checkmate::assert_directory_exists(from_path, access = "r", add = checks)
-  # Pkode_month
-  checkmate::assert_subset(Pkode_month, choices = c("both", "last", "01", "03", "05", "07", "10", "12"), add = checks)
-  # Pkode_year
-  checkmate::assert(checkmate::check_integerish(as.numeric(Pkode_year[grep('[[:alpha:]]', Pkode_year, invert = TRUE)]),
-                                                lower = 1995,
-                                                upper = as.numeric(format(Sys.Date(), "%Y")),
-                                                any.missing = FALSE,
-                                                all.missing = FALSE,
-                                                unique = TRUE),
-                    # checkmate::check_character(Pkode_year, min.chars = 4, min.len = 1, any.missing = FALSE),
-                    checkmate::check_choice(Pkode_year, choices = c("last")),
-                    add = checks)
+  # If extracted_date = NULL, then input "both" and "last" are accepted
+  if (is.null(extracted_date)) {
+    # Pkode_month
+    checkmate::assert_subset(Pkode_month, choices = c("both", "last", "01", "03", "05", "07", "10", "12"), add = checks)
+    # Pkode_year
+    checkmate::assert(checkmate::check_integerish(as.numeric(Pkode_year[grep('[[:alpha:]]', Pkode_year, invert = TRUE)]),
+                                                  lower = 1995,
+                                                  upper = as.numeric(format(Sys.Date(), "%Y")),
+                                                  any.missing = FALSE,
+                                                  all.missing = FALSE,
+                                                  unique = TRUE),
+                      # checkmate::check_character(Pkode_year, min.chars = 4, min.len = 1, any.missing = FALSE),
+                      checkmate::check_choice(Pkode_year, choices = c("last")),
+                      add = checks)
+  }
+  # If extracted_date != NULL, then input "both" and "last" are not accepted
+  if (is.null(extracted_date)) {
+    # Pkode_month
+    NVIcheckmate::assert_subset(Pkode_month,
+                                choices = c("01", "03", "05", "07", "10", "12"),
+                                comment = "The inputs 'both' and 'last' are not accepted when 'extracted_date' is given",
+                                add = checks)
+    # Pkode_year
+    NVIcheckmate::assert_integerish(as.numeric(Pkode_year[grep('[[:alpha:]]', Pkode_year, invert = TRUE)]),
+                                    lower = 1995,
+                                    upper = as.numeric(format(Sys.Date(), "%Y")),
+                                    any.missing = FALSE,
+                                    all.missing = FALSE,
+                                    unique = TRUE,
+                                    comment = "The input 'last' is not accepted when 'extracted_date' is given",
+                                    add = checks)
+  }
   # Report check-results
   checkmate::reportAssertions(checks)
 
@@ -174,31 +194,35 @@ select_prodtilskudd_files <- function(from_path,
   filelist <- filelist[, c("filename", "pkodeaar", "pkodemonth", "uttrekk_dato")]
   filelist <- filelist[order(filelist$pkodeaar, filelist$pkodemonth, filelist$uttrekk_dato, decreasing = TRUE), ]
 
-  if ("last" %in% Pkode_year) {
-    filelist <- filelist[c(1:2), ]
-    if (!"both" %in% Pkode_month) {
-      if ("last" %in% Pkode_month) {
-        filelist <- filelist[1, ]
-      } else {
-        filelist <- subset(filelist, filelist$pkodemonth %in% Pkode_month)
+  if (!is.null(extracted_date)) {
+    if ("last" %in% Pkode_year) {
+      filelist <- filelist[c(1:2), ]
+      if (!"both" %in% Pkode_month) {
+        if ("last" %in% Pkode_month) {
+          filelist <- filelist[1, ]
+        } else {
+          filelist <- subset(filelist, filelist$pkodemonth %in% Pkode_month)
+        }
       }
     }
-  }
-  if (!"last" %in% Pkode_year) {
-    filelist <- subset(filelist, filelist$pkodeaar %in% Pkode_year)
-    if (!"both" %in% Pkode_month) {
-      if ("last" %in% Pkode_month) {
-        filelist <- filelist[1, ]
-      } else {
-        filelist <- subset(filelist, filelist$pkodemonth %in% Pkode_month)
+    if (!"last" %in% Pkode_year) {
+      filelist <- subset(filelist, filelist$pkodeaar %in% Pkode_year)
+      if (!"both" %in% Pkode_month) {
+        if ("last" %in% Pkode_month) {
+          filelist <- filelist[1, ]
+        } else {
+          filelist <- subset(filelist, filelist$pkodemonth %in% Pkode_month)
+        }
       }
     }
   }
   # Selection for uttrekk_dato
   if (!is.null(extracted_date)) {
+    filelist <- subset(filelist, filelist$pkodeaar %in% Pkode_year)
+    filelist <- subset(filelist, filelist$pkodemonth %in% Pkode_month)
     checkmate::assert_choice(as.Date(extracted_date), choices = filelist$uttrekk_dato)
     filelist <- subset(filelist, filelist$uttrekk_dato %in% as.Date(extracted_date))
-  } 
+  }
 
   return(filelist)
 }
