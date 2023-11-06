@@ -4,7 +4,7 @@
 \alias{select_prodtilskudd_files}
 \title{List selected files from Søknad om register for produksjonstilskudd}
 \usage{
-select_prodtilskudd_files(from_path, Pkode_year, Pkode_month)
+select_prodtilskudd_files(from_path, Pkode_year, Pkode_month, extracted_date)
 }
 \arguments{
 \item{from_path}{Path for the source translation table for PJS-codes}
@@ -18,12 +18,14 @@ and c("03", "10", "both", "last") for Pkode_year >= 2018.}
 A data frame with filenames of the files with the selected extracts of Prodtilskudd.
 }
 \description{
-List selected files with extracts from Søknad om register for produksjonstilskudd.
+List selected files with extracts from Søknad om register
+    for produksjonstilskudd.
 }
 \details{
-Reads the filenames of files with extracts from Søknad om register for produksjonstilskudd into a data frame.
-    The function gives options to select year and month and path for the files. The function is called from read_Prodtilskudd
-    and copy_Prodtilskudd.
+Reads the filenames of files with extracts from Søknad om register
+    for produksjonstilskudd into a data frame. The function gives options to
+    select year and month and path for the files. The function is called from
+    \code{read_Prodtilskudd} and \code{copy_Prodtilskudd}.
 }
 \examples{
 \dontrun{
