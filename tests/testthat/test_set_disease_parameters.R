@@ -11,6 +11,7 @@ test_that("set disease parameters by direct input", {
                     "utbrudd2select" = NULL,
                     "metode2select" = c("070070", "070231", "010057", "060265"),
                     "analytt2select" = c("01220104%", "1502010235"),
+                    "analytt2delete" = NULL,
                     "art2select" = NULL,
                     "include_missing_art" = "never"))
 
@@ -21,6 +22,7 @@ test_that("set disease parameters by direct input", {
                     "utbrudd2select" = NULL,
                     "metode2select" = c("070070", "070231", "010057", "060265"),
                     "analytt2select" = c("01220104%", "1502010235"),
+                    "analytt2delete" = NULL,
                     "art2select" = NULL,
                     "include_missing_art" = "never"))
 
@@ -36,6 +38,7 @@ test_that("set disease parameters by direct input", {
                     "utbrudd2select" = "22",
                     "metode2select" = c("070070", "070231", "010057", "060265"),
                     "analytt2select" = c("01220104%", "1502010235"),
+                    "analytt2delete" = NULL,
                     "art2select" = NULL,
                     "include_missing_art" = "never"))
 
@@ -46,6 +49,7 @@ test_that("set disease parameters by direct input", {
                     "utbrudd2select" = "22",
                     "metode2select" = c("070070", "070231", "010057", "060265"),
                     "analytt2select" = c("01220104%", "1502010235"),
+                    "analytt2delete" = NULL,
                     "art2select" = NULL,
                     "include_missing_art" = "never"))
 
@@ -61,6 +65,7 @@ test_that("set disease parameters by direct input", {
                     "utbrudd2select" = "22",
                     "metode2select" = NULL,
                     "analytt2select" = NULL,
+                    "analytt2delete" = NULL,
                     "art2select" = c("01%"),
                     "include_missing_art" = "never"))
 
@@ -76,6 +81,7 @@ test_that("set disease parameters by direct input", {
                     "utbrudd2select" = "22",
                     "metode2select" = NULL,
                     "analytt2select" = NULL,
+                    "analytt2delete" = NULL,
                     "art2select" = c("01%"),
                     "include_missing_art" = "never"))
 
@@ -91,6 +97,7 @@ test_that("set disease parameters by direct input", {
                     "utbrudd2select" = "22",
                     "metode2select" = NULL,
                     "analytt2select" = NULL,
+                    "analytt2delete" = NULL,
                     "art2select" = c("01%", NA),
                     "include_missing_art" = "always"))
 
@@ -101,29 +108,42 @@ test_that("set disease parameters by direct input", {
                     "utbrudd2select" = "22",
                     "metode2select" = NULL,
                     "analytt2select" = NULL,
+                    "analytt2delete" = NULL,
                     "art2select" = c("01%", NA),
                     "include_missing_art" = "always"))
 
-  })
+})
 
 test_that("set disease parameters using parameter file", {
-writeLines(
-  c('hensikt2select <- c("0100108018", "0100109003", "0100111003", "0800109")',
-    'utbrudd2select <- NULL',
-    'metode2select <- c("070070", "070231", "010057", "060265")',
-    'analytt2select <- c("01220104%", "1502010235")'),
-  con = file.path(tempdir(), "PD.R")
-)
+  writeLines(
+    c('hensikt2select <- c("0100108018", "0100109003", "0100111003", "0800109")',
+      'utbrudd2select <- NULL',
+      'metode2select <- c("070070", "070231", "010057", "060265")',
+      'analytt2select <- c("01220104%", "1502010235")'),
+    con = file.path(tempdir(), "PD.R")
+  )
 
   parameters <- set_disease_parameters(file = file.path(tempdir(), "PD.R"))
-expect_equal(parameters,
-             list("hensikt2select" = c("0100108018", "0100109003", "0100111003", "0800109"),
-                  "hensikt2delete" = NULL,
-                  "utbrudd2select" = NULL,
-                  "metode2select" = c("070070", "070231", "010057", "060265"),
-                  "analytt2select" = c("01220104%", "1502010235"),
-                  "art2select" = NULL,
-                  "include_missing_art" = "never"))
+  expect_equal(parameters,
+               list("hensikt2select" = c("0100108018", "0100109003", "0100111003", "0800109"),
+                    "hensikt2delete" = NULL,
+                    "utbrudd2select" = NULL,
+                    "metode2select" = c("070070", "070231", "010057", "060265"),
+                    "analytt2select" = c("01220104%", "1502010235"),
+                    "analytt2delete" = NULL,
+                    "art2select" = NULL,
+                    "include_missing_art" = "never"))
+
+  parameters <- set_disease_parameters(selection_parameters = file.path(tempdir(), "PD.R"))
+  expect_equal(parameters,
+               list("hensikt2select" = c("0100108018", "0100109003", "0100111003", "0800109"),
+                    "hensikt2delete" = NULL,
+                    "utbrudd2select" = NULL,
+                    "metode2select" = c("070070", "070231", "010057", "060265"),
+                    "analytt2select" = c("01220104%", "1502010235"),
+                    "analytt2delete" = NULL,
+                    "art2select" = NULL,
+                    "include_missing_art" = "never"))
 })
 
 

@@ -10,6 +10,7 @@ set_disease_parameters(
   utbrudd2select = NULL,
   metode2select = NULL,
   analytt2select = NULL,
+  analytt2delete = NULL,
   art2select = NULL,
   include_missing_art = NULL,
   selection_parameters = NULL,
@@ -32,8 +33,12 @@ Specific "hensiktkoder" for the "analytt" in question. If sub-codes should
 Specific "metodekoder for the "analytt" in question." Defaults to \code{NULL}.}
 
 \item{analytt2select}{[\code{character}]\cr
-"analyttkoder". If sub-codes should be included, end the code with \%.
-    Defaults to \code{NULL}.}
+"analyttkoder" for the agent and/or disease. If sub-codes should be included,
+    end the code with \%. Defaults to \code{NULL}.}
+
+\item{analytt2delete}{[\code{character}]\cr
+Specific "analyttkoder" that should be deleted, see details. If sub-codes should
+    be included, end the code with \%. Defaults to \code{NULL}.}
 
 \item{art2select}{[\code{character}]\cr
 "artkoder". If sub-codes should be included, end the code with \%.  \code{NA} can be
@@ -80,11 +85,17 @@ Saker in PJS that concern one infection / disease can be characterised
 
     The selection parameters can be input values for dedicated arguments. For input parameters
     \code{hensikt2select}, \code{hensikt2delete}, \code{utbrudd2select}, \code{metode2select},
-    \code{analytt2select}, \code{art2select}, and \code{include_missing_art},
+    \code{analytt2select}, \code{analytt2delete}, \code{art2select}, and \code{include_missing_art},
     the input may be given in a source file. This may be handy if the
     selection will be performed many times. It also gives the possibility of
     using a for loop that selects PJS-data and performs similar analyses for one
     disease at a time.
+
+    The selection parameter \code{analytt2delete} is intended for the situation where
+    \code{analytt2select} includes analytter higher in the hierarchy and there are
+    specific analytter lower in the hierarchy that should not be included. A typical
+    example is the selection of all samples with the analytt Mycobacterium spp and
+    below, but one is only interested in M. tuberculosis complex but not in M. avium.
 
     The possibility of input other arguments are kept to make it possible to use the
     deprecated arguments \code{missing_art} and \code{file}. If these are used, a
