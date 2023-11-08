@@ -127,8 +127,8 @@ retrieve_PJSdata <- function(year,
   if (length(missing_names) > 0) {
     for (i in missing_names) {
       # dbsource <- substr(select_statement[i],
-      #                    gregexpr(pattern = "v_", text = select_statement[i])[[1]][1],
-      #                    gregexpr(pattern = "v_", text = select_statement[i])[[1]][2] - 1)
+      #                    gregexpr(pattern = "v[[:digit:]]*_", text = select_statement[i])[[1]][1],
+      #                    gregexpr(pattern = "v[[:digit:]]*_", text = select_statement[i])[[1]][2] - 1)
       # dbsource <- stringi::stri_extract_first_words(dbsource)
       # dbsource_names[i] <- dbsource
     }
