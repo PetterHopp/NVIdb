@@ -77,10 +77,10 @@ retrieve_PJSdata <- function(year,
                        comment = "The argument selection_parameter must either be a file with selection parameters or a list with selection parameters",
                        add = checks)
   checkmate::assert_function(FUN, null.ok = TRUE, add = checks)
-  checkmate::assert_choice(deparse(substitute(FUN)),
-                           choices = c("build_query_one_disease", "build_query_hensikt", "build_query_outbreak"),
-                           null.ok = TRUE,
-                           add = checks)
+  # checkmate::assert_choice(deparse(substitute(FUN)),
+  #                          choices = c("build_query_one_disease", "build_query_hensikt", "build_query_outbreak"),
+  #                          null.ok = TRUE,
+  #                          add = checks)
   checkmate::assert(checkmate::check_list(x = select_statement, null.ok = TRUE),
                     checkmate::check_string(x = select_statement),
                     combine = "or",
@@ -118,7 +118,22 @@ retrieve_PJSdata <- function(year,
   journal_rapp <- login_PJS(dbinterface = "odbc")
   PJSdata <- vector("list", length = length(select_statement))
 
-  # dbsource_names <- rep(NA, length(select_statement))
+  # check if the select statements are named. If not, give them names
+  if (is.null(names(select_statement))) {
+    missing_names <- c(1:length(select_statement))
+  } else {
+    missing_names <- which(names(select_statement) == "")
+  }
+  if (length(missing_names) > 0) {
+    for (i in missing_names) {
+      # dbsource <- substr(select_statement[i],
+      #                    gregexpr(pattern = "v_", text = select_statement[i])[[1]][1],
+      #                    gregexpr(pattern = "v_", text = select_statement[i])[[1]][2] - 1)
+      # dbsource <- stringi::stri_extract_first_words(dbsource)
+      # dbsource_names[i] <- dbsource
+    }
+  }
+
   dbsource <- names(select_statement)
   names(dbsource) <- names(select_statement)
   if (!is.null(FUN)) {
@@ -129,11 +144,6 @@ retrieve_PJSdata <- function(year,
   for (i in c(1:length(select_statement))) {
 
     # READ DATA FROM PJS ----
-    # dbsource <- substr(select_statement[i],
-    #                    gregexpr(pattern = "v_", text = select_statement[i])[[1]][1],
-    #                    gregexpr(pattern = "v_", text = select_statement[i])[[1]][2] - 1)
-    # dbsource <- stringi::stri_extract_first_words(dbsource)
-    # dbsource_names[i] <- dbsource
 
     # PJSdata[[i]] <- RODBC::sqlQuery(journal_rapp,
     #                                 select_statement[i],
