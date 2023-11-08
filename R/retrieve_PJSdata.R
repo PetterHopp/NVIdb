@@ -120,10 +120,15 @@ retrieve_PJSdata <- function(year,
 
   # check if the select statements are named. If not, give them names
   if (is.null(names(select_statement))) {
-    missing_names <- c(1:length(select_statement))
+    # missing_names <- c(1:length(select_statement))
+    select_statement_names <- rep(NA_character_, c(1:length(select_statement)))
   } else {
-    missing_names <- which(names(select_statement) == "")
+    # missing_names <- which(names(select_statement) == "")
+    select_statement_names <- names(select_statement)
+    select_statement_names[which(select_statement_names == "")] <- NA_character_
   }
+  # for (i in missing_names) {
+  missing_names <- which(is.na(select_statement_names))
   if (length(missing_names) > 0) {
     for (i in missing_names) {
       # dbsource <- substr(select_statement[i],
