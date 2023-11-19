@@ -19,14 +19,6 @@ login_by_input <- function(dbservice,
   checkmate::assert_character(dbservice, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
 
 
-  # # Error handling
-  # # 1. Parameters for db-connection is missing
-  # if ((is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol) | is.null(dbinterface)) &
-  #     !tolower(dbservice) %in% tolower(NVIconfig:::dbconnect$dbservice)) {
-  #   stop(paste("Parameters for connection to",
-  #              dbservice,
-  #              "are missing and predefined parameters are not available"))
-  # }
   # Identifies if predefined connection parameters are needed
   if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol) | is.null(dbinterface)) {
     # Identify if NVIconfig are installed and parameters for dbservice exists.
@@ -87,8 +79,8 @@ login_by_input <- function(dbservice,
   # Connects to database service using ODBC
   if (dbinterface == "odbc") {
     # Connects to db using odbc
-    # use tryCatch to remove warning,
-    #   look at https://stackoverflow.com/questions/12193779/how-to-write-trycatch-in-r
+    # uses removeTaskCallback to remove warning when using dbconnect within function
+    original_task_callback <- getTaskCallbackNames()
     connection <- DBI::dbConnect(drv = odbc::odbc(),
                                  Driver = dbdriver,
                                  Server = dbserver,
@@ -97,6 +89,8 @@ login_by_input <- function(dbservice,
                                  UID = svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
                                  # PWD = getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
                                  PWD = askpass::askpass(prompt = paste("Oppgi passord for", dbtext)))
+    task_callback <- getTaskCallbackNames()
+    removeTaskCallback(which(!task_callback %in% original_task_callback))
 
     if (Sys.getenv("RSTUDIO") == "1") {
       # Opens connection pane in Rstudio.
