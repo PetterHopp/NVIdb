@@ -179,9 +179,9 @@ standardize_columns <- function(data,
   # Reading column standards from a csv-file based on in an Excel file
   if (is.null(standards)) {
     column_standards <- utils::read.csv2(
-file = paste0(NVIdb::set_dir_NVI("ProgrammeringR"), "standardization/column_standards.csv"),
-                                         fileEncoding = "UTF-8"
-)
+      file = paste0(NVIdb::set_dir_NVI("ProgrammeringR"), "standardization/column_standards.csv"),
+      fileEncoding = "UTF-8"
+    )
   } else {
     column_standards <- standards
   }
@@ -212,10 +212,17 @@ file = paste0(NVIdb::set_dir_NVI("ProgrammeringR"), "standardization/column_stan
     standard <- unique(standard)
 
     if (dim(standard)[1] > 0) {
-      standard <- standard %>%
-        # Identify column names with only one suggested column width
-        dplyr::add_count(.data$colname_db, name = "n") %>%
-        dplyr::ungroup() # %>%
+      # standard <- standard %>%
+      #   # Identify column names with only one suggested column width
+      #   dplyr::add_count(.data$colname_db, name = "n") %>%
+      #   dplyr::ungroup() # %>%
+      # Identify column names with only one suggested column width
+      aggregated_value <- stats::aggregate(stats::as.formula(paste("cbind(n = colname)",
+                                                                   "~",
+                                                                   paste(c("colname_db"), collapse = " + "))),
+                                           data = standard,
+                                           FUN = function(x) {length(x)})
+      standard <- merge(x = standard, y = aggregated_value, by = "colname_db", all.x = TRUE)
       # # Select column width either if only one suggested or for the current table
       # dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
       # dplyr::select(.data$colname_db, .data$colname) %>%
@@ -267,8 +274,8 @@ file = paste0(NVIdb::set_dir_NVI("ProgrammeringR"), "standardization/column_stan
     # Identifies columns that can look like numbers but should be treated as characters, usually because of leading zero
     # Read first line of csv-file
     if (!exists("fileEncoding")) {
-fileEncoding <- "UTF-8"
-}
+      fileEncoding <- "UTF-8"
+    }
     colcharacter <- utils::read.csv2(file = data, header = FALSE, nrow = 1, fileEncoding = fileEncoding)
     # Transform the header into a data frame with one column
     colcharacter <- as.data.frame(matrix(colcharacter, ncol = 1))
@@ -311,43 +318,71 @@ fileEncoding <- "UTF-8"
     standard <- unique(standard)
 
     if (dim(standard)[1] > 0) {
-      standard <- standard %>%
-        # Identify column names with only one suggested column width
-        dplyr::add_count(.data$colname, name = "n") %>%
-        dplyr::ungroup() %>%
-        # Select column width either if only one suggested or for the current table
-        dplyr::filter(.data$n == 1 | (.data$table_db == dbsource & .data$n > 1)) %>%
-        dplyr::select(.data$colname, label = .data$label_1_no) %>%
-        dplyr::distinct()
+      # standard <- standard %>%
+      #   # Identify column names with only one suggested column width
+      #   dplyr::add_count(.data$colname, name = "n") %>%
+      #   dplyr::ungroup() # %>%
+      aggregated_value <- stats::aggregate(stats::as.formula(paste("cbind(n = label_1_no)",
+                                                                   "~",
+                                                                   paste(c("colname"), collapse = " + "))),
+                                           data = standard,
+                                           FUN = function(x) {length(x)})
+      standard <- merge(x = standard, y = aggregated_value, by = "colname", all.x = TRUE)
+      # Select column width either if only one suggested or for the current table
+      # dplyr::filter(.data$n == 1 | (.data$table_db == dbsource & .data$n > 1)) %>%
+      # dplyr::select(.data$colname, label = .data$label_1_no) %>%
+      # dplyr::distinct()
+      standard <- subset(standard, standard$n == 1 | (standard$table_db == dbsource & standard$n > 1))
+      standard <- standard[, c("colname", "label_1_no")]
+      colnames(standard) <- c("colname", "label")
+      standard <- unique(standard)
+
     }
 
     ## English column labels ----
     if (language == "en") {
-      standard_en <- column_standards %>%
-        dplyr::filter(.data$colname %in% collabels$V1) %>%
-        dplyr::filter(!is.na(.data$label_1_en)) %>%
-        dplyr::select(.data$table_db, .data$colname, .data$label_1_en) %>%
-        dplyr::distinct()
+      standard_en <- column_standards # %>%
+      # dplyr::filter(.data$colname %in% collabels$V1) %>%
+      # dplyr::filter(!is.na(.data$label_1_en)) %>%
+      # dplyr::select(.data$table_db, .data$colname, .data$label_1_en) %>%
+      # dplyr::distinct()
+      # Filter to include only information for relevant column names and with property information
+      standard_en <- subset(standard_en, standard_en$colname %in% collabels$V1)
+      standard_en <- subset(standard_en, !is.na(standard_en$label_1_en))
+      standard_en <- standard_en[, c("table_db", "colname", "label_1_en")]
+      standard_en <- unique(standard_en)
 
       # Keep information on relevant table name and combine information for all other tables
       standard_en[which(standard_en$table_db != dbsource), "table_db"] <- NA
       standard_en <- unique(standard_en)
 
       if (dim(standard_en)[1] > 0) {
-        standard_en <- standard_en %>%
-          # Identify column names with only one suggested column width
-          dplyr::add_count(.data$colname, name = "n") %>%
-          dplyr::ungroup() %>%
-          dplyr::filter(.data$n == 1 | (.data$table_db == dbsource & .data$n > 1)) %>%
-          dplyr::select(.data$colname, .data$label_1_en) %>%
-          dplyr::distinct()
+        # standard_en <- standard_en %>%
+        #   # Identify column names with only one suggested column width
+        #   dplyr::add_count(.data$colname, name = "n") %>%
+        #   dplyr::ungroup() # %>%
+        aggregated_value <- stats::aggregate(stats::as.formula(paste("cbind(n = label_1_en)",
+                                                                     "~",
+                                                                     paste(c("colname"), collapse = " + "))),
+                                             data = standard_en,
+                                             FUN = function(x) {length(x)})
+        standard_en <- merge(x = standard_en, y = aggregated_value, by = "colname", all.x = TRUE)
+        # dplyr::filter(.data$n == 1 | (.data$table_db == dbsource & .data$n > 1)) %>%
+        # dplyr::select(.data$colname, .data$label_1_en) %>%
+        # dplyr::distinct()
+        standard_en <- subset(standard_en, standard_en$n == 1 | (standard_en$table_db == dbsource & standard_en$n > 1))
+        standard_en <- standard_en[, c("colname", "label_1_en")]
+        standard_en <- unique(standard_en)
       }
 
       # Impute missing labels with Norwegian labels
-      standard <- standard_en %>%
-        dplyr::full_join(standard, by = c("colname" = "colname")) %>%
-        dplyr::mutate(label = dplyr::coalesce(.data$label_1_en, .data$label)) %>%
-        dplyr::select(.data$colname, .data$label)
+      # standard <- standard_en %>%
+      #   dplyr::full_join(standard, by = c("colname" = "colname")) %>%
+      #   dplyr::mutate(label = dplyr::coalesce(.data$label_1_en, .data$label)) %>%
+      #   dplyr::select(.data$colname, .data$label)
+      standard <- merge(x = standard, y = standard_en, by = "colname", all.x = TRUE)
+      standard[which(!is.na(standard$label_1_en)), "label"] <- standard[which(!is.na(standard$label_1_en)), "label_1_en"]
+      standard <- standard[, c("colname", "label")]
     }
 
     ## Impute Sentence case for those without defined label ----¨
@@ -361,7 +396,7 @@ fileEncoding <- "UTF-8"
                                                        "OE" = "\u00f8", "oE" = "\u00f8",
                                                        "ae" = "\u00e6", "Ae" = "\u00e6",
                                                        "AE" = "\u00e6", "aE" = "\u00e6")
-)
+      )
 
     ## Make vector with column labels
     # Sorts data in original order
@@ -404,10 +439,16 @@ fileEncoding <- "UTF-8"
 
     # if there are information on column widths
     if (dim(standard)[1] > 0) {
-      standard <- standard %>%
-        # Identify column names with only one suggested column width
-        dplyr::add_count(.data$colname, name = "n") %>%
-        dplyr::ungroup() # %>%
+      # standard <- standard %>%
+      #   # Identify column names with only one suggested column width
+      #   dplyr::add_count(.data$colname, name = "n") %>%
+      #   dplyr::ungroup() # %>%
+      aggregated_value <- stats::aggregate(stats::as.formula(paste("cbind(n = colwidth)",
+                                                                   "~",
+                                                                   paste(c("colname"), collapse = " + "))),
+                                           data = standard,
+                                           FUN = function(x) {length(x)})
+      standard <- merge(x = standard, y = aggregated_value, by = "colname", all.x = TRUE)
       # # Select column width either if only one suggested or for the current table
       # dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) %>%
       # dplyr::select(.data$colname, .data$colwidth) %>%
@@ -446,19 +487,39 @@ fileEncoding <- "UTF-8"
 
       ## Norwegian column labels ----
       # Standard labels in Norwegian is always generated as is used to impute missing labels in other languages
-      standard <- column_standards %>%
-        # Filter to include only information for relevant column names and with property information
-        dplyr::filter(.data$table_db == dbsource) %>%
-        dplyr::filter(.data$colname %in% columnorder$V1) %>%
-        dplyr::filter(!is.na(.data$colorder)) %>%
-        dplyr::select(.data$colname, .data$colorder) %>%
-        dplyr::distinct() %>%
-        # removes colorders with more than suggested position
-        dplyr::add_count(.data$colname, name = "n") %>%
-        dplyr::filter(.data$n == 1) %>%
-        dplyr::select(.data$colname, .data$colorder) %>%
-        # Sort according to first column
-        dplyr::arrange(.data$colorder)
+      standard <- column_standards # %>%
+      # Filter to include only information for relevant column names and with property information
+      # dplyr::filter(.data$table_db == dbsource) %>%
+      # dplyr::filter(.data$colname %in% columnorder$V1) %>%
+      # dplyr::filter(!is.na(.data$colorder)) %>%
+      # dplyr::select(.data$colname, .data$colorder) %>%
+      # dplyr::distinct() %>%
+
+      standard <- subset(standard, standard$table_db == dbsource)
+      standard <- subset(standard, standard$colname %in% columnorder$V1)
+      standard <- subset(standard, !is.na(standard$colorder))
+      standard <- standard[, c("colname", "colorder")]
+      standard <- unique(standard)
+
+      # removes colorders with more than suggested position
+      # standard <- standard %>%
+      #   dplyr::add_count(.data$colname, name = "n") %>%
+      #   dplyr::ungroup() # %>%
+      aggregated_value <- stats::aggregate(stats::as.formula(paste("cbind(n = colorder)",
+                                                                   "~",
+                                                                   paste(c("colname"), collapse = " + "))),
+                                           data = standard,
+                                           FUN = function(x) {length(x)})
+      standard <- merge(x = standard, y = aggregated_value, by = "colname", all.x = TRUE)
+      # dplyr::filter(.data$n == 1) %>%
+      # dplyr::select(.data$colname, .data$colorder) %>%
+      # # Sort according to first column
+      # dplyr::arrange(.data$colorder)
+
+      standard <- subset(standard, standard$n == 1)
+      standard <- standard[, c("colname", "colorder")]
+      # Sort according to colorder
+      standard <- standard[order(standard$colorder), ]
 
       # Order in accord with standard.
       # Keep non-ordered columns in last columns if exclude = FALSE
