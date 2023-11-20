@@ -4,7 +4,13 @@
 \alias{retrieve_PJSdata}
 \title{Retrieves data from PJS}
 \usage{
-retrieve_PJSdata(year, selection_parameters, FUN, select_statement = NULL, ...)
+retrieve_PJSdata(
+  year,
+  selection_parameters,
+  FUN = NULL,
+  select_statement = NULL,
+  ...
+)
 }
 \arguments{
 \item{year}{[\code{numeric}]\cr

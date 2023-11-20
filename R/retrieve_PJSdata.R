@@ -58,7 +58,7 @@
 #' #
 retrieve_PJSdata <- function(year,
                              selection_parameters,
-                             FUN,
+                             FUN = NULL,
                              select_statement = NULL,
                              ...) {
 
