@@ -119,23 +119,22 @@ retrieve_PJSdata <- function(year,
   PJSdata <- vector("list", length = length(select_statement))
 
   # check if the select statements are named. If not, give them names
+  # if there are no names for the list entries
   if (is.null(names(select_statement))) {
-    # missing_names <- c(1:length(select_statement))
-    select_statement_names <- rep(NA_character_, c(1:length(select_statement)))
+    select_statement_names <- rep("", c(1:length(select_statement)))
   } else {
-    # missing_names <- which(names(select_statement) == "")
+    # Naming elements that miss names if some are named
     select_statement_names <- names(select_statement)
-    select_statement_names[which(select_statement_names == "")] <- NA_character_
   }
   # for (i in missing_names) {
-  missing_names <- which(is.na(select_statement_names))
+  missing_names <- which(select_statement_names == "")
   if (length(missing_names) > 0) {
     for (i in missing_names) {
-      # dbsource <- substr(select_statement[i],
-      #                    gregexpr(pattern = "v[[:digit:]]*_", text = select_statement[i])[[1]][1],
-      #                    gregexpr(pattern = "v[[:digit:]]*_", text = select_statement[i])[[1]][2] - 1)
-      # dbsource <- stringi::stri_extract_first_words(dbsource)
-      # dbsource_names[i] <- dbsource
+      select_statement_names[i] <- substr(select_statement[i],
+                         gregexpr(pattern = "v[[:digit:]]*_", text = select_statement[i])[[1]][1],
+                         min(gregexpr(pattern = "v[[:digit:]]*_", text = select_statement[i])[[1]][2] - 1,
+                             nchar(select_statement[i]), na.rm = TRUE))
+      select_statement_names[i] <- stringi::stri_extract_first_words(select_statement_names[i])
     }
   }
 
