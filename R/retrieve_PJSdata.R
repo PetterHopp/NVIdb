@@ -11,9 +11,10 @@
 #'     and
 #'     \ifelse{html}{\code{\link{exclude_from_PJSdata}}}{\code{exclude_from_PJSdata}}.
 #'
-#' @details The function is dependent that credentials for PJS have been saved using
+#' @details For the function to run automatically, it is dependent that credentials
+#'     for PJS have been saved using
 #'     \ifelse{html}{\code{\link{set_credentials_PJS}}}{\code{set_credentials_PJS}}.
-#'     else, an open ODBC channel to PJS cannot be established.
+#'     else, the credentials must be input manually to establish an open ODBC channel.
 #'
 #' The select statement for PJS can be built giving the selection parameters and
 #'     input to one of the build_query-functions, i.e.
@@ -34,6 +35,13 @@
 #'     \code{retrieve_PJSdata} has no possibility of checking the syntax before
 #'     it is submitted to PJS and untested select statements can take a lot of
 #'     time or stop the function without proper error messages.
+#'
+#' The output is a named list where each entry is a data frame with PJS-data. If
+#'     the select statement is named, the returned data frame will have that name.
+#'     If the select statement is unnamed, it will try to identify the first
+#'     table in the select statement and use this as name. I not possible, the
+#'     name will be of the format "PJSdata#" where # is the number of the select
+#'     statement.
 
 #'
 #' @template build_query_year
@@ -47,7 +55,10 @@
 #' Function to build the selection statement, see details. Defaults to \code{NULL}.
 #' @param select_statement [\code{character(1)}]\cr
 #' A written select statement, see details. Defaults to \code{NULL}.
-#' @param \dots Other arguments to be passed to underlying functions.
+#' @param \dots Other arguments to be passed to underlying functions:
+#'    \ifelse{html}{\code{\link{login_PJS}}}{\code{login_PJS}})
+#'    and
+#'    \ifelse{html}{\code{\link{exclude_from_PJSdata}}}{\code{exclude_from_PJSdata}}).
 #'
 #' @return A named list with PJS data.
 #'
@@ -57,7 +68,7 @@
 #'
 #' #
 retrieve_PJSdata <- function(year,
-                             selection_parameters,
+                             selection_parameters = NULL,
                              FUN = NULL,
                              select_statement = NULL,
                              ...) {
@@ -114,10 +125,7 @@ retrieve_PJSdata <- function(year,
     select_statement <- do.call(FUN, FUN_input)
   }
 
-  # OPEN ODBC CHANNEL ----
-  journal_rapp <- login_PJS(dbinterface = "odbc")
-  PJSdata <- vector("list", length = length(select_statement))
-
+  # GIVE NAME TO EACH SELECTION STATEMENT
   # check if the select statements are named. If not, give them names
   # if there are no names for the list entries
   if (is.null(names(select_statement))) {
@@ -134,17 +142,23 @@ retrieve_PJSdata <- function(year,
                          gregexpr(pattern = "v[[:digit:]]*_", text = select_statement[i])[[1]][1],
                          min(gregexpr(pattern = "v[[:digit:]]*_", text = select_statement[i])[[1]][2] - 1,
                              nchar(select_statement[i]), na.rm = TRUE))
-      select_statement_names[i] <- stringi::stri_extract_first_words(select_statement_names[i])
+      # select_statement_names[i] <- stringi::stri_extract_first_words(select_statement_names[i])
+      select_statement_names[i] <- sub("(\\s|,|\\.)[[:print:]]*", "", select_statement_names[i])
+      if (select_statement_names[i] == "") {select_statement_names[i] <- paste0("PJSdata", as.character(i))}
     }
   }
 
-  dbsource <- names(select_statement)
-  names(dbsource) <- names(select_statement)
-  if (!is.null(FUN)) {
+  # IDENTIFY PROBABLE dbsource FROM select_statement_names
+  dbsource <- select_statement_names
     dbsource <- gsub(pattern = "selection_v2_sak_m_res", replacement = "v2_sak_m_res", x = dbsource)
     dbsource <- gsub(pattern = "selection_sakskonklusjon", replacement = "v_sakskonklusjon", x = dbsource)
-  }
+    dbsource <- gsub(pattern = "PJSdata[[:digit:]]*", replacement = "v2_sak_m_res", x = dbsource)
 
+  # OPEN ODBC CHANNEL ----
+  journal_rapp <- login_PJS(dbinterface = "odbc", ...)
+  PJSdata <- vector("list", length = length(select_statement))
+
+  # PERFORM SELECTION AND STANDARDISATION FOR EACH SELECT STATEMENT ----
   for (i in c(1:length(select_statement))) {
 
     # READ DATA FROM PJS ----
@@ -156,11 +170,9 @@ retrieve_PJSdata <- function(year,
     PJSdata[[i]] <- DBI::dbGetQuery(con = journal_rapp,
                                     statement = select_statement[[i]])
     # STANDARDIZE DATA ----
-    # PJSdata
     PJSdata[[i]] <- standardize_PJSdata(PJSdata = PJSdata[[i]], dbsource = dbsource[i])
 
     # Exclude ring trials, quality assurance and samples from abroad
-    # PJSdata
     PJSdata[[i]] <- exclude_from_PJSdata(PJSdata = PJSdata[[i]], ...)
 
   }
@@ -168,8 +180,9 @@ retrieve_PJSdata <- function(year,
   # CLOSE ODBC CHANNEL ----
   DBI::dbDisconnect(journal_rapp)
 
-  PJSdata <- stats::setNames(PJSdata, names(dbsource))
 
   # RETURN RESULT ----
+  # Give name to each entry in the list of PJSdata
+  PJSdata <- stats::setNames(PJSdata, select_statement_names)
   return(PJSdata)
 }

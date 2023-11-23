@@ -6,7 +6,7 @@
 \usage{
 retrieve_PJSdata(
   year,
-  selection_parameters,
+  selection_parameters = NULL,
   FUN = NULL,
   select_statement = NULL,
   ...
@@ -30,7 +30,10 @@ Function to build the selection statement, see details. Defaults to \code{NULL}.
 \item{select_statement}{[\code{character(1)}]\cr
 A written select statement, see details. Defaults to \code{NULL}.}
 
-\item{\dots}{Other arguments to be passed to underlying functions.}
+\item{\dots}{Other arguments to be passed to underlying functions:
+\ifelse{html}{\code{\link{login_PJS}}}{\code{login_PJS}})
+and
+\ifelse{html}{\code{\link{exclude_from_PJSdata}}}{\code{exclude_from_PJSdata}}).}
 }
 \value{
 A named list with PJS data.
@@ -49,9 +52,10 @@ Retrieves and standardises PJS data. The intention of
     \ifelse{html}{\code{\link{exclude_from_PJSdata}}}{\code{exclude_from_PJSdata}}.
 }
 \details{
-The function is dependent that credentials for PJS have been saved using
+For the function to run automatically, it is dependent that credentials
+    for PJS have been saved using
     \ifelse{html}{\code{\link{set_credentials_PJS}}}{\code{set_credentials_PJS}}.
-    else, an open ODBC channel to PJS cannot be established.
+    else, the credentials must be input manually to establish an open ODBC channel.
 
 The select statement for PJS can be built giving the selection parameters and
     input to one of the build_query-functions, i.e.
@@ -72,6 +76,13 @@ The select statement for PJS can be built giving the selection parameters and
     \code{retrieve_PJSdata} has no possibility of checking the syntax before
     it is submitted to PJS and untested select statements can take a lot of
     time or stop the function without proper error messages.
+
+The output is a named list where each entry is a data frame with PJS-data. If
+    the select statement is named, the returned data frame will have that name.
+    If the select statement is unnamed, it will try to identify the first
+    table in the select statement and use this as name. I not possible, the
+    name will be of the format "PJSdata#" where # is the number of the select
+    statement.
 }
 \examples{
 
