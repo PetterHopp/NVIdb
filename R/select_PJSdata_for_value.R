@@ -30,7 +30,6 @@
 select_PJSdata_for_value <- function(data,
                                      code_column,
                                      value_2_check,
-                                     # include_missing_for = NULL,
                                      keep_selected = TRUE) {
   # data <- PJSdata
   # code_column <- "hensiktkode"
@@ -54,8 +53,9 @@ select_PJSdata_for_value <- function(data,
 
 
   # transform value_2_check to regular expressions
-  value_2_check <- paste0("^", value_2_check)
-  value_2_check <- gsub(pattern = "%", replacement = "[[:digit:]]*", x = value_2_check, fixed = TRUE)
+  value_2_check <- paste0("^", value_2_check, "$")
+  value_2_check <- gsub(pattern = "%$", replacement = "[[:digit:]]*", x = value_2_check, fixed = TRUE)
+  value_2_check <- gsub(pattern = "%-", replacement = "[[:digit:]]*-", x = value_2_check, fixed = TRUE)
 
   # Identifies all variables in the index taking into consideration the PJS-levels of the code_column(s)
   index <- c("aar", "ansvarlig_seksjon", "innsendelsenr", "saksnr")
