@@ -34,30 +34,29 @@ Imports:
     DBI,
     dplyr,
     keyring,
-    knitr,
     magrittr,
     odbc,
     remotes,
     rlang,
-    rmarkdown,
     RODBC,
     RPostgreSQL,
-    R.rsp,
-    shiny,
     snakecase,
     stats,
     svDialogs,
     utils,
-    NVIcheckmate (>= 0.4.0),
-    NVIrpackages
+    NVIcheckmate (>= 0.7.0)
 Suggests:
     covr,
     desc,
     devtools,
+    knitr,
+    R.rsp,
+    rmarkdown,
     spelling,
     testthat,
     tibble,
-    NVIpackager
+    NVIpackager,
+    NVIrpackages
 Remotes: 
     NorwegianVeterinaryInstitute/NVIcheckmate,
     NorwegianVeterinaryInstitute/NVIrpackages,
