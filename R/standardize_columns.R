@@ -110,7 +110,7 @@
 #'     order. If \code{exclude = TRUE} only columns with a defined order is included.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
-#' @importFrom rlang .data
+# @importFrom rlang .data
 #' @export
 #' @examples
 #' \dontrun{
