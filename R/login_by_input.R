@@ -86,7 +86,8 @@ login_by_input <- function(dbservice,
                                  Server = dbserver,
                                  port = dbport,
                                  Database = db,
-                                 UID = svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
+                                 # UID = svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
+                                 UID = askpass::askpass(prompt = paste("Oppgi brukernavn (username) for", dbtext)),
                                  # PWD = getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
                                  PWD = askpass::askpass(prompt = paste("Oppgi passord for", dbtext)))
     task_callback <- getTaskCallbackNames()
@@ -113,7 +114,8 @@ login_by_input <- function(dbservice,
                                                   ";Port=", dbport,
                                                   ";PROTOCOL=", dbprotocol,
                                                   ";UID=",
-                                                  svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
+                                                  # svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
+                                                  askpass::askpass(prompt = paste("Oppgi brukernavn (username) for", dbtext)),
                                                   ";PWD=",
                                                   # getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
                                                   askpass::askpass(prompt = paste("Oppgi passord for", dbtext)))
@@ -126,7 +128,8 @@ login_by_input <- function(dbservice,
                                          host = dbserver,
                                          port = dbport,
                                          dbname = db,
-                                         user = svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
+                                         # user = svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
+                                         user = askpass::askpass(prompt = paste("Oppgi brukernavn (username) for", dbtext)),,
                                          # PWD = getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
                                          PWD = askpass::askpass(prompt = paste("Oppgi passord for", dbtext)))
   }
