@@ -67,7 +67,7 @@
 #' @examples
 #'
 #' #
-retrieve_PJSdata <- function(year,
+retrieve_PJSdata <- function(year = NULL,
                              selection_parameters = NULL,
                              FUN = NULL,
                              select_statement = NULL,
@@ -81,6 +81,7 @@ retrieve_PJSdata <- function(year,
   checkmate::assert_integerish(year,
                                lower = 1990, upper = as.numeric(format(Sys.Date(), "%Y")),
                                min.len = 1,
+                               null.ok = TRUE,
                                add = checks)
   NVIcheckmate::assert(checkmate::check_file_exists(x = selection_parameters, access = "r"),
                        checkmate::check_list(x = selection_parameters, null.ok = TRUE),
