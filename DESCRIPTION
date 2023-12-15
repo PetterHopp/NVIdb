@@ -42,7 +42,6 @@ Imports:
     RPostgreSQL,
     snakecase,
     stats,
-    svDialogs,
     utils,
     NVIcheckmate (>= 0.7.0)
 Suggests:
