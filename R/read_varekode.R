@@ -29,7 +29,7 @@
 #'     varekoder to descriptive text and metadata.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
-#' @importFrom rlang .data
+# @importFrom rlang .data
 #' @export
 #' @examples
 #' \dontrun{
