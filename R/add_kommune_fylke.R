@@ -56,7 +56,7 @@
 #'     fylkenr to fylke to given directory. If the target file already exists, the source file is copied only when it is newer than the target file.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
-#' @importFrom rlang .data
+# @importFrom rlang .data
 #' @export
 #' @examples
 #' \dontrun{
