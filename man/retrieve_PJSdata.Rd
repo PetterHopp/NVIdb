@@ -5,7 +5,7 @@
 \title{Retrieves data from PJS}
 \usage{
 retrieve_PJSdata(
-  year,
+  year = NULL,
   selection_parameters = NULL,
   FUN = NULL,
   select_statement = NULL,
