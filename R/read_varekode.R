@@ -151,7 +151,8 @@ read_varekode <- function(filename = "varekoder.csv",
 
       tempdf <- utils::read.delim(paste0(set_dir_NVI("LevReg"), sub_path, "/", filnavn[i, "filnavn"]),
                                   header = header,
-                                  sep = delimiter)
+                                  sep = delimiter,
+                                  fileEncoding = "latin1")
 
       # if no national characters (represented by "å"), then read again using UTF-8 encoding
       if (isFALSE(any(grepl("\u00E5", tempdf[, 2], ignore.case = TRUE)))) {
