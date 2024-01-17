@@ -14,13 +14,13 @@ retrieve_PJSdata(
 }
 \arguments{
 \item{year}{[\code{numeric}]\cr
-One year or a vector giving the first and last years that should 
-be selected.}
+One year or a vector giving the first and last years that should be selected.
+Defaults to \code{NULL}.}
 
 \item{selection_parameters}{[\code{character(1)}]\cr
 Either the path and file name for an R script that can be sourced and that
     sets the selection parameters or a named list with the selection parameters
-    (i.e. similar to the output of
+    (i.e. of the same format as the output of
     \ifelse{html}{\code{\link{set_disease_parameters}}}{\code{set_disease_parameters}}).
     Defaults to \code{NULL}.}
 
@@ -31,31 +31,40 @@ Function to build the selection statement, see details. Defaults to \code{NULL}.
 A written select statement, see details. Defaults to \code{NULL}.}
 
 \item{\dots}{Other arguments to be passed to underlying functions:
-\ifelse{html}{\code{\link{login_PJS}}}{\code{login_PJS}})
+\ifelse{html}{\code{\link{login_PJS}}}{\code{login_PJS}}
 and
-\ifelse{html}{\code{\link{exclude_from_PJSdata}}}{\code{exclude_from_PJSdata}}).}
+\ifelse{html}{\code{\link{exclude_from_PJSdata}}}{\code{exclude_from_PJSdata}}.}
 }
 \value{
 A named list with PJS data.
 }
 \description{
-Retrieves and standardises PJS data. The intention of
+Retrieves and standardises PJS data. \code{retrieve_PJSdata} is
+    a wrapper for several \code{NVIdb}-functions and the intention of
     \code{retrieve_PJSdata} is to shorten code and to ensure that a standard
-    procedure is followed for retrieving PJS-data. \code{retrieve_PJSdata}
-    constructs the select statement by a build_query-function (see details)
-    and selection parameters. An open ODBC-channel is created using
-    \ifelse{html}{\code{\link{login_by_credentials_PJS}}}{\code{login_by_credentials_PJS}},
-    and the data is retrieved using the select statement. Thereafter, the
-    data is standardised using
-    \ifelse{html}{\code{\link{standardize_PJSdata}}}{\code{standardize_PJSdata}}
-    and
-    \ifelse{html}{\code{\link{exclude_from_PJSdata}}}{\code{exclude_from_PJSdata}}.
+    procedure is followed when retrieving PJS-data, see details. It can only
+    be used for retrieving case data from PJS and not for retrieving code registers
+    and similar.
 }
 \details{
-For the function to run automatically, it is dependent that credentials
-    for PJS have been saved using
+\code{retrieve_PJSdata} is a wrapper for the following \code{NVIdb}-functions:
+\itemize{
+  \item Constructs the select statement by a build_query-function (see details)
+    and selection parameters.
+  \item Creates an open ODBC-channel using
+    \ifelse{html}{\code{\link{login_PJS}}}{\code{login_PJS}}.
+  \item Retrieves the data using the select statement constructed above.
+  \item Standardises the data using
+    \ifelse{html}{\code{\link{standardize_PJSdata}}}{\code{standardize_PJSdata}}.
+  \item Excludes unwanted cases using
+    \ifelse{html}{\code{\link{exclude_from_PJSdata}}}{\code{exclude_from_PJSdata}}.
+  }
+
+For the function to run automatically without having to enter PJS user
+    credentials, it is dependent that PJS user credentials have been saved using
     \ifelse{html}{\code{\link{set_credentials_PJS}}}{\code{set_credentials_PJS}}.
-    else, the credentials must be input manually to establish an open ODBC channel.
+    Otherwise, the credentials must be input manually to establish an open
+    ODBC channel.
 
 The select statement for PJS can be built giving the selection parameters and
     input to one of the build_query-functions, i.e.
@@ -71,16 +80,16 @@ The select statement for PJS can be built giving the selection parameters and
 
 \code{retrieve_PJSdata} gives the possibility of giving the select_statement
     as a string instead of using the build_query-functions. This should only
-    by done for select statements that
-    previously have been tested and are known to have correct syntax.
-    \code{retrieve_PJSdata} has no possibility of checking the syntax before
-    it is submitted to PJS and untested select statements can take a lot of
-    time or stop the function without proper error messages.
+    by done for select statements that previously have been tested and are
+    known to have correct syntax. \code{retrieve_PJSdata} has no possibility
+    of checking the syntax before it is submitted to PJS and untested select
+    statements can take a lot of time or stop the function without proper
+    error messages.
 
 The output is a named list where each entry is a data frame with PJS-data. If
     the select statement is named, the returned data frame will have that name.
     If the select statement is unnamed, it will try to identify the first
-    table in the select statement and use this as name. I not possible, the
+    table in the select statement and use this as name. If not possible, the
     name will be of the format "PJSdata#" where # is the number of the select
     statement.
 }
