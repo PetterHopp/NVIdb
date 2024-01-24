@@ -3,13 +3,20 @@ NVIdb 0.11.0 - (2024-01-24)
 
 New features:
 
-- Created retrieve_PJS_data to retrieve and standardisation of PJSdata.
+- Created `retrieve_PJS_data` to retrieve and standardisation of PJSdata.
 
 - Created `transform_code_values` to easy transform few code combinations into other values.
 
 - Created `select_PJSdata_for_values` to perform inclusion/exclusion of rows in PJSdata based on coded values. For codes ending with "%", sub levels are included.
 
+- `read_Prodtilskudd` now accepts the argument `exctracted_date`.
+
 - The PJS- and EOS-wrappers for the login functions `login`, `login_by_credentials` and `login_by_input` now accepts arguments to be passed to the parent functions. Thereby, one may change login information for the databases PJS and EOS by modifying the scripts until a new version of the package `NVIconfig` is available and installed.
+
+
+Bug fixes:
+
+- Corrected `read_varekode` so accepts old source files in latin1.
 
 
 Other changes:
