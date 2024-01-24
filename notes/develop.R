@@ -24,6 +24,12 @@ pkg <- stringi::stri_extract_last_words(pkg_path)
 #                                   type = "develop",
 #                                   document = FALSE)
 
+# UPDATE LICENSE
+# NVIpackager::update_license(pkg = pkg,
+#                             pkg_path = pkg_path,
+#                             copyright_owner = "Norwegian Veterinary Institute")
+
+
 # DOCUMENTATION AND STYLING ----
 # update_logo should be run if a logo has been created (or updated). Thereafter run "document_NVIpkg" with "readme = TRUE".
 # update_logo(pkg = pkg, pkg_path = pkg_path)
@@ -32,7 +38,7 @@ pkg <- stringi::stri_extract_last_words(pkg_path)
 # Should be run before git push when documentation for functions have been changed
 NVIpackager::document_NVIpkg(pkg = pkg,
                              pkg_path = pkg_path,
-                             style = FALSE,
+                             style = TRUE,
                              contributing = FALSE,
                              readme = FALSE,
                              manual = "update",
@@ -88,4 +94,23 @@ utils::help(package = (pkg))
 
 library(package = pkg, character.only = TRUE)
 
+
+# MANUAL CHECK OF SCRIPTS ----
+# Search for string
+txt <- "\\.data\\$"
+files_with_pattern <- findInFiles::findInFiles(ext = "R", pattern = txt, output = "tibble")
+files_with_pattern <- findInFiles::FIF2dataframe(files_with_pattern)
+package <- rep(pkg, dim(files_with_pattern)[1])
+files_with_pattern <- cbind(package, files_with_pattern)
+
+wb <- openxlsx::createWorkbook()
+# Replace with openxlsx::addWorksheet()
+NVIpretty::add_formatted_worksheet(data = files_with_pattern,
+                                   workbook = wb,
+                                   sheet = make.names(paste0(pkg, txt)))
+openxlsx::saveWorkbook(wb,
+                       file = file.path("../", paste0(pkg, "_", "files_with_pattern.xlsx")),
+                       overwrite = TRUE)
+
+# Replace all occurrences of string in scripts
 

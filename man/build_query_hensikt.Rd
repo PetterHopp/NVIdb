@@ -7,30 +7,30 @@
 build_query_hensikt(year, hensikt, db = "PJS")
 }
 \arguments{
-\item{year}{[\code{numeric}] \cr
+\item{year}{[\code{numeric}]\cr
 One year or a vector giving the first and last years that should 
 be selected.}
 
-\item{hensikt}{[\code{character}] \cr
-Vector with one or more specific hensiktkoder. If sub-hensikter 
+\item{hensikt}{[\code{character}]\cr
+Vector with one or more specific hensiktkoder. If sub-hensikter
 should be included, end the code with \%.}
 
-\item{db}{[\code{character(1)}] \cr
-The database for which the query is built. Currently only 
-the value "PJS" is accepted.}
+\item{db}{[\code{character(1)}]\cr
+The database for which the query is built. Defaults to "PJS" that currently
+is the only valid value.}
 }
 \value{
-A list with select-statements for "v2_sak_m_res" and 
+A list with select-statements for "v2_sak_m_res" and
     "v_sakskonklusjon", respectively. The statements should be
     included in a \code{RODBC::sqlQuery}.
 }
 \description{
-Builds the query for selecting all data for one or 
+Builds the query for selecting all data for one or
     more hensikt within one year from PJS. The query is written
     in T-SQL as used by MS-SQL.
 }
 \details{
-The function builds the SQL syntax to select all 
+The function builds the SQL syntax to select all
     PJS-journals concerning the hensiktkoder from PJS.
 }
 \examples{

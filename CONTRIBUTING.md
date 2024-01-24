@@ -83,7 +83,7 @@ NVIverse packages</td>
 <tr class="even">
 <td style="text-align: left;">NVIrpackages</td>
 <td style="text-align: left;">Public</td>
-<td style="text-align: left;">Keeps a table of the R-Packages in
+<td style="text-align: left;">Keeps a table of the R packages in
 NVIverse</td>
 </tr>
 </tbody>
@@ -157,9 +157,11 @@ development guidelines below.
 
 ## Development guidelines
 
-If you want to contribute code, you are welcome to do so. Please try to
-adhere to some principles and style convention used for
-`NVIverse`-packages.
+If you want to contribute code, you are welcome to do so. You will find
+a description of the code conventions, which have been used, in the
+vignette “NVIverse code conventions” in the package `NVIpackager`. A
+summary of the principles and style convention used for
+`NVIverse`-packages is given below.
 
 -   Please limit the number of package dependencies for `NVIdb`. The use
     of base functions is much appreciated.

@@ -54,7 +54,8 @@ set_credentials <- function(dbservice) {
   remove_credentials(dbservice)
 
   # Open window for input of username to the given dbservice
-  username <- svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbservice))$res
+  # username <- svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbservice))$res
+  username <- askpass::askpass(prompt = paste("Oppgi brukernavn (username) for", dbservice))
 
   # ARGUMENT CHECKING username ----
   checkmate::assert_character(x = username, min.chars = 1, len = 1, any.missing = FALSE)

@@ -48,6 +48,28 @@ test_that("Read Prodtilskudd", {
 
 })
 
+test_that("Read Prodtilskudd, extracted_date", {
+  # skip if no connection to 'FAG' have been established
+  skip_if_not(dir.exists(set_dir_NVI("FAG")))
+
+  # Reads data
+  Pkoder <- read_Prodtilskudd(Pkode_year = "2019", Pkode_month = "03", extracted_date = "2020-01-13")
+
+  Pkoder$Telledato <- as.Date(Pkoder$Telledato)
+  # check type data.frame
+  expect_identical(class(Pkoder), "data.frame")
+  # check number of rows and columns
+  expect_equal(dim(Pkoder), c(26921, 67))
+
+  # check correct version
+  # expect_equal(as.vector(unique(Pkoder$`Søknadsår`)), 2019)
+  # expect_equal(as.vector(unique(Pkoder$Telledato)), as.integer(as.Date("2019-03-01")))
+  correct_result <- as.data.frame(cbind("S\u00F8knads\u00E5r" = 2019, "Telledato" = as.Date("2019-03-01")))
+  # correct_result$`Søknadsår` <- as.numeric(correct_result$`Søknadsår`)
+  expect_equal(as.character(unique(Pkoder[, c("S\u00F8knads\u00E5r", "Telledato")])), as.character(correct_result))
+
+})
+
 test_that("errors for copy_Prodtilskudd", {
 
   linewidth <- options("width")

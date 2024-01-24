@@ -71,7 +71,6 @@
 #'                         new_column = c("poststed", "postkomnr" = "komnr"))
 #' }
 #'
-
 add_poststed <- function(data,
                          translation_table = poststed,
                          code_column = c("postnr"),

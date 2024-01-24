@@ -49,9 +49,9 @@
 #'     \code{\link{set_credentials_EOS}}, no input is needed.
 #'
 #'     The login functions returns an open ODBC-channel to the database service.
-#'     The database can then be queried by using functions in the package used for 
-#'     data base interface. The data base interface must be one of \code{odbc}, 
-#'     \code{RODBC} or, \code{RPostgreSQL}. The default is given in NVIconfig and is 
+#'     The database can then be queried by using functions in the package used for
+#'     data base interface. The data base interface must be one of \code{odbc},
+#'     \code{RODBC} or, \code{RPostgreSQL}. The default is given in NVIconfig and is
 #'     \code{RODBC} for "SQL server" and \code{RPostgreSQL} for "PostgreSQL".
 #'
 #'     When the session is finished, the script shall close the ODBC-channel by
@@ -65,11 +65,13 @@
 #' @param dbserver Name of database server.
 #' @param dbport Port.
 #' @param dbprotocol Protocol to be used.
-#' @param dbinterface The R-package that is used for interface towards the data 
+#' @param dbinterface The R-package that is used for interface towards the data
 #'     base.
 #' @param dbtext used in login with input. Gives the possibility of showing
 #'     another name than the dbservice in the windows asking for username and
 #'     password.
+#' @param \dots Other arguments to be passed from the wrappers to
+#'     login_by_credentials or login_by_input
 #' @return An open ODBC-channel to the database service.
 #' @family Log in functions
 #' @seealso  \code{\link{set_credentials}}
@@ -214,28 +216,28 @@ login <- function(dbservice,
 #' @export
 #' @rdname login
 
-login_PJS <- function(dbinterface = NULL) {
+login_PJS <- function(dbinterface = NULL, ...) {
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-  
+
   # dbinterface
   checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
-  
+
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # Set service to PJS
   dbservice <- "PJS"
 
   # Use check for saved credentials to chose between login_by_input and login_by_credentials
   if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
     # If credentials are saved for the user profile
-    login_by_credentials(dbservice, dbinterface = dbinterface)
+    login_by_credentials(dbservice, dbinterface = dbinterface, ...)
   } else {
     # If credentials are missing from the user profile
-    login_by_input(dbservice, dbinterface = dbinterface)
+    login_by_input(dbservice, dbinterface = dbinterface, ...)
   }
 }
 
@@ -243,27 +245,27 @@ login_PJS <- function(dbinterface = NULL) {
 #' @export
 #' @rdname login
 
-login_EOS <- function(dbinterface = NULL) {
+login_EOS <- function(dbinterface = NULL, ...) {
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-  
+
   # dbinterface
   checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
-  
+
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # Set service to EOS
   dbservice <- "EOS"
 
   # Use check for saved credentials to chose between login_by_input and login_by_credentials
   if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
     # If credentials are saved for the user profile
-    login_by_credentials(dbservice, dbinterface = dbinterface)
+    login_by_credentials(dbservice, dbinterface = dbinterface, ...)
   } else {
     # If credentials are missing from the user profile
-    login_by_input(dbservice, dbinterface = dbinterface)
+    login_by_input(dbservice, dbinterface = dbinterface, ...)
   }
 }

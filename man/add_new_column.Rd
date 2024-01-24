@@ -41,7 +41,7 @@ Should existing value be transferred if no value for the code is found?
 Defaults to \code{FALSE}.}
 }
 \value{
-A data.frame with a new column with the translated value. The new 
+A data.frame with a new column with the translated value. The new
     column is placed in the position given in position.
 }
 \description{

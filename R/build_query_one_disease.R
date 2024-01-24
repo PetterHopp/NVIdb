@@ -21,11 +21,16 @@
 #'     purpose of examining for the infectious agent and/or disease will be included even if the examination has not been performed. This
 #'     is important for a full control of all relevant data for an infectious agent and/or disease.
 #'
-#' @param year One year or a vector with years giving the first and last years that should be selected as integer.
-#' @param analytt One or more analyttkode given as a character. If sub-analytter should be included, end the code with \%.
-#' @param hensikt Vector with specific hensikter. If sub-hensikter should be included, end the code with \%. Can be \code{NULL}.
-#' @param metode Vector with specific metoder. Can be \code{NULL}.
-#' @param db The database for which the query is built. Currently only the value "PJS" is accepted.
+#' @template build_query_year
+#' @param analytt [\code{character}]\cr
+#'     Analyttkoder that should be selected. If sub-analytter should be included,
+#'     end the code with \%.
+#' @param hensikt [\code{character}]\cr
+#'     Specific hensiktkoder. If sub-hensikter should be included,
+#'     end the code with \%. Defaults to \code{NULL}.
+#' @param metode [\code{character}]\cr
+#'     Specific metodekoder. Defaults to \code{NULL}.
+#' @template build_query_db
 #'
 #' @return A list with select-statement fom v2_sak_m_res and v_sakskonklusjon to be included in a \code{RODBC::sqlQuery}.
 #'

@@ -6,12 +6,13 @@ output:
   
 params:
   NVIpkg: "NVIdb"
+  pkg_path: !r  usethis::proj_path()
   first_copyright_year: "2019"
 ---
 
 ```{r, include = FALSE}
 NVIpkg <- params$NVIpkg
-# NVIpkg <- stringi::stri_extract_last_words(usethis::proj_path())
+pkg_path <- params$pkg_path
 NVIpkg_inline <- paste0("`", NVIpkg, "`")
 logo_path <- ""
 if (file.exists(paste0("./man/figures/", NVIpkg, "_logo.png"))) {
@@ -56,12 +57,12 @@ stable and you will not need to update `NVIconfig` every time `NVIdb` is updated
 To install (or update) the `NVIconfig` package, run the following code:
 
 ``` {r text2, message=FALSE, warnings=FALSE, echo=FALSE, prompt = FALSE, comment = ""} 
-text2 <- paste(paste0('remotes::install_github("NorwegianVeterinaryInstitute/NVIconfig",'), 
-	'    auth_token = "PAT",',
-	'    upgrade = FALSE,', 
-	'    build = TRUE,', 
-	'    build_vignettes = TRUE)', sep = '\n')
-cat(text2, sep="", fill = TRUE)
+text2 <- paste(paste0('remotes::install_github("NorwegianVeterinaryInstitute/NVIconfig",'),
+        '    auth_token = "PAT",',
+        '    upgrade = FALSE,',
+        '    build = TRUE,',
+        '    build_vignettes = TRUE)', sep = '\n')
+cat(text2, sep = "", fill = TRUE)
 ```
 where PAT is your personal access token.
 

@@ -9,24 +9,16 @@ login_by_input <- function(dbservice,
                            dbprotocol = NULL,
                            dbinterface = NULL,
                            dbtext = NULL) {
-  
+
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-  
+
   # Perform checks
   # dbservice
   checkmate::assert_character(dbservice, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
-  
-  
-  # # Error handling
-  # # 1. Parameters for db-connection is missing
-  # if ((is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol) | is.null(dbinterface)) &
-  #     !tolower(dbservice) %in% tolower(NVIconfig:::dbconnect$dbservice)) {
-  #   stop(paste("Parameters for connection to",
-  #              dbservice,
-  #              "are missing and predefined parameters are not available"))
-  # }
+
+
   # Identifies if predefined connection parameters are needed
   if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol) | is.null(dbinterface)) {
     # Identify if NVIconfig are installed and parameters for dbservice exists.
@@ -35,14 +27,14 @@ login_by_input <- function(dbservice,
                                                   dbservice,
                                                   "' is lacking and NVIconfig with predefined parameters is not installed"),
                                  add = checks)
-    
+
     if (isTRUE(NVIcheckmate::check_package(x = "NVIconfig"))) {
       NVIcheckmate::assert_choice_character(x = dbservice, choices = NVIconfig:::dbconnect$dbservice, ignore.case = TRUE,
                                             comment = paste0("Predefined parameters for logging into the database '",
                                                              dbservice,
                                                              "' is not available in your version of NVIconfig"),
                                             add = checks)
-      
+
       # Uses the predefined parameters only for parameters with NULL-value
       connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
       if (is.null(dbdriver)) {dbdriver <- connect[, "dbdriver"]}
@@ -53,7 +45,7 @@ login_by_input <- function(dbservice,
       if (is.null(dbinterface)) {dbinterface <- connect[, "dbinterface"]}
     }
   }
-  
+
   # dbdriver
   checkmate::assert_character(dbdriver, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
   # db
@@ -66,10 +58,10 @@ login_by_input <- function(dbservice,
   checkmate::assert_character(dbprotocol, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
   # dbinterface
   checkmate::assert_choice(dbinterface, choices = c("odbc", "RODBC", "RPostgreSQL"), add = checks)
-  
+
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # # Identifies connection parameters for predefined dbservices
   # # Uses the predefined parameters only for parameters with NULL-value
   # if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol) | is.null(dbinterface)) {
@@ -81,37 +73,40 @@ login_by_input <- function(dbservice,
   #   if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
   #   if (is.null(dbinterface)) {dbinterface <- connect[, "dbinterface"]}
   # }
-  
+
   if (is.null(dbtext)) {dbtext <- dbservice}
-  
+
   # Connects to database service using ODBC
   if (dbinterface == "odbc") {
     # Connects to db using odbc
-    # use tryCatch to remove warning, 
-    #   look at https://stackoverflow.com/questions/12193779/how-to-write-trycatch-in-r
+    # uses removeTaskCallback to remove warning when using dbconnect within function
+    original_task_callback <- getTaskCallbackNames()
     connection <- DBI::dbConnect(drv = odbc::odbc(),
                                  Driver = dbdriver,
                                  Server = dbserver,
                                  port = dbport,
                                  Database = db,
-                                 UID = svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
+                                 # UID = svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
+                                 UID = askpass::askpass(prompt = paste("Oppgi brukernavn (username) for", dbtext)),
                                  # PWD = getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
-                                 PWD =  askpass::askpass(prompt = paste("Oppgi passord for", dbtext)))
-    
-    if(Sys.getenv("RSTUDIO") == "1"){
-      # Opens connection pane in Rstudio. 
+                                 PWD = askpass::askpass(prompt = paste("Oppgi passord for", dbtext)))
+    task_callback <- getTaskCallbackNames()
+    removeTaskCallback(which(!task_callback %in% original_task_callback))
+
+    if (Sys.getenv("RSTUDIO") == "1") {
+      # Opens connection pane in Rstudio.
       # This is not opened automatically when running dbconnect from within a function
-      code <- c(match.call())   # This saves what was typed into R
-      
+      code <- c(match.call()) # This saves what was typed into R
+
       odbc:::on_connection_opened(
-        connection,                                
-        paste(c("library(internal_package)",                                        
+        connection,
+        paste(c("library(internal_package)",
                 paste("connection <-", gsub(", ", ",\n\t", code))),
-              collapse = "\n"))  
+              collapse = "\n"))
     }
-    
+
   }
-  
+
   if (dbinterface == "RODBC") {
     connection <- RODBC::odbcDriverConnect(paste0("DRIVER=", dbdriver,
                                                   ";Database=", db,
@@ -119,24 +114,26 @@ login_by_input <- function(dbservice,
                                                   ";Port=", dbport,
                                                   ";PROTOCOL=", dbprotocol,
                                                   ";UID=",
-                                                  svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
+                                                  # svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
+                                                  askpass::askpass(prompt = paste("Oppgi brukernavn (username) for", dbtext)),
                                                   ";PWD=",
                                                   # getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
                                                   askpass::askpass(prompt = paste("Oppgi passord for", dbtext)))
     )
   }
-  
+
   if (dbinterface == "RPostgreSQL") {
     # Connects to journal_rapp using ODBC
     connection <- RPostgreSQL::dbConnect(drv = DBI::dbDriver(dbdriver),
                                          host = dbserver,
                                          port = dbport,
                                          dbname = db,
-                                         user = svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
+                                         # user = svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
+                                         user = askpass::askpass(prompt = paste("Oppgi brukernavn (username) for", dbtext)), ,
                                          # PWD = getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
-                                         PWD =  askpass::askpass(prompt = paste("Oppgi passord for", dbtext)))
+                                         PWD = askpass::askpass(prompt = paste("Oppgi passord for", dbtext)))
   }
-  
+
   return(connection)
 }
 
@@ -144,21 +141,21 @@ login_by_input <- function(dbservice,
 #' @export
 #' @rdname login
 
-login_by_input_PJS <- function(dbinterface = NULL) {
-  
+login_by_input_PJS <- function(dbinterface = NULL, ...) {
+
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-  
+
   # dbinterface
   checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
-  
+
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # Oppretterknytning mot journal_rapp
-  odbcConnection <- login_by_input(dbservice = "PJS", dbinterface = dbinterface)
-  
+  odbcConnection <- login_by_input(dbservice = "PJS", dbinterface = dbinterface, ...)
+
   return(odbcConnection)
 }
 
@@ -166,20 +163,20 @@ login_by_input_PJS <- function(dbinterface = NULL) {
 #' @export
 #' @rdname login
 
-login_by_input_EOS <- function(dbinterface = NULL) {
-  
+login_by_input_EOS <- function(dbinterface = NULL, ...) {
+
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
-  
+
   # dbinterface
   checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
-  
+
   # Report check-results
   checkmate::reportAssertions(checks)
-  
+
   # Oppretterknytning mot EOS
-  odbcConnection <- login_by_input(dbservice = "EOS", dbinterface = dbinterface)
-  
+  odbcConnection <- login_by_input(dbservice = "EOS", dbinterface = dbinterface, ...)
+
   return(odbcConnection)
 }

@@ -20,7 +20,7 @@ standardize_eos_data(
 The data retrieved from EOS.}
 
 \item{dbsource}{[\code{character(1)}]\cr
- If specified, this will be used for fetching standard column names by  
+ If specified, this will be used for fetching standard column names by
 \code{\link{standardize_columns}}. Defaults to the name of the input data.}
 
 \item{standards}{[\code{data.frame}]\cr
@@ -33,7 +33,7 @@ If \code{TRUE}, the column names will be standardised. Defaults to \code{TRUE)}.
 If \code{TRUE}, breed is translated back to species. Defaults to \code{TRUE)}.}
 
 \item{adjust_n_examined}{[\code{logical(1)}]\cr
-If \code{TRUE}, the number of examined samples is adjusted so it is at maximum 
+If \code{TRUE}, the number of examined samples is adjusted so it is at maximum
 the number of received samples. Defaults to \code{TRUE}.}
 
 \item{delete_redundant}{[\code{logical(1)}]\cr
@@ -54,31 +54,31 @@ The function performs the following standardising of data extracted from EOS:
   \item The column names are standardised using \code{\link{standardize_columns}}.
   \item Numeric variables are transformed to numbers.
   \item Datetime variables are transformed to dates.
-  \item Double registrations of a "Sak" due to the municipality being divided 
-        between two Food Safety Authority office, are merged into one and for 
+  \item Double registrations of a "Sak" due to the municipality being divided
+        between two Food Safety Authority office, are merged into one and for
         these, the information on Food Safety Authority office is removed.
-  \item Splits saksnr into saksnr and fagnr if saksnr combines both. 
-  \item Breed is transformed to species. 
-  \item Number of examined samples are corrected so it don't exceed the number 
+  \item Splits saksnr into saksnr and fagnr if saksnr combines both.
+  \item Breed is transformed to species.
+  \item Number of examined samples are corrected so it don't exceed the number
         of received samples.
-  \item Redundant variables are deleted. 
+  \item Redundant variables are deleted.
   }
-Standardisation of column names may be set to \code{FALSE}. This should only be 
-    done if the column names have been standardised previously as a new 
-    standardisation of column names may give unpredicted results. Remark that all 
-    other standardisations are dependent on standard column names, so the function 
+Standardisation of column names may be set to \code{FALSE}. This should only be
+    done if the column names have been standardised previously as a new
+    standardisation of column names may give unpredicted results. Remark that all
+    other standardisations are dependent on standard column names, so the function
     will not work if the data do not have standard column names.
-    
+
 Transformation from breed to species is only performed when species is included
     in the data. You need to import the translation table for PJS-codes to perform
     the translation, use \code{PJS_codes_2_text <- read_PJS_codes_2_text()}.
-    
+
 Correction of number of tested samples is only done when both number of received
     and number of tested are included in the data.
-    
+
 There are a few reduntant varibles in some data sets. In CWD data both "sist_overfort"
-    and "sist_endret" keeps the same information. "sist_endret" is deleted. In 
-    Salmonella and Campylobacter data, "prove_identitet" is always \code{NULL} and 
+    and "sist_endret" keeps the same information. "sist_endret" is deleted. In
+    Salmonella and Campylobacter data, "prove_identitet" is always \code{NULL} and
     "prove_id" is \code{NULL} for salmonella data and equal ti "id_nr" for Campylobacter
     data. Both are deleted. Set \code{delete_redundant = FALSE} to keep them.
 }

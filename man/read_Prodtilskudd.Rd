@@ -9,46 +9,82 @@ copy_Prodtilskudd(
   from_path = paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/"),
   to_path = NULL,
   Pkode_year = "last",
-  Pkode_month = "both"
+  Pkode_month = "both",
+  extracted_date = NULL
 )
 
 read_Prodtilskudd(
   from_path = paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/"),
   Pkode_year = "last",
-  Pkode_month = "both"
+  Pkode_month = "both",
+  extracted_date = NULL
 )
 }
 \arguments{
-\item{from_path}{Path for the produksjonstilskuddsregister.}
+\item{from_path}{[\code{character(1)}]\cr
+Path for the produksjonstilskuddsregister. Defaults to the standard
+directory at the NVI network.}
 
-\item{to_path}{Target path for the files with the produksjonstilskuddsregister.}
+\item{to_path}{[\code{character(1)}]\cr
+Target path for the files with the produksjonstilskuddsregister.}
 
-\item{Pkode_year}{The year(s) from which the register should be read. Options is "last", or a vector with one or more years.}
+\item{Pkode_year}{[\code{character}] | [\code{numeric}]\cr
+The year(s) from which the register should be read. Options is "last", or
+a vector with one or more years. Defaults to "last".}
 
-\item{Pkode_month}{The month for which the register should be read. The options are c("05", "10", "both", "last") for Pkode_year = 2017
-and c("03", "10", "both", "last") for Pkode_year >= 2018.}
+\item{Pkode_month}{[\code{character}]\cr
+The month for which the register should be read. The options are
+c("05", "10", "both", "last") for Pkode_year = 2017 and
+c("03", "10", "both", "last") for Pkode_year >= 2018. Defaults to "both".}
+
+\item{extracted_date}{[\code{character}]\cr
+The date the data was extracted from the database of the Norwegian
+Agricultural Agency. The format should be "yyyy-mm-dd". Defaults to
+\code{NULL}.}
 }
 \value{
-\code{read_Prodtilskudd} reads one or more data frame(s) with the produksjonstilskuddsregister for each of the year and seasons selected.
-    If the options Pkode_year = "last" and Pkode_month = "last" is given, one file with the last produksjonstilskuddsregister is given.
+\code{read_Prodtilskudd} reads one or more data frame(s) with the
+    produksjonstilskuddsregister for each of the year and seasons selected.
+    If the options Pkode_year = "last" and Pkode_month = "last" is given,
+    one file with the last produksjonstilskuddsregister is given.
 
-    \code{copy_Prodtilskudd} copies the source produksjonstilskuddsregister for each of the year and seasons selected. If the target file
+    \code{copy_Prodtilskudd} copies the source produksjonstilskuddsregister
+    for each of the year and seasons selected. If the target file
     already exists, the source files are copied only when newer than the target file.
 }
 \description{
-Functions to to read and copy versions of the produksjonstilskuddsregister.
+Functions to to read and copy versions of the
+    produksjonstilskuddsregister.
 }
 \details{
-The produksjonstilskuddsregister includes information on number of animals that the produsent has applied subsidies for at the
-    counting dates. Since 2017, the counting dates are in March and October. Landbruksdirektoratet provides three to four versions of the
-    register for each counting date. The functions automatically selects the last updated version of the register.
+The produksjonstilskuddsregister includes information on number of
+    animals that the produsent has applied subsidies for at the counting
+    dates. Since 2017, the counting dates are in March and October.
+    Landbruksdirektoratet provides three to four versions of the register for
+    each counting date. The functions automatically selects the last updated
+    version of the register.
 
-    \code{read_Prodtilskudd} reads the produksjonstilskuddsregister into a data frame. The function gives options to select year and season The standard
-    settings will read in the files from NVI's internal network and select the latest updated file for both spring and autumn and combine them
-    into one file. If changing the from_path, the function can be used to read the translation file from other directories. This can be useful
-    if having a stand alone app with no connection the NVI's internal network. In other cases, it should be avoided.
+    \code{read_Prodtilskudd} reads the produksjonstilskuddsregister into a
+    data frame. The function gives options to select year and season The
+    standard settings will read in the files from NVI's internal network and
+    select the latest updated file for both spring and autumn and combine
+    them into one file. If changing the from_path, the function can be used
+    to read the translation file from other directories. This can be useful
+    if having a stand alone app with no connection the NVI's internal network.
+    In other cases, it should be avoided.
 
-    \code{copy_Prodtilskudd} copies the source produksjonstilskuddsregister for each of the year and seasons selected to a given directory.
+    \code{extracted_date} is used if specific versions of the register is required,
+    for example to reproduce the generation of data previously performed
+    using an older version of the register.You should also write in the
+    \code{extracted_date} in the script to document which version of the
+    register that was used. If so, first extract the last available version
+    of the register. Find the uttrekkdato in the data, and write in the
+    uttrekkdato in \code{extracted_date}. \code{extracted_date} cannot be used
+    in combination with \code{pkode_year} = "last" or \code{pkode_month} =
+    c("last", "both").
+
+    \code{copy_Prodtilskudd} copies the source produksjonstilskuddsregister
+    for each of the year and seasons selected to a given directory.
 }
 \examples{
 \dontrun{

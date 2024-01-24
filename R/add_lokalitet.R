@@ -3,58 +3,58 @@
 #'    zone and/or geo-coordinates. In addition there are function
 #'    to read the translation table.
 #' @details \code{add_lokalitet} can be used to add aquaculture
-#'    zone and/or geo-coordinates to aquaculture sites. The new 
+#'    zone and/or geo-coordinates to aquaculture sites. The new
 #'    columns can be one or more of c("sone", "EastUTM_33N_WGS84",
 #'    "NorthUTM_33N_WGS84", "Longitude_WGS84", "Latitude_WGS84").
-#'    If the new columns in the result data frame should have 
-#'    other names, \code{new_column} can be input as a named 
+#'    If the new columns in the result data frame should have
+#'    other names, \code{new_column} can be input as a named
 #'    vector, see examples.
 #'
-#' \code{position} is used to give the position if the new columns 
-#'     in the data.frame. For \code{position = "right"} the new 
-#'     variables are placed to the right of the code_variable. 
-#'     Likewise, for \code{position = "left"} the new variables 
-#'     are placed to the left of the code_variable. If 
-#'     \code{position = "first"} or \code{position = "last"} the 
+#' \code{position} is used to give the position if the new columns
+#'     in the data.frame. For \code{position = "right"} the new
+#'     variables are placed to the right of the code_variable.
+#'     Likewise, for \code{position = "left"} the new variables
+#'     are placed to the left of the code_variable. If
+#'     \code{position = "first"} or \code{position = "last"} the
 #'     new columns are placed first or last, respectively, in the
-#'     data frame. A special case occurs for \code{position = "keep"} 
-#'     which only has meaning when the new column has the same name 
-#'     as an existing column and \code{overwrite = TRUE}. In these 
-#'     cases, the existing column will be overwritten with new data 
+#'     data frame. A special case occurs for \code{position = "keep"}
+#'     which only has meaning when the new column has the same name
+#'     as an existing column and \code{overwrite = TRUE}. In these
+#'     cases, the existing column will be overwritten with new data
 #'     and have the same position.
 #'
-#' \code{read_sonetilhorighet} reads the file "sonetilhorighet.txt" 
-#'     into a data frame that can be used by other routines. Standard 
-#'     setting will the file read in the latest updated file from 
-#'     NVI's internal network. If changing the from_path, the 
-#'     function can be used to read the translation file from 
-#'     other directories. This can be useful if having a stand 
-#'     alone app with no connection the NVI's internal network. 
+#' \code{read_sonetilhorighet} reads the file "sonetilhorighet.txt"
+#'     into a data frame that can be used by other routines. Standard
+#'     setting will the file read in the latest updated file from
+#'     NVI's internal network. If changing the from_path, the
+#'     function can be used to read the translation file from
+#'     other directories. This can be useful if having a stand
+#'     alone app with no connection the NVI's internal network.
 #'     In other cases, it should be avoided.
 #'
-#' @param data [\code{data.frame}]\cr  
+#' @param data [\code{data.frame}]\cr
 #' Data with a column with an aquaculture site number ("LokNr")
-#' @param translation_table [\code{data.frame}]\cr  
+#' @param translation_table [\code{data.frame}]\cr
 #' Table for translating from loknr to the property in question.
-#' @param code_column [\code{character(1)}]\cr  
+#' @param code_column [\code{character(1)}]\cr
 #' The column with the coded value. Valid values are one of c("LokNr"). If the column in
 #'     data has another name, it can be input as a named vector, see examples.
-#' @param new_column [\code{character}]\cr  
+#' @param new_column [\code{character}]\cr
 #' The new columns that should be included into the data frame.
 #' @template position
 #' @template overwrite
-#' @param filename [\code{list}]\cr  
+#' @param filename [\code{list}]\cr
 #' The filenames of the source files with the tables for generating the translation table.
-#' @param from_path [\code{character(1)}]\cr  
+#' @param from_path [\code{character(1)}]\cr
 #' Path for the source files for the translation table.
 #'
-#' @return \code{add_lokalitet}: \code{data.frame} where the aquaculture 
+#' @return \code{add_lokalitet}: \code{data.frame} where the aquaculture
 #'     zone and / or geo-coordinates have been added in the column to the
 #'     right of the column with the LokNr.
 #'
-#' \code{read_sonetilhorighet}: \code{data.frame} with "LokNr", 
-#'     aquaculture zone and geo-coordinates. If not changing standard 
-#'     input to the function, the standard file at NVI's internal 
+#' \code{read_sonetilhorighet}: \code{data.frame} with "LokNr",
+#'     aquaculture zone and geo-coordinates. If not changing standard
+#'     input to the function, the standard file at NVI's internal
 #'     network is read.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no

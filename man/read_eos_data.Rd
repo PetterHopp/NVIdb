@@ -25,7 +25,7 @@ The years to be included in the result. Can be both numeric
 or character. Defaults to \code{NULL}, i.e. no selection.}
 
 \item{colClasses}{[\code{character}]\cr
-The class of the columns, as in  
+The class of the columns, as in
 \ifelse{html}{\code{\link[utils:read.table]{utils::read.table}}}{\code{utils::read.table}}.
 Defaults to \code{"character"}.}
 
@@ -43,13 +43,13 @@ Reads EOS data from RaData. Includes historical data if these exists.
     It is possible to limit the data to one or more years.
 }
 \details{
-read_eos_data uses 
+read_eos_data uses
     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}
-    to read the data with the settings \code{showProgress = FALSE} and 
-    \code{data.table = FALSE}. Other arguments can be passed to  
+    to read the data with the settings \code{showProgress = FALSE} and
+    \code{data.table = FALSE}. Other arguments can be passed to
     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}
     if necessary.
-    
+
 The eos_table name is the same name as the name as in the EOS data base.
 }
 \author{

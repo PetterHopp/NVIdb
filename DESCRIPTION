@@ -1,7 +1,7 @@
 Package: NVIdb
 Title: Tools to facilitate the use of NVI's databases
-Version: 0.10.1
-Date: 2023-05-31
+Version: 0.11.0
+Date: 2024-01-24
 Authors@R: 
   c(person(given = "Petter",
            family = "Hopp",
@@ -34,29 +34,27 @@ Imports:
     DBI,
     dplyr,
     keyring,
-    knitr,
     magrittr,
     odbc,
-    remotes,
-    rlang,
-    rmarkdown,
     RODBC,
     RPostgreSQL,
-    R.rsp,
-    shiny,
     snakecase,
     stats,
-    svDialogs,
     utils,
-    NVIcheckmate (>= 0.4.0),
-    NVIrpackages
+    NVIcheckmate (>= 0.7.0)
 Suggests:
     covr,
+    desc,
     devtools,
+    knitr,
+    R.rsp,
+    remotes,
+    rmarkdown,
     spelling,
     testthat,
     tibble,
-    NVIpackager
+    NVIpackager,
+    NVIrpackages
 Remotes: 
     NorwegianVeterinaryInstitute/NVIcheckmate,
     NorwegianVeterinaryInstitute/NVIrpackages,

@@ -23,9 +23,9 @@ login(
   dbinterface = NULL
 )
 
-login_PJS(dbinterface = NULL)
+login_PJS(dbinterface = NULL, ...)
 
-login_EOS(dbinterface = NULL)
+login_EOS(dbinterface = NULL, ...)
 
 login_by_credentials(
   dbservice,
@@ -37,9 +37,9 @@ login_by_credentials(
   dbinterface = NULL
 )
 
-login_by_credentials_PJS(dbinterface = NULL)
+login_by_credentials_PJS(dbinterface = NULL, ...)
 
-login_by_credentials_EOS(dbinterface = NULL)
+login_by_credentials_EOS(dbinterface = NULL, ...)
 
 login_by_input(
   dbservice,
@@ -52,9 +52,9 @@ login_by_input(
   dbtext = NULL
 )
 
-login_by_input_PJS(dbinterface = NULL)
+login_by_input_PJS(dbinterface = NULL, ...)
 
-login_by_input_EOS(dbinterface = NULL)
+login_by_input_EOS(dbinterface = NULL, ...)
 }
 \arguments{
 \item{dbservice}{Name of the database service, for example "PJS" or "EOS".
@@ -71,8 +71,11 @@ can be chosen freely, but must be the same as used in \code{\link{set_credential
 
 \item{dbprotocol}{Protocol to be used.}
 
-\item{dbinterface}{The R-package that is used for interface towards the data 
+\item{dbinterface}{The R-package that is used for interface towards the data
 base.}
+
+\item{\dots}{Other arguments to be passed from the wrappers to
+login_by_credentials or login_by_input}
 
 \item{dbtext}{used in login with input. Gives the possibility of showing
 another name than the dbservice in the windows asking for username and
@@ -134,9 +137,9 @@ The NVI has access to several database services. These functions log
     \code{\link{set_credentials_EOS}}, no input is needed.
 
     The login functions returns an open ODBC-channel to the database service.
-    The database can then be queried by using functions in the package used for 
-    data base interface. The data base interface must be one of \code{odbc}, 
-    \code{RODBC} or, \code{RPostgreSQL}. The default is given in NVIconfig and is 
+    The database can then be queried by using functions in the package used for
+    data base interface. The data base interface must be one of \code{odbc},
+    \code{RODBC} or, \code{RPostgreSQL}. The default is given in NVIconfig and is
     \code{RODBC} for "SQL server" and \code{RPostgreSQL} for "PostgreSQL".
 
     When the session is finished, the script shall close the ODBC-channel by

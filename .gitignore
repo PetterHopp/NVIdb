@@ -20,7 +20,6 @@
 # RStudio files
 .Rproj.user/
 
-
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
@@ -40,7 +39,3 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# Directories that shouldn't be syncronized
-nosync/
-Meta
-.Ruserdata
