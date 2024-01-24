@@ -1,4 +1,4 @@
-NVIdb 0.10.1.9001 - (2023-##-##)
+NVIdb 0.11.0 - (2024-01-24)
 ----------------------------------------
 
 New features:
@@ -10,11 +10,6 @@ New features:
 - Created `select_PJSdata_for_values` to perform inclusion/exclusion of rows in PJSdata based on coded values. For codes ending with "%", sub levels are included.
 
 - The PJS- and EOS-wrappers for the login functions `login`, `login_by_credentials` and `login_by_input` now accepts arguments to be passed to the parent functions. Thereby, one may change login information for the databases PJS and EOS by modifying the scripts until a new version of the package `NVIconfig` is available and installed.
-
-
-Bug fixes:
-
--
 
 
 Other changes:
