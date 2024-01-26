@@ -123,7 +123,8 @@ test_that("set disease parameters using parameter file", {
     con = file.path(tempdir(), "PD.R")
   )
 
-  parameters <- set_disease_parameters(file = file.path(tempdir(), "PD.R"))
+  parameters <- expect_warning(set_disease_parameters(file = file.path(tempdir(), "PD.R")),
+                               regexp = "The argument 'file' is deprecated")
   expect_equal(parameters,
                list("hensikt2select" = c("0100108018", "0100109003", "0100111003", "0800109"),
                     "hensikt2delete" = NULL,
