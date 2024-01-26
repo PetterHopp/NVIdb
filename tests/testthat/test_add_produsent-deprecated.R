@@ -20,12 +20,13 @@ test_that("Correct merging of produsent og produsent properties", {
 
 
   # Compare Add fylke, current fylkenr and current fylke with correct result
-  produsenter <- NVIdb::add_produsent(data = produsenter,
-                               translation_table = prodnr_2_gjeldende_prodnr,
-                               code_column = "prodnr8",
-                               new_column = "gjeldende_prodnr8",
-                               position = "left",
-                               overwrite = FALSE)
+  produsenter <- expect_warning(add_produsent(data = produsenter,
+                                              translation_table = prodnr_2_gjeldende_prodnr,
+                                              code_column = "prodnr8",
+                                              new_column = "gjeldende_prodnr8",
+                                              position = "left",
+                                              overwrite = FALSE),
+                                regexp = "'add_produsent' is replaced by 'add_produsent_properties'")
   expect_identical(produsenter, correct_result)
 
   # COORDINATES
@@ -39,10 +40,11 @@ test_that("Correct merging of produsent og produsent properties", {
   )
   colnames(correct_result) <- c("gjeldende_prodnr8", "prodnr8", "longitude", "latitude")
 
-  produsenter <- add_produsent(data = produsenter,
-                               translation_table = prodnr_2_koordinater,
-                               code_column = c("gjeldende_prodnr8" = "prodnr8"),
-                               new_column = c("longitude" = "geo_eu89_o", "latitude" = "geo_eu89_n"),
-                               position = "last")
+  produsenter <- expect_warning(add_produsent(data = produsenter,
+                                              translation_table = prodnr_2_koordinater,
+                                              code_column = c("gjeldende_prodnr8" = "prodnr8"),
+                                              new_column = c("longitude" = "geo_eu89_o", "latitude" = "geo_eu89_n"),
+                                              position = "last"),
+                                regexp = "'add_produsent' is replaced by 'add_produsent_properties'")
   expect_identical(produsenter, correct_result)
 })
