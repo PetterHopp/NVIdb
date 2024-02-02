@@ -169,7 +169,7 @@ set_disease_parameters <- function(hensikt2select = NULL,
   checkmate::assert_character(hensikt2select, min.chars = 2, max.chars = 15, any.missing = FALSE, null.ok = TRUE, add = checks)
   checkmate::assert_character(hensikt2delete, min.chars = 2, max.chars = 15, any.missing = FALSE, null.ok = TRUE, add = checks)
   checkmate::assert_character(utbrudd2select, max.chars = 5, any.missing = FALSE, null.ok = TRUE, add = checks)
-  checkmate::assert_character(metode2select, n.chars = 6, any.missing = FALSE, null.ok = TRUE, add = checks)
+  checkmate::assert_character(metode2select, min.chars = 2, any.missing = FALSE, null.ok = TRUE, add = checks)
   checkmate::assert_character(analytt2select, min.chars = 2, max.chars = 20, any.missing = FALSE, null.ok = TRUE, add = checks)
   checkmate::assert_character(analytt2delete, min.chars = 2, max.chars = 20, any.missing = FALSE, null.ok = TRUE, add = checks)
   checkmate::assert_character(art2select, min.chars = 2, max.chars = 20, all.missing = FALSE, null.ok = TRUE, add = checks)
