@@ -26,7 +26,7 @@ NVIdb 0.11.0 - (2024-01-24)
 
 New features:
 
-- Created `retrieve_PJS_data` to retrieve and standardisation of PJSdata.
+- Created `retrieve_PJS_data` to retrieve and standardise PJSdata.
 
 - Created `transform_code_values` to easy transform few code combinations into other values.
 
