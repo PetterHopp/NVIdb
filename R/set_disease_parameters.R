@@ -186,6 +186,7 @@ set_disease_parameters <- function(purpose = NULL,
   # checks <- checkmate::makeAssertCollection()
 
   # Perform checks
+  checkmate::assert_string(purpose, null.ok = TRUE, add = checks)
   NVIcheckmate::assert_non_null(list(analytt2select, hensikt2select, utbrudd2select, unlist(selection_parameters)), add = checks)
   checkmate::assert_character(hensikt2select, min.chars = 2, max.chars = 15, any.missing = FALSE, null.ok = TRUE, add = checks)
   checkmate::assert_character(hensikt2delete, min.chars = 2, max.chars = 15, any.missing = FALSE, null.ok = TRUE, add = checks)
