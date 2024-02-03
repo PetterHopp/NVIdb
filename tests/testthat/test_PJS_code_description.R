@@ -245,4 +245,54 @@ test_that("Backward translation from description to code", {
 #   #                   c("", "", "", "", "", "", "", "", "", ""))
 # })
 
+test_that("errors for add_PJS_code_description", {
+  
+  linewidth <- options("width")
+  options(width = 80)
+  
+  # skip if no connection to 'FAG' have been established
+  skip_if_not(dir.exists(set_dir_NVI("FAG")))
+  
+  # Reads translation table for PJS-codes
+  PJS_codes_2_text <- read_PJS_codes_2_text()
+  
+  testdata <- as.data.frame(list("hensiktkode" =  c("01001", "01002"),
+                                  "metodekode" = c("010001", "010002"),
+                                  "ansvarlig_seksjon" = c("01", "02")))
+  
+  expect_error(add_PJS_code_description("testdata",
+                                        translation_table = PJS_codes_2_text,
+                                        code_colname = c("hensiktkode", "metodekode", "ansvarlig_seksjon"),
+                                        PJS_variable_type = c("hensikt", "metode", "seksjon"),
+                                        new_column = c("hensikt", "metode", "seksjon")),
+               regexp = "Variable 'data': Must be of type 'data.frame', not 'character'.",
+               fixed = TRUE)
+  
+  expect_error(add_PJS_code_description(testdata,
+                                        translation_table = PJS_codes_2_text,
+                                        code_colname = c("hensiktkoder"),
+                                        PJS_variable_type = c("hensikt"),
+                                        new_column = c("hensikt")),
+               regexp = "but 'hensiktkoder' is not a column in the data.",
+               fixed = TRUE)
+  
+  expect_error(add_PJS_code_description(testdata,
+                                        translation_table = PJS_codes_2_text,
+                                        code_colname = c("hensiktkode"),
+                                        PJS_variable_type = c("hensikter"),
+                                        new_column = c("hensikt")),
+               regexp = "Variable 'PJS_variable_type': Must be a subset of",
+               fixed = TRUE)
+  
+  expect_error(add_PJS_code_description(testdata,
+                                        translation_table = PJS_codes_2_text,
+                                        code_colname = c("hensiktkode"),
+                                        PJS_variable_type = c("hensikt"),
+                                        new_column = c("metodekode")),
+               regexp = "The column name(s): 'metodekode' already exist in 'testdata`.",
+               fixed = TRUE)
+  
+  options(width = unlist(linewidth))
+})
+
 RODBC::odbcCloseAll()
