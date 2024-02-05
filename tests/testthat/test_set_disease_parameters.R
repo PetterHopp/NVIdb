@@ -93,7 +93,7 @@ test_that("set disease parameters by direct input", {
                                        missing_art = "non_selected_hensikt"),
                                regexp = "The argument 'missing_art' is deprecated.",
                                fixed = TRUE)
-                               
+
   expect_equal(parameters,
                list("purpose" = NULL,
                     "hensikt2select" = c("0100108018", "0100109003", "0100111003"),
@@ -252,7 +252,7 @@ test_that("errors for set_disease_parameters", {
                                       art2select = c("05%", NA),
                                       include_missing_art = "yes"),
                regexp = "Variable 'include_missing_art': Must be element of set")
-  
+
   expect_error(set_disease_parameters(purpose = NA,
                                       hensikt2delete = "0100108018",
                                       analytt2select = "01220104%",
@@ -260,7 +260,7 @@ test_that("errors for set_disease_parameters", {
                                       art2select = c("05%", NA),
                                       include_missing_art = "always"),
                regexp = "Variable 'purpose': May not be NA")
-  
+
   expect_error(set_disease_parameters(purpose = 1,
                                       hensikt2delete = "0100108018",
                                       analytt2select = "01220104%",
@@ -269,7 +269,7 @@ test_that("errors for set_disease_parameters", {
                                       include_missing_art = "always"),
                regexp = "Variable 'purpose': Must be of type 'string' (or 'NULL')",
                fixed = TRUE)
-  
+
   expect_error(set_disease_parameters(purpose = "ok_storfe_virus",
                                       hensikt2delete = "0100108018",
                                       analytt2select = "01220104%",
@@ -280,7 +280,7 @@ test_that("errors for set_disease_parameters", {
                                       select_statement = 1),
                regexp = "Must be of type 'string', * not 'double'",
                fixed = TRUE)
-  
+
   expect_error(set_disease_parameters(purpose = "ok_storfe_virus",
                                       hensikt2delete = "0100108018",
                                       analytt2select = "01220104%",
@@ -291,7 +291,6 @@ test_that("errors for set_disease_parameters", {
                                       select_statement = NULL),
                regexp = "Must be a function (or 'NULL'), not 'character'",
                fixed = TRUE)
-  
+
   options(width = unlist(linewidth))
 })
-
