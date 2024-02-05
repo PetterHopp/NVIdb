@@ -5,6 +5,7 @@
 \title{Sets disease selection parameters}
 \usage{
 set_disease_parameters(
+  purpose = NULL,
   hensikt2select = NULL,
   hensikt2delete = NULL,
   utbrudd2select = NULL,
@@ -13,14 +14,19 @@ set_disease_parameters(
   analytt2delete = NULL,
   art2select = NULL,
   include_missing_art = NULL,
+  FUN = NULL,
+  select_statement = NULL,
   selection_parameters = NULL,
   ...
 )
 }
 \arguments{
+\item{purpose}{[\code{character}]\cr
+A short description of the purpose of the selection, see details. Defaults to NULL.}
+
 \item{hensikt2select}{[\code{character}]\cr
 Specific "hensiktkoder" for the "analytt" in question. If sub-codes should
-    be included, end the code with \%.Defaults to \code{NULL}.}
+    be included, end the code with \%. Defaults to \code{NULL}.}
 
 \item{hensikt2delete}{[\code{character}]\cr
 "hensiktkoder" for which saker should be excluded.
@@ -49,6 +55,16 @@ Should missing art be included. Must be one of c("never", "always", "for_selecte
     If NULL, it is set to "always" when \code{art2select} includes NA, else it is set to "never".
     Defaults to \code{NULL}.}
 
+\item{FUN}{[\code{function}]\cr
+Function to build the selection statement, see
+    \ifelse{html}{\code{\link{retrieve_PJSdata}}}{\code{retrieve_PJSdata}}).
+    Defaults to \code{NULL}.}
+
+\item{select_statement}{[\code{character(1)}]\cr
+A written select statement, see
+    \ifelse{html}{\code{\link{retrieve_PJSdata}}}{\code{retrieve_PJSdata}}).
+    Defaults to \code{NULL}.}
+
 \item{selection_parameters}{[\code{character(1)}]\cr
 Either the path and file name for an R script that can be sourced and that
     sets the selection parameters or a named list with the selection parameters
@@ -74,6 +90,12 @@ Saker in PJS that concern one infection / disease can be characterised
     by the "analytt" (at "konklusjon" and/or "resultat" level), specific "hensikter",
     a relevant "utbrudds_ID" and/or specific "metoder." These can be used to select
     saker in PJS and/or to structure and simplify the output from PJS.
+
+    The purpose is a short description of purpose of the selection described by the
+    selection parameters for example "ok_svin_virus" that describes the selection
+    parameters for the OK programme for virus in swine. The purpose is also used as
+    part of the file name for selection_parameters, i.e. "purpose_selection_parameters"
+    and in the annual tables for ok_programmer: Kontrolltabeller for yyyy.
 
     One or more specific "hensiktkoder" may be input to the selection statement.
     With specific "hensiktkode" is meant a "hensiktkode" that will imply that the sample

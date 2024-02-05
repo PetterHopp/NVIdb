@@ -37,3 +37,23 @@ test_that("Errors or warnings for login", {
 
   options(width = unlist(linewidth))
 })
+
+test_that("Errors or warnings for login_EOS", {
+  linewidth <- options("width")
+  options(width = 80)
+
+  expect_error(login_EOS(dbinterface = "noodbc"),
+               regexpr = "Variable 'dbinterface': Must be element of set")
+
+  options(width = unlist(linewidth))
+})
+
+test_that("Errors or warnings for login_PJS", {
+  linewidth <- options("width")
+  options(width = 80)
+
+  expect_error(login_PJS(dbinterface = "noodbc"),
+               regexpr = "Variable 'dbinterface': Must be element of set")
+
+  options(width = unlist(linewidth))
+})
