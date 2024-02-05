@@ -102,20 +102,20 @@ test_that("errors for copy_Prodtilskudd", {
 })
 
 test_that("errors for copy_Prodtilskudd with extracted_date", {
-  
+
   linewidth <- options("width")
   options(width = 80)
-  
+
   expect_error(copy_Prodtilskudd(from_path = tempdir(), to_path = "./", Pkode_year = "last",
                                  Pkode_month = "10", extracted_date = "2023-03-31"),
                regexp = "Contains only missing values. The input 'last' is",
                fixed = TRUE)
-  
-  expect_error(copy_Prodtilskudd(from_path = tempdir(), to_path = "./", Pkode_year = 2020, 
+
+  expect_error(copy_Prodtilskudd(from_path = tempdir(), to_path = "./", Pkode_year = 2020,
                                  Pkode_month = "both", extracted_date = "2023-03-31"),
                regexp = "The inputs 'both' and 'last' are not accepted when",
                fixed = TRUE)
-  
+
   options(width = unlist(linewidth))
 })
 
