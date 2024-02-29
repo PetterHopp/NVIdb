@@ -16,6 +16,12 @@
 #'     v0.11.0 released 2023-09-22. The functions were never taken into use.
 #'     Functions from the much better package \code{gitcreds} should be used instead.
 #'
+#' \code{login_EOS}, \code{login_by_input_EOS}, and \code{login_by_credentials_EOS} 
+#'     was deprecated from v0.##.# released 2024-##-##. The functions were rarely
+#'     used and are unecessary wrappers around the login-functions. The 
+#'     login-functions with the argument \code{dbservice} = "EOS" should be used 
+#'     instead.
+#'
 #' @param \dots (arguments)
 #' @return (results)
 #' @name NVIdb-deprecated
@@ -29,5 +35,8 @@
 #' set_PAT(...) ### -- use \code{\link{gitcreds::gitcreds_set}} instead.
 #' get_PAT(...) ### -- use \code{\link{gitcreds::gitcreds_get}} instead.
 #' remove_PAT(...) ### -- use \code{\link{gitcreds::gitcreds_delete}} instead.
+#' login_EOS(...) ### -- use \code{\link{login("EOS")}} instead.
+#' login_by_input_EOS(...) ### -- use \code{\link{login_by_input("EOS")}} instead.
+#' login_by_credentials_EOS(...) ### -- use \code{\link{login_by_credentials("EOS")}} instead.
 #' }
 NULL
