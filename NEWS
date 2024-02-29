@@ -1,3 +1,26 @@
+NVIdb 0.11.1.9000 - (2024-##-##)
+----------------------------------------
+
+New features:
+
+-
+
+
+Bug fixes:
+
+-
+
+
+Other changes:
+
+-
+
+
+BREAKING CHANGES:
+
+- The wrapper functions `login_EOS`, `login_by_input_EOS`, and `login_by_credentials_EOS` are deprecated. Use the corresponding login-functions with the argument `dbservice` = "EOS" instead. 
+
+
 NVIdb 0.11.1 - (2024-02-05)
 ----------------------------------------
 
