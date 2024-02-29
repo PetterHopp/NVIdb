@@ -240,32 +240,3 @@ login_PJS <- function(dbinterface = NULL, ...) {
     login_by_input(dbservice, dbinterface = dbinterface, ...)
   }
 }
-
-
-#' @export
-#' @rdname login
-
-login_EOS <- function(dbinterface = NULL, ...) {
-
-  # ARGUMENT CHECKING ----
-  # Object to store check-results
-  checks <- checkmate::makeAssertCollection()
-
-  # dbinterface
-  checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
-
-  # Report check-results
-  checkmate::reportAssertions(checks)
-
-  # Set service to EOS
-  dbservice <- "EOS"
-
-  # Use check for saved credentials to chose between login_by_input and login_by_credentials
-  if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
-    # If credentials are saved for the user profile
-    login_by_credentials(dbservice, dbinterface = dbinterface, ...)
-  } else {
-    # If credentials are missing from the user profile
-    login_by_input(dbservice, dbinterface = dbinterface, ...)
-  }
-}
