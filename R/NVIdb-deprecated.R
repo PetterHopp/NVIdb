@@ -18,9 +18,14 @@
 #'
 #' \code{login_EOS}, \code{login_by_input_EOS}, and \code{login_by_credentials_EOS} 
 #'     was deprecated from v0.##.# released 2024-##-##. The functions were rarely
-#'     used and are unecessary wrappers around the login-functions. The 
+#'     used and are unnecessary wrappers around the login-functions. The 
 #'     login-functions with the argument \code{dbservice} = "EOS" should be used 
 #'     instead.
+#'
+#' \code{set_credentials_EOS} was deprecated from v0.##.# released 2024-##-##. 
+#'     The function was rarely used and is an unnecessary wrapper around 
+#'      \code{set_credentials}. \code{set_credentials} with the argument 
+#'      \code{dbservice} = "EOS" should be used instead.
 #'
 #' @param \dots (arguments)
 #' @return (results)
@@ -38,5 +43,6 @@
 #' login_EOS(...) ### -- use \code{\link{login("EOS")}} instead.
 #' login_by_input_EOS(...) ### -- use \code{\link{login_by_input("EOS")}} instead.
 #' login_by_credentials_EOS(...) ### -- use \code{\link{login_by_credentials("EOS")}} instead.
+#' set_credentials_EOS(...) ### -- use \code{\link{set_credentials("EOS")}} instead.
 #' }
 NULL
