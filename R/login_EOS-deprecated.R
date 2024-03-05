@@ -73,10 +73,9 @@
 #' @param \dots Other arguments to be passed from the wrappers to
 #'     login_by_credentials or login_by_input
 #' @return An open ODBC-channel to the database service.
-#' @family Log in functions
-#' @seealso  \code{\link{set_credentials}}
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
-#' @export
+#' @name login_EOS-deprecated
+#' @keywords internal
 #' @examples
 #' \dontrun{
 #' require(RODBC)
