@@ -20,6 +20,8 @@ BREAKING CHANGES:
 
 - The wrapper functions `login_EOS`, `login_by_input_EOS`, and `login_by_credentials_EOS` are deprecated. Use the corresponding login-functions with the argument `dbservice` = "EOS" instead. 
 
+- The wrapper function `set_credentials_EOS` is deprecated. Use `set_credentials("EOS")` instead. 
+
 
 NVIdb 0.11.1 - (2024-02-05)
 ----------------------------------------
