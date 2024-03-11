@@ -6,35 +6,35 @@
 #'     input windows for username and password. Thereby the hard coding of
 #'     username and password can be avoided.
 #'
-#'     \code{login} is a general function for connecting to databases, where all 
-#'     necessary connection parameters like server name and database name of the 
-#'     database must be input. The database provider can inform you on the 
-#'     connection parameters for their database. In the case that one login to 
-#'     a database service for which the connection parameters have been predefined 
-#'     (i.e. PJS, EOS, sea_sites, Fallvilt and Dataflex), it will be sufficient 
-#'     to provide the parameter \code{dbservice}, for example \code{dbservice} = 
+#'     \code{login} is a general function for connecting to databases, where all
+#'     necessary connection parameters like server name and database name of the
+#'     database must be input. The database provider can inform you on the
+#'     connection parameters for their database. In the case that one login to
+#'     a database service for which the connection parameters have been predefined
+#'     (i.e. PJS, EOS, sea_sites, Fallvilt and Dataflex), it will be sufficient
+#'     to provide the parameter \code{dbservice}, for example \code{dbservice} =
 #'     "EOS".
 #'
 #'     Depending on whether username and password have been saved in the users
 #'     profile at the current computer or not, the user is asked to input credentials.
 #'
-#'     \code{login_by_input} is a general function for connecting to databases, 
-#'     where all necessary connection parameters like server name and database name 
-#'     of the database must be input. The database provider can inform you on the 
-#'     connection parameters for their database. In the case that one login to 
-#'     a database service for which the connection parameters have been predefined 
-#'     (i.e. PJS, EOS, sea_sites, Fallvilt and Dataflex), it will be sufficient 
-#'     to provide the parameter \code{dbservice}. The user is always asked to input 
+#'     \code{login_by_input} is a general function for connecting to databases,
+#'     where all necessary connection parameters like server name and database name
+#'     of the database must be input. The database provider can inform you on the
+#'     connection parameters for their database. In the case that one login to
+#'     a database service for which the connection parameters have been predefined
+#'     (i.e. PJS, EOS, sea_sites, Fallvilt and Dataflex), it will be sufficient
+#'     to provide the parameter \code{dbservice}. The user is always asked to input
 #'     username and password.
 #'
-#'     \code{login_by_credentials} is a general function for connecting to databases, 
-#'     where all necessary connection parameters like server name and database name 
-#'     of the database must be input. The database provider can inform you on the 
-#'     connection parameters for their database. In the case that one login to 
-#'     a database service for which the connection parameters have been predefined 
-#'     (i.e. PJS, EOS, sea_sites, Fallvilt and Dataflex), it will be sufficient 
+#'     \code{login_by_credentials} is a general function for connecting to databases,
+#'     where all necessary connection parameters like server name and database name
+#'     of the database must be input. The database provider can inform you on the
+#'     connection parameters for their database. In the case that one login to
+#'     a database service for which the connection parameters have been predefined
+#'     (i.e. PJS, EOS, sea_sites, Fallvilt and Dataflex), it will be sufficient
 #'     to provide the parameter \code{dbservice}. The user is never asked for username
-#'     and password, and the function can only be used when the credentials previously 
+#'     and password, and the function can only be used when the credentials previously
 #'     have been set in the user's profile at the current computer.
 #'
 #'     \code{login_PJS}, \code{login_by_input_PJS}, and \code{login_by_credentials_PJS}
@@ -46,8 +46,8 @@
 #'     password is no longer valid, an error occur. If so, the user must update
 #'     the username and password by \code{\link{set_credentials_PJS}}.
 #'
-#'     The wrapper functions \code{login_EOS}, \code{login_by_input_EOS}, and 
-#'     \code{login_by_credentials_EOS} have been deprecated. 
+#'     The wrapper functions \code{login_EOS}, \code{login_by_input_EOS}, and
+#'     \code{login_by_credentials_EOS} have been deprecated.
 #'
 #'     The login functions returns an open ODBC-channel to the database service.
 #'     The database can then be queried by using functions in the package used for
@@ -76,8 +76,8 @@
 #' The R-package that is used for interface towards the data
 #'     base. Defaults to \code{NULL}.
 #' @param dbtext [\code{character(1)}]\cr
-#' Gives the possibility of showing another name than the dbservice 
-#'     in the windows asking for username and password when using 
+#' Gives the possibility of showing another name than the dbservice
+#'     in the windows asking for username and password when using
 #'     \code{login_by_input}. Defaults to \code{NULL}.
 #' @param \dots Other arguments to be passed from the wrappers to
 #'     \code{login_by_credentials} or \code{login_by_input}.

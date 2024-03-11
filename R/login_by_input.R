@@ -158,4 +158,3 @@ login_by_input_PJS <- function(dbinterface = NULL, ...) {
 
   return(odbcConnection)
 }
-

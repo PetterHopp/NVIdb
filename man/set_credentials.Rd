@@ -4,7 +4,6 @@
 \alias{remove_credentials}
 \alias{set_credentials}
 \alias{set_credentials_PJS}
-\alias{set_credentials_EOS}
 \title{Manage username and password (credentials) for database services at NVI}
 \usage{
 remove_credentials(dbservice)
@@ -12,56 +11,70 @@ remove_credentials(dbservice)
 set_credentials(dbservice)
 
 set_credentials_PJS()
-
-set_credentials_EOS()
 }
 \arguments{
-\item{dbservice}{Name of the database service, for example "PJS" or "EOS". For database services where one don't use the premade
-wrappers, the name can be chosen freely, but must be the same as used in \code{login} and \code{login_by_credentials}}
+\item{dbservice}{[\code{character(1)}]\cr
+Name of the database service, for example "PJS" or "EOS". For database
+    services where one don't use the premade wrappers, the name can be
+    chosen freely, but must be the same as used in \code{login} and
+    \code{login_by_credentials}.}
 }
 \value{
-\code{set_credentials} The username and password for a database service are saved in the user profile at the current computer.
+\code{set_credentials} The username and password for a database
+    service are saved in the user profile at the current computer.
 
-    \code{remove_credentials} The username and password for a database service are deleted from the user profile at the current computer.
+    \code{remove_credentials} The username and password for a database
+    service are deleted from the user profile at the current computer.
 }
 \description{
-Save or remove the current user's username and password for the data base services at the Norwegian Veterinary Institute
- in the  the user profile.
+Save or remove the current user's username and password for
+    the data base services at the Norwegian Veterinary Institute in the
+    the user profile.
 }
 \details{
-The Norwegian Veterinary Institute has access to various database services. To simplify the access to the database services
-    when using R, the function \code{set_credentials} makes it possible to save the username and password (credentials) in the
-    user profile at the current machine. When the username and password have been saved in the user profile, the functions \code{login}
-    or \code{login_by_credentials} will automatically log in to the database services without any need of new input of username and password.
+The Norwegian Veterinary Institute has access to various database
+    services. To simplify the access to the database services when using R,
+    the function \code{set_credentials} makes it possible to save the
+    username and password (credentials) in the user profile at the current
+    machine. When the username and password have been saved in the user
+    profile, the functions \code{login} or \code{login_by_credentials} will
+    automatically log in to the database services without any need of new
+    input of username and password.
 
-    The user profile is not copied between computers. Consequently, if a user runs scripts with \code{login} on different computers,
-    the credentials have to be saved at each computer separately.
+    The user profile is not copied between computers. Consequently, if
+    a user runs scripts with \code{login} on different computers, the
+    credentials have to be saved at each computer separately.
 
-    \code{set_credentials(dbservice)} is used to set the username and password for a database service. The username and password are input
-    using windows and saved in the users profile at the current computer. When the password for the database service have been changed,
+    \code{set_credentials(dbservice)} is used to set the username and
+    password for a database service. The username and password are input
+    using windows and saved in the users profile at the current computer.
+    When the password for the database service have been changed,
     \code{set_credentials(dbservice)} can be used to update the password.
 
-    \code{set_credentials_PJS} is a wrapper for \code{set_credentials(dbservice)} used to set the username and password for journal_rapp/PJS.
-    Journal_rapp has views to information in PJS and some other internal databases at NVI. The username and password are the same as for PJS.
-    When the password for PJS have been changed, \code{set_credentials_PJS} can be used to update the password.
+    \code{set_credentials_PJS} is a wrapper for \code{set_credentials(dbservice)}
+    used to set the username and password for journal_rapp/PJS. Journal_rapp
+    has views to information in PJS and some other internal databases at NVI.
+    The username and password are the same as for PJS. When the password for
+    PJS have been changed, \code{set_credentials_PJS} can be used to update
+    the password.
 
-    \code{set_credentials_EOS} is a wrapper for \code{set_credentials(dbservice)} used to set the username and password for EOS.
-    EOS has tables with surveillance data reported to the Norwegian Food Safety Authority.
+    The wrapper function \code{set_credentials_EOS} is deprecated.
+    Use \code{set_credentials(dbservice = "EOS")} instead.
 
-    \code{remove_credentials(dbservice)} is used to delete the credentials for a database service from the user's profile.
+    \code{remove_credentials(dbservice)} is used to delete the credentials
+    for a database service from the user's profile.
 }
 \examples{
 \dontrun{
-set_credentials(dbservice)
+set_credentials(dbservice = "dbservice")
 
 set_credentials_PJS()
 
-set_credentials_EOS()
+set_credentials("EOS")
 
 remove_credentials("PJS")
 }
 
-# NULL
 }
 \seealso{
 \code{\link{login}} and \code{\link{login_by_credentials}}
