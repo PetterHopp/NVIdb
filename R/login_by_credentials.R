@@ -151,5 +151,3 @@ login_by_credentials_PJS <- function(dbinterface = NULL, ...) {
 
   return(connection)
 }
-
-
