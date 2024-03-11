@@ -389,9 +389,9 @@ find_n_th_word <- function(x, position) {strsplit(x, " ")[[1]][position]}
 #' @title Cut away ending slash from string
 #' @description Removes ending slash or backslash from string.
 #'     This is used to clean pathnames so that elements in a path
-#'     can be combined using 
+#'     can be combined using
 #'     \ifelse{html}{\code{\link[base:file.path]{file.path}}}{\code{file.path}}
-#'     in stead of 
+#'     in stead of
 #'     \ifelse{html}{\code{\link[base:paste0]{paste0}}}{\code{paste0}}.
 #'
 #' @param x Object with character strings.

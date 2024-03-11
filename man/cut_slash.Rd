@@ -15,7 +15,10 @@ Object without ending slash in character strings.
 \description{
 Removes ending slash or backslash from string.
     This is used to clean pathnames so that elements in a path
-    can be combined using \code{file.path} in stead of \code{\link{paste0}}.
+    can be combined using
+    \ifelse{html}{\code{\link[base:file.path]{file.path}}}{\code{file.path}}
+    in stead of
+    \ifelse{html}{\code{\link[base:paste0]{paste0}}}{\code{paste0}}.
 }
 \examples{
 # Remove from string
