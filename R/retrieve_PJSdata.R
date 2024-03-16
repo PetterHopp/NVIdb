@@ -67,10 +67,16 @@
 #'     (i.e. of the same format as the output of
 #'     \ifelse{html}{\code{\link{set_disease_parameters}}}{\code{set_disease_parameters}}).
 #'     Defaults to \code{NULL}.
+#' @param FUN \code{deprecated}\cr
+#' \code{FUN} should instead be included as input to \code{selection_parameters}.
+#'     Defaults to \code{NULL}.
+#' @param select_statement \code{deprecated}\cr
+#' \code{select_statement} should instead be included as input to
+#'     \code{selection_parameters}. Defaults to \code{NULL}.
 #' @param \dots Other arguments to be passed to the underlying functions:
-#'    \ifelse{html}{\code{\link{login_PJS}}}{\code{login_PJS}}
-#'    and
-#'    \ifelse{html}{\code{\link{exclude_from_PJSdata}}}{\code{exclude_from_PJSdata}}.
+#'     \ifelse{html}{\code{\link{login_PJS}}}{\code{login_PJS}}
+#'     and
+#'     \ifelse{html}{\code{\link{exclude_from_PJSdata}}}{\code{exclude_from_PJSdata}}.
 #'
 #' @return A named list with PJS data.
 #'
@@ -81,6 +87,8 @@
 #' #
 retrieve_PJSdata <- function(year = NULL,
                              selection_parameters = NULL,
+                             FUN = NULL,
+                             select_statement = NULL,
                              ...) {
 
   # ARGUMENT CHECKING ----
@@ -98,13 +106,6 @@ retrieve_PJSdata <- function(year = NULL,
                        combine = "or",
                        comment = "The argument selection_parameter must either be a file with selection parameters or a list with selection parameters",
                        add = checks)
-  # checkmate::assert_function(FUN, null.ok = TRUE, add = checks)
-  # checkmate::assert(checkmate::check_list(x = select_statement, null.ok = TRUE),
-  #                   checkmate::check_string(x = select_statement),
-  #                   combine = "or",
-  #                   add = checks)
-  # NVIcheckmate::assert_non_null(list(selection_parameters, select_statement, add = checks))
-  # NVIcheckmate::assert_non_null(list(FUN, select_statement), add = checks)
 
   # Report check-results
   checkmate::reportAssertions(checks)
@@ -112,16 +113,36 @@ retrieve_PJSdata <- function(year = NULL,
   # READ ARGUMENTS
   selection_parameters <- set_disease_parameters(selection_parameters = selection_parameters)
 
-  FUN <- selection_parameters$FUN
-  # The select statement is overwritten by a constructed select_statement below
-  # if FUN and the necessary selection_parameters for FUN are given
-  select_statement <- selection_parameters$select_statement
+  # CHECK FOR DEPRECATED ARGUMENTS ----
+  if (!is.null(FUN)) {
+    w_msg <- paste("The argument 'FUN' is deprecated.",
+                   "'FUN' should be included as input to 'selection_parameters' instead.")
+    if (is.null(selection_parameters$FUN)) {
+      selection_parameters$FUN <- FUN
+      warning(paste(w_msg,
+                    "The input to 'FUN' has been transferred to 'selection_parameters$FUN'."))
+    } else {warning(paste(w_msg,
+                          "The input to 'FUN' has been overwritten by 'selection_parameters$FUN'."))
+    }
+  }
+
+  if (!is.null(select_statement)) {
+    w_msg <- paste("The argument 'select_statement' is deprecated.",
+                   "'select_statement' should be included in input to 'selection_parameters' instead.")
+    if (is.null(selection_parameters$select_statement)) {
+      selection_parameters$select_statement <- select_statement
+      warning(paste(w_msg,
+                    "The input to 'select_statement' has been transferred to 'selection_parameters$select_statement'."))
+    } else {warning(paste(w_msg,
+                          "The input to 'select_statement' has been overwritten by 'selection_parameters$select_statement'."))
+    }
+  }
 
   # ARGUMENT CHECKING OF selection_parameters ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
 
-  checkmate::assert_function(selection_parameters$FUN, null.ok = TRUE, add = checks)
+  checkmate::assert_function(unlist(selection_parameters$FUN), null.ok = TRUE, add = checks)
   checkmate::assert(checkmate::check_list(x = selection_parameters$select_statement, null.ok = TRUE),
                     checkmate::check_string(x = selection_parameters$select_statement),
                     combine = "or",
@@ -130,43 +151,22 @@ retrieve_PJSdata <- function(year = NULL,
                                      selection_parameters$analytt2select,
                                      selection_parameters$utbrudd2select,
                                      selection_parameters$select_statement, add = checks))
-  NVIcheckmate::assert_non_null(list(selection_parameters$FUN, selection_parameters$select_statement), add = checks)
+  NVIcheckmate::assert_non_null(list(unlist(selection_parameters$FUN), selection_parameters$select_statement), add = checks)
 
   # Report check-results
   checkmate::reportAssertions(checks)
 
-  # CHECK FOR DEPRECATED ARGUMENTS ----
-  if ("FUN" %in% ...names()) {
-    w_msg <- paste("The argument 'FUN' is deprecated.",
-                   "'FUN' should be included as input to 'selection_parameters' instead.")
-    if (is.null(selection_parameters$FUN)) {
-      selection_parameters$FUN <- unlist(list(...)$FUN)
-      warning(paste(w_msg,
-                    "The input to 'FUN' has been transferred to 'selection_parameters$FUN'."))
-    } else {warning(paste(w_msg,
-                          "The input to 'FUN' has been overwritten by 'selection_parameters$FUN'."))
-    }
-  }
-
-  if ("select_statement" %in% ...names()) {
-    w_msg <- paste("The argument 'select_statement' is deprecated.",
-                   "'select_statement' should be included in input to 'selection_parameters' instead.")
-    if (is.null(selection_parameters$select_statement)) {
-      selection_parameters$select_statement <- unlist(list(...)$select_statement)
-      warning(paste(w_msg,
-                    "The input to 'select_statement' has been transferred to 'selection_parameters$select_statement'."))
-    } else {warning(paste(w_msg,
-                          "The input to 'select_statement' has been overwritten by 'selection_parameters$select_statement'."))
-    }
-  }
+  # The select statement is overwritten by a constructed select_statement below
+  # if FUN and the necessary selection_parameters for FUN are given
+  select_statement <- selection_parameters$select_statement
 
   # GENERATE SELECT STATEMENT ----
   if (NVIcheckmate::check_non_null(list(selection_parameters$hensikt2select,
                                         selection_parameters$analytt2select,
                                         selection_parameters$utbrudd2select)) &
-      !is.null(FUN)) {
+      !is.null(selection_parameters$FUN)) {
     # Character vector with arguments for FUN
-    FUN_args <- names(formals(args(FUN)))
+    FUN_args <- names(formals(args(selection_parameters$FUN)))
 
     # Create FUN_input for modifications,
     #  keep the original selection_parameters.
@@ -181,7 +181,7 @@ retrieve_PJSdata <- function(year = NULL,
 
     # Keep only relevant arguments for FUN in FUN_input
     FUN_input <- FUN_input[FUN_args]
-    select_statement <- do.call(FUN, FUN_input)
+    select_statement <- do.call(selection_parameters$FUN, FUN_input)
   }
 
   # GIVE NAME TO EACH SELECTION STATEMENT
