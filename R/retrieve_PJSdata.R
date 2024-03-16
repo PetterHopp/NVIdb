@@ -2,9 +2,11 @@
 #' @description Retrieves and standardises PJS data. \code{retrieve_PJSdata} is
 #'     a wrapper for several \code{NVIdb}-functions and the intention of
 #'     \code{retrieve_PJSdata} is to shorten code and to ensure that a standard
-#'     procedure is followed when retrieving PJS-data, see details. It can only
-#'     be used for retrieving case data from PJS and not for retrieving code registers
-#'     and similar.
+#'     procedure is followed when retrieving PJS data, see details. It can only
+#'     be used for retrieving case data from PJS where the columns "aar",
+#'     "ansvarlig_seksjon" and "innsendelsenr" are included in the columns. It
+#'     cannot be used for retrieving data from other tables available in
+#'     "journal_rapp".
 #'
 #' @details \code{retrieve_PJSdata} is a wrapper for the following \code{NVIdb}-functions:
 #' \itemize{
@@ -38,14 +40,17 @@
 #'     input.
 #'
 #' \code{retrieve_PJSdata} gives the possibility of giving the select_statement
-#'     as a string instead of using the build_query-functions. This should only
-#'     by done for select statements that previously have been tested and are
-#'     known to have correct syntax. \code{retrieve_PJSdata} has no possibility
-#'     of checking the syntax before it is submitted to PJS and untested select
-#'     statements can take a lot of time or stop the function without proper
-#'     error messages.
+#'     as a string instead of using the build_query-functions. If so, the
+#'     select_statement should be included in the selection parameters. This
+#'     should only by done for select statements that previously have been tested
+#'     and are known to have correct syntax. \code{retrieve_PJSdata} has no
+#'     possibility of checking the sql syntax before it is submitted to PJS and
+#'     untested select statements can take a lot of time or stop the function
+#'     without proper error messages. In the case that both a select_statement
+#'     and a function with the necessary selection_parameters are given,
+#'     the select_statement constructed by the function will be used.
 #'
-#' The output is a named list where each entry is a data frame with PJS-data. If
+#' The output is a named list where each entry is a data frame with PJS data. If
 #'     the select statement is named, the returned data frame will have that name.
 #'     If the select statement is unnamed, it will try to identify the first
 #'     table in the select statement and use this as name. If not possible, the
@@ -54,7 +59,7 @@
 
 #'
 #' @param year [\code{numeric}]\cr
-#'     One year or a vector giving the first and last years that should be selected.
+#' One year or a vector giving the first and last years that should be selected.
 #'     Defaults to \code{NULL}.
 #' @param selection_parameters [\code{character(1)}]\cr
 #' Either the path and file name for an R script that can be sourced and that
@@ -62,11 +67,7 @@
 #'     (i.e. of the same format as the output of
 #'     \ifelse{html}{\code{\link{set_disease_parameters}}}{\code{set_disease_parameters}}).
 #'     Defaults to \code{NULL}.
-#' @param FUN [\code{function}]\cr
-#' Function to build the selection statement, see details. Defaults to \code{NULL}.
-#' @param select_statement [\code{character(1)}]\cr
-#' A written select statement, see details. Defaults to \code{NULL}.
-#' @param \dots Other arguments to be passed to underlying functions:
+#' @param \dots Other arguments to be passed to the underlying functions:
 #'    \ifelse{html}{\code{\link{login_PJS}}}{\code{login_PJS}}
 #'    and
 #'    \ifelse{html}{\code{\link{exclude_from_PJSdata}}}{\code{exclude_from_PJSdata}}.
@@ -80,8 +81,6 @@
 #' #
 retrieve_PJSdata <- function(year = NULL,
                              selection_parameters = NULL,
-                             FUN = NULL,
-                             select_statement = NULL,
                              ...) {
 
   # ARGUMENT CHECKING ----
@@ -95,29 +94,77 @@ retrieve_PJSdata <- function(year = NULL,
                                null.ok = TRUE,
                                add = checks)
   NVIcheckmate::assert(checkmate::check_file_exists(x = selection_parameters, access = "r"),
-                       checkmate::check_list(x = selection_parameters, null.ok = TRUE),
+                       checkmate::check_list(x = selection_parameters),
                        combine = "or",
                        comment = "The argument selection_parameter must either be a file with selection parameters or a list with selection parameters",
                        add = checks)
-  checkmate::assert_function(FUN, null.ok = TRUE, add = checks)
-  # checkmate::assert_choice(deparse(substitute(FUN)),
-  #                          choices = c("build_query_one_disease", "build_query_hensikt", "build_query_outbreak"),
-  #                          null.ok = TRUE,
-  #                          add = checks)
-  checkmate::assert(checkmate::check_list(x = select_statement, null.ok = TRUE),
-                    checkmate::check_string(x = select_statement),
-                    combine = "or",
-                    add = checks)
-  NVIcheckmate::assert_non_null(list(selection_parameters, select_statement, add = checks))
-  NVIcheckmate::assert_non_null(list(FUN, select_statement), add = checks)
+  # checkmate::assert_function(FUN, null.ok = TRUE, add = checks)
+  # checkmate::assert(checkmate::check_list(x = select_statement, null.ok = TRUE),
+  #                   checkmate::check_string(x = select_statement),
+  #                   combine = "or",
+  #                   add = checks)
+  # NVIcheckmate::assert_non_null(list(selection_parameters, select_statement, add = checks))
+  # NVIcheckmate::assert_non_null(list(FUN, select_statement), add = checks)
 
   # Report check-results
   checkmate::reportAssertions(checks)
 
-  # GENERATE SELECT STATEMENT ----
-  if (!is.null(selection_parameters) & !is.null(FUN)) {
-    selection_parameters <- set_disease_parameters(selection_parameters = selection_parameters)
+  # READ ARGUMENTS
+  selection_parameters <- set_disease_parameters(selection_parameters = selection_parameters)
 
+  FUN <- selection_parameters$FUN
+  # The select statement is overwritten by a constructed select_statement below
+  # if FUN and the necessary selection_parameters for FUN are given
+  select_statement <- selection_parameters$select_statement
+
+  # ARGUMENT CHECKING OF selection_parameters ----
+  # Object to store check-results
+  checks <- checkmate::makeAssertCollection()
+
+  checkmate::assert_function(selection_parameters$FUN, null.ok = TRUE, add = checks)
+  checkmate::assert(checkmate::check_list(x = selection_parameters$select_statement, null.ok = TRUE),
+                    checkmate::check_string(x = selection_parameters$select_statement),
+                    combine = "or",
+                    add = checks)
+  NVIcheckmate::assert_non_null(list(selection_parameters$hensikt2select,
+                                     selection_parameters$analytt2select,
+                                     selection_parameters$utbrudd2select,
+                                     selection_parameters$select_statement, add = checks))
+  NVIcheckmate::assert_non_null(list(selection_parameters$FUN, selection_parameters$select_statement), add = checks)
+
+  # Report check-results
+  checkmate::reportAssertions(checks)
+
+  # CHECK FOR DEPRECATED ARGUMENTS ----
+  if ("FUN" %in% ...names()) {
+    w_msg <- paste("The argument 'FUN' is deprecated.",
+                   "'FUN' should be included as input to 'selection_parameters' instead.")
+    if (is.null(selection_parameters$FUN)) {
+      selection_parameters$FUN <- unlist(list(...)$FUN)
+      warning(paste(w_msg,
+                    "The input to 'FUN' has been transferred to 'selection_parameters$FUN'."))
+    } else {warning(paste(w_msg,
+                          "The input to 'FUN' has been overwritten by 'selection_parameters$FUN'."))
+    }
+  }
+
+  if ("select_statement" %in% ...names()) {
+    w_msg <- paste("The argument 'select_statement' is deprecated.",
+                   "'select_statement' should be included in input to 'selection_parameters' instead.")
+    if (is.null(selection_parameters$select_statement)) {
+      selection_parameters$select_statement <- unlist(list(...)$select_statement)
+      warning(paste(w_msg,
+                    "The input to 'select_statement' has been transferred to 'selection_parameters$select_statement'."))
+    } else {warning(paste(w_msg,
+                          "The input to 'select_statement' has been overwritten by 'selection_parameters$select_statement'."))
+    }
+  }
+
+  # GENERATE SELECT STATEMENT ----
+  if (NVIcheckmate::check_non_null(list(selection_parameters$hensikt2select,
+                                        selection_parameters$analytt2select,
+                                        selection_parameters$utbrudd2select)) &
+      !is.null(FUN)) {
     # Character vector with arguments for FUN
     FUN_args <- names(formals(args(FUN)))
 
@@ -151,9 +198,9 @@ retrieve_PJSdata <- function(year = NULL,
   if (length(missing_names) > 0) {
     for (i in missing_names) {
       select_statement_names[i] <- substr(select_statement[i],
-                         gregexpr(pattern = "v[[:digit:]]*_", text = select_statement[i])[[1]][1],
-                         min(gregexpr(pattern = "v[[:digit:]]*_", text = select_statement[i])[[1]][2] - 1,
-                             nchar(select_statement[i]), na.rm = TRUE))
+                                          gregexpr(pattern = "v[[:digit:]]*_", text = select_statement[i])[[1]][1],
+                                          min(gregexpr(pattern = "v[[:digit:]]*_", text = select_statement[i])[[1]][2] - 1,
+                                              nchar(select_statement[i]), na.rm = TRUE))
       # select_statement_names[i] <- stringi::stri_extract_first_words(select_statement_names[i])
       select_statement_names[i] <- sub("(\\s|,|\\.)[[:print:]]*", "", select_statement_names[i])
       if (select_statement_names[i] == "") {select_statement_names[i] <- paste0("PJSdata", as.character(i))}
@@ -162,9 +209,9 @@ retrieve_PJSdata <- function(year = NULL,
 
   # IDENTIFY PROBABLE dbsource FROM select_statement_names
   dbsource <- select_statement_names
-    dbsource <- gsub(pattern = "selection_v2_sak_m_res", replacement = "v2_sak_m_res", x = dbsource)
-    dbsource <- gsub(pattern = "selection_sakskonklusjon", replacement = "v_sakskonklusjon", x = dbsource)
-    dbsource <- gsub(pattern = "PJSdata[[:digit:]]*", replacement = "v2_sak_m_res", x = dbsource)
+  dbsource <- gsub(pattern = "selection_v2_sak_m_res", replacement = "v2_sak_m_res", x = dbsource)
+  dbsource <- gsub(pattern = "selection_sakskonklusjon", replacement = "v_sakskonklusjon", x = dbsource)
+  dbsource <- gsub(pattern = "PJSdata[[:digit:]]*", replacement = "v2_sak_m_res", x = dbsource)
 
   # OPEN ODBC CHANNEL ----
   journal_rapp <- login_PJS(dbinterface = "odbc", ...)
@@ -181,12 +228,10 @@ retrieve_PJSdata <- function(year = NULL,
 
     # Exclude ring trials, quality assurance and samples from abroad
     PJSdata[[i]] <- exclude_from_PJSdata(PJSdata = PJSdata[[i]], ...)
-
   }
 
   # CLOSE ODBC CHANNEL ----
   DBI::dbDisconnect(journal_rapp)
-
 
   # RETURN RESULT ----
   # Give name to each entry in the list of PJSdata

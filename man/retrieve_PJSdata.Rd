@@ -4,18 +4,12 @@
 \alias{retrieve_PJSdata}
 \title{Retrieves data from PJS}
 \usage{
-retrieve_PJSdata(
-  year = NULL,
-  selection_parameters = NULL,
-  FUN = NULL,
-  select_statement = NULL,
-  ...
-)
+retrieve_PJSdata(year = NULL, selection_parameters = NULL, ...)
 }
 \arguments{
 \item{year}{[\code{numeric}]\cr
 One year or a vector giving the first and last years that should be selected.
-Defaults to \code{NULL}.}
+    Defaults to \code{NULL}.}
 
 \item{selection_parameters}{[\code{character(1)}]\cr
 Either the path and file name for an R script that can be sourced and that
@@ -24,13 +18,7 @@ Either the path and file name for an R script that can be sourced and that
     \ifelse{html}{\code{\link{set_disease_parameters}}}{\code{set_disease_parameters}}).
     Defaults to \code{NULL}.}
 
-\item{FUN}{[\code{function}]\cr
-Function to build the selection statement, see details. Defaults to \code{NULL}.}
-
-\item{select_statement}{[\code{character(1)}]\cr
-A written select statement, see details. Defaults to \code{NULL}.}
-
-\item{\dots}{Other arguments to be passed to underlying functions:
+\item{\dots}{Other arguments to be passed to the underlying functions:
 \ifelse{html}{\code{\link{login_PJS}}}{\code{login_PJS}}
 and
 \ifelse{html}{\code{\link{exclude_from_PJSdata}}}{\code{exclude_from_PJSdata}}.}
@@ -42,9 +30,11 @@ A named list with PJS data.
 Retrieves and standardises PJS data. \code{retrieve_PJSdata} is
     a wrapper for several \code{NVIdb}-functions and the intention of
     \code{retrieve_PJSdata} is to shorten code and to ensure that a standard
-    procedure is followed when retrieving PJS-data, see details. It can only
-    be used for retrieving case data from PJS and not for retrieving code registers
-    and similar.
+    procedure is followed when retrieving PJS data, see details. It can only
+    be used for retrieving case data from PJS where the columns "aar",
+    "ansvarlig_seksjon" and "innsendelsenr" are included in the columns. It
+    cannot be used for retrieving data from other tables available in
+    "journal_rapp".
 }
 \details{
 \code{retrieve_PJSdata} is a wrapper for the following \code{NVIdb}-functions:
@@ -79,14 +69,17 @@ The select statement for PJS can be built giving the selection parameters and
     input.
 
 \code{retrieve_PJSdata} gives the possibility of giving the select_statement
-    as a string instead of using the build_query-functions. This should only
-    by done for select statements that previously have been tested and are
-    known to have correct syntax. \code{retrieve_PJSdata} has no possibility
-    of checking the syntax before it is submitted to PJS and untested select
-    statements can take a lot of time or stop the function without proper
-    error messages.
+    as a string instead of using the build_query-functions. If so, the
+    select_statement should be included in the selection parameters. This
+    should only by done for select statements that previously have been tested
+    and are known to have correct syntax. \code{retrieve_PJSdata} has no
+    possibility of checking the sql syntax before it is submitted to PJS and
+    untested select statements can take a lot of time or stop the function
+    without proper error messages. In the case that both a select_statement
+    and a function with the necessary selection_parameters are given,
+    the select_statement constructed by the function will be used.
 
-The output is a named list where each entry is a data frame with PJS-data. If
+The output is a named list where each entry is a data frame with PJS data. If
     the select statement is named, the returned data frame will have that name.
     If the select statement is unnamed, it will try to identify the first
     table in the select statement and use this as name. If not possible, the
