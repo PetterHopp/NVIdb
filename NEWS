@@ -8,7 +8,9 @@ New features:
 
 Bug fixes:
 
--
+- `retrieve_PJSdata` now accepts input for `selection_parameters` that includes `FUN` and `selection_statement`.
+
+- `set_disease_parameters` now accepts input for `selection_parameters` that includes `FUN`. 
 
 
 Other changes:
@@ -17,6 +19,8 @@ Other changes:
 
 
 BREAKING CHANGES:
+
+- For `retrieve_PJSdata`, the arguments `FUN` and `select_statement` are deprecated. These should instead be included in the list input to `selection_parameters`.
 
 - The wrapper functions `login_EOS`, `login_by_input_EOS`, and `login_by_credentials_EOS` are deprecated. Use the corresponding login-functions with the argument `dbservice` = "EOS" instead. 
 
