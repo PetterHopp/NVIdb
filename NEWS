@@ -1,21 +1,11 @@
-NVIdb 0.11.1.9001 - (2024-##-##)
+NVIdb 0.11.2 - (2024-04-05)
 ----------------------------------------
-
-New features:
-
--
-
 
 Bug fixes:
 
 - `retrieve_PJSdata` now accepts input for `selection_parameters` that includes `FUN` and `selection_statement`.
 
 - `set_disease_parameters` now accepts input for `selection_parameters` that includes `FUN`. 
-
-
-Other changes:
-
--
 
 
 BREAKING CHANGES:
