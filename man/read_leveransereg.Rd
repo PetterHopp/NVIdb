@@ -28,7 +28,7 @@ The Leveranseregisteret for slakt includes information on carcasses delivered to
     slaughterhouse, date of slaughter, animal species, category (age group and sex), and weight. For poultry the individual animal is not reported,
     but number of slaughtered poultry per categories, slaughterhouse and date.
 
-    \code{read_Prodtilskudd} Reads the Leveranseregisteret for slakt into a data frame. The standard settings will read in the files from NVI's
+    \code{read_leveransereg} reads the Leveranseregisteret for slakt into a data frame. The standard settings will read in the files from NVI's
     internal network. If changing the from_path, the function can be used to read Leveranseregisteret from other directories. This can be useful
     if having a stand alone app with no connection the NVI's internal network. In other cases, it should be avoided.
 }

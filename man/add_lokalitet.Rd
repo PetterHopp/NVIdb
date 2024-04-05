@@ -33,14 +33,17 @@ The column with the coded value. Valid values are one of c("LokNr"). If the colu
 \item{new_column}{[\code{character}]\cr
 The new columns that should be included into the data frame.}
 
-\item{position}{[\code{character(1)}]. The position for the new columns, can 
-be one of c("first", "left", "right", "last", "keep"). The input can be 
-abbreviated, but must be unique, i.e. c("f", "le", "r", "la", "k").}
+\item{position}{[\code{character(1)}]\cr
+The position for the new columns, can be one of c("first", 
+    "left", "right", "last", "keep"). The input can be 
+    abbreviated, but must be unique, i.e. c("f", "le", 
+    "r", "la", "k"). Defaults to "right".}
 
-\item{overwrite}{[\code{logical(1)}]. When the new column(s) already exist, 
-the content in the existing column(s) is replaced by new data if 
-\code{overwrite = TRUE}. If the new column(s) already exist and 
-\code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
+\item{overwrite}{[\code{logical(1)}]\cr
+When the new column(s) already exist, 
+    the content in the existing column(s) is replaced by new data if 
+    \code{overwrite = TRUE}. If the new column(s) already exist and 
+    \code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
 
 \item{filename}{[\code{list}]\cr
 The filenames of the source files with the tables for generating the translation table.}

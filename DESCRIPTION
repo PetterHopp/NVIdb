@@ -1,7 +1,7 @@
 Package: NVIdb
 Title: Tools to facilitate the use of NVI's databases
-Version: 0.11.1
-Date: 2024-02-05
+Version: 0.11.2
+Date: 2024-04-05
 Authors@R: 
   c(person(given = "Petter",
            family = "Hopp",
@@ -63,7 +63,7 @@ LazyData: true
 Encoding: UTF-8
 Language: en-GB
 Roxygen: list(markdown = FALSE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 VignetteBuilder: 
     knitr,
     R.rsp
