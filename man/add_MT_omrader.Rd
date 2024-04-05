@@ -40,14 +40,17 @@ c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region") depending on
 \code{code_column}. If the new columns in the result data frame
 should have other names, \code{new_column} can be input as a named vector, see examples.}
 
-\item{position}{[\code{character(1)}]. The position for the new columns, can 
-be one of c("first", "left", "right", "last", "keep"). The input can be 
-abbreviated, but must be unique, i.e. c("f", "le", "r", "la", "k").}
+\item{position}{[\code{character(1)}]\cr
+The position for the new columns, can be one of c("first", 
+    "left", "right", "last", "keep"). The input can be 
+    abbreviated, but must be unique, i.e. c("f", "le", 
+    "r", "la", "k"). Defaults to "right".}
 
-\item{overwrite}{[\code{logical(1)}]. When the new column(s) already exist, 
-the content in the existing column(s) is replaced by new data if 
-\code{overwrite = TRUE}. If the new column(s) already exist and 
-\code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
+\item{overwrite}{[\code{logical(1)}]\cr
+When the new column(s) already exist, 
+    the content in the existing column(s) is replaced by new data if 
+    \code{overwrite = TRUE}. If the new column(s) already exist and 
+    \code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
 
 \item{filename}{a list with the filenames of the source files with the tables for generating the translation table.}
 
