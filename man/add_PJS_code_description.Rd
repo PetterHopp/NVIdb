@@ -62,10 +62,11 @@ Position for the new columns, can be one of c("first", "left", "right",
 to be applied for all may be given or a vector with specified position
 for each code to be translated should be given. Defaults to "right".}
 
-\item{overwrite}{[\code{logical(1)}]. When the new column(s) already exist, 
-the content in the existing column(s) is replaced by new data if 
-\code{overwrite = TRUE}. If the new column(s) already exist and 
-\code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
+\item{overwrite}{[\code{logical(1)}]\cr
+When the new column(s) already exist, 
+    the content in the existing column(s) is replaced by new data if 
+    \code{overwrite = TRUE}. If the new column(s) already exist and 
+    \code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
 
 \item{backward}{[\code{logical(1)}] \cr
 If \code{TRUE}, it translates from descriptive text and back to PJS code,

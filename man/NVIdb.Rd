@@ -2,6 +2,7 @@
 % Please edit documentation in R/NVIdb.R
 \docType{package}
 \name{NVIdb}
+\alias{NVIdb-package}
 \alias{NVIdb}
 \title{NVIdb: A package to facilitate the use of the Norwegian Veterinary Institute's databases.}
 \description{
@@ -35,3 +36,25 @@ Data often only includes codes that should be translated into the description te
 PJS-codes and codes like komnr.
 }
 
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/NorwegianVeterinaryInstitute/NVIdb}
+  \item Report bugs at \url{https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Petter Hopp \email{Petter.Hopp@vetinst.no}
+
+Authors:
+\itemize{
+  \item Johan Åkerstedt \email{Johan.Akerstedt@vetinst.no}
+}
+
+Other contributors:
+\itemize{
+  \item Norwegian Veterinary Institute [copyright holder]
+}
+
+}
