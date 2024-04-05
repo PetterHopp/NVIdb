@@ -20,11 +20,11 @@ Other changes:
 
 BREAKING CHANGES:
 
-- For `retrieve_PJSdata`, the arguments `FUN` and `select_statement` are deprecated. These should instead be included in the list input to `selection_parameters`.
+- For `retrieve_PJSdata`, the arguments `FUN` and `select_statement` are deprecated. These should instead be included in the list input to `selection_parameters`. See NVIdb-deprecated (help("NVIdb-deprecated")).
 
-- The wrapper functions `login_EOS`, `login_by_input_EOS`, and `login_by_credentials_EOS` are deprecated. Use the corresponding login-functions with the argument `dbservice` = "EOS" instead. 
+- The wrapper functions `login_EOS`, `login_by_input_EOS`, and `login_by_credentials_EOS` are deprecated. Use the corresponding login-functions with the argument `dbservice` = "EOS" instead. See NVIdb-deprecated (help("NVIdb-deprecated")).
 
-- The wrapper function `set_credentials_EOS` is deprecated. Use `set_credentials("EOS")` instead. 
+- The wrapper function `set_credentials_EOS` is deprecated. Use `set_credentials("EOS")` instead. See NVIdb-deprecated (help("NVIdb-deprecated")).
 
 
 NVIdb 0.11.1 - (2024-02-05)
@@ -70,9 +70,9 @@ Other changes:
 
 BREAKING CHANGES:
 
-- In `set_disease_parameters` the arguments `missing_art` and `file` is deprecated. These are replaced by `include_missing_art` and `selection_parameters`, respectively. If using the old arguments, the input will be transferred to the new arguments. 
+- In `set_disease_parameters` the arguments `missing_art` and `file` is deprecated. These are replaced by `include_missing_art` and `selection_parameters`, respectively. If using the old arguments, the input will be transferred to the new arguments. See NVIdb-deprecated (help("NVIdb-deprecated")).
 
-- `set_PAT`, `get_PAT`, and `remove_PAT` was deprecated.These should be replaced by corresponding functions in package `gitcreds`.
+- `set_PAT`, `get_PAT`, and `remove_PAT` was deprecated.These should be replaced by corresponding functions in package `gitcreds`. See NVIdb-deprecated (help("NVIdb-deprecated")).
 
 
 NVIdb 0.10.1 - (2023-05-31)
