@@ -166,7 +166,8 @@ set_disease_parameters <- function(purpose = NULL,
       var2select <- intersect(names(selection_parameters[!sapply(selection_parameters, is.null)]),
                               var2select_template)
       for (i in var2select) {
-        assign(i, unname(unlist(selection_parameters[i])))
+        # assign(i, unname(unlist(selection_parameters[i])))
+        assign(i, unname(selection_parameters[i][[1]]))
       }
     }
   }
