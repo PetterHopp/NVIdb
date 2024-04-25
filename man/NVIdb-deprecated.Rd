@@ -26,19 +26,31 @@ These functions are provided for compatibility with older
     other properties.
 
 \code{set_PAT}, \code{get_PAT}, and \code{remove_PAT} was deprecated from
-    v0.11.0 released 2023-09-22. The functions were never taken into use.
+    v0.11.0 released 2024-01-24. The functions were never taken into use.
     Functions from the much better package \code{gitcreds} should be used instead.
 
+The arguments \code{missing_art} and \code{file} in \code{set_disease_parameters}
+    was deprecated from v0.11.0 released 2024-01-24. These arguments are
+    replaced by the more meaningful \code{include_missing_art} and
+    \code{selection_parameters}, respectively. If using the old arguments,
+    the input will be transferred to the new arguments.
+
 \code{login_EOS}, \code{login_by_input_EOS}, and \code{login_by_credentials_EOS}
-    was deprecated from v0.##.# released 2024-##-##. The functions were rarely
+    was deprecated from v0.11.2 released 2024-04-05. The functions were rarely
     used and are unnecessary wrappers around the login-functions. The
     login-functions with the argument \code{dbservice} = "EOS" should be used
     instead, see \code{\link{login}}.
 
-\code{set_credentials_EOS} was deprecated from v0.##.# released 2024-##-##.
+\code{set_credentials_EOS} was deprecated from v0.11.2 released 2024-04-05.
     The function was rarely used and is an unnecessary wrapper around
      \code{set_credentials}. \code{\link{set_credentials}} with the argument
      \code{dbservice} = "EOS" should be used instead.
+
+The arguments \code{FUN} and \code{selection_statement} in \code{retrieve_PJSdata}
+    was deprecated from v0.11.2 released 2024-04-05. These arguments should
+    instead be included in the list input to \code{selection_parameters}. If
+    using the old arguments, the input will be transferred to
+    \code{selection_parameters}.
 }
 \examples{
 \dontrun{
