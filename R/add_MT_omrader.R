@@ -7,7 +7,7 @@
 #'     \code{code_column =} can be input as a named vector. Likewise, if the new columns should be given other names than
 #'     c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region"), the \code{new_column =} can be input as a named vector, see examples.
 #'
-#'     \code{add_MT_omrader} uses a premade translation table (komnr_2_MT_avdeling.csv). These data need to be loaded by \code{read_MT_omrader}
+#'     \code{add_MT_omrader} uses a premade translation table ("komnr_2_MT_avdeling.csv"). These data need to be loaded by \code{read_MT_omrader}
 #'     before running \code{add_MT_omrader}, see example. "komnr_2_MT_avdeling.csv" is made based on information in PJS adresseregister.
 #'     The translation table is updated when we know there is a need.
 #'
