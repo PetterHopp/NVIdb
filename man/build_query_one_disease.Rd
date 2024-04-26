@@ -33,7 +33,7 @@ The database for which the query is built. Defaults to "PJS" that currently
 is the only valid value.}
 }
 \value{
-A list with select-statement fom v2_sak_m_res and v_sakskonklusjon to be included in a \code{RODBC::sqlQuery}.
+A list with select-statement fom "v2_sak_m_res" and "v_sakskonklusjon" to be included in a \code{RODBC::sqlQuery}.
 }
 \description{
 Builds the query for selecting all data for one
