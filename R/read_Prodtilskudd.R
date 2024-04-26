@@ -40,8 +40,8 @@
 #'     a vector with one or more years. Defaults to "last".
 #' @param Pkode_month [\code{character}]\cr
 #'     The month for which the register should be read. The options are
-#'     c("05", "10", "both", "last") for Pkode_year = 2017 and
-#'     c("03", "10", "both", "last") for Pkode_year >= 2018. Defaults to "both".
+#'     c("05", "10", "both", "last") for \code{Pkode_year} = 2017 and
+#'     c("03", "10", "both", "last") for \code{Pkode_year} >= 2018. Defaults to "both".
 #' @param extracted_date [\code{character}]\cr
 #'     The date the data was extracted from the database of the Norwegian
 #'     Agricultural Agency. The format should be "yyyy-mm-dd". Defaults to
@@ -49,7 +49,7 @@
 #'
 #' @return \code{read_Prodtilskudd} reads one or more data frame(s) with the
 #'     produksjonstilskuddsregister for each of the year and seasons selected.
-#'     If the options Pkode_year = "last" and Pkode_month = "last" is given,
+#'     If the options \code{Pkode_year} = "last" and \code{Pkode_month} = "last" is given,
 #'     one file with the last produksjonstilskuddsregister is given.
 #'
 #'     \code{copy_Prodtilskudd} copies the source produksjonstilskuddsregister

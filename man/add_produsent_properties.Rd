@@ -80,7 +80,7 @@ Function to add a column with gjeldende_prodnr8. In addition there are
 \details{
 \code{add_produsent_properties} can be used to translate the prodnr8 into gjeldende_prodnr8 and/or geo-coordinates.
 
-    \code{position =} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
+    \code{position} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
     placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
     code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
     data.frame. A special case occurs for \code{position = "keep"} which only has meaning when the new column has the same name as an existing
