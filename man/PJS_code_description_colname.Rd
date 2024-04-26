@@ -14,7 +14,7 @@ A data frame with 3 variables:
 }
 }
 \source{
-\code{./data-raw/generate_PJS_code_description_colname.R} in package \code{NVIdb}
+"./data-raw/generate_PJS_code_description_colname.R" in package \code{NVIdb}
 }
 \usage{
 PJS_code_description_colname
@@ -27,7 +27,7 @@ A data frame with the standard variable names (column names) for
    column names of the code variable are the standardised column names, i.e.
    after running \code{NVIdb::standardize_columns}.
 
-   The raw data can be edited in the \code{./data-raw/generate_PJS_code_description_colname.R}.
+   The raw data can be edited in the "./data-raw/generate_PJS_code_description_colname.R".
    The \code{PJS_code_description_colname} is used by \code{NVIdb::add_PJS_code_description}
    when using the options \code{PJS_variable_type = "auto"} and/or
    \code{new_column = "auto"}.
