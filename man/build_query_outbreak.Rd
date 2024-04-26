@@ -37,7 +37,7 @@ The database for which the query is built. Defaults to "PJS" that currently
 is the only valid value.}
 }
 \value{
-A list with select-statement for v2_sak_m_res and v_sakskonklusjon to
+A list with select-statement for "v2_sak_m_res" and "v_sakskonklusjon" to
     be included in a \code{RODBC::sqlQuery}.
 }
 \description{

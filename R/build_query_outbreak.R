@@ -42,7 +42,7 @@
 #'     Specific metodekoder. Defaults to \code{NULL}.
 #' @template build_query_db
 #'
-#' @return A list with select-statement for v2_sak_m_res and v_sakskonklusjon to
+#' @return A list with select-statement for "v2_sak_m_res" and "v_sakskonklusjon" to
 #'     be included in a \code{RODBC::sqlQuery}.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
