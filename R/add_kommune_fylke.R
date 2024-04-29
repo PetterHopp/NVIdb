@@ -14,11 +14,11 @@
 #'
 #'     Standard name for the kommunenummer is komnr. If the column with
 #'     the komnr that should be translated has another name, the
-#'     parameter \code{code_column =} can be input as a named vector.
+#'     parameter \code{code_column} can be input as a named vector.
 #'     Standard names for the new columns are c("kommune", "fylkenr", "fylke",
 #'     "gjeldende_komnr", "gjeldende_kommune", "gjeldende_fylkenr",
 #'     "gjeldende_fylke"). Likewise, if the new columns should be given
-#'     other names than, the parameter \code{new_column =} can be input
+#'     other names than, the parameter \code{new_column} can be input
 #'     as a named vector, see examples.
 #'
 #'     The function uses a premade translation table that is made based on information in PJS adresseregister. The translation table
