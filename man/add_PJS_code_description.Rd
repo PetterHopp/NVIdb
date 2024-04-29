@@ -206,7 +206,7 @@ Export of data from PJS will produce data frames in which many columns
     other PJS variables, a data frame with the same column definition can be
     constructed to translate new variables.
 
-    \code{copy_PJS_codes_2_text} copies the file pjsCodeDescriptions.csv to
+    \code{copy_PJS_codes_2_text} copies the file "pjsCodeDescriptions.csv" to
     a given directory.
 }
 \examples{

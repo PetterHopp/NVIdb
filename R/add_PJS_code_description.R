@@ -103,7 +103,7 @@
 #'     other PJS variables, a data frame with the same column definition can be
 #'     constructed to translate new variables.
 #'
-#'     \code{copy_PJS_codes_2_text} copies the file pjsCodeDescriptions.csv to
+#'     \code{copy_PJS_codes_2_text} copies the file "pjsCodeDescriptions.csv" to
 #'     a given directory.
 #'
 #' @param data [\code{data.frame}] \cr
