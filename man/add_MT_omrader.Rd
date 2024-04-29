@@ -28,17 +28,20 @@ read_MT_omrader(
 )
 }
 \arguments{
-\item{data}{Data frame with data with a column with a komnr}
+\item{data}{Data frame with data with a column with a komnr.}
 
-\item{translation_table}{Data frame with the table for translating from komnr to MT_areas}
+\item{translation_table}{Data frame with the table for translating from
+komnr to MT_areas.}
 
-\item{code_column}{The column with the coded value. Valid values are one of c("komnr", "MT_avdelingnr", "MT_regionnr"). If the column in
-data has another name, it can be input as a named vector, see examples.}
+\item{code_column}{The column with the coded value. Valid values are one
+of c("komnr", "MT_avdelingnr", "MT_regionnr"). If the column in data
+has another name, it can be input as a named vector, see examples.}
 
-\item{new_column}{The new columns that should be included into the data frame. The new columns can be up to
-c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region") depending on
-\code{code_column}. If the new columns in the result data frame
-should have other names, \code{new_column} can be input as a named vector, see examples.}
+\item{new_column}{The new columns that should be included into the data
+frame. The new columns can be up to c("MT_avdelingnr", "MT_avdeling",
+"MT_regionnr", "MT_region") depending on \code{code_column}.
+If the new columns in the result data frame should have other names,
+\code{new_column} can be input as a named vector, see examples.}
 
 \item{position}{[\code{character(1)}]\cr
 The position for the new columns, can be one of c("first", 
@@ -76,29 +79,49 @@ Function to add columns with MT_avdelingnr, MT_avdelng (name), MT_regionnr and M
    functions to read and copy the translation tables.
 }
 \details{
-\code{add_MT_omrader} can be used to translate the komnr into MT_avdelingnr, MT_avdeling, MT_regionnr and MT_region. The
-    function can also be used to translate MT_avdelingnr into MT_avdeling, MT_regionnr and MT_region or to translate MT_regionnr into
-    MT_region. When the \code{code_column =} in the dataframe is not equal to one of c("komnr", "MT_avdelingnr", "MT_regionnr") the
-    \code{code_column =} can be input as a named vector. Likewise, if the new columns should be given other names than
-    c("MT_avdelingnr", "MT_avdeling", "MT_regionnr", "MT_region"), the \code{new_column =} can be input as a named vector, see examples.
+\code{add_MT_omrader} can be used to translate the komnr into
+    MT_avdelingnr, MT_avdeling, MT_regionnr and MT_region. The
+    function can also be used to translate MT_avdelingnr into
+    MT_avdeling, MT_regionnr and MT_region or to translate MT_regionnr
+    into MT_region. When the \code{code_column} in the dataframe is
+    not equal to one of c("komnr", "MT_avdelingnr", "MT_regionnr") the
+    \code{code_column} can be input as a named vector. Likewise, if
+    the new columns should be given other names than c("MT_avdelingnr",
+    "MT_avdeling", "MT_regionnr", "MT_region"), the \code{new_column}
+    can be input as a named vector, see examples.
 
-    \code{add_MT_omrader} uses a premade translation table ("komnr_2_MT_avdeling.csv"). These data need to be loaded by \code{read_MT_omrader}
-    before running \code{add_MT_omrader}, see example. "komnr_2_MT_avdeling.csv" is made based on information in PJS adresseregister.
-    The translation table is updated when we know there is a need.
+    \code{add_MT_omrader} uses a premade translation table
+    ("komnr_2_MT_avdeling.csv"). These data need to be loaded by
+    \code{read_MT_omrader} before running \code{add_MT_omrader}, see
+    example. "komnr_2_MT_avdeling.csv" is made based on information in
+    PJS adresseregister. The translation table is updated when we know
+    there is a need.
 
-    \code{position =} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
-    placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
-    code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
-    data.frame. A special case occurs for \code{position = "keep"} which only has meaning when the new column has the same name as an existing
-    column and overwrite = TRUE. In these cases, the existing column will be overwritten with new data and have the same position.
+    \code{position} is used to give the place if the new columns in the
+    data frame. For \code{position = "right"} the new variables are
+    placed to the right of the code_variable. Likewise, for
+    \code{position = "left"} the new variables are placed to the left of
+    the code_variable. If \code{position = "first"} or
+    \code{position = "last"} the new columns are placed first or last,
+    respectively, in the data.frame. A special case occurs for
+    \code{position = "keep"} which only has meaning when the new column
+    has the same name as an existing column and overwrite = TRUE. In these
+    cases, the existing column will be overwritten with new data and have
+    the same position.
 
-    \code{read_MT_omrader} reads the files "komnr_2_MT_avdeling.csv" and "MT_omrader.csv" into a data frame, usually named komnr_2_MT_omrader.
-    This file is used by \code{add_MT_omrader}. If no options to the function is given, the function will read the latest updated files
-    from NVI's internal network. If changing the \code{from_path}, the function can be used to read the translation file from other directories.
-    This can be useful if having a script that don't have access to NVI's internal network.
+    \code{read_MT_omrader} reads the files "komnr_2_MT_avdeling.csv" and
+    "MT_omrader.csv" into a data frame, usually named komnr_2_MT_omrader.
+    This file is used by \code{add_MT_omrader}. If no options to the
+    function is given, the function will read the latest updated files
+    from NVI's internal network. If changing the \code{from_path}, the
+    function can be used to read the translation file from other
+    directories. This can be useful if having a script that don't have
+    access to NVI's internal network.
 
-    \code{copy_MT_omrader} Copies the csv-files "komnr_2_MT_avdeling.csv" and "MT_omrader.csv" to another directory. Thereby, these files are
-    available for \code{read_MT_omrader} if they should be read from another directory.
+    \code{copy_MT_omrader} Copies the csv-files "komnr_2_MT_avdeling.csv"
+    and "MT_omrader.csv" to another directory. Thereby, these files are
+    available for \code{read_MT_omrader} if they should be read from
+    another directory.
 }
 \examples{
 \dontrun{
