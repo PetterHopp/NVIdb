@@ -75,14 +75,14 @@ Data sources may provide data with postnr. These functions manage translating po
     One has to ensure that the code in the data column represents a postnr. The function will translate any 4 digits that has the same ID as a postnr.
 
     Standard name for the postnr is postnr. If the column with the postnr that should be translated has another name, the
-    parameter \code{code_column =} can be input as a named vector. Standard names for the new columns are c("poststed", "komnr"). Likewise, if the
-    new columns should be given other names than these, the parameter \code{new_column =} can be input as a named vector, see examples.
+    parameter \code{code_column} can be input as a named vector. Standard names for the new columns are c("poststed", "komnr"). Likewise, if the
+    new columns should be given other names than these, the parameter \code{new_column} can be input as a named vector, see examples.
 
-    \code{add_poststed} uses a premade translation table (Poststed_UTF8.csv). These data need to be loaded by \code{read_poststed}
+    \code{add_poststed} uses a premade translation table ("Poststed_UTF8.csv"). These data need to be loaded by \code{read_poststed}
     before running \code{add_poststed}, see example. "Poststed_UTF8.csv" is made based on information in PJS adresseregister.
     The translation table is updated when we know there is a need.
 
-    \code{position =} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
+    \code{position} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
     placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
     code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
     data.frame. A special case occurs for \code{position = "keep"} which only has meaning when the new column has the same name as an existing
@@ -92,7 +92,7 @@ Data sources may provide data with postnr. These functions manage translating po
     the file from NVI's internal network. If changing the \code{from_path}, the function can be used to read the translation files from other directories.
     This can be useful if having a stand alone app with no connection the NVI's internal network. In other cases, it should be avoided.
 
-    \code{copy_poststed} copy the file Poststed_UTF8.csv to a given directory.
+    \code{copy_poststed} copy the file "Poststed_UTF8.csv" to a given directory.
 }
 \examples{
 \dontrun{
