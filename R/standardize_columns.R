@@ -7,7 +7,7 @@
 #'
 #' Variables in internal and external data sources uses
 #'     different variable names for the same content.
-#'     \code{Standardize_columns} standardizes column names for
+#'     \code{standardize_columns} standardizes column names for
 #'     use in scripts. In addition, it standardises column labels
 #'     and column widths for Excel. Furthermore, input values for
 #'     the parameter \code{colClasses} for
@@ -39,7 +39,7 @@
 #'     labels that can be used to replace the column names in the
 #'     header of the data table. The column names are not standardised
 #'     automatically but can be standardised by first using
-#'     \code{standardize_colnames} with \code{property = "colname"}.
+#'     \code{standardize_columns} with \code{property = "colname"}.
 #'     If no standard column label for the column name is defined,
 #'     the column name as Sentence case is used as column label.
 #'     If English names are used and no English column label exists,
