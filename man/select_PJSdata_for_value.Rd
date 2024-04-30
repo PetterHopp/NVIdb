@@ -23,25 +23,25 @@ Vector with the values that should be selected, see details and examples.}
 
 \item{keep_selected}{[\code{logical(1)}]\cr
 If \code{TRUE}, the selected rows are included, if \code{FALSE}, the selected columns
-are excluded. Defaults to \code{TRUE}.}
+    are excluded. Defaults to \code{TRUE}.}
 }
 \value{
 A \code{data.frame}.
 }
 \description{
 Selects a subset of PJSdata based on code values.
-The function accepts code values ending with "\%" to indicate
-that sub levels should be included.
+   The function accepts code values ending with "%" to indicate
+   that sub levels should be included.
 }
 \details{
 The function is intended for cases where the select
-query sent to PJS will be very complicated if the selection
-is included and it can be easier to read the script if the
-subset is selected in a second step.
+   query sent to PJS will be very complicated if the selection
+   is included and it can be easier to read the script if the
+   subset is selected in a second step.
 
 The function selects according to different values. The default
-action is to include the selected rows. But when \code{keep_selected}
-= \code{FALSE}, the selected rows are excluded from the data.
+   action is to include the selected rows. But when \code{keep_selected
+   = FALSE}, the selected rows are excluded from the data.
 }
 \author{
 Petter Hopp Petter.Hopp@vetinst.no
