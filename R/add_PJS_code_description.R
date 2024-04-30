@@ -159,7 +159,7 @@
 #'     copied if it is newer than the target file.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
-# @importFrom rlang .data
+#' @importFrom magrittr %>%
 #' @export
 #' @examples
 #' \dontrun{
