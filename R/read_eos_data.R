@@ -1,20 +1,20 @@
 #' @title Read EOS data from RaData
 #' @description Reads EOS data from RaData. Includes historical data if these exists.
 #'     It is possible to limit the data to one or more years.
-#' @details read_eos_data uses
+#' @details \code{read_eos_data} uses
 #'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}
 #'     to read the data with the settings \code{showProgress = FALSE} and
 #'     \code{data.table = FALSE}. Other arguments can be passed to
 #'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}
 #'     if necessary.
 #'
-#' The eos_table name is the same name as the name as in the EOS data base.
+#' The \code{eos_table} name is the same name as the name as in the EOS data base.
 #'
 #' @param from_path [\code{character(1)}]\cr
-#'     Path for raw data from eos_data.
+#'     Path for raw data from eos data.
 #' @param eos_table [\code{character(1)}]\cr
 #'     The name of the table with eos raw data.
-#' @param year [\code{character} | \code{numeric}]\cr
+#' @param year [\code{character | numeric}]\cr
 #'     The years to be included in the result. Can be both numeric
 #'     or character. Defaults to \code{NULL}, i.e. no selection.
 #' @param colClasses [\code{character}]\cr
