@@ -28,7 +28,8 @@
 #'
 #'     The selection parameters can be input values for dedicated arguments. For input parameters
 #'     \code{hensikt2select}, \code{hensikt2delete}, \code{utbrudd2select}, \code{metode2select},
-#'     \code{analytt2select}, \code{analytt2delete}, \code{art2select}, and \code{include_missing_art},
+#'     \code{analytt2select}, \code{analytt2delete}, \code{art2select}, \code{include_missing_art},
+#'     \code{select_statement}, and \code{FUN},
 #'     the input may be given in a source file. This may be handy if the
 #'     selection will be performed many times. It also gives the possibility of
 #'     using a for loop that selects PJS-data and performs similar analyses for one
@@ -56,7 +57,7 @@
 #' @param utbrudd2select [\code{character(1)}]\cr
 #' "utbruddsID". Defaults to \code{NULL}.
 #' @param metode2select [\code{character}]\cr
-#' Specific "metodekoder for the "analytt" in question." Defaults to \code{NULL}.
+#' Specific "metodekoder" for the "analytt" in question. Defaults to \code{NULL}.
 #' @param analytt2select [\code{character}]\cr
 #' "analyttkoder" for the agent and/or disease. If sub-codes should be included,
 #'     end the code with \%. Defaults to \code{NULL}.
@@ -68,7 +69,7 @@
 #'     combined with another "artkode". Defaults to \code{NULL}.
 #' @param include_missing_art [\code{character(1)}]\cr
 #' Should missing art be included. Must be one of c("never", "always", "for_selected_hensikt").
-#'     If NULL, it is set to "always" when \code{art2select} includes NA, else it is set to "never".
+#'     If \code{NULL}, it is set to "always" when \code{art2select} includes \code{NA}, else it is set to "never".
 #'     Defaults to \code{NULL}.
 #' @param selection_parameters [\code{character(1)}]\cr
 #' Either the path and file name for an R script that can be sourced and that
@@ -80,9 +81,9 @@
 #'     Defaults to \code{NULL}.
 #' @param select_statement [\code{character(1)}]\cr
 #' A written select statement, see
-#'     \ifelse{html}{\code{\link{retrieve_PJSdata}}}{\code{retrieve_PJSdata}}).
+#'     \ifelse{html}{\code{\link{retrieve_PJSdata}}}{\code{retrieve_PJSdata}}.
 #'     Defaults to \code{NULL}.
-#' @param \dots Other arguments to be passed to `set_disease_parameters`.
+#' @param \dots Other arguments to be passed to \code{set_disease_parameters}.
 #'
 #' @return A named list with selection parameters that can be used to generate
 #'     SQL selection-statements and facilitate structuring output from PJS.

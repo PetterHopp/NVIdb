@@ -36,7 +36,7 @@ Specific "hensiktkoder" for the "analytt" in question. If sub-codes should
 "utbruddsID". Defaults to \code{NULL}.}
 
 \item{metode2select}{[\code{character}]\cr
-Specific "metodekoder for the "analytt" in question." Defaults to \code{NULL}.}
+Specific "metodekoder" for the "analytt" in question. Defaults to \code{NULL}.}
 
 \item{analytt2select}{[\code{character}]\cr
 "analyttkoder" for the agent and/or disease. If sub-codes should be included,
@@ -52,7 +52,7 @@ Specific "analyttkoder" that should be deleted, see details. If sub-codes should
 
 \item{include_missing_art}{[\code{character(1)}]\cr
 Should missing art be included. Must be one of c("never", "always", "for_selected_hensikt").
-    If NULL, it is set to "always" when \code{art2select} includes NA, else it is set to "never".
+    If \code{NULL}, it is set to "always" when \code{art2select} includes \code{NA}, else it is set to "never".
     Defaults to \code{NULL}.}
 
 \item{FUN}{[\code{function}]\cr
@@ -62,7 +62,7 @@ Function to build the selection statement, see
 
 \item{select_statement}{[\code{character(1)}]\cr
 A written select statement, see
-    \ifelse{html}{\code{\link{retrieve_PJSdata}}}{\code{retrieve_PJSdata}}).
+    \ifelse{html}{\code{\link{retrieve_PJSdata}}}{\code{retrieve_PJSdata}}.
     Defaults to \code{NULL}.}
 
 \item{selection_parameters}{[\code{character(1)}]\cr
@@ -70,7 +70,7 @@ Either the path and file name for an R script that can be sourced and that
     sets the selection parameters or a named list with the selection parameters
     (i.e. equal to the output of this function). Defaults to \code{NULL}.}
 
-\item{\dots}{Other arguments to be passed to `set_disease_parameters`.}
+\item{\dots}{Other arguments to be passed to \code{set_disease_parameters}.}
 }
 \value{
 A named list with selection parameters that can be used to generate
@@ -107,7 +107,8 @@ Saker in PJS that concern one infection / disease can be characterised
 
     The selection parameters can be input values for dedicated arguments. For input parameters
     \code{hensikt2select}, \code{hensikt2delete}, \code{utbrudd2select}, \code{metode2select},
-    \code{analytt2select}, \code{analytt2delete}, \code{art2select}, and \code{include_missing_art},
+    \code{analytt2select}, \code{analytt2delete}, \code{art2select}, \code{include_missing_art},
+    \code{select_statement}, and \code{FUN},
     the input may be given in a source file. This may be handy if the
     selection will be performed many times. It also gives the possibility of
     using a for loop that selects PJS-data and performs similar analyses for one
