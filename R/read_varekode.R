@@ -23,7 +23,7 @@
 #'     The input is only used when \code{data_source = "formatted"}.
 #' @param from_path Path for the translation table for varekoder.
 #' @param year Year(s) for fetching the varekoderegister.
-#' @param data_source Reads formatted data or raw data. deafult is formatted.
+#' @param data_source Reads formatted data or raw data. Default is formatted.
 #'
 #' @return \code{read_varekoder} A data frame with the translation table for
 #'     varekoder to descriptive text and metadata.
