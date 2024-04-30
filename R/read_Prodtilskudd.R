@@ -24,8 +24,8 @@
 #'     register that was used. If so, first extract the last available version
 #'     of the register. Find the uttrekkdato in the data, and write in the
 #'     uttrekkdato in \code{extracted_date}. \code{extracted_date} cannot be used
-#'     in combination with \code{pkode_year} = "last" or \code{pkode_month} =
-#'     c("last", "both").
+#'     in combination with \code{pkode_year = "last"} or \code{pkode_month =
+#'     c("last", "both")}.
 #'
 #'     \code{copy_Prodtilskudd} copies the source produksjonstilskuddsregister
 #'     for each of the year and seasons selected to a given directory.
