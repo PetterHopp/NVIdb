@@ -37,8 +37,9 @@ The database for which the query is built. Defaults to "PJS" that currently
 is the only valid value.}
 }
 \value{
-A list with select-statement for v2_sak_m_res and v_sakskonklusjon to
-    be included in a \code{RODBC::sqlQuery}.
+A list with select-statements for "v2_sak_m_res" and "v_sakskonklusjon",
+    respectively. The statements can thereafter be included in a
+    \ifelse{html}{\code{\link[RODBC:sqlQuery]{RODBC::sqlQuery}}}{\code{RODBC::sqlQuery}}.
 }
 \description{
 Builds a query to select all data for a disease outbreak from

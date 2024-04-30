@@ -2,7 +2,7 @@
 #' @description Transforms combinations of code values into new values in a data
 #'     frame. This is intended for use when only a few code value combinations
 #'     should be changed and one will avoid building translation tables or code
-#'     with several if, which or case_when statements. In particularly it was
+#'     with several `if`, `which` or `case_when` statements. In particularly it was
 #'     inspired by the need of changing a few code combinations in PJS data when
 #'     reporting surveillance programmes.
 #' @details The function builds a transformation table based on the input. The

@@ -24,8 +24,8 @@ read_Pkode_2_text(
 
 \item{to_path}{Path for the target translation table when copying produksjonstilskuddskoder}
 
-\item{keep_old_names}{[logical(1)]. Keep old column names as were used as standard
-in NVIdb <= v0.7.1. Defaults to \code{FALSE}.}
+\item{keep_old_names}{[\code{logical(1)}]\cr
+Keep old column names as were used as standard in NVIdb <= v0.7.1. Defaults to \code{FALSE}.}
 }
 \value{
 \code{read_Pkode_2_text} A data frame with the translation table for
@@ -49,7 +49,7 @@ The translation table for Pkoder contains the Pkode, descriptive text, unit of i
     directories. This can be useful if having a stand alone app with no connection the NVI's internal network. In other cases, it should
     be avoided.
 
-    \code{copy_Pkode_2_text} copies the file Produksjonstilskuddskoder2_UTF8.csv to a given location.
+    \code{copy_Pkode_2_text} copies the file "Produksjonstilskuddskoder2_UTF8.csv" to a given location.
 }
 \examples{
 \dontrun{

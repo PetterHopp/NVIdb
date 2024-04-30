@@ -19,7 +19,7 @@ A data frame with 9 variables:
 }
 }
 \source{
-\code{./data-raw/PJS_levels.xlsx} in package \code{NVIdb}
+"./data-raw/PJS_levels.xlsx" in package \code{NVIdb}
 }
 \usage{
 PJS_levels
@@ -27,8 +27,8 @@ PJS_levels
 \description{
 A data frame with the variable names (column names) in PJS and their corresponding PJS-level. The column names
    are the standardized column names, i.e. after running \code{NVIdb::standardize_columns}.
-   The raw data can be edited in the \code{./data-raw/PJS_levels.xlsx} and the the code for preparing of the data frame is written in
-   \code{./data-raw/generate_PJS_levels.R}. The \code{PJS_levels} is used as input for \code{NVIdb::select_PJS_levels}.
+   The raw data can be edited in the "./data-raw/PJS_levels.xlsx" and the the code for preparing of the data frame is written in
+  "./data-raw/generate_PJS_levels.R". The \code{PJS_levels} is used as input for \code{NVIdb::select_PJS_levels}.
 }
 \details{
 The variables included into a specific level is given the value 1, if not included they are given the value 0. To

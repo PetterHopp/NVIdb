@@ -99,8 +99,8 @@ The NVI has access to several database services. These functions log
     connection parameters for their database. In the case that one login to
     a database service for which the connection parameters have been predefined
     (i.e. PJS, EOS, sea_sites, Fallvilt and Dataflex), it will be sufficient
-    to provide the parameter \code{dbservice}, for example \code{dbservice} =
-    "EOS".
+    to provide the parameter \code{dbservice}, for example \code{dbservice =
+    "EOS"}.
 
     Depending on whether username and password have been saved in the users
     profile at the current computer or not, the user is asked to input credentials.
@@ -143,7 +143,7 @@ The NVI has access to several database services. These functions log
     \code{RODBC} for "SQL server" and \code{RPostgreSQL} for "PostgreSQL".
 
     When the session is finished, the script shall close the ODBC-channel by
-    \code{odbcClose("myodbcchannel")} or \code{odbcCloseAll} when using RODBC.
+    \code{odbcClose("myodbcchannel")} or \code{odbcCloseAll} when using \code{RODBC}.
 }
 \examples{
 \dontrun{

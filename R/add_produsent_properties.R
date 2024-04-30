@@ -3,10 +3,10 @@
 #'    functions to read and copy the translation tables.
 #' @details \code{add_produsent_properties} can be used to translate the prodnr8 into gjeldende_prodnr8 and/or geo-coordinates.
 #'
-#'     \code{position =} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
+#'     \code{position} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
 #'     placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
 #'     code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
-#'     data.frame. A special case occurs for \code{position = "keep"} which only has meaning when the new column has the same name as an existing
+#'     data frame. A special case occurs for \code{position = "keep"} which only has meaning when the new column has the same name as an existing
 #'     column and overwrite = TRUE. In these cases, the existing column will be overwritten with new data and have the same position.
 #'
 #'     \code{impute_old_when_missing = TRUE} is used to replace missing values in the \code{new_column} with the value in
@@ -15,13 +15,13 @@
 #'
 #'     \code{read_prodnr_2_current_prodnr} reads the file "Prodnr2GjeldendeProdnr.csv" into a data frame that can be used by
 #'     other routines. Standard setting will the file read in the latest updated file from NVI's internal network. If changing
-#'     the from_path, the function can be used to read the translation file from other directories. This can be useful if having a stand alone
+#'     the \code{from_path}, the function can be used to read the translation file from other directories. This can be useful if having a stand alone
 #'     app with no connection the NVI's internal network. In other cases, it should be avoided.
 #'
 #'     \code{copy_prodnr_2_current_prodnr} copies the file "Prodnr2GjeldendeProdnr.csv" to a chosen directory.
 #'
 #'     \code{read_prodnr_2_coodinates} reads the file "Prodnr2Koordinater.csv" into a data frame that can be used to merge with data frames with
-#'     prodnr8. Standard setting will the file read in the latest updated file from NVI's internal network. If changing the from_path, the function
+#'     prodnr8. Standard setting will the file read in the latest updated file from NVI's internal network. If changing the \code{from_path}, the function
 #'     can be used to read the translation file from other directories. This can be useful if having a stand alone app with no connection the
 #'     NVI's internal network. In other cases, it should be avoided.
 #'
@@ -41,8 +41,8 @@
 #' @param from_path Path for the source files for the translation table.
 #' @param to_path Path for the target translation table when copying the translation table.
 #'
-#' @return \code{add_produsent_properties} returns a data frame where the gjeldende_prodnr8. has been added in the column to the
-#'     right of the column with the prodnr8.
+#' @return \code{add_produsent_properties} returns a data frame where the column with gjeldende_prodnr8 has been added to the
+#'     right of the column with prodnr8.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @export
