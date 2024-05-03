@@ -13,7 +13,7 @@
 #'      and case is ignored. To identify short names for the available
 #'      directories, use \code{set_dir_NVI(datasource = "?")}.
 #' @param slash [\code{logical(1)}]\cr
-#'      If \code{TRUE} the path ends with a slash, Defaults to \code{TRUE}.
+#'      If \code{TRUE} the path ends with a slash. Defaults to \code{TRUE}.
 #'
 #' @return The full path for the directory at NVI's network. The path ends with
 #'      "/" as default, see details.

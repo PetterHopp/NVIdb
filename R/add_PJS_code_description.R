@@ -95,15 +95,15 @@
 #'     stand alone app with no connection the NVI's internal network. In other cases,
 #'     it should be avoided.
 #'
-#'     PJS_codes_2_text.csv has the following columns: c("type", "kode", "navn",
+#'     "PJS_codes_2_text.csv" has the following columns: c("type", "kode", "navn",
 #'     "utgatt_dato"), where "type" is the PJS variable type as listed above (for
 #'     example hensikt), "kode" is the variable with the PJS code, "navn" is the text
 #'     describing the code, and "utgatt_dato" is the date for last date that the
-#'     code was valid (NA if still valid). If translation tables are needed for
+#'     code was valid (\code{NA} if still valid). If translation tables are needed for
 #'     other PJS variables, a data frame with the same column definition can be
 #'     constructed to translate new variables.
 #'
-#'     \code{copy_PJS_codes_2_text} copies the file pjsCodeDescriptions.csv to
+#'     \code{copy_PJS_codes_2_text} copies the file "pjsCodeDescriptions.csv" to
 #'     a given directory.
 #'
 #' @param data [\code{data.frame}] \cr
@@ -159,7 +159,7 @@
 #'     copied if it is newer than the target file.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
-# @importFrom rlang .data
+#' @importFrom magrittr %>%
 #' @export
 #' @examples
 #' \dontrun{

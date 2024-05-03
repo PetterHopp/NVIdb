@@ -39,7 +39,7 @@ When reading PJS-data through certain views, data from more levels that needed m
     In addition, column names that are the same as the standardized names but without the suffix "kode", will be included into the
     specified levels.
 
-    As standard, only unique (distinct) rows are output. This can be changed by specifying \code{unique = FALSE}.#'
+    As standard, only unique (distinct) rows are output. This can be changed by specifying \code{unique = FALSE}.
 }
 \examples{
 \dontrun{

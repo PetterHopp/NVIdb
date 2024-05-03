@@ -8,13 +8,13 @@
 #'     directories. This can be useful if having a stand alone app with no connection the NVI's internal network. In other cases, it should
 #'     be avoided.
 #'
-#'     \code{copy_Pkode_2_text} copies the file Produksjonstilskuddskoder2_UTF8.csv to a given location.
+#'     \code{copy_Pkode_2_text} copies the file "Produksjonstilskuddskoder2_UTF8.csv" to a given location.
 #'
 #' @param filename Name of the translation table, defaults to "Produksjonstilskuddskoder2_UTF8.csv"
 #' @param from_path Path for the translation table for produksjonstilskuddskoder
 #' @param to_path Path for the target translation table when copying produksjonstilskuddskoder
-#' @param keep_old_names [logical(1)]. Keep old column names as were used as standard
-#'     in NVIdb <= v0.7.1. Defaults to \code{FALSE}.
+#' @param keep_old_names [\code{logical(1)}]\cr
+#' Keep old column names as were used as standard in NVIdb <= v0.7.1. Defaults to \code{FALSE}.
 #'
 #' @return \code{read_Pkode_2_text} A data frame with the translation table for
 #'     Pkoder to description as read from the csv file. If not changing standard

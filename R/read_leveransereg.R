@@ -5,12 +5,13 @@
 #'     but number of slaughtered poultry per categories, slaughterhouse and date.
 #'
 #'     \code{read_leveransereg} reads the Leveranseregisteret for slakt into a data frame. The standard settings will read in the files from NVI's
-#'     internal network. If changing the from_path, the function can be used to read Leveranseregisteret from other directories. This can be useful
+#'     internal network. If changing the \code{from_path}, the function can be used to read Leveranseregisteret from other directories. This can be useful
 #'     if having a stand alone app with no connection the NVI's internal network. In other cases, it should be avoided.
 #'
 #' @param from_path Path for Leveranseregisteret
 #' @param filename The name of the file with Leveranseregisteret
-#' @param \dots	Other arguments to be passed to \code{data.table::fread}.
+#' @param \dots	Other arguments to be passed to
+#'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}.
 #'
 #' @return \code{read_LevReg} A data frame with Leveranseregisteret as in selected csv-file.
 #'

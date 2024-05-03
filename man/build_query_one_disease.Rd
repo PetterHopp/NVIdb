@@ -33,7 +33,9 @@ The database for which the query is built. Defaults to "PJS" that currently
 is the only valid value.}
 }
 \value{
-A list with select-statement fom v2_sak_m_res and v_sakskonklusjon to be included in a \code{RODBC::sqlQuery}.
+A list with select-statements for "v2_sak_m_res" and "v_sakskonklusjon",
+    respectively. The statements can thereafter be included in a
+    \ifelse{html}{\code{\link[RODBC:sqlQuery]{RODBC::sqlQuery}}}{\code{RODBC::sqlQuery}}.
 }
 \description{
 Builds the query for selecting all data for one
@@ -44,7 +46,7 @@ Builds the query for selecting all data for one
 }
 \details{
 The function builds the SQL syntax to select all PJS-journals
-    concerning one infection and/o disease from PJS. This is based
+    concerning one infection and/or disease from PJS. This is based
     on selecting all journals with the disease and/or infectious
     agent analytt in resultat, konklusjon or sakskonklusjon. By this,
     all journals were the examination have been performed and a

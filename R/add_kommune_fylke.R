@@ -12,26 +12,31 @@
 #'     One has to ensure that the code in the dataset represents a komnr or fylkenr. The function will translate any 4 and 2 digits
 #'     that has the same ID as a kommune or fylke, respectively.
 #'
-#'     Standard name for the komnr is komnr. If the column with the komnr that should be translated has another name, the
-#'     parameter \code{code_column =} can be input as a named vector. Standard names for the new columns are c("kommune", "fylkenr", "fylke",
-#'     "gjeldende_komnr", "gjeldende_kommune", "gjeldende_fylkenr", "gjeldende_fylke"). Likewise, if the new columns should be given
-#'     other names than, the parameter \code{new_column =} can be input as a named vector, see examples.
+#'     Standard name for the kommunenummer is komnr. If the column with
+#'     the komnr that should be translated has another name, the
+#'     parameter \code{code_column} can be input as a named vector.
+#'     Standard names for the new columns are c("kommune", "fylkenr", "fylke",
+#'     "gjeldende_komnr", "gjeldende_kommune", "gjeldende_fylkenr",
+#'     "gjeldende_fylke"). Likewise, if the new columns should be given
+#'     other names than, the parameter \code{new_column} can be input
+#'     as a named vector, see examples.
 #'
-#'     The function uses a premade translation tables that is made based on information in PJS adresseregister. The translation table
+#'     The function uses a premade translation table that is made based on information in PJS adresseregister. The translation table
 #'     is updated when informed that know there is a need, typically when there have been changes in kommune-structure.
 #'
-#'     \code{position =} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
+#'     \code{position} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
 #'     placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
 #'     code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
 #'     data.frame. A special case occurs for \code{position = "keep"} which only has meaning when the new column has the same name as an existing
-#'     column and overwrite = TRUE. In these cases, the existing column will be overwritten with new data and have the same position.
+#'     column and \code{overwrite = TRUE}. In these cases, the existing column will be overwritten with new data and have the same position.
 #'
-#'     \code{read_kommune_fylke} read the files "komnr_2_gjeldende_komnr_UTF8.csv", Kommune_UTF8.csv, and Fylke_UTF8.csv, into a single data
+#'     \code{read_kommune_fylke} read the files "komnr_2_gjeldende_komnr_UTF8.csv", "Kommune_UTF8.csv", and "Fylke_UTF8.csv", into a single data
 #'     frame that can be used by \code{add_kommune_fylke}. Standard setting will read in the file from NVI's internal network. If changing the
 #'     from_path, the function can be used to read the translation files from other directories. This can be useful if having a stand alone app
 #'     with no connection the NVI's internal network. In other cases, it should be avoided.
 #'
-#'     \code{copy_kommune_fylke} copy the files komnr_2_gjeldende_komnr_UTF8.csv, Kommune_UTF8.csv, and Fylke_UTF8.csv, respectively, to a given
+#'     \code{copy_kommune_fylke} copy the files "komnr_2_gjeldende_komnr_UTF8.csv",
+#'     "Kommune_UTF8.csv", and "Fylke_UTF8.csv", respectively, to a given
 #'     directory.
 #'
 #'

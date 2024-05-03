@@ -8,23 +8,22 @@
 #'    subset is selected in a second step.
 #'
 #' The function selects according to different values. The default
-#'    action is to include the selected rows. But when `keep_selected`
-#'    = `FALSE`, the selected rows are excluded from the data.
+#'    action is to include the selected rows. But when \code{keep_selected
+#'    = FALSE}, the selected rows are excluded from the data.
 #'
-#' @param data \[`data.frame`\]\cr
+#' @param data [\code{data.frame}]\cr
 #' PJS data from which a subset should be selected.
-#' @param code_column \[`character`\]\cr
+#' @param code_column [\code{character}]\cr
 #' Vector with the column names for the variables that is used in the selection.
-#' @param value_2_check \[`character`\]\cr
+#' @param value_2_check [\code{character}]\cr
 #' Vector with the values that should be selected, see details and examples.
-#' @param keep_selected \[`logical(1)`\]\cr
-#' If `TRUE`, the selected rows are included, if `FALSE`, the selected columns
-#'     are excluded. Defaults to `TRUE`.
+#' @param keep_selected [\code{logical(1)}]\cr
+#' If \code{TRUE}, the selected rows are included, if \code{FALSE}, the selected columns
+#'     are excluded. Defaults to \code{TRUE}.
 #'
-#' @return A `data.frame`.
+#' @return A \code{data.frame}.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
-#' @md
 #' @export
 
 select_PJSdata_for_value <- function(data,
