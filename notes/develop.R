@@ -1,10 +1,10 @@
 # CREATE, DOCUMENT, TEST AND INSTALL THE PACKAGE
+# develop.r v2024-04-12
 
-# Update this file with the template in NVIpackager
-# NVIpackager::update_develop()
+# NVIpackager::update_develop() # Update this file from template in NVIpackager
 
-# SET UP ENVIRONMENT ----
-# rm(list = ls())    # Use this to empty the environment
+# SET UP R ENVIRONMENT ----
+# rm(list = ls())    # Used to empty the environment
 
 # Attach packages
 library(NVIpackager)
@@ -12,7 +12,8 @@ library(NVIpackager)
 
 # Global variables
 pkg_path = usethis::proj_path()
-pkg <- stringi::stri_extract_last_words(pkg_path)
+pkg <- tail(strsplit(normalizePath(pkg_path, winslash = "/"), split = "/")[[1]], 1)
+# pkg <- stringi::stri_extract_last_words(pkg_path)
 
 
 # CREATE PACKAGE SKELETON ----
@@ -31,7 +32,8 @@ pkg <- stringi::stri_extract_last_words(pkg_path)
 
 
 # DOCUMENTATION AND STYLING ----
-# update_logo should be run if a logo has been created (or updated). Thereafter run "document_NVIpkg" with "readme = TRUE".
+# update_logo should be run if a logo has been created (or updated). Thereafter
+#   run "document_NVIpkg" with "readme = TRUE".
 # update_logo(pkg = pkg, pkg_path = pkg_path)
 
 # Creates new help files
@@ -50,8 +52,7 @@ NVIpackager::document_NVIpkg(pkg = pkg,
 
 
 # TEST PACKAGE ----
-# Run tests included in ./tests.
-devtools::test()
+devtools::test()  # Run tests included in ./tests.
 
 # Test package coverage
 # The package must be detached to install it.
@@ -67,7 +68,7 @@ print(x = code_coverage, group = "functions")
 # Thereby, no problems with files in .Rbuildignore.
 devtools::build(binary = FALSE, manual = TRUE, vignettes = TRUE)
 version <- utils::packageVersion(pkg, lib.loc = paste0(pkg_path,"/.."))
-# Test built package
+# Check built package
 devtools::check_built(path = paste0("../", pkg, "_", version, ".tar.gz"), args = c("--no-tests"), manual = TRUE)
 
 
@@ -97,20 +98,13 @@ library(package = pkg, character.only = TRUE)
 
 # MANUAL CHECK OF SCRIPTS ----
 # Search for string
-txt <- "\\.data\\$"
+txt <- "\\.data\\$"   # \\.data\\$, dplyr, stringi
 files_with_pattern <- findInFiles::findInFiles(ext = "R", pattern = txt, output = "tibble")
 files_with_pattern <- findInFiles::FIF2dataframe(files_with_pattern)
 package <- rep(pkg, dim(files_with_pattern)[1])
 files_with_pattern <- cbind(package, files_with_pattern)
 
-wb <- openxlsx::createWorkbook()
-# Replace with openxlsx::addWorksheet()
-NVIpretty::add_formatted_worksheet(data = files_with_pattern,
-                                   workbook = wb,
-                                   sheet = make.names(paste0(pkg, txt)))
-openxlsx::saveWorkbook(wb,
-                       file = file.path("../", paste0(pkg, "_", "files_with_pattern.xlsx")),
-                       overwrite = TRUE)
-
-# Replace all occurrences of string in scripts
+write.csv2(x = files_with_pattern,
+           file = file.path("../", paste0(pkg, "_", "files_with_pattern.csv")),
+           row.names = FALSE)
 
