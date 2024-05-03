@@ -1,23 +1,8 @@
 # NVIdb 0.11.3 - (2024-05-03)
 
-## New features:
-
--
-
-
-## Bug fixes:
-
--
-
-
 ## Other changes:
 
-- standardised formatting of help for most functions.
-
-
-## BREAKING CHANGES:
-
--
+- improved and styled help for most functions.
 
 
 # NVIdb 0.11.2 - (2024-04-05)
