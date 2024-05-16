@@ -58,7 +58,7 @@ read_kommune_fylke <- function(filename = list("komnr_2_gjeldende_komnr2_UTF8.cs
                                      "komnr_in_period", "kommune_in_period",
                                      "fylkenr_in_period", "fylke_in_period")]
 
-  kommune_fylke <- kommune_fylke[order(kommune_fylke$from_year, kommune_fylke$komnr)]
+  kommune_fylke <- kommune_fylke[order(kommune_fylke$from_year, kommune_fylke$komnr), ]
 
   return(kommune_fylke)
 }
