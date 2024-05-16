@@ -129,7 +129,7 @@ add_kommune_fylke <- function(data,
 
   # CREATE MESSAGE TO DISPLAY ----
   # if year not equal to current year
-  if (year <- as.numeric(format(Sys.Date(), "%Y"))) {
+  if (year < as.numeric(format(Sys.Date(), "%Y"))) {
     message <- paste("gjeldende_komnr and gjeldende_fylkenr is the IDs that was valid in the year",
                      as.character(year),
                      ".",
@@ -142,7 +142,10 @@ add_kommune_fylke <- function(data,
 
   # PREPARE TRANSLATION TABLE ----
   # Selects translation for the requested time period
-  translation_table <- subset(translation_table, translation_table$aar == year)
+  translation_table[is.na(translation_table$to_year), "to_year"] <- format(Sys.Date(), "%Y")
+  translation_table <- subset(translation_table, 
+                              as.numeric(translation_table$from_year <= year) & 
+                                as.numeric(translation_table$to_year >= year))
   # Makes the translation table with code_column and new_column. unique() is necessary to avoid duplicate
   # rows when code_column is not "komnr"
   code_2_new <- unique(translation_table[, c(unname(code_column), unname(new_column))])
