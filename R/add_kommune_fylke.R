@@ -102,6 +102,10 @@ add_kommune_fylke <- function(data,
   new_column <- set_name_vector(new_column)
   year <- as.numeric(year)
 
+  colnames(translation_table)[which(colnames(translation_table) == "komnr_in_period")] <- "gjeldende_komnr"
+  colnames(translation_table)[which(colnames(translation_table) == "kommune_in_period")] <- "gjeldende_kommune"
+  colnames(translation_table)[which(colnames(translation_table) == "fylkenr_in_period")] <- "gjeldende_fylkenr"
+  colnames(translation_table)[which(colnames(translation_table) == "fylke_in_period")] <- "gjeldende_fylke"
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
