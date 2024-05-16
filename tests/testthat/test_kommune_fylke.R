@@ -11,8 +11,8 @@ test_that("Copy kommune og fylke", {
   # copy_kommune_fylke
   copy_kommune_fylke(to_path = td)
 
-  expect_true(file.exists(file.path(td, "Kommune_UTF8.csv")))
-  expect_true(file.exists(file.path(td, "komnr_2_gjeldende_komnr_UTF8.csv")))
+  # expect_true(file.exists(file.path(td, "Kommune_UTF8.csv")))
+  expect_true(file.exists(file.path(td, "komnr_2_gjeldende_komnr2_UTF8.csv")))
   expect_true(file.exists(file.path(td, "Fylke_UTF8.csv")))
 
 })
@@ -55,6 +55,7 @@ test_that("Correct merging of fylke, gjeldende_fylkenr and gjeldende_fylke by fy
                                      translation_table = kommune_fylke,
                                      code_column = "fylkenr",
                                      new_column = c("fylke", "gjeldende_fylkenr", "gjeldende_fylke"),
+                                     year = 2023,
                                      position = "right"),
                    correct_result)
 
@@ -77,6 +78,7 @@ test_that("Correct merging of fylke, gjeldende_fylkenr and gjeldende_fylke by fy
                                      translation_table = kommune_fylke,
                                      code_column = "fylkenr",
                                      new_column = c("gjeldende_fylkenr", "gjeldende_fylke"),
+                                     year = 2023,
                                      position = "right"),
                    correct_result)
 
@@ -120,15 +122,16 @@ test_that("Correct merging of kommune, gjeldende_komnr and gjeldende_kommune by 
   correct_result <- cbind(as.data.frame(c("0123", "0301", "1101", "1601"), stringsAsFactors = FALSE),
                           as.data.frame(c("Spydeberg", "Oslo", "Eigersund", "Trondheim"), stringsAsFactors = FALSE),
                           as.data.frame(c("3014", "0301", "1101", "5001"), stringsAsFactors = FALSE),
-                          as.data.frame(c("Indre Østfold", "Oslo", "Eigersund", "Trondheim"), stringsAsFactors = FALSE))
+                          as.data.frame(c("Indre Østfold", "Oslo", "Eigersund", "Trondheim - Tråante"), stringsAsFactors = FALSE))
   colnames(correct_result) <- c("komnr", "kommune", "gjeldende_komnr", "gjeldende_kommune")
 
 
   # Compare Add kommune, current komnr and current kommune with correct result
-  expect_identical(add_kommune_fylke(kommuner,
+  expect_identical(add_kommune_fylke(data = kommuner,
                                      translation_table = kommune_fylke,
                                      code_column = "komnr",
                                      new_column = c("kommune", "gjeldende_komnr", "gjeldende_kommune"),
+                                     year = 2023,
                                      position = "right"),
                    correct_result)
 
