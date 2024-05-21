@@ -143,25 +143,29 @@ add_kommune_fylke <- function(data,
   # PREPARE TRANSLATION TABLE ----
   # Selects translation for the requested time period
   translation_table[is.na(translation_table$to_year), "to_year"] <- format(Sys.Date(), "%Y")
-  translation_table <- subset(translation_table, 
-                              as.numeric(translation_table$from_year <= year) & 
+  translation_table <- subset(translation_table,
+                              as.numeric(translation_table$from_year <= year) &
                                 as.numeric(translation_table$to_year >= year))
+
+  # To ensure that the counties Viken, "Vestfold og Telemark" and "Troms og Finnmark" is not split but keep their names
+  if (code_column == "fylkenr") {
+    # To ensure that the counties Viken, "Vestfold og Telemark" and "Troms og Finnmark" is not split but keep their names
+    translation_table[which(translation_table$fylkenr %in% c("30", "38", "54")), "gjeldende_fylkenr"] <-
+      translation_table[which(translation_table$fylkenr %in% c("30", "38", "54")), "fylkenr"]
+    translation_table[which(translation_table$fylkenr %in% c("30", "38", "54")), "gjeldende_fylke"] <-
+      translation_table[which(translation_table$fylkenr %in% c("30", "38", "54")), "fylke"]
+  }
+
   # Makes the translation table with code_column and new_column. unique() is necessary to avoid duplicate
   # rows when code_column is not "komnr"
   code_2_new <- unique(translation_table[, c(unname(code_column), unname(new_column))])
 
   if (code_column == "fylkenr") {
-    code_2_new <- merge(code_2_new, translation_table[, c("fylkenr", new_column, "komnr")], by = c("fylkenr", new_column))
-    code_2_new <- stats::aggregate(stats::as.formula(paste("komnr", "~", paste(c(code_column, new_column), collapse = " + "))), data = code_2_new, FUN = length)
-
     # For fylkenr, select the fylke where most kommuner is within the fylke. This to avoid fylkenr to be translated to fylker
     # where one or a few kommuner has been relocated.
-    # code_2_new <- code_2_new %>%
-    #   dplyr::rename(antall = dplyr::all_of("komnr")) %>%
-    #   dplyr::distinct() %>%
-    #   dplyr::group_by(.data$fylkenr) %>%
-    #   dplyr::mutate(maxantall = max(.data$antall)) %>%
-    #   dplyr::ungroup() # %>%
+    # Counts number of municipalities per fylke
+    code_2_new <- merge(code_2_new, translation_table[, c("fylkenr", new_column, "komnr")], by = c("fylkenr", new_column))
+    code_2_new <- stats::aggregate(stats::as.formula(paste("komnr", "~", paste(c(code_column, new_column), collapse = " + "))), data = code_2_new, FUN = length)
     colnames(code_2_new)[which(colnames(code_2_new) == "komnr")] <- "antall"
     code_2_new <- unique(code_2_new)
     aggregated_data <- stats::aggregate(stats::as.formula("antall ~ fylkenr"), data = code_2_new, FUN = max)
@@ -171,7 +175,7 @@ add_kommune_fylke <- function(data,
 
     code_2_new <- subset(code_2_new, code_2_new$max_antall == code_2_new$antall)
     code_2_new[, c("antall", "maxantall")] <- c(NULL, NULL)
-      # dplyr::filter(.data$maxantall == .data$antall) %>%
+    # dplyr::filter(.data$maxantall == .data$antall) %>%
     # dplyr::select(-.data$antall, -.data$maxantall)
 
     # Removes tibble in case it makes trouble later
