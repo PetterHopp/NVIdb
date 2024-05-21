@@ -2,22 +2,7 @@
 
 ## New features:
 
--
-
-
-## Bug fixes:
-
--
-
-
-## Other changes:
-
--
-
-
-## BREAKING CHANGES:
-
--
+- Added argument `year` to `add_kommune_fylke`. Kommune and fylke can now be translated to any year from 1077 to current year from previous years. It is not possible to translate from a later year to previous years.
 
 
 # NVIdb 0.11.3 - (2024-05-03)
