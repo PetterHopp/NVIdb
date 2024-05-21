@@ -13,21 +13,20 @@ add_kommune_fylke(
   code_column = c("komnr"),
   new_column = c("gjeldende_komnr", "gjeldende_kommune", "gjeldende_fylkenr",
     "gjeldende_fylke"),
+  year = format(Sys.Date(), "\%Y"),
   position = "right",
   overwrite = FALSE
 )
 
 copy_kommune_fylke(
-  filename = list("Kommune_UTF8.csv", "komnr_2_gjeldende_komnr_UTF8.csv",
-    "Fylke_UTF8.csv"),
-  from_path = paste0(set_dir_NVI("GrunndataLand"), "FormaterteData/"),
+  filename = list("komnr_2_gjeldende_komnr2_UTF8.csv", "Fylke_UTF8.csv"),
+  from_path = file.path(set_dir_NVI("GrunndataLand", slash = FALSE), "FormaterteData"),
   to_path = NULL
 )
 
 read_kommune_fylke(
-  filename = list("Kommune_UTF8.csv", "komnr_2_gjeldende_komnr_UTF8.csv",
-    "Fylke_UTF8.csv"),
-  from_path = paste0(set_dir_NVI("GrunndataLand"), "FormaterteData/")
+  filename = list("komnr_2_gjeldende_komnr2_UTF8.csv", "Fylke_UTF8.csv"),
+  from_path = file.path(set_dir_NVI("GrunndataLand", slash = FALSE), "FormaterteData")
 )
 }
 \arguments{
@@ -38,6 +37,10 @@ read_kommune_fylke(
 \item{code_column}{The name of the column with the old komnr}
 
 \item{new_column}{The name of the new column that should contain the current komnr}
+
+\item{year}{[\code{integer(1)} | \code{character(1)}]\cr
+The year for which the komnr should be translated to valid komnr.
+    Defaults to the current year i.e. format(Sys.Date(), "\%Y").}
 
 \item{position}{[\code{character(1)}]\cr
 The position for the new columns, can be one of c("first", 
@@ -127,8 +130,11 @@ kommune_fylke <- read_kommune_fylke(from_path = "./Data/")
 newdata <- add_kommune_fylke(olddata,
                              translation_table = kommune_fylke,
                              code_column = c("gammelt_komnr" = "komnr"),
-                             new_column = c("komnr" = "gjeldende_komnr",
-                                            "kommune" = "gjeldende_kommune"))
+                             new_column = c(
+"komnr" = "gjeldende_komnr",
+                                            "kommune" = "gjeldende_kommune"
+)
+)
 }
 
 }
