@@ -1,18 +1,47 @@
 #' @title Manage translation from komnr to kommune, fylke and current komnr
-#' @description Function to add columns with kommune (name), fylkenr, fylke (name), gjeldende_komnr, gjeldende_kommune,
-#'    gjeldende_fylkenr, and gjeldende_fylke. In addition there are functions to read and copy the translation tables.
+#' @description Function to add columns with kommune (name), fylkenr,
+#'    fylke (name), gjeldende_komnr, gjeldende_kommune, gjeldende_fylkenr,
+#'    and gjeldende_fylke. In addition there are functions to read and
+#'    copy the translation tables.
 #'
-#' @details Data sources, like PJS, may provide data with komnr. These functions manage translating komnr to current komnr,
-#'     kommune and fylke.
+#' @details Data sources, like PJS, may provide data with komnr. These
+#'     functions manage translation of komnr to current komnr, kommune
+#'     and fylke.
 #'
-#'     \code{add_kommune_fylke} can be used to translate komnr into kommune (name), fylkenr, fylke (name), gjeldende_komnr,
-#'     gjeldende_kommune, gjeldende_fylkenr, and gjeldende_fylke. The function can also be used to translate fylkenr into fylke (name),
-#'     gjeldende_fylkenr, and gjeldende_fylke.
+#' \code{add_kommune_fylke} can be used to translate komnr into kommune
+#'     (name), fylkenr, fylke (name), gjeldende_komnr, gjeldende_kommune,
+#'     gjeldende_fylkenr, and gjeldende_fylke. The function can also be
+#'     used to translate fylkenr into fylke (name), gjeldende_fylkenr,
+#'     and gjeldende_fylke.
 #'
-#'     One has to ensure that the code in the dataset represents a komnr or fylkenr. The function will translate any 4 and 2 digits
-#'     that has the same ID as a kommune or fylke, respectively.
+#' \code{add_kommune_fylke} will translate komnr from 1977 to the komnr
+#'     for the year given in the argument \code{year}. If a year previous
+#'     to the current year is given, only years before the given year will
+#'     be translated. Newer years cannot be translated to older year by
+#'     this function.
 #'
-#'     Standard name for the kommunenummer is komnr. If the column with
+#' The translation of komnr and fylkenr is simplified. If there have been
+#'     changes in the borders between kommuner, this is not taken into account.
+#'     If kommuner have been split the komnr is translated to the new kommune
+#'     that has taken most of the area in the old kommune. I.e. in 2020, the
+#'     kommune Snillfjord was split into Orkland, Hitra and Heim, but are
+#'     translated into Orkland. In 2024, the kommune Ålesund was split into
+#'     Ålesund and Haram, but are translated into Ålesund. For produsenter
+#'     you need to first find the the correct new produsent-number by using
+#'     \code{\link{add_produsent_properties}} and thereafter assign them to
+#'     the correct kommune.
+#'
+#' When translating the fylkenr, the fylker "Viken", "Vestfold og Telemark"
+#'     and "Troms og Finnmark" that was established in 2020 and split in 2024,
+#'     will not be possible to be translate to new fylker without additional
+#'     information. If the komnr is translated, the new fylke will also be
+#'     translated.
+#'
+#' One has to ensure that the code in the dataset represents a komnr or fylkenr.
+#'     The function will translate any 4 and 2 digits that has the same ID as a
+#'     kommune or fylke, respectively.
+#'
+#' Standard name for the kommunenummer is komnr. If the column with
 #'     the komnr that should be translated has another name, the
 #'     parameter \code{code_column} can be input as a named vector.
 #'     Standard names for the new columns are c("kommune", "fylkenr", "fylke",
@@ -21,32 +50,43 @@
 #'     other names than, the parameter \code{new_column} can be input
 #'     as a named vector, see examples.
 #'
-#'     The function uses a premade translation table that is made based on information in PJS adresseregister. The translation table
-#'     is updated when informed that know there is a need, typically when there have been changes in kommune-structure.
+#' The function uses a premade translation table that is made based on
+#'     information in PJS adresseregister. The translation table is updated
+#'     when informed that know there is a need, typically when there have
+#'     been changes in kommune structure.
 #'
-#'     \code{position} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
-#'     placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
-#'     code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
-#'     data.frame. A special case occurs for \code{position = "keep"} which only has meaning when the new column has the same name as an existing
-#'     column and \code{overwrite = TRUE}. In these cases, the existing column will be overwritten with new data and have the same position.
+#' \code{position} is used to give the place if the new columns in the data
+#'     frame. For \code{position = "right"} the new variables are placed to
+#'     the right of the code_variable. Likewise, for \code{position = "left"}
+#'     the new variables are placed to the left of the code_variable. If
+#'     \code{position = "first"} or \code{position = "last"} the new columns
+#'     are placed first or last, respectively, in the data frame. A special
+#'     case occurs for \code{position = "keep"} which only has meaning when
+#'     the new column has the same name as an existing column and
+#'     \code{overwrite = TRUE}. In these cases, the existing column will be
+#'     overwritten with new data and have the same position.
 #'
-#'     \code{read_kommune_fylke} read the files "komnr_2_gjeldende_komnr_UTF8.csv", "Kommune_UTF8.csv", and "Fylke_UTF8.csv", into a single data
-#'     frame that can be used by \code{add_kommune_fylke}. Standard setting will read in the file from NVI's internal network. If changing the
-#'     from_path, the function can be used to read the translation files from other directories. This can be useful if having a stand alone app
-#'     with no connection the NVI's internal network. In other cases, it should be avoided.
+#' \code{read_kommune_fylke} read the files "komnr_2_gjeldende_komnr2_UTF8.csv"
+#'     and "Fylke_UTF8.csv", and generates the translation table as a single data
+#'     frame that can be used by \code{add_kommune_fylke}. Standard setting will
+#'     read in the file from NVI's internal network. If changing the \code{from_path},
+#'     the function can be used to read the translation files from other directories.
+#'     This can be useful if having a stand alone app with no connection the NVI's
+#'     internal network. In other cases, it should be avoided.
 #'
-#'     \code{copy_kommune_fylke} copy the files "komnr_2_gjeldende_komnr_UTF8.csv",
-#'     "Kommune_UTF8.csv", and "Fylke_UTF8.csv", respectively, to a given
-#'     directory.
-#'
+#' \code{copy_kommune_fylke} copy the files "komnr_2_gjeldende_komnr2_UTF8.csv"
+#'     and "Fylke_UTF8.csv" to a given directory.
 #'
 #' @param data Data frame with data with a column with old komnr
 #' @param translation_table Data frame with the translation table for old komnr to current komnr
 #' @param code_column The name of the column with the old komnr
 #' @param new_column The name of the new column that should contain the current komnr
+#' @param year [\code{integer(1) | character(1)}]\cr
+#' The year for which the komnr should be translated to valid komnr.
+#'     Defaults to the current year i.e. format(Sys.Date(), "\%Y").
 #' @template position
 #' @template overwrite
-#' @param filename Filename of the translation table for old komnr to current komnr
+#' @param filename File name of the translation table for old komnr to current komnr
 #' @param from_path Path for the source translation table
 #' @param to_path Path for the target translation table when copying the translation table
 #'
@@ -80,22 +120,30 @@
 #' newdata <- add_kommune_fylke(olddata,
 #'                              translation_table = kommune_fylke,
 #'                              code_column = c("gammelt_komnr" = "komnr"),
-#'                              new_column = c("komnr" = "gjeldende_komnr",
-#'                                             "kommune" = "gjeldende_kommune"))
+#'                              new_column = c(
+#' "komnr" = "gjeldende_komnr",
+#'                                             "kommune" = "gjeldende_kommune"
+#' )
+#' )
 #' }
 #'
 add_kommune_fylke <- function(data,
                               translation_table = kommune_fylke,
                               code_column = c("komnr"),
                               new_column = c("gjeldende_komnr", "gjeldende_kommune", "gjeldende_fylkenr", "gjeldende_fylke"),
+                              year = format(Sys.Date(), "%Y"),
                               position = "right",
                               overwrite = FALSE) {
-
   # Ensure that code_column and new_column are named vectors by using the internal function set_name_vector()
   # Thereby, the following code can assume these to be named vectors
   code_column <- set_name_vector(code_column)
   new_column <- set_name_vector(new_column)
+  year <- as.numeric(year)
 
+  colnames(translation_table)[which(colnames(translation_table) == "komnr_in_period")] <- "gjeldende_komnr"
+  colnames(translation_table)[which(colnames(translation_table) == "kommune_in_period")] <- "gjeldende_kommune"
+  colnames(translation_table)[which(colnames(translation_table) == "fylkenr_in_period")] <- "gjeldende_fylkenr"
+  colnames(translation_table)[which(colnames(translation_table) == "fylke_in_period")] <- "gjeldende_fylke"
   # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
@@ -106,6 +154,8 @@ add_kommune_fylke <- function(data,
                                  new_column = new_column,
                                  overwrite = overwrite,
                                  add = checks)
+  # year
+  checkmate::assert_int(year, lower = 1977, upper = as.numeric(format(Sys.Date(), "%Y")), add = checks)
   # position
   position <- NVIcheckmate::match_arg(x = position,
                                       choices = c("first", "left", "right", "last", "keep"),
@@ -115,23 +165,45 @@ add_kommune_fylke <- function(data,
   # Report check-results
   checkmate::reportAssertions(checks)
 
+  # CREATE MESSAGE TO DISPLAY ----
+  # if year not equal to current year
+  if (year < as.numeric(format(Sys.Date(), "%Y"))) {
+    message <- paste("gjeldende_komnr and gjeldende_fylkenr is the IDs that was valid in the year",
+                     as.character(year),
+                     ".",
+                     "Any komnr from after",
+                     as.character(year),
+                     "will not be translated back to",
+                     as.character(year),
+                     ".")
+  }
+
   # PREPARE TRANSLATION TABLE ----
+  # Selects translation for the requested time period
+  translation_table[is.na(translation_table$to_year), "to_year"] <- format(Sys.Date(), "%Y")
+  translation_table <- subset(translation_table,
+                              as.numeric(translation_table$from_year <= year) &
+                                as.numeric(translation_table$to_year >= year))
+
+  # To ensure that the counties Viken, "Vestfold og Telemark" and "Troms og Finnmark" is not split but keep their names
+  if (code_column == "fylkenr") {
+    # To ensure that the counties Viken, "Vestfold og Telemark" and "Troms og Finnmark" is not split but keep their names
+    translation_table[which(translation_table$fylkenr %in% c("30", "38", "54")), "gjeldende_fylkenr"] <-
+      translation_table[which(translation_table$fylkenr %in% c("30", "38", "54")), "fylkenr"]
+    translation_table[which(translation_table$fylkenr %in% c("30", "38", "54")), "gjeldende_fylke"] <-
+      translation_table[which(translation_table$fylkenr %in% c("30", "38", "54")), "fylke"]
+  }
+
   # Makes the translation table with code_column and new_column. unique() is necessary to avoid duplicate
   # rows when code_column is not "komnr"
   code_2_new <- unique(translation_table[, c(unname(code_column), unname(new_column))])
 
   if (code_column == "fylkenr") {
-    code_2_new <- merge(code_2_new, translation_table[, c("fylkenr", new_column, "komnr")], by = c("fylkenr", new_column))
-    code_2_new <- stats::aggregate(stats::as.formula(paste("komnr", "~", paste(c(code_column, new_column), collapse = " + "))), data = code_2_new, FUN = length)
-
     # For fylkenr, select the fylke where most kommuner is within the fylke. This to avoid fylkenr to be translated to fylker
     # where one or a few kommuner has been relocated.
-    # code_2_new <- code_2_new %>%
-    #   dplyr::rename(antall = dplyr::all_of("komnr")) %>%
-    #   dplyr::distinct() %>%
-    #   dplyr::group_by(.data$fylkenr) %>%
-    #   dplyr::mutate(maxantall = max(.data$antall)) %>%
-    #   dplyr::ungroup() # %>%
+    # Counts number of municipalities per fylke
+    code_2_new <- merge(code_2_new, translation_table[, c("fylkenr", new_column, "komnr")], by = c("fylkenr", new_column))
+    code_2_new <- stats::aggregate(stats::as.formula(paste("komnr", "~", paste(c(code_column, new_column), collapse = " + "))), data = code_2_new, FUN = length)
     colnames(code_2_new)[which(colnames(code_2_new) == "komnr")] <- "antall"
     code_2_new <- unique(code_2_new)
     aggregated_data <- stats::aggregate(stats::as.formula("antall ~ fylkenr"), data = code_2_new, FUN = max)
@@ -141,12 +213,11 @@ add_kommune_fylke <- function(data,
 
     code_2_new <- subset(code_2_new, code_2_new$max_antall == code_2_new$antall)
     code_2_new[, c("antall", "maxantall")] <- c(NULL, NULL)
-      # dplyr::filter(.data$maxantall == .data$antall) %>%
+    # dplyr::filter(.data$maxantall == .data$antall) %>%
     # dplyr::select(-.data$antall, -.data$maxantall)
 
     # Removes tibble in case it makes trouble later
     code_2_new <- as.data.frame(code_2_new)
-
   }
 
   # ADD NEW COLUMN(S) ----
@@ -163,7 +234,6 @@ add_kommune_fylke <- function(data,
                          overwrite = overwrite,
                          n_columns_at_once = length(new_column)
   )
-
 
   return(data)
 }
