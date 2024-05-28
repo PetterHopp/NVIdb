@@ -4,27 +4,36 @@
 \alias{read_csv_file}
 \title{Read csv-file}
 \usage{
-read_csv_file(filename, from_path, options = NULL, ...)
+read_csv_file(filename, from_path, options = NULL, data.table = FALSE, ...)
 }
 \arguments{
-\item{filename}{Filename of the file that should be read}
+\item{filename}{[\code{character(1)}]\cr
+File name of the source file that should be read.}
 
-\item{from_path}{Path for the source file}
+\item{from_path}{[\code{character(1)}]\cr
+Path for the source file.}
+
+\item{data.table}{[\code{logical(1)}]\cr
+Should the result be of class \code{data.table} (\code{TRUE}) or
+    \code{data.frame} (\code{FALSE}). Defaults to \code{FALSE}.}
 
 \item{\dots}{Other arguments to be passed to \code{data.table::fread}.}
 
-\item{columnclasses}{Predefine format (numeric or character) of the variables}
+\item{columnclasses}{Predefine format (numeric or character) of the variables.}
 
-\item{fileencoding}{usually UTF-8}
+\item{fileencoding}{usually UTF-8.}
 }
 \value{
-A data.frame with the data from the source file.
+A data frame with the data from the source file.
 }
 \description{
-Reads files with data .
+Reads files with data using \code{data.table::fread}.
 }
 \details{
-Used to read csv files with data for use in scripts.
+Internal function used in read-functions. Uses \code{data.table::fread}
+   that is much faster than \code{utils::read.table}. The default output is
+   a \code{data.frame}, but this can be changed to a \code{data.table} by
+   setting the argument \code{data.table = FALSE}.
 }
 \examples{
 \dontrun{

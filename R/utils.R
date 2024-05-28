@@ -248,16 +248,24 @@ add_new_column <- function(data,
 
 ### read_csv_file ----
 #' @title Read csv-file
-#' @description Reads files with data .
-#' @details Used to read csv files with data for use in scripts.
+#' @description Reads files with data using \code{data.table::fread}.
+#' @details Internal function used in read-functions. Uses \code{data.table::fread}
+#'    that is much faster than \code{utils::read.table}. The default output is
+#'    a \code{data.frame}, but this can be changed to a \code{data.table} by
+#'    setting the argument \code{data.table = FALSE}.
 #'
-#' @param filename Filename of the file that should be read
-#' @param from_path Path for the source file
-#' @param columnclasses Predefine format (numeric or character) of the variables
-#' @param fileencoding usually UTF-8
+#' @param filename [\code{character(1)}]\cr
+#' File name of the source file that should be read.
+#' @param from_path [\code{character(1)}]\cr
+#' Path for the source file.
+#' @param columnclasses Predefine format (numeric or character) of the variables.
+#' @param fileencoding usually UTF-8.
+#' @param data.table [\code{logical(1)}]\cr
+#' Should the result be of class \code{data.table} (\code{TRUE}) or
+#'     \code{data.frame} (\code{FALSE}). Defaults to \code{FALSE}.
 #' @param \dots	Other arguments to be passed to \code{data.table::fread}.
 
-#' @return A data.frame with the data from the source file.
+#' @return A data frame with the data from the source file.
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #'
 #' @examples
@@ -266,12 +274,10 @@ add_new_column <- function(data,
 #' }
 #' @keywords internal
 
-read_csv_file <- function(filename, from_path, options = NULL, ...) {
+read_csv_file <- function(filename, from_path, options = NULL, data.table = FALSE, ...) {
 
   # Removes trailing "/" and "\\".
   from_path <- sub("/+$|\\\\+$", "", from_path)
-  # # Check if from_path ends in "/". If not, "/" is added.
-  # if (!endsWith(from_path, "/")) { from_path <- paste0(from_path, "/") }
 
   # if (is.null(sep)) {sep <- ";"}
   # if (!exists("dec")) {dec <- ","}
@@ -291,7 +297,7 @@ read_csv_file <- function(filename, from_path, options = NULL, ...) {
                               encoding = options$fileEncoding,
                               stringsAsFactors = options$stringsAsFactors,
                               showProgress = FALSE,
-                              data.table = FALSE,
+                              data.table = data.table,
                               ...)
       # df <- utils::read.table(file = file.path(from_path, filename),
       #                         colClasses = options$colClasses,
@@ -304,7 +310,6 @@ read_csv_file <- function(filename, from_path, options = NULL, ...) {
     }
   }
   return(df)
-  # return(as.data.frame(df))
 }
 
 ###   ----
