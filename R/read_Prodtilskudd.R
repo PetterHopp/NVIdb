@@ -103,9 +103,9 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
   if (!is.null(extracted_date)) {
     # Pkode_month
     NVIcheckmate::assert_subset_character(Pkode_month,
-                                choices = c("01", "03", "05", "07", "10", "12"),
-                                comment = "The inputs 'both' and 'last' are not accepted when 'extracted_date' is given",
-                                add = checks)
+                                          choices = c("01", "03", "05", "07", "10", "12"),
+                                          comment = "The inputs 'both' and 'last' are not accepted when 'extracted_date' is given",
+                                          add = checks)
     # Pkode_year
     NVIcheckmate::assert_integerish(as.numeric(Pkode_year[grep('[[:alpha:]]', Pkode_year, invert = TRUE)]),
                                     lower = 1995,
@@ -127,7 +127,16 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
                                         Pkode_month = Pkode_month,
                                         extracted_date = extracted_date)
 
-  # Read data for the selected year and months from Pkoderegisteret and combine into one dataframe
+  NVIcheckmate::assert_data_frame(x = filelist, min.rows = 1,
+                                  comment = paste("No files for Pkode_year =",
+                                                  paste0(Pkode_year, collapse = ", "),
+                                                  "and Pkode_month = ",
+                                                  paste0(Pkode_month, collapse = ", "),
+                                                  "was found.",
+                                                  "Please check that the year and month are correct and",
+                                                  "that the register for these years and months are available."))
+
+  # Read data for the selected year and months from Pkoderegisteret and combine into one data frame
   for (i in 1:dim(filelist)[1]) {
 
     # Identifies column names with fylke, kommune and prodnr
