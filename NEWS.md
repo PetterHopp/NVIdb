@@ -7,7 +7,7 @@
 
 ## Bug fixes:
 
--
+- Fixed `login_by_input`for log in when using `dbinterface = "RPostgreSQL"`.
 
 
 ## Other changes:
