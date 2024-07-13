@@ -18,14 +18,19 @@ read_Pkode_2_text(
 )
 }
 \arguments{
-\item{filename}{Name of the translation table, defaults to "Produksjonstilskuddskoder2_UTF8.csv"}
+\item{filename}{[\code{character(1)}]\cr
+Name of the translation table. Defaults to "Produksjonstilskuddskoder2_UTF8.csv".}
 
-\item{from_path}{Path for the translation table for produksjonstilskuddskoder}
+\item{from_path}{[\code{character(1)}]\cr
+Path for the translation table for produksjonstilskuddskoder. Defaults to
+    standard directory at the NVI network.}
 
-\item{to_path}{Path for the target translation table when copying produksjonstilskuddskoder}
+\item{to_path}{[\code{character(1)}]\cr
+Path for the target translation table when copying produksjonstilskuddskoder.}
 
 \item{keep_old_names}{[\code{logical(1)}]\cr
-Keep old column names as were used as standard in NVIdb <= v0.7.1. Defaults to \code{FALSE}.}
+Keep old column names as were used as standard in NVIdb <= v0.7.1. Defaults
+    to \code{FALSE}.}
 }
 \value{
 \code{read_Pkode_2_text} A data frame with the translation table for
@@ -38,18 +43,24 @@ Keep old column names as were used as standard in NVIdb <= v0.7.1. Defaults to \
     the target file.
 }
 \description{
-Read and copy the translation table for produksjonstilskuddskoder (Pkoder).
+Read and copy the translation table for produksjonstilskuddskoder
+    (Pkoder).
 }
 \details{
-The translation table for Pkoder contains the Pkode, descriptive text, unit of interest (Dyr), whether the code counts unique animals
-    or not (used when summarising number of animals), and sortering to order the Pkoder. The register covers 2017 and later.
+The translation table for Pkoder contains the Pkode, descriptive
+    text, unit of interest (Dyr), whether the code counts unique animals or
+    not (used when summarising number of animals), and sortering to order the
+    Pkoder. The register covers 2017 and later.
 
-    \code{read_Pkode_2_text} reads the file "Produksjonstilskuddskoder2_UTF8.csv" into a data frame. The standard settings will read
-    the file from NVI's internal network. If changing the from_path, the function can be used to read the translation file from other
-    directories. This can be useful if having a stand alone app with no connection the NVI's internal network. In other cases, it should
-    be avoided.
+    \code{read_Pkode_2_text} reads the file "Produksjonstilskuddskoder2_UTF8.csv"
+    into a data frame. The default is to read the file from NVI's internal
+    network. If changing the from_path, the function can be used to read the
+    translation file from other directories. This can be useful if having a
+    stand alone app with no connection the NVI's internal network. In other
+    cases, it should be avoided.
 
-    \code{copy_Pkode_2_text} copies the file "Produksjonstilskuddskoder2_UTF8.csv" to a given location.
+    \code{copy_Pkode_2_text} copies the file "Produksjonstilskuddskoder2_UTF8.csv"
+    to a given location.
 }
 \examples{
 \dontrun{

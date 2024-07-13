@@ -1,4 +1,4 @@
-# NVIdb 0.12.0.9000 - (2024-##-##)
+# NVIdb 0.12.0.9001 - (2024-##-##)
 
 ## New features:
 
@@ -7,7 +7,7 @@
 
 ## Bug fixes:
 
--
+- Fixed `login_by_input`for log in when using `dbinterface = "RPostgreSQL"`.
 
 
 ## Other changes:
@@ -24,7 +24,7 @@
 
 ## New features:
 
-- Added argument `year` to `add_kommune_fylke`. Kommune and fylke can now be translated to any year from 1077 to current year from previous years. It is not possible to translate from a later year to previous years.
+- Added argument `year` to `add_kommune_fylke`. Kommune and fylke can now be translated to any year from 1977 to current year from previous years. It is not possible to translate from a later year to previous years.
 
 
 # NVIdb 0.11.3 - (2024-05-03)
