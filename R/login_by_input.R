@@ -129,7 +129,7 @@ login_by_input <- function(dbservice,
                                          port = dbport,
                                          dbname = db,
                                          # user = svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
-                                         user = askpass::askpass(prompt = paste("Oppgi brukernavn (username) for", dbtext)), ,
+                                         user = askpass::askpass(prompt = paste("Oppgi brukernavn (username) for", dbtext)), 
                                          # PWD = getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
                                          PWD = askpass::askpass(prompt = paste("Oppgi passord for", dbtext)))
   }
