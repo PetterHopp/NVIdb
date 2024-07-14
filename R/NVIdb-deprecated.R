@@ -38,11 +38,11 @@
 #'     instead be included in the list input to \code{selection_parameters}. If
 #'     using the old arguments, the input will be transferred to
 #'     \code{selection_parameters}.
-#' 
-#' All functions made especially to handle PJS data have been moved to NVIpjsr 
-#'     and were deprecated from v0.##.# released 2024-##-##. Further development 
-#'     of these functions will only take place in NVIpjsr. The following 
-#'     functions have been moved: 
+#'
+#' All functions made especially to handle PJS data have been moved to NVIpjsr
+#'     and were deprecated from v0.##.# released 2024-##-##. Further development
+#'     of these functions will only take place in NVIpjsr. The following
+#'     functions have been moved:
 #' \itemize{
 #'   \item \code{add_PJS_code_description}.
 #'   \item \code{build_query_hensikt}.
