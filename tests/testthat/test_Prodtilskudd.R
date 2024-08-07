@@ -153,12 +153,12 @@ test_that("errors for read_Prodtilskudd", {
                                  Pkode_month = "xx"),
                regexp = "Variable 'Pkode_month': Must be a subset of",
                fixed = TRUE)
-  
+
   expect_error(read_Prodtilskudd(from_path = paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/"),
                                  Pkode_year = 2023,
                                  Pkode_month = "12"),
                regexp = "No versions of Produksjonstilskudd available for",
                fixed = TRUE)
-  
+
   options(width = unlist(linewidth))
 })
