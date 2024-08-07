@@ -81,17 +81,60 @@
 #' @return A named list with PJS data.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
-#' @export
-#' @examples
+#' @name retrieve_PJS-deprecated
+#' @keywords internal
+NULL
 #'
-#' #
+#' @title retrieve_PJS is Deprecated
+#' @description \code{retrieve_PJS} was deprecated in NVIdb v0.13.0 released
+#'     2024-##-##. All PJS related functions have been moved to \code{NVIpjsr}.
+#'     Use \code{NVIpjsr::retrieve_PJS} instead. When attaching packages,
+#'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
+#' @details The old help pages can be found at \code{help("retrieve_PJS-deprecated")}.
+#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
+#'
+#' @param year [\code{numeric}]\cr
+#' One year or a vector giving the first and last years that should be selected.
+#'     Defaults to \code{NULL}.
+#' @param selection_parameters [\code{character(1)}]\cr
+#' Either the path and file name for an R script that can be sourced and that
+#'     sets the selection parameters or a named list with the selection parameters
+#'     (i.e. of the same format as the output of
+#'     \ifelse{html}{\code{\link{set_disease_parameters}}}{\code{set_disease_parameters}}).
+#'     Defaults to \code{NULL}.
+#' @param FUN \code{deprecated}\cr
+#' \code{FUN} should instead be included as input to \code{selection_parameters}.
+#'     Defaults to \code{NULL}.
+#' @param select_statement \code{deprecated}\cr
+#' \code{select_statement} should instead be included as input to
+#'     \code{selection_parameters}. Defaults to \code{NULL}.
+#' @param \dots Other arguments to be passed to the underlying functions:
+#'     \ifelse{html}{\code{\link{login_PJS}}}{\code{login_PJS}}
+#'     and
+#'     \ifelse{html}{\code{\link{exclude_from_PJSdata}}}{\code{exclude_from_PJSdata}}.
+#' @export
+#' @keywords internal
+#'
 retrieve_PJSdata <- function(year = NULL,
                              selection_parameters = NULL,
                              FUN = NULL,
                              select_statement = NULL,
                              ...) {
 
-  # ARGUMENT CHECKING ----
+  # DEPRECATED ----
+  .Deprecated(new = "retrieve_PJSdata",
+              package = "NVIdb",
+              msg = paste("'retrieve_PJSdata' is replaced by
+                          'NVIpjsr::retrieve_PJSdata'"))
+
+  if (isTRUE(NVIcheckmate::check_package(x = "NVIpjsr", type = "installed"))) {
+    dots <- list(...)
+    if (!is.null(FUN)) {dots <- append(dots, list(FUN = FUN))}
+    if (!is.null(select_statement)) {dots <- append(dots, list(select_statement = select_statement))}
+    PJSdata <- do.call(NVIpjsr::retrieve_PJSdata, append(dots, list(year = year, selection_parameters = selection_parameters)))
+    return(PJSdata)
+  } else {
+    # ARGUMENT CHECKING ----
   # Object to store check-results
   checks <- checkmate::makeAssertCollection()
 
@@ -237,4 +280,5 @@ retrieve_PJSdata <- function(year = NULL,
   # Give name to each entry in the list of PJSdata
   PJSdata <- stats::setNames(PJSdata, select_statement_names)
   return(PJSdata)
+  }
 }
