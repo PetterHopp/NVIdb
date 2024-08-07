@@ -128,7 +128,7 @@ login_PJS <- function(dbinterface = NULL, ...) {
   checkmate::reportAssertions(checks)
 
   # Use check for saved credentials to chose between login_by_input and login_by_credentials
-  if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
+  if (isTRUE(NVIcheckmate::check_credentials("PJS"))) {
     # If credentials are saved for the user profile
     connection <- login_by_credentials(dbservice = "PJS", dbinterface = dbinterface, ...)
   } else {
