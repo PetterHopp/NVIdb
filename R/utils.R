@@ -253,8 +253,9 @@ add_new_column <- function(data,
 #'
 #' @param filename Filename of the file that should be read
 #' @param from_path Path for the source file
-#' @param columnclasses Predefine format (numeric or character) of the variables
-#' @param fileencoding usually UTF-8
+#' @param options A list with the arguments colClasses and fileEncoding. If
+#'    \code{options = NULL} it defaults to
+#'    \code{list(colClasses = NA, fileEncoding = "UTF-8")}.
 #' @param \dots	Other arguments to be passed to \code{data.table::fread}.
 
 #' @return A data.frame with the data from the source file.
@@ -277,11 +278,10 @@ read_csv_file <- function(filename, from_path, options = NULL, ...) {
   # if (!exists("dec")) {dec <- ","}
 
   if (is.null(options)) {
-    options <- list(colClasses = NA, fileEncoding = "UTF-8", stringsAsFactors = FALSE)
+    options <- list(colClasses = NA, fileEncoding = "UTF-8")
   } else {
     if (is.null(options$colClasses)) {options$colClasses <- NA}
     if (is.null(options$fileEncoding)) {options$fileEncoding <- "UTF-8"}
-    if (is.null(options$stringsAsFactors)) {options$stringsAsFactors <- FALSE}
   }
   # Get creation date of source file
   if (dir.exists(from_path)) {
@@ -289,7 +289,6 @@ read_csv_file <- function(filename, from_path, options = NULL, ...) {
       df <- data.table::fread(file = file.path(from_path, filename),
                               colClasses = options$colClasses,
                               encoding = options$fileEncoding,
-                              stringsAsFactors = options$stringsAsFactors,
                               showProgress = FALSE,
                               data.table = FALSE,
                               ...)
