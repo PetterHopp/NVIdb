@@ -217,7 +217,7 @@ NULL
 #'     \code{read_PJS_code_2_text} was deprecated in NVIdb v0.13.0 released
 #'     2024-##-##. All PJS related functions have been moved to \code{NVIpjsr}.
 #'     Use \code{NVIpjsr::add_PJS_code_description}, \code{NVIpjsr::read_PJS_code_2_text}
-#'     and \code{NVIpjsr::read_PJS_code_2_text} instead. Remember to first 
+#'     and \code{NVIpjsr::read_PJS_code_2_text} instead. Remember to first
 #'     attach \code{NVIdb} and thereafter \code{NVIpjsr}.
 #' @details The old help pages can be found at \code{help("add_PJS_code_description-deprecated")}.
 #'     Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
@@ -276,9 +276,9 @@ add_PJS_code_description <- function(data,
   # DEPRECATED ----
   .Deprecated(new = "add_PJS_code_description",
               package = "NVIdb",
-              msg = paste("'add_PJS_code_description' is replaced by 
+              msg = paste("'add_PJS_code_description' is replaced by
                           'NVIpjsr::add_PJS_code_description'"))
-  
+
   if (isTRUE(NVIcheckmate::check_package(x = "NVIpjsr", type = "installed"))) {
     data <- NVIpjsr::add_PJS_code_description(data = data,
                                               translation_table = translation_table,
@@ -289,8 +289,8 @@ add_PJS_code_description <- function(data,
                                               overwrite = overwrite,
                                               backward = backward,
                                               impute_old_when_missing = impute_old_when_missing)
-    
-    return(data)  
+
+    return(data)
   } else {
     if (PJS_variable_type[1] == "auto" | new_column[1] == "auto") {
       code_description_colname <- NVIdb::PJS_code_description_colname
@@ -301,11 +301,11 @@ add_PJS_code_description <- function(data,
         dplyr::left_join(code_description_colname, by = "code_colname")
       PJS_types_selected <- subset(PJS_types_selected, !is.na(PJS_types_selected$type))
     }
-    
+
     # ARGUMENT CHECKING ----
     # Object to store check-results
     checks <- checkmate::makeAssertCollection()
-    
+
     # Perform checks
     # data
     checkmate::assert_data_frame(data, add = checks)
@@ -364,7 +364,7 @@ add_PJS_code_description <- function(data,
                                                 # deparse(substitute(data)), "`"
                                ),
                                add = checks)
-    
+
     # position
     NVIcheckmate::assert_subset_character(x = unique(position), choices = c("first", "left", "right", "last", "keep"), add = checks)
     # overwrite
@@ -373,35 +373,35 @@ add_PJS_code_description <- function(data,
     checkmate::assert_flag(backward, add = checks)
     # impute_old_when_missing
     checkmate::assert_flag(impute_old_when_missing, add = checks)
-    
+
     # Report check-results
     checkmate::reportAssertions(checks)
-    
+
     # PREPARE ARGUMENTS ----
     # Generates PJS_variable_type if "auto".
     # new_column was generated above because the new column names should be checked in the argument checking
     if (PJS_variable_type[1] == "auto") {
       PJS_variable_type <- PJS_types_selected$type
     }
-    
-    
+
+
     # Transforms position to a vector with the same length as number of PJS variables to be translated
     if (length(position) == 1 & length(code_colname) > 1) {position <- rep(position, length(code_colname))}
-    
+
     # In bakcward translation, imputation of old if missing must be performed after original case have been restored,
     #  i.e. it cannot be done by add_new_column, but must be done afterwards.
     impute_old_when_missing_backward <- impute_old_when_missing
     if (isTRUE(backward) & isTRUE(impute_old_when_missing)) {
       impute_old_when_missing <- FALSE
     }
-    
-    
+
+
     # runs the translation for several PJS variables at a time if wanted
     for (i in 1:length(code_colname)) {
-      
+
       # Make a subset with only the codes that is relevant for the actual variabel
       code_2_description <- translation_table[base::which(translation_table$type == PJS_variable_type[i]), ]
-      
+
       # Transform the translation file in the case that backward translation should be used
       if (isTRUE(backward)) {
         # Removes breeds from table if type = "art"
@@ -422,8 +422,8 @@ add_PJS_code_description <- function(data,
         colnames(code_2_description) <- column_names
         code_2_description <- code_2_description %>%
           dplyr::add_count(dplyr::across(c("type", "kode")), name = "antall")
-        
-        
+
+
         # code_2_description <- code_2_description %>%
         # dplyr::mutate(navn = tolower(.data$navn)) %>%
         # dplyr::distinct() %>%
@@ -434,17 +434,17 @@ add_PJS_code_description <- function(data,
         # dplyr::select(-.data$antall)
         code_2_description <- subset(code_2_description, code_2_description$antall == 1)
         code_2_description$antall <- NULL
-        
+
         # Transforms code_colname in data to lower case.
         data$code_colname_org_case <- data[, code_colname[i]]
         data[, code_colname[i]] <- sapply(data[, code_colname[i]], FUN = tolower)
       }
-      
+
       # code_2_description <- translation_table[base::which(translation_table$type == PJS_variable_type[i] & is.na(translation_table$utgatt_dato)), ]
-      
+
       # # Changes the name of navn to text wanted in the df (txtvarname)
       # base::colnames(code_2_description)[base::which(base::colnames(code_2_description)=="navn")] <- new_column
-      
+
       # Calls function that adds description at the position = position in the relation to the code
       data <- add_new_column(data,
                              ID_column = code_colname[i],
@@ -455,8 +455,8 @@ add_PJS_code_description <- function(data,
                              position = position[i],
                              overwrite = overwrite,
                              impute_old_when_missing = impute_old_when_missing)
-      
-      
+
+
       if (isTRUE(backward)) {
         # Restores original case in code_colname
         data[, code_colname[i]] <- data$code_colname_org_case
@@ -484,29 +484,29 @@ copy_PJS_codes_2_text <- function(filename = "PJS_codes_2_text.csv",
   # DEPRECATED ----
   .Deprecated(new = "copy_PJS_codes_2_text",
               package = "NVIdb",
-              msg = paste("'copy_PJS_codes_2_text' is replaced by 
+              msg = paste("'copy_PJS_codes_2_text' is replaced by
                           'NVIpjsr::copy_PJS_codes_2_text'"))
-  
+
   if (isTRUE(NVIcheckmate::check_package(x = "NVIpjsr", type = "installed"))) {
     NVIpjsr::copy_PJS_codes_2_text(filename = filename,
                                    from_path = from_path,
                                    to_path = to_path)
   } else {
-    
+
     # PREPARE ARGUMENT ----
     # Removing ending "/" and "\\" from pathnames
     from_path <- sub("/+$|\\\\+$", "", from_path)
     to_path <- sub("/+$|\\\\+$", "", to_path)
-    
+
     # ARGUMENT CHECKING ----
     assert_copy_function(filename = filename,
                          from_path = from_path,
                          to_path = to_path)
-    
+
     # COPY FILE ----
     copy_file_if_updated(filename = filename, from_path = from_path, to_path = to_path)
   }
-  
+
 }
 
 #' @export
@@ -515,22 +515,22 @@ copy_PJS_codes_2_text <- function(filename = "PJS_codes_2_text.csv",
 
 read_PJS_codes_2_text <- function(filename = "PJS_codes_2_text.csv",
                                   from_path = paste0(set_dir_NVI("Provedata_Rapportering"), "FormaterteData/")) {
-  
+
   # DEPRECATED ----
   .Deprecated(new = "read_PJS_codes_2_text",
               package = "NVIdb",
-              msg = paste("'read_PJS_codes_2_text' is replaced by 
+              msg = paste("'read_PJS_codes_2_text' is replaced by
                           'NVIpjsr::read_PJS_codes_2_text'"))
-  
+
   if (isTRUE(NVIcheckmate::check_package(x = "NVIpjsr", type = "installed"))) {
     PJS_codes_2_text <- NVIpjsr::read_PJS_codes_2_text(filename = filename,
                                                        from_path = from_path)
     return(PJS_codes_2_text)
-    
+
   } else {
     # Removing ending "/" and "\\" from pathnames
     from_path <- sub("/+$|\\\\+$", "", from_path)
-    
+
     # ARGUMENT CHECKING ----
     # Object to store check-results
     checks <- checkmate::makeAssertCollection()
@@ -538,17 +538,17 @@ read_PJS_codes_2_text <- function(filename = "PJS_codes_2_text.csv",
     checks <- assert_read_functions(filename = filename, from_path = from_path, add = checks)
     # Report check-results
     checkmate::reportAssertions(checks)
-    
+
     # READ DATA ----
     PJS_codes_2_text <- read_csv_file(filename = filename,
                                       from_path = from_path,
                                       options = list(colClasses = "character", fileEncoding = "UTF-8"))
-    
+
     # Remove double "" that have replaced single when saving as csv-file
     PJS_codes_2_text$navn <- gsub('\"\"', "\"", PJS_codes_2_text$navn)
-    
+
     return(PJS_codes_2_text)
-  }  
+  }
 }
 
 # To avoid checking of the variable kommune_fylke as default input argument in the function
