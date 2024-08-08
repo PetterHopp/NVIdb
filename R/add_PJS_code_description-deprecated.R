@@ -217,8 +217,8 @@ NULL
 #'     \code{read_PJS_code_2_text} was deprecated in NVIdb v0.13.0 released
 #'     2024-##-##. All PJS related functions have been moved to \code{NVIpjsr}.
 #'     Use \code{NVIpjsr::add_PJS_code_description}, \code{NVIpjsr::read_PJS_code_2_text}
-#'     and \code{NVIpjsr::read_PJS_code_2_text} instead. Remember to first
-#'     attach \code{NVIdb} and thereafter \code{NVIpjsr}.
+#'     and \code{NVIpjsr::read_PJS_code_2_text} instead. When attaching packages,
+#'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
 #' @details The old help pages can be found at \code{help("add_PJS_code_description-deprecated")}.
 #'     Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
 #' @param data [\code{data.frame}] \cr
