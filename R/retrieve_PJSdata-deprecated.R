@@ -81,7 +81,7 @@
 #' @return A named list with PJS data.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
-#' @name retrieve_PJS-deprecated
+#' @name retrieve_PJSdata-deprecated
 #' @keywords internal
 NULL
 #'
@@ -90,7 +90,7 @@ NULL
 #'     2024-##-##. All PJS related functions have been moved to \code{NVIpjsr}.
 #'     Use \code{NVIpjsr::retrieve_PJS} instead. When attaching packages,
 #'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
-#' @details The old help pages can be found at \code{help("retrieve_PJS-deprecated")}.
+#' @details The old help pages can be found at \code{help("retrieve_PJSdata-deprecated")}.
 #'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 #'
 #' @param year [\code{numeric}]\cr

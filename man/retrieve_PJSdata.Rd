@@ -44,7 +44,7 @@ and
     remember to attach \code{NVIdb} before \code{NVIpjsr}.
 }
 \details{
-The old help pages can be found at \code{help("retrieve_PJS-deprecated")}.
+The old help pages can be found at \code{help("retrieve_PJSdata-deprecated")}.
     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 }
 \keyword{internal}
