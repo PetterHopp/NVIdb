@@ -67,9 +67,6 @@ The R-package that is used for interface towards the data
 Gives the possibility of showing another name than the dbservice
     in the windows asking for username and password when using
     \code{login_by_input}. Defaults to \code{NULL}.}
-
-\item{\dots}{Other arguments to be passed from the wrappers to
-\code{login_by_credentials} or \code{login_by_input}.}
 }
 \value{
 An open ODBC-channel to the database service.
