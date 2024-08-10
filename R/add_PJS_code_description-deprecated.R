@@ -214,7 +214,7 @@ NULL
 
 #' @title add_PJS_code_description is Deprecated
 #' @description \code{add_PJS_code_description}, \code{read_PJS_code_2_text} and
-#'     \code{read_PJS_code_2_text} was deprecated in NVIdb v0.13.0 released
+#'     \code{read_PJS_code_2_text} were deprecated in NVIdb v0.13.0 released
 #'     2024-##-##. All PJS related functions have been moved to \code{NVIpjsr}.
 #'     Use \code{NVIpjsr::add_PJS_code_description}, \code{NVIpjsr::read_PJS_code_2_text}
 #'     and \code{NVIpjsr::read_PJS_code_2_text} instead. When attaching packages,
