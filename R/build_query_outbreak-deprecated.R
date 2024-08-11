@@ -46,7 +46,9 @@
 #'     be included in a \code{RODBC::sqlQuery}.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
-#' @export
+#' @name build_query_outbreak-deprecated
+#' @keywords internal
+#'
 #' @examples
 #' # SQL-select query for an outbreak
 #' build_query_outbreak(period = 2022,
@@ -55,6 +57,36 @@
 #'                                  "0100104029", "0200130%"),
 #'                      analytt = "01130301%",
 #'                      metode = NULL)
+#'
+NULL
+
+#' @title build_query_outbreak is Deprecated
+#' @description \code{build_query_outbreak} was deprecated in NVIdb v0.13.0 released
+#'     2024-##-##. All PJS related functions have been moved to \code{NVIpjsr}.
+#'     Use \code{NVIpjsr::build_query_outbreak} instead. When attaching packages,
+#'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
+#' @details The old help pages can be found at \code{help("build_query_outbreak-deprecated")}.
+#'     Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+#'
+#' @param period [\code{numeric}]\cr
+#'     Time period given as year. One year or a vector giving the first
+#'     and last years that should be selected.
+#' @param utbrudd  [\code{character}]\cr
+#'     Utbruddsid(er) that should be selected. Defaults to \code{NULL}.
+#' @param hensikt [\code{character}]\cr
+#'     Specific hensiktkoder. If sub-hensikter should be included,
+#'     end the code with \%. Defaults to \code{NULL}.
+#' @param analytt [\code{character}]\cr
+#'     Analyttkoder that should be selected. If sub-analytter should be included,
+#'     end the code with \%. Defaults to \code{NULL}.
+#' @param metode [\code{character}]\cr
+#'     Specific metodekoder. Defaults to \code{NULL}.
+#' @template build_query_db
+#'
+#' @export
+#' @keywords internal
+#'
+
 build_query_outbreak <- function(period,
                                  utbrudd = NULL,
                                  hensikt = NULL,
@@ -62,101 +94,118 @@ build_query_outbreak <- function(period,
                                  metode = NULL,
                                  db = "PJS") {
 
-  # Argument checking
+  # DEPRECATED ----
+  .Deprecated(new = "build_query_outbreak",
+              package = "NVIdb",
+              msg = paste("'build_query_outbreak' is replaced by
+                          'NVIpjsr::build_query_outbreak'"))
 
-  # Object to store check-results
-  checks <- checkmate::makeAssertCollection()
+  if (isTRUE(NVIcheckmate::check_package(x = "NVIpjsr", type = "installed"))) {
+    select_statement <- NVIpjsr::build_query_outbreak(period = period,
+                                                      utbrudd = utbrudd,
+                                                      hensikt = hensikt,
+                                                      analytt = analytt,
+                                                      metode = metode,
+                                                      db = db)
 
-  # Perform checks
-  checkmate::assert_integerish(period, lower = 1990, upper = as.numeric(format(Sys.Date(), "%Y")), min.len = 1, add = checks)
-  checkmate::assert_character(utbrudd, min.chars = 1, null.ok = TRUE, any.missing = FALSE, add = checks)
-  checkmate::assert_character(hensikt, min.chars = 2, null.ok = TRUE, any.missing = FALSE, add = checks)
-  checkmate::assert_character(analytt, min.chars = 2, null.ok = TRUE, any.missing = FALSE, add = checks)
-  NVIcheckmate::assert_non_null(x = list(utbrudd, hensikt, analytt), add = checks)
-  checkmate::assert_character(metode, min.chars = 6, null.ok = TRUE, any.missing = FALSE, add = checks)
-  checkmate::assert_choice(db, choices = c("PJS"), add = checks)
+    return(select_statement)
+  } else {
+    # Argument checking
 
-  # Report check-results
-  checkmate::reportAssertions(checks)
+    # Object to store check-results
+    checks <- checkmate::makeAssertCollection()
+
+    # Perform checks
+    checkmate::assert_integerish(period, lower = 1990, upper = as.numeric(format(Sys.Date(), "%Y")), min.len = 1, add = checks)
+    checkmate::assert_character(utbrudd, min.chars = 1, null.ok = TRUE, any.missing = FALSE, add = checks)
+    checkmate::assert_character(hensikt, min.chars = 2, null.ok = TRUE, any.missing = FALSE, add = checks)
+    checkmate::assert_character(analytt, min.chars = 2, null.ok = TRUE, any.missing = FALSE, add = checks)
+    NVIcheckmate::assert_non_null(x = list(utbrudd, hensikt, analytt), add = checks)
+    checkmate::assert_character(metode, min.chars = 6, null.ok = TRUE, any.missing = FALSE, add = checks)
+    checkmate::assert_choice(db, choices = c("PJS"), add = checks)
+
+    # Report check-results
+    checkmate::reportAssertions(checks)
 
 
-  select_year <- NVIdb::build_sql_select_year(year = period, varname = "aar")
+    select_year <- NVIdb::build_sql_select_year(year = period, varname = "aar")
 
-  select_hensikt <- NVIdb::build_sql_select_code(values = hensikt, varname = "hensiktkode")
-  if (nchar(select_hensikt) > 0) {select_codes <- select_hensikt}
+    select_hensikt <- NVIdb::build_sql_select_code(values = hensikt, varname = "hensiktkode")
+    if (nchar(select_hensikt) > 0) {select_codes <- select_hensikt}
 
-  # Select utbruddsid
-  select_utbrudd <- NVIdb::build_sql_select_code(values = utbrudd, varname = "utbrudd_id")
-  if (nchar(select_utbrudd) > 0) {
-    if (nchar(select_codes) > 0) {select_codes <- paste(select_codes, "OR")}
-    select_codes <- paste(select_codes, select_utbrudd)
+    # Select utbruddsid
+    select_utbrudd <- NVIdb::build_sql_select_code(values = utbrudd, varname = "utbrudd_id")
+    if (nchar(select_utbrudd) > 0) {
+      if (nchar(select_codes) > 0) {select_codes <- paste(select_codes, "OR")}
+      select_codes <- paste(select_codes, select_utbrudd)
+    }
+
+    # Select metodekode
+    select_metode <- NVIdb::build_sql_select_code(values = metode, varname = "metodekode")
+    if (nchar(select_metode) > 0) {
+      if (nchar(select_codes) > 0) {select_codes <- paste(select_codes, "OR")}
+      select_codes <- paste(select_codes, select_metode)
+    }
+
+    # Select konkl_analyttkode
+    select_konkl_analytt <- NVIdb::build_sql_select_code(values = analytt, varname = "konkl_analyttkode")
+    if (nchar(select_konkl_analytt) > 0) {
+      if (nchar(select_codes) > 0) {select_codes <- paste(select_codes, "OR")}
+      select_codes <- paste(select_codes, select_konkl_analytt)
+    }
+
+    # Select res_analyttkode
+    select_res_analytt <- NVIdb::build_sql_select_code(values = analytt, varname = "analyttkode_funn")
+    if (nchar(select_res_analytt) > 0) {
+      if (nchar(select_codes) > 0) {select_codes <- paste(select_codes, "OR")}
+      select_codes <- paste(select_codes, select_res_analytt)
+    }
+
+
+    # Build query
+    selection_v2_sak_m_res <- paste("SELECT * FROM v2_sak_m_res",
+                                    "WHERE", select_year, "AND",
+                                    paste0("(",
+                                           select_codes,
+                                           ")"))
+
+    # # Remove unnecessary spaces from string
+    selection_v2_sak_m_res <- gsub(' +', ' ', selection_v2_sak_m_res)
+    # selection_v2_sak_m_res <- gsub(" )", ")", selection_v2_sak_m_res, fixed = TRUE)
+    # selection_v2_sak_m_res <- gsub("( ", "(", selection_v2_sak_m_res, fixed = TRUE)
+
+
+    select_year <- NVIdb::build_sql_select_year(year = period, varname = "sak.aar")
+
+    if (!is.null(analytt)) {
+      select_analytt <- NVIdb::build_sql_select_code(values = analytt, varname = "analyttkode")
+      select_analytt <- paste0("AND (",
+                               select_analytt,
+                               ")")
+    } else {select_analytt <- ""}
+
+
+
+    # Build query
+    selection_sakskonklusjon <- paste("SELECT v_sakskonklusjon.*,",
+                                      "sak.mottatt_dato, sak.uttaksdato, sak.sak_avsluttet, sak.hensiktkode,",
+                                      "sak.eier_lokalitetstype, sak.eier_lokalitetnr",
+                                      "FROM v_innsendelse AS sak",
+                                      "INNER JOIN v_sakskonklusjon",
+                                      "ON (v_sakskonklusjon.aar = sak.aar AND",
+                                      "v_sakskonklusjon.ansvarlig_seksjon = sak.ansvarlig_seksjon AND",
+                                      "v_sakskonklusjon.innsendelsesnummer = sak.innsendelsesnummer)",
+                                      "WHERE", select_year,
+                                      select_analytt)
+
+    # Remove unnecessary spaces from string
+    selection_sakskonklusjon <- gsub(" +", " ", selection_sakskonklusjon)
+    selection_sakskonklusjon <- gsub(" $", "", selection_sakskonklusjon)
+    # selection_sakskonklusjon <- gsub("( ", "(", selection_sakskonklusjon, fixed = TRUE)
+
+    select_statement <- list("selection_v2_sak_m_res" = selection_v2_sak_m_res,
+                             "selection_sakskonklusjon" = selection_sakskonklusjon)
+
+    return(select_statement)
   }
-
-  # Select metodekode
-  select_metode <- NVIdb::build_sql_select_code(values = metode, varname = "metodekode")
-  if (nchar(select_metode) > 0) {
-    if (nchar(select_codes) > 0) {select_codes <- paste(select_codes, "OR")}
-    select_codes <- paste(select_codes, select_metode)
-  }
-
-  # Select konkl_analyttkode
-  select_konkl_analytt <- NVIdb::build_sql_select_code(values = analytt, varname = "konkl_analyttkode")
-  if (nchar(select_konkl_analytt) > 0) {
-    if (nchar(select_codes) > 0) {select_codes <- paste(select_codes, "OR")}
-    select_codes <- paste(select_codes, select_konkl_analytt)
-  }
-
-  # Select res_analyttkode
-  select_res_analytt <- NVIdb::build_sql_select_code(values = analytt, varname = "analyttkode_funn")
-  if (nchar(select_res_analytt) > 0) {
-    if (nchar(select_codes) > 0) {select_codes <- paste(select_codes, "OR")}
-    select_codes <- paste(select_codes, select_res_analytt)
-  }
-
-
-  # Build query
-  selection_v2_sak_m_res <- paste("SELECT * FROM v2_sak_m_res",
-                                  "WHERE", select_year, "AND",
-                                  paste0("(",
-                                         select_codes,
-                                         ")"))
-
-  # # Remove unnecessary spaces from string
-  selection_v2_sak_m_res <- gsub(' +', ' ', selection_v2_sak_m_res)
-  # selection_v2_sak_m_res <- gsub(" )", ")", selection_v2_sak_m_res, fixed = TRUE)
-  # selection_v2_sak_m_res <- gsub("( ", "(", selection_v2_sak_m_res, fixed = TRUE)
-
-
-  select_year <- NVIdb::build_sql_select_year(year = period, varname = "sak.aar")
-
-  if (!is.null(analytt)) {
-    select_analytt <- NVIdb::build_sql_select_code(values = analytt, varname = "analyttkode")
-    select_analytt <- paste0("AND (",
-                             select_analytt,
-                             ")")
-  } else {select_analytt <- ""}
-
-
-
-  # Build query
-  selection_sakskonklusjon <- paste("SELECT v_sakskonklusjon.*,",
-                                    "sak.mottatt_dato, sak.uttaksdato, sak.sak_avsluttet, sak.hensiktkode,",
-                                    "sak.eier_lokalitetstype, sak.eier_lokalitetnr",
-                                    "FROM v_innsendelse AS sak",
-                                    "INNER JOIN v_sakskonklusjon",
-                                    "ON (v_sakskonklusjon.aar = sak.aar AND",
-                                    "v_sakskonklusjon.ansvarlig_seksjon = sak.ansvarlig_seksjon AND",
-                                    "v_sakskonklusjon.innsendelsesnummer = sak.innsendelsesnummer)",
-                                    "WHERE", select_year,
-                                    select_analytt)
-
-  # Remove unnecessary spaces from string
-  selection_sakskonklusjon <- gsub(" +", " ", selection_sakskonklusjon)
-  selection_sakskonklusjon <- gsub(" $", "", selection_sakskonklusjon)
-  # selection_sakskonklusjon <- gsub("( ", "(", selection_sakskonklusjon, fixed = TRUE)
-
-  select_statement <- list("selection_v2_sak_m_res" = selection_v2_sak_m_res,
-                           "selection_sakskonklusjon" = selection_sakskonklusjon)
-
-  return(select_statement)
 }
