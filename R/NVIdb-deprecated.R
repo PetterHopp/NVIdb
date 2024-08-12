@@ -17,28 +17,53 @@
 #'     Functions from the much better package \code{gitcreds} should be used instead.
 #'
 #' The arguments \code{missing_art} and \code{file} in \code{set_disease_parameters}
-#'     was deprecated from v0.11.0 released 2024-01-24. These arguments are 
-#'     replaced by the more meaningful \code{include_missing_art} and 
-#'     \code{selection_parameters}, respectively. If using the old arguments, 
-#'     the input will be transferred to the new arguments. 
-#'     
+#'     was deprecated from v0.11.0 released 2024-01-24. These arguments are
+#'     replaced by the more meaningful \code{include_missing_art} and
+#'     \code{selection_parameters}, respectively. If using the old arguments,
+#'     the input will be transferred to the new arguments.
+#'
 #' \code{login_EOS}, \code{login_by_input_EOS}, and \code{login_by_credentials_EOS}
-#'     was deprecated from v0.##.# released 2024-##-##. The functions were rarely
+#'     was deprecated from v0.11.2 released 2024-04-05. The functions were rarely
 #'     used and are unnecessary wrappers around the login-functions. The
 #'     login-functions with the argument \code{dbservice} = "EOS" should be used
 #'     instead, see \code{\link{login}}.
 #'
-#' \code{set_credentials_EOS} was deprecated from v0.##.# released 2024-##-##.
+#' \code{set_credentials_EOS} was deprecated from v0.11.2 released 2024-04-05.
 #'     The function was rarely used and is an unnecessary wrapper around
 #'      \code{set_credentials}. \code{\link{set_credentials}} with the argument
 #'      \code{dbservice} = "EOS" should be used instead.
 #'
 #' The arguments \code{FUN} and \code{selection_statement} in \code{retrieve_PJSdata}
-#'     was deprecated from v0.##.# released 2024-##-##. These arguments should 
+#'     was deprecated from v0.11.2 released 2024-04-05. These arguments should
 #'     instead be included in the list input to \code{selection_parameters}. If
-#'     using the old arguments, the input will be transferred to 
-#'     \code{selection_parameters}. 
-#'     
+#'     using the old arguments, the input will be transferred to
+#'     \code{selection_parameters}.
+#'
+#' All functions made especially to handle PJS data have been moved to NVIpjsr
+#'     and were deprecated from v0.##.# released 2024-##-##. Further development
+#'     of these functions will only take place in NVIpjsr. The following
+#'     functions have been moved:
+#' \itemize{
+#'   \item \code{add_PJS_code_description}.
+#'   \item \code{build_query_hensikt}.
+#'   \item \code{build_query_one_disease}.
+#'   \item \code{build_query_outbreak}.
+#'   \item \code{build_sql_select_code}.
+#'   \item \code{build_sql_select_year}.
+#'   \item \code{choose_PJS_levels}.
+#'   \item \code{copy_PJS_code_2_text}.
+#'   \item \code{exclude_from_PJSdata}.
+#'   \item \code{login_by_credentials_PJS}.
+#'   \item \code{read_eos_data}.
+#'   \item \code{read_PJS_code_2_text}.
+#'   \item \code{retrieve_PJSdata}.
+#'   \item \code{select_PJSdata_for_value}.
+#'   \item \code{set_disease_parameters}.
+#'   \item \code{standardize_eos_data}.
+#'   \item \code{standardize_PJSdata}.
+#'   \item \code{transform_code_combinations}.
+#'   }
+#'
 #' @param \dots (arguments)
 #' @return (results)
 #' @name NVIdb-deprecated
@@ -56,5 +81,24 @@
 #' login_by_input_EOS(...) ### -- use login_by_input("EOS") instead.
 #' login_by_credentials_EOS(...) ### -- use login_by_credentials("EOS") instead.
 #' set_credentials_EOS(...) ### -- use set_credentials("EOS") instead.
+#' login_by_credentials_PJS(...) ### -- use login_by_credentials("PJS") instead
+#' add_PJS_code_description(...) ### -- use NVIpjsr::add_PJS_code_description() instead
+#' build_query_hensikt(...) ### -- use NVIpjsr::build_query_hensikt() instead
+#' build_query_one_disease(...) ### -- use NVIpjsr:build_query_one_disease:() instead
+#' build_query_outbreak(...) ### -- use NVIpjsr::build_query_outbreak() instead
+#' build_sql_select_code(...) ### -- use NVIpjsr::build_sql_select_code() instead
+#' build_sql_select_year(...) ### -- use NVIpjsr::build_sql_select_year() instead
+#' choose_PJS_levels(...) ### -- use NVIpjsr::choose_PJS_levels() instead
+#' copy_PJS_code_2_text(...) ### -- use NVIpjsr::copy_PJS_code_2_text() instead
+#' exclude_from_PJSdata(...) ### -- use NVIpjsr::exclude_from_PJSdata() instead
+#' login_by_credentials_PJS(...) ### -- use login_by_credentials("PJS") instead
+#' read_eos_data(...) ### -- use NVIpjsr::read_eos_data() instead
+#' read_PJS_code_2_text(...) ### -- use NVIpjsr::read_PJS_code_2_text() instead
+#' retrieve_PJSdata(...) ### -- use NVIpjsr::retrieve_PJSdata() instead
+#' select_PJSdata_for_value(...) ### -- use NVIpjsr::select_PJSdata_for_value() instead
+#' set_disease_parameters(...) ### -- use NVIpjsr::set_disease_parameters() instead
+#' standardize_eos_data(...) ### -- use NVIpjsr::standardize_eos_data() instead
+#' standardize_PJSdata(...) ### -- use NVIpjsr::standardize_PJSdata() instead
+#' transform_code_combinations(...) ### -- use NVIpjsr::transform_code_combinations() instead
 #' }
 NULL

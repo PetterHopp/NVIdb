@@ -3,11 +3,8 @@
 %   R/login_by_input.R
 \name{login}
 \alias{login}
-\alias{login_PJS}
 \alias{login_by_credentials}
-\alias{login_by_credentials_PJS}
 \alias{login_by_input}
-\alias{login_by_input_PJS}
 \title{Log in to data base services}
 \usage{
 login(
@@ -20,8 +17,6 @@ login(
   dbinterface = NULL
 )
 
-login_PJS(dbinterface = NULL, ...)
-
 login_by_credentials(
   dbservice,
   dbdriver = NULL,
@@ -31,8 +26,6 @@ login_by_credentials(
   dbprotocol = NULL,
   dbinterface = NULL
 )
-
-login_by_credentials_PJS(dbinterface = NULL, ...)
 
 login_by_input(
   dbservice,
@@ -44,8 +37,6 @@ login_by_input(
   dbinterface = NULL,
   dbtext = NULL
 )
-
-login_by_input_PJS(dbinterface = NULL, ...)
 }
 \arguments{
 \item{dbservice}{[\code{character(1)}]\cr
@@ -71,9 +62,6 @@ Protocol to be used. Defaults to \code{NULL}.}
 \item{dbinterface}{[\code{character(1)}]\cr
 The R-package that is used for interface towards the data
     base. Defaults to \code{NULL}.}
-
-\item{\dots}{Other arguments to be passed from the wrappers to
-\code{login_by_credentials} or \code{login_by_input}.}
 
 \item{dbtext}{[\code{character(1)}]\cr
 Gives the possibility of showing another name than the dbservice

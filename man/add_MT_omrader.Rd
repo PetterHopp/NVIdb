@@ -54,9 +54,13 @@ When the new column(s) already exist,
 
 \item{filename}{a list with the filenames of the source files with the tables for generating the translation table.}
 
-\item{from_path}{Path for the source files for the translation table.}
+\item{from_path}{[\code{character(1)}]\cr
+Path for the source files used to generate the translation table. Defaults to
+   the standard location at NVI's internal network.}
 
-\item{to_path}{Path to where the source files for the translation table should be copied.}
+\item{to_path}{[\code{character(1)}]\cr
+Path to which the source files used to generate the translation table should
+   be copied. Defaults to \code{NULL}.}
 }
 \value{
 \code{add_MT_omrader} A data frame where the MT_avdelingnr has been added in the column to the

@@ -79,8 +79,6 @@
 #' Gives the possibility of showing another name than the dbservice
 #'     in the windows asking for username and password when using
 #'     \code{login_by_input}. Defaults to \code{NULL}.
-#' @param \dots Other arguments to be passed from the wrappers to
-#'     \code{login_by_credentials} or \code{login_by_input}.
 #' @return An open ODBC-channel to the database service.
 #' @family Log in functions
 #' @seealso  \code{\link{set_credentials}}
@@ -159,45 +157,7 @@ login <- function(dbservice,
   # Report check-results
   checkmate::reportAssertions(checks)
 
-  # # Error handling
-  #
-  # # 3. Parameters for db-connection is missing
-  # if ((is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) &
-  #     !tolower(dbservice) %in% tolower(NVIconfig:::dbconnect$dbservice)) {
-  #   stop(paste("Parameters for connection to",
-  #              dbservice,
-  #              "are missing and predefined parameters are not available"))
-  # }
-  #
-  # # Identifies connection parameters for predefined dbservices
-  # # Uses the predefined parameters only for parameters with NULL-value
-  # if (is.null(dbdriver) | is.null(db) | is.null(dbserver) | is.null(dbport) | is.null(dbprotocol)) {
-  #   connect <- NVIconfig:::dbconnect[tolower(dbservice), ]
-  #   if (is.null(dbdriver)) {dbdriver <- connect[, "dbdriver"]}
-  #   if (is.null(db)) {db <- connect[, "db"]}
-  #   if (is.null(dbserver)) {dbserver <- connect[, "dbserver"]}
-  #   if (is.null(dbport)) {dbport <- connect[, "dbport"]}
-  #   if (is.null(dbprotocol)) {dbprotocol <- connect[, "dbprotocol"]}
-  # }
-  #
 
-  #   # Check if credentials for PJS is stored in the user profile
-  # if (!is.element(tolower(dbservice), tolower(keyring::key_list()[, 1]))) {
-  #   # 2. Credentials for PJS are missing from the user profile
-  #   login_by_input(dbservice,
-  #                  dbdriver,
-  #                  db,
-  #                  dbserver,
-  #                  dbport,
-  #                  dbprotocol)
-  # } else {
-  #   login_by_credentials(dbservice,
-  #                        dbdriver,
-  #                        db,
-  #                        dbserver,
-  #                        dbport,
-  #                        dbprotocol)
-  # }
   # Use check for saved credentials to chose between login_by_input and login_by_credentials
   if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
     # If credentials are saved for the user profile
@@ -215,37 +175,8 @@ login <- function(dbservice,
                    db,
                    dbserver,
                    dbport,
-                   dbprotocol)
+                   dbprotocol,
+                   dbinterface)
   }
 
-}
-
-
-
-#' @export
-#' @rdname login
-
-login_PJS <- function(dbinterface = NULL, ...) {
-
-  # ARGUMENT CHECKING ----
-  # Object to store check-results
-  checks <- checkmate::makeAssertCollection()
-
-  # dbinterface
-  checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
-
-  # Report check-results
-  checkmate::reportAssertions(checks)
-
-  # Set service to PJS
-  dbservice <- "PJS"
-
-  # Use check for saved credentials to chose between login_by_input and login_by_credentials
-  if (isTRUE(NVIcheckmate::check_credentials(dbservice))) {
-    # If credentials are saved for the user profile
-    login_by_credentials(dbservice, dbinterface = dbinterface, ...)
-  } else {
-    # If credentials are missing from the user profile
-    login_by_input(dbservice, dbinterface = dbinterface, ...)
-  }
 }
