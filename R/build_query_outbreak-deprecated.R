@@ -66,7 +66,7 @@ NULL
 #'     Use \code{NVIpjsr::build_query_outbreak} instead. When attaching packages,
 #'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
 #' @details The old help pages can be found at \code{help("build_query_outbreak-deprecated")}.
-#'     Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 #'
 #' @param period [\code{numeric}]\cr
 #'     Time period given as year. One year or a vector giving the first
