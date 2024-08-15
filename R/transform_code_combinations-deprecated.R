@@ -84,7 +84,7 @@ NULL
 #'     Use \code{NVIpjsr::transform_code_combinations} instead. When attaching packages,
 #'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
 #' @details The old help pages can be found at \code{help("transform_code_combinations-deprecated")}.
-#'     Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 #'
 #' @param data \[\code{data.frame}\]\cr
 #' Data with code values that should be transformed.
@@ -112,10 +112,9 @@ transform_code_combinations <- function(data,
 
   if (isTRUE(NVIcheckmate::check_package(x = "NVIpjsr", type = "installed"))) {
     select_statement <- NVIpjsr::transform_code_combinations(data = data,
-                                                             levels = levels,
-                                                             keep_col = keep_col,
-                                                             remove_col = remove_col,
-                                                             unique_rows = unique_rows)
+                                                             from_values = from_values,
+                                                             to_values = to_values,
+                                                             impute_when_missing_from = impute_when_missing_from)
 
     return(select_statement)
   } else {
