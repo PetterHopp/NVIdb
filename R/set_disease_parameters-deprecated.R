@@ -106,7 +106,7 @@ NULL
 #'     Use \code{NVIpjsr::set_disease_parameters} instead. When attaching packages,
 #'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
 #' @details The old help pages can be found at \code{help("set_disease_parameters-deprecated")}.
-#'     Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 #'
 #' @param purpose [\code{character}]\cr
 #' A short description of the purpose of the selection, see details. Defaults to NULL.
