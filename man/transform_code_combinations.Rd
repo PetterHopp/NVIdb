@@ -12,17 +12,17 @@ transform_code_combinations(
 )
 }
 \arguments{
-\item{data}{\[\code{data.frame}\]\cr
+\item{data}{[\code{data.frame}]\cr
 Data with code values that should be transformed.}
 
-\item{from_values}{\[\code{list}\]\cr
+\item{from_values}{[\code{list}]\cr
 List with named vector(s) of code values that should transformed, see details and examples.}
 
-\item{to_values}{\[\code{list}\]\cr
+\item{to_values}{[\code{list}]\cr
 List with named vector(s) of code values that should be the results of the transformation,
     see details and examples.}
 
-\item{impute_when_missing_from}{\[\code{character}\]\cr
+\item{impute_when_missing_from}{[\code{character}]\cr
 Column names for the code variables from which code values should be copied if no
     transformation is performed. Defaults to the original column names.}
 }
