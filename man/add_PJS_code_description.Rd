@@ -87,14 +87,14 @@ translation table.}
 }
 \description{
 \code{add_PJS_code_description}, \code{read_PJS_code_2_text} and
-    \code{read_PJS_code_2_text} were deprecated in NVIdb v0.13.0 released
+    \code{copy_PJS_code_2_text} were deprecated in NVIdb v0.13.0 released
     2024-##-##. All PJS related functions have been moved to \code{NVIpjsr}.
     Use \code{NVIpjsr::add_PJS_code_description}, \code{NVIpjsr::read_PJS_code_2_text}
-    and \code{NVIpjsr::read_PJS_code_2_text} instead. When attaching packages,
+    and \code{NVIpjsr::copy_PJS_code_2_text} instead. When attaching packages,
     remember to attach \code{NVIdb} before \code{NVIpjsr}.
 }
 \details{
 The old help pages can be found at \code{help("add_PJS_code_description-deprecated")}.
-    Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+    Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 }
 \keyword{internal}
