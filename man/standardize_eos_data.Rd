@@ -27,10 +27,10 @@ The data retrieved from EOS.}
 The translation table to standard column names. Defaults to \code{NULL}.}
 
 \item{standardize_colnames}{[\code{logical(1)}]\cr
-If \code{TRUE}, the column names will be standardised. Defaults to \code{TRUE)}.}
+If \code{TRUE}, the column names will be standardised. Defaults to \code{TRUE}.}
 
 \item{breed_to_species}{[\code{logical(1)}]\cr
-If \code{TRUE}, breed is translated back to species. Defaults to \code{TRUE)}.}
+If \code{TRUE}, breed is translated back to species. Defaults to \code{TRUE}.}
 
 \item{adjust_n_examined}{[\code{logical(1)}]\cr
 If \code{TRUE}, the number of examined samples is adjusted so it is at maximum

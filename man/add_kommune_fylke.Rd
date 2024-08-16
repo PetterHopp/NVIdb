@@ -13,21 +13,20 @@ add_kommune_fylke(
   code_column = c("komnr"),
   new_column = c("gjeldende_komnr", "gjeldende_kommune", "gjeldende_fylkenr",
     "gjeldende_fylke"),
+  year = format(Sys.Date(), "\%Y"),
   position = "right",
   overwrite = FALSE
 )
 
 copy_kommune_fylke(
-  filename = list("Kommune_UTF8.csv", "komnr_2_gjeldende_komnr_UTF8.csv",
-    "Fylke_UTF8.csv"),
-  from_path = paste0(set_dir_NVI("GrunndataLand"), "FormaterteData/"),
+  filename = list("komnr_2_gjeldende_komnr2_UTF8.csv", "Fylke_UTF8.csv"),
+  from_path = file.path(set_dir_NVI("GrunndataLand", slash = FALSE), "FormaterteData"),
   to_path = NULL
 )
 
 read_kommune_fylke(
-  filename = list("Kommune_UTF8.csv", "komnr_2_gjeldende_komnr_UTF8.csv",
-    "Fylke_UTF8.csv"),
-  from_path = paste0(set_dir_NVI("GrunndataLand"), "FormaterteData/")
+  filename = list("komnr_2_gjeldende_komnr2_UTF8.csv", "Fylke_UTF8.csv"),
+  from_path = file.path(set_dir_NVI("GrunndataLand", slash = FALSE), "FormaterteData")
 )
 }
 \arguments{
@@ -38,6 +37,10 @@ read_kommune_fylke(
 \item{code_column}{The name of the column with the old komnr}
 
 \item{new_column}{The name of the new column that should contain the current komnr}
+
+\item{year}{[\code{integer(1) | character(1)}]\cr
+The year for which the komnr should be translated to valid komnr.
+    Defaults to the current year i.e. format(Sys.Date(), "\%Y").}
 
 \item{position}{[\code{character(1)}]\cr
 The position for the new columns, can be one of c("first", 
@@ -51,7 +54,7 @@ When the new column(s) already exist,
     \code{overwrite = TRUE}. If the new column(s) already exist and 
     \code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
 
-\item{filename}{Filename of the translation table for old komnr to current komnr}
+\item{filename}{File name of the translation table for old komnr to current komnr}
 
 \item{from_path}{Path for the source translation table}
 
@@ -69,41 +72,84 @@ When the new column(s) already exist,
     fylkenr to fylke to given directory. If the target file already exists, the source file is copied only when it is newer than the target file.
 }
 \description{
-Function to add columns with kommune (name), fylkenr, fylke (name), gjeldende_komnr, gjeldende_kommune,
-   gjeldende_fylkenr, and gjeldende_fylke. In addition there are functions to read and copy the translation tables.
+Function to add columns with kommune (name), fylkenr,
+   fylke (name), gjeldende_komnr, gjeldende_kommune, gjeldende_fylkenr,
+   and gjeldende_fylke. In addition there are functions to read and
+   copy the translation tables.
 }
 \details{
-Data sources, like PJS, may provide data with komnr. These functions manage translating komnr to current komnr,
-    kommune and fylke.
+Data sources, like PJS, may provide data with komnr. These
+    functions manage translation of komnr to current komnr, kommune
+    and fylke.
 
-    \code{add_kommune_fylke} can be used to translate komnr into kommune (name), fylkenr, fylke (name), gjeldende_komnr,
-    gjeldende_kommune, gjeldende_fylkenr, and gjeldende_fylke. The function can also be used to translate fylkenr into fylke (name),
-    gjeldende_fylkenr, and gjeldende_fylke.
+\code{add_kommune_fylke} can be used to translate komnr into kommune
+    (name), fylkenr, fylke (name), gjeldende_komnr, gjeldende_kommune,
+    gjeldende_fylkenr, and gjeldende_fylke. The function can also be
+    used to translate fylkenr into fylke (name), gjeldende_fylkenr,
+    and gjeldende_fylke.
 
-    One has to ensure that the code in the dataset represents a komnr or fylkenr. The function will translate any 4 and 2 digits
-    that has the same ID as a kommune or fylke, respectively.
+\code{add_kommune_fylke} will translate komnr from 1977 to the komnr
+    for the year given in the argument \code{year}. If a year previous
+    to the current year is given, only years before the given year will
+    be translated. Newer years cannot be translated to older year by
+    this function.
 
-    Standard name for the komnr is komnr. If the column with the komnr that should be translated has another name, the
-    parameter \code{code_column =} can be input as a named vector. Standard names for the new columns are c("kommune", "fylkenr", "fylke",
-    "gjeldende_komnr", "gjeldende_kommune", "gjeldende_fylkenr", "gjeldende_fylke"). Likewise, if the new columns should be given
-    other names than, the parameter \code{new_column =} can be input as a named vector, see examples.
+The translation of komnr and fylkenr is simplified. If there have been
+    changes in the borders between kommuner, this is not taken into account.
+    If kommuner have been split the komnr is translated to the new kommune
+    that has taken most of the area in the old kommune. I.e. in 2020, the
+    kommune Snillfjord was split into Orkland, Hitra and Heim, but are
+    translated into Orkland. In 2024, the kommune Ålesund was split into
+    Ålesund and Haram, but are translated into Ålesund. For produsenter
+    you need to first find the the correct new produsent-number by using
+    \code{\link{add_produsent_properties}} and thereafter assign them to
+    the correct kommune.
 
-    The function uses a premade translation tables that is made based on information in PJS adresseregister. The translation table
-    is updated when informed that know there is a need, typically when there have been changes in kommune-structure.
+When translating the fylkenr, the fylker "Viken", "Vestfold og Telemark"
+    and "Troms og Finnmark" that was established in 2020 and split in 2024,
+    will not be possible to be translate to new fylker without additional
+    information. If the komnr is translated, the new fylke will also be
+    translated.
 
-    \code{position =} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
-    placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
-    code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
-    data.frame. A special case occurs for \code{position = "keep"} which only has meaning when the new column has the same name as an existing
-    column and overwrite = TRUE. In these cases, the existing column will be overwritten with new data and have the same position.
+One has to ensure that the code in the dataset represents a komnr or fylkenr.
+    The function will translate any 4 and 2 digits that has the same ID as a
+    kommune or fylke, respectively.
 
-    \code{read_kommune_fylke} read the files "komnr_2_gjeldende_komnr_UTF8.csv", Kommune_UTF8.csv, and Fylke_UTF8.csv, into a single data
-    frame that can be used by \code{add_kommune_fylke}. Standard setting will read in the file from NVI's internal network. If changing the
-    from_path, the function can be used to read the translation files from other directories. This can be useful if having a stand alone app
-    with no connection the NVI's internal network. In other cases, it should be avoided.
+Standard name for the kommunenummer is komnr. If the column with
+    the komnr that should be translated has another name, the
+    parameter \code{code_column} can be input as a named vector.
+    Standard names for the new columns are c("kommune", "fylkenr", "fylke",
+    "gjeldende_komnr", "gjeldende_kommune", "gjeldende_fylkenr",
+    "gjeldende_fylke"). Likewise, if the new columns should be given
+    other names than, the parameter \code{new_column} can be input
+    as a named vector, see examples.
 
-    \code{copy_kommune_fylke} copy the files komnr_2_gjeldende_komnr_UTF8.csv, Kommune_UTF8.csv, and Fylke_UTF8.csv, respectively, to a given
-    directory.
+The function uses a premade translation table that is made based on
+    information in PJS adresseregister. The translation table is updated
+    when informed that know there is a need, typically when there have
+    been changes in kommune structure.
+
+\code{position} is used to give the place if the new columns in the data
+    frame. For \code{position = "right"} the new variables are placed to
+    the right of the code_variable. Likewise, for \code{position = "left"}
+    the new variables are placed to the left of the code_variable. If
+    \code{position = "first"} or \code{position = "last"} the new columns
+    are placed first or last, respectively, in the data frame. A special
+    case occurs for \code{position = "keep"} which only has meaning when
+    the new column has the same name as an existing column and
+    \code{overwrite = TRUE}. In these cases, the existing column will be
+    overwritten with new data and have the same position.
+
+\code{read_kommune_fylke} read the files "komnr_2_gjeldende_komnr2_UTF8.csv"
+    and "Fylke_UTF8.csv", and generates the translation table as a single data
+    frame that can be used by \code{add_kommune_fylke}. Standard setting will
+    read in the file from NVI's internal network. If changing the \code{from_path},
+    the function can be used to read the translation files from other directories.
+    This can be useful if having a stand alone app with no connection the NVI's
+    internal network. In other cases, it should be avoided.
+
+\code{copy_kommune_fylke} copy the files "komnr_2_gjeldende_komnr2_UTF8.csv"
+    and "Fylke_UTF8.csv" to a given directory.
 }
 \examples{
 \dontrun{
@@ -122,8 +168,11 @@ kommune_fylke <- read_kommune_fylke(from_path = "./Data/")
 newdata <- add_kommune_fylke(olddata,
                              translation_table = kommune_fylke,
                              code_column = c("gammelt_komnr" = "komnr"),
-                             new_column = c("komnr" = "gjeldende_komnr",
-                                            "kommune" = "gjeldende_kommune"))
+                             new_column = c(
+"komnr" = "gjeldende_komnr",
+                                            "kommune" = "gjeldende_kommune"
+)
+)
 }
 
 }

@@ -19,7 +19,7 @@ The input is only used when \code{data_source = "formatted"}.}
 
 \item{year}{Year(s) for fetching the varekoderegister.}
 
-\item{data_source}{Reads formatted data or raw data. deafult is formatted.}
+\item{data_source}{Reads formatted data or raw data. Default is formatted.}
 }
 \value{
 \code{read_varekoder} A data frame with the translation table for

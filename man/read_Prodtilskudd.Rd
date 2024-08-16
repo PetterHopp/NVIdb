@@ -34,8 +34,8 @@ a vector with one or more years. Defaults to "last".}
 
 \item{Pkode_month}{[\code{character}]\cr
 The month for which the register should be read. The options are
-c("05", "10", "both", "last") for Pkode_year = 2017 and
-c("03", "10", "both", "last") for Pkode_year >= 2018. Defaults to "both".}
+c("05", "10", "both", "last") for \code{Pkode_year = 2017} and
+c("03", "10", "both", "last") for \code{Pkode_year} >= 2018. Defaults to "both".}
 
 \item{extracted_date}{[\code{character}]\cr
 The date the data was extracted from the database of the Norwegian
@@ -45,7 +45,7 @@ Agricultural Agency. The format should be "yyyy-mm-dd". Defaults to
 \value{
 \code{read_Prodtilskudd} reads one or more data frame(s) with the
     produksjonstilskuddsregister for each of the year and seasons selected.
-    If the options Pkode_year = "last" and Pkode_month = "last" is given,
+    If the options \code{Pkode_year = "last"} and \code{Pkode_month = "last"} is given,
     one file with the last produksjonstilskuddsregister is given.
 
     \code{copy_Prodtilskudd} copies the source produksjonstilskuddsregister
@@ -80,8 +80,8 @@ The produksjonstilskuddsregister includes information on number of
     register that was used. If so, first extract the last available version
     of the register. Find the uttrekkdato in the data, and write in the
     uttrekkdato in \code{extracted_date}. \code{extracted_date} cannot be used
-    in combination with \code{pkode_year} = "last" or \code{pkode_month} =
-    c("last", "both").
+    in combination with \code{pkode_year = "last"} or \code{pkode_month =
+    c("last", "both")}.
 
     \code{copy_Prodtilskudd} copies the source produksjonstilskuddsregister
     for each of the year and seasons selected to a given directory.

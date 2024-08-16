@@ -67,7 +67,7 @@
 #' @param \dots (arguments)
 #' @return (results)
 #' @name NVIdb-deprecated
-#' @export
+#' @keywords internal
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #'

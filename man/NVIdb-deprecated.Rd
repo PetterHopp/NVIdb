@@ -111,3 +111,4 @@ transform_code_combinations(...) ### -- use NVIpjsr::transform_code_combinations
 \author{
 Petter Hopp Petter.Hopp@vetinst.no
 }
+\keyword{internal}
