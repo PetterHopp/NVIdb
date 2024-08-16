@@ -48,7 +48,7 @@ NULL
 #'     Use \code{NVIpjsr::standardize_PJSdata} instead. When attaching packages,
 #'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
 #' @details The old help pages can be found at \code{help("standardize_PJSdata-deprecated")}.
-#'     Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 #'
 #' @param PJSdata [\code{data.frame}]\cr
 #' Data retrieved from PJS.
@@ -71,11 +71,8 @@ standardize_PJSdata <- function(PJSdata, dbsource = "v2_sak_m_res") {
                           'NVIpjsr::standardize_PJSdata'"))
 
   if (isTRUE(NVIcheckmate::check_package(x = "NVIpjsr", type = "installed"))) {
-    select_statement <- NVIpjsr::standardize_PJSdata(data = data,
-                                                     levels = levels,
-                                                     keep_col = keep_col,
-                                                     remove_col = remove_col,
-                                                     unique_rows = unique_rows)
+    select_statement <- NVIpjsr::standardize_PJSdata(PJSdata = PJSdata,
+                                                     dbsource = dbsource)
 
     return(select_statement)
   } else {

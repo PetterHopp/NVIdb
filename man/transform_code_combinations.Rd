@@ -34,6 +34,6 @@ Column names for the code variables from which code values should be copied if n
 }
 \details{
 The old help pages can be found at \code{help("transform_code_combinations-deprecated")}.
-    Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+    Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 }
 \keyword{internal}

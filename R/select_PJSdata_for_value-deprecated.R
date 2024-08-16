@@ -36,7 +36,7 @@ NULL
 #'     Use \code{NVIpjsr::select_PJSdata_for_value} instead. When attaching packages,
 #'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
 #' @details The old help pages can be found at \code{help("select_PJSdata_for_value-deprecated")}.
-#'     Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 #'
 #' @param data \[`data.frame`\]\cr
 #' PJS data from which a subset should be selected.

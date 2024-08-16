@@ -32,6 +32,6 @@ choose_PJS_levels(
 }
 \details{
 The old help pages can be found at \code{help("choose_PJS_levels-deprecated")}.
-    Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+    Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 }
 \keyword{internal}

@@ -74,7 +74,7 @@ NULL
 #'     Use \code{NVIpjsr::choose_PJS_levels} instead. When attaching packages,
 #'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
 #' @details The old help pages can be found at \code{help("choose_PJS_levels-deprecated")}.
-#'     Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 #'
 #' @param data Data frame with data from PJS
 #' @param levels PJS-levels from which data should be chosen. Valid values are c("sak", "prove", "delprove", "undersokelse", "resultat",

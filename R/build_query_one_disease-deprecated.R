@@ -69,7 +69,7 @@ NULL
 #'     Use \code{NVIpjsr::build_query_one_disease} instead. When attaching packages,
 #'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
 #' @details The old help pages can be found at \code{help("build_query_one_disease-deprecated")}.
-#'     Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 #'
 #' @template build_query_year
 #' @param analytt [\code{character}]\cr

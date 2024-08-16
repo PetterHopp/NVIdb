@@ -80,6 +80,6 @@ Either the path and file name for an R script that can be sourced and that
 }
 \details{
 The old help pages can be found at \code{help("set_disease_parameters-deprecated")}.
-    Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+    Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 }
 \keyword{internal}

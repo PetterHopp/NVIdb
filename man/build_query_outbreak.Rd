@@ -44,6 +44,6 @@ is the only valid value.}
 }
 \details{
 The old help pages can be found at \code{help("build_query_outbreak-deprecated")}.
-    Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+    Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 }
 \keyword{internal}

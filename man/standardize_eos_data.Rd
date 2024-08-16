@@ -49,6 +49,6 @@ If \code{TRUE}, redundant variables in the data is deleted. Defaults to \code{TR
 }
 \details{
 The old help pages can be found at \code{help("standardize_eos_data-deprecated")}.
-    Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+    Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 }
 \keyword{internal}

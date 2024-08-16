@@ -40,7 +40,7 @@ NULL
 #'     Use \code{NVIpjsr::read_eos_data} instead. When attaching packages,
 #'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
 #' @details The old help pages can be found at \code{help("read_eos_data-deprecated")}.
-#'     Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 #'
 
 #' @param from_path [\code{character(1)}]\cr
