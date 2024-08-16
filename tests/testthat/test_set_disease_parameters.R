@@ -1,4 +1,4 @@
-library(NVIdb)
+# library(NVIdb)
 library(testthat)
 
 test_that("set disease parameters by direct input", {
@@ -85,14 +85,21 @@ test_that("set disease parameters by direct input", {
                     "FUN" = NULL,
                     "select_statement" = NULL))
 
-  parameters <- expect_warning(set_disease_parameters(hensikt2select = c("0100108018", "0100109003", "0100111003"),
-                                       hensikt2delete = c("0800109"),
-                                       utbrudd2select = "22",
-                                       metode2select = NULL,
-                                       art2select = c("01%"),
-                                       missing_art = "non_selected_hensikt"),
-                               regexp = "The argument 'missing_art' is deprecated.",
-                               fixed = TRUE)
+  expect_warning(set_disease_parameters(hensikt2select = c("0100108018", "0100109003", "0100111003"),
+                                        hensikt2delete = c("0800109"),
+                                        utbrudd2select = "22",
+                                        metode2select = NULL,
+                                        art2select = c("01%"),
+                                        missing_art = "non_selected_hensikt"),
+                 regexp = "The argument 'missing_art' is deprecated.",
+                 fixed = TRUE)
+
+  parameters <- suppressWarnings(set_disease_parameters(hensikt2select = c("0100108018", "0100109003", "0100111003"),
+                                        hensikt2delete = c("0800109"),
+                                        utbrudd2select = "22",
+                                        metode2select = NULL,
+                                        art2select = c("01%"),
+                                        missing_art = "non_selected_hensikt"))
 
   expect_equal(parameters,
                list("purpose" = NULL,
@@ -105,7 +112,8 @@ test_that("set disease parameters by direct input", {
                     "art2select" = c("01%"),
                     "include_missing_art" = "for_selected_hensikt",
                     "FUN" = NULL,
-                    "select_statement" = NULL))
+                    "select_statement" = NULL),
+               ignore_attr = TRUE)
 
   parameters <- set_disease_parameters(hensikt2select = c("0100108018", "0100109003", "0100111003"),
                                        hensikt2delete = c("0800109"),
@@ -170,8 +178,10 @@ test_that("set disease parameters using parameter file", {
     con = file.path(tempdir(), "PD.R")
   )
 
-  parameters <- expect_warning(set_disease_parameters(file = file.path(tempdir(), "PD.R")),
+  expect_warning(set_disease_parameters(file = file.path(tempdir(), "PD.R")),
                                regexp = "The argument 'file' is deprecated")
+
+  parameters <- suppressWarnings(set_disease_parameters(file = file.path(tempdir(), "PD.R")))
   expect_equal(parameters,
                list("purpose" = NULL,
                     "hensikt2select" = c("0100108018", "0100109003", "0100111003", "0800109"),
@@ -183,7 +193,8 @@ test_that("set disease parameters using parameter file", {
                     "art2select" = NULL,
                     "include_missing_art" = "never",
                     "FUN" = NULL,
-                    "select_statement" = NULL))
+                    "select_statement" = NULL),
+               ignore_attr = TRUE)
 
   parameters <- set_disease_parameters(selection_parameters = file.path(tempdir(), "PD.R"))
   expect_equal(parameters,

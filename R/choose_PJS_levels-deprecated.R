@@ -9,7 +9,7 @@
 #'     In addition, column names that are the same as the standardized names but without the suffix "kode", will be included into the
 #'     specified levels.
 #'
-#'     As standard, only unique (distinct) rows are output. This can be changed by specifying \code{unique = FALSE}.#'
+#'     As standard, only unique (distinct) rows are output. This can be changed by specifying \code{unique = FALSE}.
 #'
 #' @param data Data frame with data from PJS
 #' @param levels PJS-levels from which data should be chosen. Valid values are c("sak", "prove", "delprove", "undersokelse", "resultat",

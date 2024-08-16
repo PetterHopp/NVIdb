@@ -15,7 +15,8 @@ read_leveransereg(
 
 \item{from_path}{Path for Leveranseregisteret}
 
-\item{\dots}{Other arguments to be passed to \code{data.table::fread}.}
+\item{\dots}{Other arguments to be passed to
+\ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}.}
 }
 \value{
 \code{read_LevReg} A data frame with Leveranseregisteret as in selected csv-file.
@@ -29,7 +30,7 @@ The Leveranseregisteret for slakt includes information on carcasses delivered to
     but number of slaughtered poultry per categories, slaughterhouse and date.
 
     \code{read_leveransereg} reads the Leveranseregisteret for slakt into a data frame. The standard settings will read in the files from NVI's
-    internal network. If changing the from_path, the function can be used to read Leveranseregisteret from other directories. This can be useful
+    internal network. If changing the \code{from_path}, the function can be used to read Leveranseregisteret from other directories. This can be useful
     if having a stand alone app with no connection the NVI's internal network. In other cases, it should be avoided.
 }
 \examples{
