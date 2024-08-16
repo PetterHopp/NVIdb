@@ -43,6 +43,6 @@ The encoding, one of c("UTF-8", "latin1"). Defaults to \code{"UTF-8"}.}
 }
 \details{
 The old help pages can be found at \code{help("read_eos_data-deprecated")}.
-    Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+    Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 }
 \keyword{internal}
