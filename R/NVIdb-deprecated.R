@@ -39,35 +39,35 @@
 #'     using the old arguments, the input will be transferred to
 #'     \code{selection_parameters}.
 #'
-#' All functions made especially to handle PJS data have been moved to NVIpjsr
+#' All functions made especially to handle PJS data have been moved to \code{NVIpjsr}
 #'     and were deprecated from v0.##.# released 2024-##-##. Further development
-#'     of these functions will only take place in NVIpjsr. The following
+#'     of these functions will only take place in \code{NVIpjsr}. The following
 #'     functions have been moved:
 #' \itemize{
-#'   \item \code{add_PJS_code_description}.
-#'   \item \code{build_query_hensikt}.
-#'   \item \code{build_query_one_disease}.
-#'   \item \code{build_query_outbreak}.
-#'   \item \code{build_sql_select_code}.
-#'   \item \code{build_sql_select_year}.
-#'   \item \code{choose_PJS_levels}.
-#'   \item \code{copy_PJS_code_2_text}.
-#'   \item \code{exclude_from_PJSdata}.
-#'   \item \code{login_by_credentials_PJS}.
-#'   \item \code{read_eos_data}.
-#'   \item \code{read_PJS_code_2_text}.
-#'   \item \code{retrieve_PJSdata}.
-#'   \item \code{select_PJSdata_for_value}.
-#'   \item \code{set_disease_parameters}.
-#'   \item \code{standardize_eos_data}.
-#'   \item \code{standardize_PJSdata}.
-#'   \item \code{transform_code_combinations}.
+#'   \item \code{add_PJS_code_description}
+#'   \item \code{build_query_hensikt}
+#'   \item \code{build_query_one_disease}
+#'   \item \code{build_query_outbreak}
+#'   \item \code{build_sql_select_code}
+#'   \item \code{build_sql_select_year}
+#'   \item \code{choose_PJS_levels}
+#'   \item \code{copy_PJS_code_2_text}
+#'   \item \code{exclude_from_PJSdata}
+#'   \item \code{login_by_credentials_PJS}
+#'   \item \code{read_eos_data}
+#'   \item \code{read_PJS_code_2_text}
+#'   \item \code{retrieve_PJSdata}
+#'   \item \code{select_PJSdata_for_value}
+#'   \item \code{set_disease_parameters}
+#'   \item \code{standardize_eos_data}
+#'   \item \code{standardize_PJSdata}
+#'   \item \code{transform_code_combinations}
 #'   }
 #'
 #' @param \dots (arguments)
 #' @return (results)
 #' @name NVIdb-deprecated
-#' @keywords internal
+#' @export
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #'
