@@ -33,6 +33,6 @@ If `TRUE`, the selected rows are included, if `FALSE`, the selected columns
 }
 \details{
 The old help pages can be found at \code{help("select_PJSdata_for_value-deprecated")}.
-    Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+    Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 }
 \keyword{internal}
