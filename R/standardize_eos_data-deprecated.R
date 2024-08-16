@@ -74,7 +74,7 @@ NULL
 #'     Use \code{NVIpjsr::standardize_eos_data} instead. When attaching packages,
 #'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
 #' @details The old help pages can be found at \code{help("standardize_eos_data-deprecated")}.
-#'     Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 #'
 #' @param data [\code{data.frame}]\cr
 #'     The data retrieved from EOS.
@@ -114,10 +114,13 @@ standardize_eos_data <- function(data,
 
   if (isTRUE(NVIcheckmate::check_package(x = "NVIpjsr", type = "installed"))) {
     select_statement <- NVIpjsr::standardize_eos_data(data = data,
-                                                      levels = levels,
-                                                      keep_col = keep_col,
-                                                      remove_col = remove_col,
-                                                      unique_rows = unique_rows)
+                                                      dbsource = dbsource,
+                                                      standards = standards,
+                                                      standardize_colnames = standardize_colnames,
+                                                      breed_to_species = breed_to_species,
+                                                      adjust_n_examined = adjust_n_examined,
+                                                      delete_redundant = delete_redundant,
+                                                      ...)
 
     return(select_statement)
   } else {
