@@ -25,6 +25,6 @@ The table that is the source of data. This will be used for fetching
 }
 \details{
 The old help pages can be found at \code{help("standardize_PJSdata-deprecated")}.
-    Information on deprecated function can be found at \code{help("NVIdb-deprecated")}.
+    Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 }
 \keyword{internal}
