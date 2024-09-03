@@ -11,11 +11,11 @@ read_csv_file(filename, from_path, options = NULL, ...)
 
 \item{from_path}{Path for the source file}
 
+\item{options}{A list with the arguments colClasses and fileEncoding. If
+\code{options = NULL} it defaults to
+\code{list(colClasses = NA, fileEncoding = "UTF-8")}.}
+
 \item{\dots}{Other arguments to be passed to \code{data.table::fread}.}
-
-\item{columnclasses}{Predefine format (numeric or character) of the variables}
-
-\item{fileencoding}{usually UTF-8}
 }
 \value{
 A data.frame with the data from the source file.

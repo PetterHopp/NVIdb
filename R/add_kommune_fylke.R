@@ -79,7 +79,8 @@
 #'
 #' @param data Data frame with data with a column with old komnr
 #' @param translation_table Data frame with the translation table for old komnr to current komnr
-#' @param code_column The name of the column with the old komnr
+#' @param code_column [character(1)}]\cr
+#'     The name of the column with the old komnr, see details. Defaults to "komnr".
 #' @param new_column The name of the new column that should contain the current komnr
 #' @param year [\code{integer(1) | character(1)}]\cr
 #' The year for which the komnr should be translated to valid komnr.
@@ -120,8 +121,7 @@
 #' newdata <- add_kommune_fylke(olddata,
 #'                              translation_table = kommune_fylke,
 #'                              code_column = c("gammelt_komnr" = "komnr"),
-#'                              new_column = c(
-#' "komnr" = "gjeldende_komnr",
+#'                              new_column = c("komnr" = "gjeldende_komnr",
 #'                                             "kommune" = "gjeldende_kommune"
 #' )
 #' )
@@ -129,7 +129,7 @@
 #'
 add_kommune_fylke <- function(data,
                               translation_table = kommune_fylke,
-                              code_column = c("komnr"),
+                              code_column = "komnr",
                               new_column = c("gjeldende_komnr", "gjeldende_kommune", "gjeldende_fylkenr", "gjeldende_fylke"),
                               year = format(Sys.Date(), "%Y"),
                               position = "right",

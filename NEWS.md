@@ -7,12 +7,12 @@
 
 ## Bug fixes:
 
-- Fixed `login_by_input`for log in when using `dbinterface = "RPostgreSQL"`.
+- Fixed `login_by_input` for log in when using `dbinterface = "RPostgreSQL"`.
 
 
 ## Other changes:
 
--
+- Included a meaningful error message for `read_Prodtilskudd` if no versions of Produksjonstilskudd was available for the selected years and months.
 
 
 ## BREAKING CHANGES:

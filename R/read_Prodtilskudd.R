@@ -127,7 +127,15 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
                                         Pkode_month = Pkode_month,
                                         extracted_date = extracted_date)
 
-  # Read data for the selected year and months from Pkoderegisteret and combine into one dataframe
+  # Read data for the selected year and months from Pkoderegisteret and
+  # combine into one data frame
+  # Check if any version of the register was found and give an ERROR if not
+  NVIcheckmate::assert_data_frame(filelist, min.rows = 1,
+                                  comment = paste("No versions of Produksjonstilskudd available for year",
+                                                  Pkode_year,
+                                                  "and month",
+                                                  Pkode_month,
+                                                  "."))
   for (i in 1:dim(filelist)[1]) {
 
     # Identifies column names with fylke, kommune and prodnr
