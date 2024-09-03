@@ -10,7 +10,7 @@
 add_kommune_fylke(
   data,
   translation_table = kommune_fylke,
-  code_column = c("komnr"),
+  code_column = "komnr",
   new_column = c("gjeldende_komnr", "gjeldende_kommune", "gjeldende_fylkenr",
     "gjeldende_fylke"),
   year = format(Sys.Date(), "\%Y"),
@@ -33,8 +33,6 @@ read_kommune_fylke(
 \item{data}{Data frame with data with a column with old komnr}
 
 \item{translation_table}{Data frame with the translation table for old komnr to current komnr}
-
-\item{code_column}{The name of the column with the old komnr}
 
 \item{new_column}{The name of the new column that should contain the current komnr}
 
@@ -168,8 +166,7 @@ kommune_fylke <- read_kommune_fylke(from_path = "./Data/")
 newdata <- add_kommune_fylke(olddata,
                              translation_table = kommune_fylke,
                              code_column = c("gammelt_komnr" = "komnr"),
-                             new_column = c(
-"komnr" = "gjeldende_komnr",
+                             new_column = c("komnr" = "gjeldende_komnr",
                                             "kommune" = "gjeldende_kommune"
 )
 )
