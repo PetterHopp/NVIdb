@@ -61,6 +61,8 @@
 #' @param filename a list with the filenames of the source files with the tables for generating the translation table.
 #' @param from_path Path for the source files for the translation table.
 #' @param to_path Path to where the source files for the translation table should be copied.
+#' @param \dots	Other arguments to be passed to
+#'     \ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.
 #'
 #' @return \code{add_MT_omrader} A data frame where the MT_avdelingnr has been added in the column to the
 #'     right of the column with the komnr.
