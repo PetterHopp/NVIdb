@@ -24,7 +24,8 @@ copy_poststed(
 
 read_poststed(
   filename = "Poststed_UTF8.csv",
-  from_path = paste0(set_dir_NVI("GrunndataLand"), "FormaterteData/")
+  from_path = paste0(set_dir_NVI("GrunndataLand"), "FormaterteData/"),
+  ...
 )
 }
 \arguments{
@@ -60,6 +61,9 @@ Path to the source file(s) used to generate the translation table. Defaults
 \item{to_path}{[\code{character(1)}]\cr
 Path to which the source file(s) used to generate the translation table should
     be copied.}
+
+\item{\dots}{Other arguments to be passed to
+\ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.}
 }
 \value{
 \code{add_poststed} A data frame where one or more of the columns
