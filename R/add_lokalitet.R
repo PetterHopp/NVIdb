@@ -47,6 +47,8 @@
 #' The filenames of the source files with the tables for generating the translation table.
 #' @param from_path [\code{character(1)}]\cr
 #' Path for the source files for the translation table.
+#' @param \dots	Other arguments to be passed to
+#'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}.
 #'
 #' @return \code{add_lokalitet}: \code{data.frame} where the aquaculture
 #'     zone and / or geo-coordinates have been added in the column to the
