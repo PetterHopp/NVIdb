@@ -88,8 +88,10 @@
 #' @template position
 #' @template overwrite
 #' @param filename File name of the translation table for old komnr to current komnr
-#' @param from_path Path for the source translation table
-#' @param to_path Path for the target translation table when copying the translation table
+#' @template from_path_add
+# Path for the source translation table
+#' @template to_path_add
+# Path for the target translation table when copying the translation table
 #' @param \dots	Other arguments to be passed to
 #'     \ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.
 #'

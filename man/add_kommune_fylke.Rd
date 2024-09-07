@@ -58,9 +58,13 @@ When the new column(s) already exist,
 
 \item{filename}{File name of the translation table for old komnr to current komnr}
 
-\item{from_path}{Path for the source translation table}
+\item{from_path}{[\code{character(1)}]\cr
+Path to the source file(s) used to generate the translation table. Defaults 
+    to their standard directory at NVI's internal network.}
 
-\item{to_path}{Path for the target translation table when copying the translation table}
+\item{to_path}{[\code{character(1)}]\cr
+Path to where the source file(s) used to generate the translation table should
+    be copied.}
 
 \item{\dots}{Other arguments to be passed to
 \ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.}
