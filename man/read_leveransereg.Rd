@@ -25,13 +25,18 @@ read_leveransereg(
 Functions to read Leveranseregisteret for slakt.
 }
 \details{
-The Leveranseregisteret for slakt includes information on carcasses delivered to slaughter. The register include identity of the farmer,
-    slaughterhouse, date of slaughter, animal species, category (age group and sex), and weight. For poultry the individual animal is not reported,
+The Leveranseregisteret for slakt includes information on carcasses
+    delivered to slaughter. The register include identity of the farmer,
+    slaughterhouse, date of slaughter, animal species, category (age group
+    and sex), and weight. For poultry the individual animal is not reported,
     but number of slaughtered poultry per categories, slaughterhouse and date.
 
-    \code{read_leveransereg} reads the Leveranseregisteret for slakt into a data frame. The standard settings will read in the files from NVI's
-    internal network. If changing the \code{from_path}, the function can be used to read Leveranseregisteret from other directories. This can be useful
-    if having a stand alone app with no connection the NVI's internal network. In other cases, it should be avoided.
+\code{read_leveransereg} reads the Leveranseregisteret for slakt into a
+    data frame. The standard settings will read in the files from NVI's
+    internal network. If changing the \code{from_path}, the function can be
+    used to read Leveranseregisteret from other directories. This can be
+    useful if having a stand alone app with no connection the NVI's internal
+    network. In other cases, it should be avoided.
 }
 \examples{
 \dontrun{
