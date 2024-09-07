@@ -8,7 +8,8 @@
 
 read_kommune_fylke <- function(filename = list("komnr_2_gjeldende_komnr2_UTF8.csv",
                                                "Fylke_UTF8.csv"),
-                               from_path = file.path(set_dir_NVI("GrunndataLand", slash = FALSE), "FormaterteData")) {
+                               from_path = file.path(set_dir_NVI("GrunndataLand", slash = FALSE), "FormaterteData"),
+                               ...) {
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
 
@@ -24,14 +25,22 @@ read_kommune_fylke <- function(filename = list("komnr_2_gjeldende_komnr2_UTF8.cs
   ## Read files with kommune and fylke data
   # Read kommune (nr and name)
   # Read komnr to current komnr (old and new number)
-  kommune_fylke <- read_csv_file(filename = filename[[1]],
-                                 from_path = from_path,
-                                 options = list(colClasses = "character", fileEncoding = "UTF-8"))
+  # kommune_fylke <- read_csv_file(filename = filename[[1]],
+  #                                from_path = from_path,
+  #                                options = list(colClasses = "character", fileEncoding = "UTF-8"))
+  kommune_fylke <- utils::read.csv2(file = file.path(from_path, filename[[1]]),
+                                    colClasses = "character",
+                                    fileEncoding = "UTF-8",
+                                    ...)
 
   # Read fylke (nr and name)
-  fylke <- read_csv_file(filename = filename[[2]],
-                         from_path = from_path,
-                         options = list(colClasses = "character", fileEncoding = "UTF-8"))
+  # fylke <- read_csv_file(filename = filename[[2]],
+  #                        from_path = from_path,
+  #                        options = list(colClasses = "character", fileEncoding = "UTF-8"))
+  fylke <- utils::read.csv2(file = file.path(from_path, filename[[2]]),
+                            colClasses = "character",
+                            fileEncoding = "UTF-8",
+                            ...)
 
   ### Generate one table with translation from kommunenr to original and current kommune and fylke ----
   # Add original fylkenr

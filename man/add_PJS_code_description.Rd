@@ -27,7 +27,8 @@ copy_PJS_codes_2_text(
 
 read_PJS_codes_2_text(
   filename = "PJS_codes_2_text.csv",
-  from_path = paste0(set_dir_NVI("Provedata_Rapportering"), "FormaterteData/")
+  from_path = paste0(set_dir_NVI("Provedata_Rapportering"), "FormaterteData/"),
+  ...
 )
 }
 \arguments{
@@ -85,6 +86,9 @@ Path for the source translation table for PJS codes.}
 \item{to_path}{[\code{character(1)}] \cr
 Path for the target translation table for PJS codes when copying the
 translation table.}
+
+\item{\dots}{Other arguments to be passed to
+\ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.}
 }
 \value{
 \code{add_PJS_code_description} A data frame where the description text

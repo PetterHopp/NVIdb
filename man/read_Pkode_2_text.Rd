@@ -14,7 +14,8 @@ copy_Pkode_2_text(
 read_Pkode_2_text(
   filename = "Produksjonstilskuddskoder2_UTF8.csv",
   from_path = paste0(set_dir_NVI("Prodtilskudd"), "StotteData/"),
-  keep_old_names = FALSE
+  keep_old_names = FALSE,
+  ...
 )
 }
 \arguments{
@@ -31,6 +32,9 @@ Path for the target translation table when copying produksjonstilskuddskoder.}
 \item{keep_old_names}{[\code{logical(1)}]\cr
 Keep old column names as were used as standard in NVIdb <= v0.7.1. Defaults
     to \code{FALSE}.}
+
+\item{\dots}{Other arguments to be passed to
+\ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.}
 }
 \value{
 \code{read_Pkode_2_text} A data frame with the translation table for

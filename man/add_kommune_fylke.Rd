@@ -26,13 +26,17 @@ copy_kommune_fylke(
 
 read_kommune_fylke(
   filename = list("komnr_2_gjeldende_komnr2_UTF8.csv", "Fylke_UTF8.csv"),
-  from_path = file.path(set_dir_NVI("GrunndataLand", slash = FALSE), "FormaterteData")
+  from_path = file.path(set_dir_NVI("GrunndataLand", slash = FALSE), "FormaterteData"),
+  ...
 )
 }
 \arguments{
 \item{data}{Data frame with data with a column with old komnr}
 
 \item{translation_table}{Data frame with the translation table for old komnr to current komnr}
+
+\item{code_column}{[\code{character(1)}]\cr
+The name of the column with the old komnr, see details. Defaults to "komnr".}
 
 \item{new_column}{The name of the new column that should contain the current komnr}
 
@@ -54,9 +58,16 @@ When the new column(s) already exist,
 
 \item{filename}{File name of the translation table for old komnr to current komnr}
 
-\item{from_path}{Path for the source translation table}
+\item{from_path}{[\code{character(1)}]\cr
+Path to the source file(s) used to generate the translation table. Defaults 
+    to their standard directory at NVI's internal network.}
 
-\item{to_path}{Path for the target translation table when copying the translation table}
+\item{to_path}{[\code{character(1)}]\cr
+Path to where the source file(s) used to generate the translation table should
+    be copied.}
+
+\item{\dots}{Other arguments to be passed to
+\ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.}
 }
 \value{
 \code{add_kommune_fylke} A data frame where one or more of the columns c("kommune", "fylkenr", "fylke", "gjeldende_komnr",

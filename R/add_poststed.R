@@ -57,6 +57,8 @@
 #' komnr.
 #' @template from_path_add
 #' @template to_path_add
+#' @param \dots	Other arguments to be passed to
+#'     \ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.
 #'
 #' @return \code{add_poststed} A data frame where one or more of the columns
 #'     c("poststed", "komnr") have been added in the column(s) to the right of

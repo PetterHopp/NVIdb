@@ -8,7 +8,8 @@ read_varekode(
   filename = "varekoder.csv",
   from_path = paste0(set_dir_NVI("LevReg")),
   year = NULL,
-  data_source = "formatted"
+  data_source = "formatted",
+  ...
 )
 }
 \arguments{
@@ -20,6 +21,9 @@ The input is only used when \code{data_source = "formatted"}.}
 \item{year}{Year(s) for fetching the varekoderegister.}
 
 \item{data_source}{Reads formatted data or raw data. Default is formatted.}
+
+\item{\dots}{Other arguments to be passed to
+\ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.}
 }
 \value{
 \code{read_varekoder} A data frame with the translation table for

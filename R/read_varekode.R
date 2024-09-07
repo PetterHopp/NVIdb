@@ -24,6 +24,8 @@
 #' @param from_path Path for the translation table for varekoder.
 #' @param year Year(s) for fetching the varekoderegister.
 #' @param data_source Reads formatted data or raw data. Default is formatted.
+#' @param \dots	Other arguments to be passed to
+#'     \ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.
 #'
 #' @return \code{read_varekoder} A data frame with the translation table for
 #'     varekoder to descriptive text and metadata.
@@ -40,7 +42,8 @@
 read_varekode <- function(filename = "varekoder.csv",
                           from_path = paste0(set_dir_NVI("LevReg")),
                           year = NULL,
-                          data_source = "formatted") {
+                          data_source = "formatted",
+                          ...) {
 
   # PREPARE ARGUMENTS BEFORE ARGUMENT CHECKING ----
   from_path <- sub("/+$|\\\\+$", "", from_path)
@@ -91,10 +94,14 @@ read_varekode <- function(filename = "varekoder.csv",
     from_path <- file.path(from_path, "FormaterteData")
 
     # READ DATA ----
-    df1 <- read_csv_file(filename = filename,
-                         from_path = from_path,
-                         options = list(colClasses = c("varekode" = "character"),
-                                        fileEncoding = "UTF-8"))
+    # df1 <- read_csv_file(filename = filename,
+    #                      from_path = from_path,
+    #                      options = list(colClasses = c("varekode" = "character"),
+    #                                     fileEncoding = "UTF-8"))
+    df1 <- utils::read.csv2(file = file.path(from_path, filename),
+                            colClasses = c("varekode" = "character"),
+                            fileEncoding = "UTF-8",
+                            ...)
 
     if (!is.null(year)) {
       if (year[1] == "last") {year <- max(df1$leveranseaar)}

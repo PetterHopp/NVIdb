@@ -24,7 +24,8 @@ copy_MT_omrader(
 
 read_MT_omrader(
   filename = list("komnr_2_MT_avdeling.csv", "MT_omrader.csv"),
-  from_path = base::paste0(set_dir_NVI("GrunndataLand"), "FormaterteData/")
+  from_path = base::paste0(set_dir_NVI("GrunndataLand"), "FormaterteData/"),
+  ...
 )
 }
 \arguments{
@@ -57,9 +58,16 @@ When the new column(s) already exist,
 
 \item{filename}{a list with the filenames of the source files with the tables for generating the translation table.}
 
-\item{from_path}{Path for the source files for the translation table.}
+\item{from_path}{[\code{character(1)}]\cr
+Path to the source file(s) used to generate the translation table. Defaults 
+    to their standard directory at NVI's internal network.}
 
-\item{to_path}{Path to where the source files for the translation table should be copied.}
+\item{to_path}{[\code{character(1)}]\cr
+Path to where the source file(s) used to generate the translation table should
+    be copied.}
+
+\item{\dots}{Other arguments to be passed to
+\ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.}
 }
 \value{
 \code{add_MT_omrader} A data frame where the MT_avdelingnr has been added in the column to the

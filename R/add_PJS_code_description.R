@@ -145,6 +145,8 @@
 #' @param to_path [\code{character(1)}] \cr
 #'     Path for the target translation table for PJS codes when copying the
 #'     translation table.
+#' @param \dots	Other arguments to be passed to
+#'     \ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.
 #'
 #' @return \code{add_PJS_code_description} A data frame where the description text
 #'     for the PJS code has been added in the column to the right of the column

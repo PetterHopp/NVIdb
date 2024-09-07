@@ -38,8 +38,12 @@
 #'     \code{new_column} value is missing? Default is \code{FALSE}. To be used for translating prodnr8 to
 #'     gjeldende_prodnr8, see details.
 #' @param filename a list with the filenames of the source files with the tables for generating the translation table.
-#' @param from_path Path for the source files for the translation table.
-#' @param to_path Path for the target translation table when copying the translation table.
+#' @template from_path_add
+#  Path for the source files for the translation table.
+#' @template to_path_add
+# Path for the target translation table when copying the translation table.
+#' @param \dots	Other arguments to be passed to
+#'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}.
 #'
 #' @return \code{add_produsent_properties} returns a data frame where the column with gjeldende_prodnr8 has been added to the
 #'     right of the column with prodnr8.

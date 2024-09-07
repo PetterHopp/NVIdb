@@ -26,6 +26,8 @@
 #' @param keep_old_names [\code{logical(1)}]\cr
 #' Keep old column names as were used as standard in NVIdb <= v0.7.1. Defaults
 #'     to \code{FALSE}.
+#' @param \dots	Other arguments to be passed to
+#'     \ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.
 #'
 #' @return \code{read_Pkode_2_text} A data frame with the translation table for
 #'     Pkoder to description as read from the csv file. If not changing standard
@@ -52,7 +54,8 @@
 #'
 read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder2_UTF8.csv",
                               from_path = paste0(set_dir_NVI("Prodtilskudd"), "StotteData/"),
-                              keep_old_names = FALSE) {
+                              keep_old_names = FALSE,
+                              ...) {
 
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
@@ -70,9 +73,13 @@ read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder2_UTF8.csv",
   # reads header and identifies characters by using NVIdb::standardize_columns
   colclasses <- standardize_columns(data = file.path(from_path, filename), property = "colclasses")
 
-  Pkoder <- read_csv_file(filename = filename,
-                          from_path = from_path,
-                          options = list(colClasses = colclasses, fileEncoding = "UTF-8"))
+  # Pkoder <- read_csv_file(filename = filename,
+  #                         from_path = from_path,
+  #                         options = list(colClasses = colclasses, fileEncoding = "UTF-8"))
+  Pkoder <- utils::read.csv2(file = file.path(from_path, filename),
+                             colClasses = "character",
+                             fileEncoding = "UTF-8",
+                             ...)
 
   if (isTRUE(keep_old_names)) {
     standard_names <- c("soknadaar", "telledato", "Pkodeart", "Pkode",

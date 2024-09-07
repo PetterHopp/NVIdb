@@ -46,6 +46,8 @@
 #'     The date the data was extracted from the database of the Norwegian
 #'     Agricultural Agency. The format should be "yyyy-mm-dd". Defaults to
 #'     \code{NULL}.
+#' @param \dots	Other arguments to be passed to
+#'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}.
 #'
 #' @return \code{read_Prodtilskudd} reads one or more data frame(s) with the
 #'     produksjonstilskuddsregister for each of the year and seasons selected.
@@ -71,7 +73,8 @@
 read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/"),
                               Pkode_year = "last",
                               Pkode_month = "both",
-                              extracted_date = NULL) {
+                              extracted_date = NULL,
+                              ...) {
 
   # PREPARE ARGUMENT ----
   # Removing ending "/" and "\\" from pathnames
@@ -103,9 +106,9 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
   if (!is.null(extracted_date)) {
     # Pkode_month
     NVIcheckmate::assert_subset_character(Pkode_month,
-                                choices = c("01", "03", "05", "07", "10", "12"),
-                                comment = "The inputs 'both' and 'last' are not accepted when 'extracted_date' is given",
-                                add = checks)
+                                          choices = c("01", "03", "05", "07", "10", "12"),
+                                          comment = "The inputs 'both' and 'last' are not accepted when 'extracted_date' is given",
+                                          add = checks)
     # Pkode_year
     NVIcheckmate::assert_integerish(as.numeric(Pkode_year[grep('[[:alpha:]]', Pkode_year, invert = TRUE)]),
                                     lower = 1995,
@@ -153,10 +156,16 @@ read_Prodtilskudd <- function(from_path = paste0(set_dir_NVI("Prodtilskudd"), "F
     names(colchars) <- colchar
 
     # read single files
-    tempdf <- read_csv_file(filename = filelist[i, "filename"],
-                            from_path = from_path,
-                            options = list(colClasses = colchars,
-                                           fileEncoding = "UTF-8"))
+    # tempdf <- read_csv_file(filename = filelist[i, "filename"],
+    #                         from_path = from_path,
+    #                         options = list(colClasses = colchars,
+    #                                        fileEncoding = "UTF-8"))
+    tempdf <- data.table::fread(file = file.path(from_path, filelist[i, "filename"]),
+                                colClasses = colchars,
+                                encoding = "UTF-8",
+                                showProgress = FALSE,
+                                data.table = FALSE,
+                                ...)
     if (exists("df1")) {
       df1[setdiff(names(tempdf), names(df1))] <- NA
       tempdf[setdiff(names(df1), names(tempdf))] <- NA

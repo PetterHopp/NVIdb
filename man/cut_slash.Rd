@@ -7,7 +7,8 @@
 cut_slash(x)
 }
 \arguments{
-\item{x}{Object with character strings.}
+\item{x}{[\code{character}]\cr
+Strings, typically file paths, where ending slash should be removed.}
 }
 \value{
 Object without ending slash in character strings.
