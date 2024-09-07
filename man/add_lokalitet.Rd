@@ -50,7 +50,8 @@ When the new column(s) already exist,
 The filenames of the source files with the tables for generating the translation table.}
 
 \item{from_path}{[\code{character(1)}]\cr
-Path for the source files for the translation table.}
+Path to the source file(s) used to generate the translation table. Defaults 
+    to their standard directory at NVI's internal network.}
 
 \item{\dots}{Other arguments to be passed to
 \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}.}
