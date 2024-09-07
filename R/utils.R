@@ -393,7 +393,8 @@ find_n_th_word <- function(x, position) {strsplit(x, " ")[[1]][position]}
 #'     in stead of
 #'     \ifelse{html}{\code{\link[base:paste0]{paste0}}}{\code{paste0}}.
 #'
-#' @param x Object with character strings.
+#' @param x  [\code{character}]\cr
+#'   Strings, typically file paths, where ending slash should be removed.
 #'
 #' @return Object without ending slash in character strings.
 #'
