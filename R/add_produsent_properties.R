@@ -40,6 +40,8 @@
 #' @param filename a list with the filenames of the source files with the tables for generating the translation table.
 #' @param from_path Path for the source files for the translation table.
 #' @param to_path Path for the target translation table when copying the translation table.
+#' @param \dots	Other arguments to be passed to
+#'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}.
 #'
 #' @return \code{add_produsent_properties} returns a data frame where the column with gjeldende_prodnr8 has been added to the
 #'     right of the column with prodnr8.
