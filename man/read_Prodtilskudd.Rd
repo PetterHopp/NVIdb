@@ -17,7 +17,8 @@ read_Prodtilskudd(
   from_path = paste0(set_dir_NVI("Prodtilskudd"), "FormaterteData/"),
   Pkode_year = "last",
   Pkode_month = "both",
-  extracted_date = NULL
+  extracted_date = NULL,
+  ...
 )
 }
 \arguments{
@@ -41,6 +42,9 @@ c("03", "10", "both", "last") for \code{Pkode_year} >= 2018. Defaults to "both".
 The date the data was extracted from the database of the Norwegian
 Agricultural Agency. The format should be "yyyy-mm-dd". Defaults to
 \code{NULL}.}
+
+\item{\dots}{Other arguments to be passed to
+\ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}.}
 }
 \value{
 \code{read_Prodtilskudd} reads one or more data frame(s) with the
