@@ -67,9 +67,13 @@ gjeldende_prodnr8, see details.}
 
 \item{filename}{a list with the filenames of the source files with the tables for generating the translation table.}
 
-\item{from_path}{Path for the source files for the translation table.}
+\item{from_path}{[\code{character(1)}]\cr
+Path to the source file(s) used to generate the translation table. Defaults 
+    to their standard directory at NVI's internal network.}
 
-\item{to_path}{Path for the target translation table when copying the translation table.}
+\item{to_path}{[\code{character(1)}]\cr
+Path to where the source file(s) used to generate the translation table should
+    be copied.}
 
 \item{\dots}{Other arguments to be passed to
 \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}.}
