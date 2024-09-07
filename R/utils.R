@@ -257,7 +257,7 @@ add_new_column <- function(data,
 # #'    \code{options = NULL} it defaults to
 # #'    \code{list(colClasses = NA, fileEncoding = "UTF-8")}.
 # #' @param \dots	Other arguments to be passed to \code{data.table::fread}.
-# 
+#
 # #' @return A data.frame with the data from the source file.
 # #' @author Petter Hopp Petter.Hopp@@vetinst.no
 # #'
@@ -266,17 +266,17 @@ add_new_column <- function(data,
 # #' read_csv_file(filename, from_path, columnclasses, fileencoding)
 # #' }
 # #' @keywords internal
-# 
+#
 # read_csv_file <- function(filename, from_path, options = NULL, ...) {
-# 
+#
 #   # Removes trailing "/" and "\\".
 #   from_path <- sub("/+$|\\\\+$", "", from_path)
 #   # # Check if from_path ends in "/". If not, "/" is added.
 #   # if (!endsWith(from_path, "/")) { from_path <- paste0(from_path, "/") }
-# 
+#
 #   # if (is.null(sep)) {sep <- ";"}
 #   # if (!exists("dec")) {dec <- ","}
-# 
+#
 #   if (is.null(options)) {
 #     options <- list(colClasses = NA, fileEncoding = "UTF-8")
 #   } else {
