@@ -77,21 +77,28 @@
 #' \code{copy_kommune_fylke} copy the files "komnr_2_gjeldende_komnr2_UTF8.csv"
 #'     and "Fylke_UTF8.csv" to a given directory.
 #'
-#' @param data Data frame with data with a column with old komnr
-#' @param translation_table Data frame with the translation table for old komnr to current komnr
+#' @param data [\code{data.frame}]\cr
+#' Data with a column with kommunenummer (komnr) or fylkesnummer (fylkenr).
+#' @param translation_table [\code{data.frame}]\cr
+#' The translation table for translating komnr to kommune, fylke etc. Defaults
+#'     to \code{kommune_fylke}.
 #' @param code_column [\code{character(1)}]\cr
-#'     The name of the column with the old komnr, see details. Defaults to "komnr".
-#' @param new_column The name of the new column that should contain the current komnr
+#' The name of the column with the code value. Valid values are one of
+#'     c("komnr", "fylkenr). If the column in data has another name, it can be
+#'     input as a named vector, see examples. Defaults to "komnr".
+#' @param new_column [\code{character}]\cr
+#' The name(s) of the new column(s) that should be added to the data. Defaults
+#'     to c("gjeldende_komnr", "gjeldende_kommune", "gjeldende_fylkenr", "gjeldende_fylke").
 #' @param year [\code{integer(1) | character(1)}]\cr
 #' The year for which the komnr should be translated to valid komnr.
 #'     Defaults to the current year i.e. format(Sys.Date(), "\%Y").
 #' @template position
 #' @template overwrite
-#' @param filename File name of the translation table for old komnr to current komnr
+#' @param filename [\code{list}]\cr
+#' File names of the source files for the translation table. Defaults to
+#'     list("komnr_2_gjeldende_komnr2_UTF8.csv", "Fylke_UTF8.csv").
 #' @template from_path_add
-# Path for the source translation table
 #' @template to_path_add
-# Path for the target translation table when copying the translation table
 #' @param \dots	Other arguments to be passed to
 #'     \ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.
 #'
