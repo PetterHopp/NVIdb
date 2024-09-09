@@ -29,14 +29,18 @@ read_MT_omrader(
 )
 }
 \arguments{
-\item{data}{Data frame with data with a column with a komnr.}
+\item{data}{[\code{data.frame}]\cr
+Data with a column with kommunenummer (komnr).}
 
-\item{translation_table}{Data frame with the table for translating from
-komnr to MT_areas.}
+\item{translation_table}{[\code{data.frame}]\cr
+The translation table for translating komnr to MT-areas. Defaults
+    to \code{komnr_2_MT_omrader}.}
 
-\item{code_column}{The column with the coded value. Valid values are one
-of c("komnr", "MT_avdelingnr", "MT_regionnr"). If the column in data
-has another name, it can be input as a named vector, see examples.}
+\item{code_column}{[\code{character(1)}]\cr
+The column with the code value. Valid values are one
+    of c("komnr", "MT_avdelingnr", "MT_regionnr"). If the column in data
+    has another name, it can be input as a named vector, see examples.
+    Defaults to "komnr".}
 
 \item{new_column}{The new columns that should be included into the data
 frame. The new columns can be up to c("MT_avdelingnr", "MT_avdeling",

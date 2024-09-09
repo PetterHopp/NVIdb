@@ -31,14 +31,21 @@ read_kommune_fylke(
 )
 }
 \arguments{
-\item{data}{Data frame with data with a column with old komnr}
+\item{data}{[\code{data.frame}]\cr
+Data with a column with kommunenummer (komnr) or fylkesnummer (fylkenr).}
 
-\item{translation_table}{Data frame with the translation table for old komnr to current komnr}
+\item{translation_table}{[\code{data.frame}]\cr
+The translation table for translating komnr to kommune, fylke etc. Defaults
+    to \code{kommune_fylke}.}
 
 \item{code_column}{[\code{character(1)}]\cr
-The name of the column with the old komnr, see details. Defaults to "komnr".}
+The name of the column with the code value. Valid values are one of
+    c("komnr", "fylkenr). If the column in data has another name, it can be
+    input as a named vector, see examples. Defaults to "komnr".}
 
-\item{new_column}{The name of the new column that should contain the current komnr}
+\item{new_column}{[\code{character}]\cr
+The name(s) of the new column(s) that should be added to the data. Defaults
+    to c("gjeldende_komnr", "gjeldende_kommune", "gjeldende_fylkenr", "gjeldende_fylke").}
 
 \item{year}{[\code{integer(1) | character(1)}]\cr
 The year for which the komnr should be translated to valid komnr.
@@ -56,7 +63,9 @@ When the new column(s) already exist,
     \code{overwrite = TRUE}. If the new column(s) already exist and 
     \code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
 
-\item{filename}{File name of the translation table for old komnr to current komnr}
+\item{filename}{[\code{list}]\cr
+File names of the source files for the translation table. Defaults to
+    list("komnr_2_gjeldende_komnr2_UTF8.csv", "Fylke_UTF8.csv").}
 
 \item{from_path}{[\code{character(1)}]\cr
 Path to the source file(s) used to generate the translation table. Defaults 
