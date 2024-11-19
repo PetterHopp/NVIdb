@@ -42,11 +42,10 @@ The column with the code value. Valid values are one
     has another name, it can be input as a named vector, see examples.
     Defaults to "komnr".}
 
-\item{new_column}{The new columns that should be included into the data
-frame. The new columns can be up to c("MT_avdelingnr", "MT_avdeling",
-"MT_regionnr", "MT_region") depending on \code{code_column}.
-If the new columns in the result data frame should have other names,
-\code{new_column} can be input as a named vector, see examples.}
+\item{new_column}{[\code{character}]\cr
+The name(s) of the new column(s) that should be added to the data,
+    see examples. Defaults to c("MT_avdelingnr", "MT_avdeling",
+    "MT_regionnr", "MT_region").}
 
 \item{position}{[\code{character(1)}]\cr
 The position for the new columns, can be one of c("first", 
@@ -60,7 +59,9 @@ When the new column(s) already exist,
     \code{overwrite = TRUE}. If the new column(s) already exist and 
     \code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
 
-\item{filename}{a list with the filenames of the source files with the tables for generating the translation table.}
+\item{filename}{[\code{list}]\cr
+File names of the source files for the translation table. Defaults to
+    list("komnr_2_MT_avdeling.csv", "MT_omrader.csv").}
 
 \item{from_path}{[\code{character(1)}]\cr
 Path to the source file(s) used to generate the translation table. Defaults 
