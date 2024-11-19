@@ -40,7 +40,7 @@ The translation table for translating komnr to kommune, fylke etc. Defaults
 
 \item{code_column}{[\code{character(1)}]\cr
 The name of the column with the code value. Valid values are one of
-    c("komnr", "fylkenr). If the column in data has another name, it can be
+    c("komnr", "fylkenr"). If the column in data has another name, it can be
     input as a named vector, see examples. Defaults to "komnr".}
 
 \item{new_column}{[\code{character}]\cr
