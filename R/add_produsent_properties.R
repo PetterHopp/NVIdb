@@ -25,23 +25,25 @@
 #'     can be used to read the translation file from other directories. This can be useful if having a stand alone app with no connection the
 #'     NVI's internal network. In other cases, it should be avoided.
 #'
-#' @param data Data frame with data with a column with a prodnr8
-#' @param translation_table Data frame with the table for translating from prodnr8 to gjeldende_prodnr8.
-#' @param code_column The column with the coded value. Valid values are one of c("prodnr8"). If the column in
-#'     data has another name, it can be input as a named vector, see examples.
-#' @param new_column The new columns that should be included into the data frame. The new columns can be up to
-#'     c("gjeldende_prodnr8") depending on \code{code_column}. If the new columns in the result data frame
-#'     should have other names, \code{new_column} can be input as a named vector, see examples.
+#' @param data [\code{data.frame}]\cr
+#' Data with a column with produsentnummer (prodnr8).
+#' @param translation_table [\code{data.frame}]\cr
+#' The translation table for translating "prodnr8" to "gjeldende_prodnr8".
+#' @param code_column [\code{character(1)}]\cr
+#' The name of the column with the code value. Valid value is "prodnr8". If the 
+#'     column in data has another name, it can be input as a named vector, see 
+#'     examples. 
+#' @param new_column [\code{character}]\cr
+#' The name(s) of the new column(s) that should be added to the data, see examples.
 #' @template position
 #' @template overwrite
 #' @param impute_old_when_missing Should the ID-variable be used as value for the \code{new_column} if the
 #'     \code{new_column} value is missing? Default is \code{FALSE}. To be used for translating prodnr8 to
 #'     gjeldende_prodnr8, see details.
-#' @param filename a list with the filenames of the source files with the tables for generating the translation table.
+#' @param filename [\code{character(1)}]\cr
+#' File name of the source file for the translation table.
 #' @template from_path_add
-#  Path for the source files for the translation table.
 #' @template to_path_add
-# Path for the target translation table when copying the translation table.
 #' @param \dots	Other arguments to be passed to
 #'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}.
 #'
