@@ -45,16 +45,23 @@
 #'     directory.
 #'
 #'
-#' @param data Data frame with data with a column with postnr.
-#' @param translation_table Data frame with the translation table for postnr to
-#' poststed and komnr.
-#' @param code_column The name of the column with the postnr.
-#' @param new_column The name of the new column that should contain the poststed
-#' and/or komnr.
+#' @param data [\code{data.frame}]\cr
+#' Data with a column with postnummer (postnr).
+#' @param translation_table [\code{data.frame}]\cr
+#' The translation table for translating postnr to poststed and komnr. Defaults
+#'     to \code{poststed}.
+#' @param code_column [\code{character(1)}]\cr
+#' The name of the column with the code value. Valid value "postnr". If the
+#'     column in data has another name, it can be input as a named vector,
+#'     see examples. Defaults to "postnr".
+#' @param new_column [\code{character}]\cr
+#' The name(s) of the new column(s) that should be added to the data. Defaults
+#'     to c("poststed", "komnr").
 #' @template position
 #' @template overwrite
-#' @param filename Filename of the translation table for postnr to poststed and
-#' komnr.
+#' @param filename [\code{character(1)}]\cr
+#' File names of the source files for the translation table. Defaults to
+#'     "Poststed_UTF8.csv".
 #' @template from_path_add
 #' @template to_path_add
 #' @param \dots	Other arguments to be passed to
