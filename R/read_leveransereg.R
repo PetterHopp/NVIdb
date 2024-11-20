@@ -13,8 +13,11 @@
 #'     useful if having a stand alone app with no connection the NVI's internal
 #'     network. In other cases, it should be avoided.
 #'
-#' @param from_path Path for Leveranseregisteret
-#' @param filename The name of the file with Leveranseregisteret
+#' @param filename [\code{character(1)}]\cr
+#'     Name of the file with Leveranseregisteret.
+#' @param from_path [\code{character(1)}]\cr
+#'     Path for the Leveranseregisteret. Defaults to the standard
+#'     directory at the NVI network.
 #' @param \dots	Other arguments to be passed to
 #'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}.
 #'

@@ -19,11 +19,16 @@
 #'     The standard settings will read the file from NVI's internal network
 #'     and changing the path should be avoided.
 #'
-#' @param filename Name of the translation table, defaults to "varekoder.csv".
+#' @param filename [\code{character(1)}]\cr
+#' Name of the translation table, defaults to "varekoder.csv".
 #'     The input is only used when \code{data_source = "formatted"}.
-#' @param from_path Path for the translation table for varekoder.
-#' @param year Year(s) for fetching the varekoderegister.
-#' @param data_source Reads formatted data or raw data. Default is formatted.
+#' @param from_path [\code{character(1)}]\cr
+#' Path for the translation table for varekoder. Defaults to
+#'     standard directory at the NVI network.
+#' @param year [\code{integer}] | [\code{character}]\cr
+#' Year(s) for fetching the varekoderegister. Defaults to \code{NULL}.
+#' @param data_source [\code{character(1)}]\cr
+#' Reads "formatted" data or "raw" data. Defaults to "formatted".
 #' @param \dots	Other arguments to be passed to
 #'     \ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.
 #'
@@ -31,7 +36,6 @@
 #'     varekoder to descriptive text and metadata.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
-# @importFrom rlang .data
 #' @export
 #' @examples
 #' \dontrun{

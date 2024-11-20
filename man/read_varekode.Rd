@@ -13,14 +13,19 @@ read_varekode(
 )
 }
 \arguments{
-\item{filename}{Name of the translation table, defaults to "varekoder.csv".
-The input is only used when \code{data_source = "formatted"}.}
+\item{filename}{[\code{character(1)}]\cr
+Name of the translation table, defaults to "varekoder.csv".
+    The input is only used when \code{data_source = "formatted"}.}
 
-\item{from_path}{Path for the translation table for varekoder.}
+\item{from_path}{[\code{character(1)}]\cr
+Path for the translation table for varekoder. Defaults to
+    standard directory at the NVI network.}
 
-\item{year}{Year(s) for fetching the varekoderegister.}
+\item{year}{[\code{integer}] | [\code{character}]\cr
+Year(s) for fetching the varekoderegister. Defaults to \code{NULL}.}
 
-\item{data_source}{Reads formatted data or raw data. Default is formatted.}
+\item{data_source}{[\code{character(1)}]\cr
+Reads "formatted" data or "raw" data. Defaults to "formatted".}
 
 \item{\dots}{Other arguments to be passed to
 \ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.}

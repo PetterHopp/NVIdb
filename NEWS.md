@@ -1,4 +1,4 @@
-# NVIdb 0.12.0.9001 - (2024-##-##)
+# NVIdb 0.12.0.9002 - (2024-##-##)
 
 ## New features:
 
@@ -13,6 +13,8 @@
 ## Other changes:
 
 - Included a meaningful error message for `read_Prodtilskudd` if no versions of Produksjonstilskudd was available for the selected years and months.
+
+- Improved help by standardising parameter description for functions.
 
 
 ## BREAKING CHANGES:

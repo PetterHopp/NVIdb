@@ -11,9 +11,12 @@ read_leveransereg(
 )
 }
 \arguments{
-\item{filename}{The name of the file with Leveranseregisteret}
+\item{filename}{[\code{character(1)}]\cr
+Name of the file with Leveranseregisteret.}
 
-\item{from_path}{Path for Leveranseregisteret}
+\item{from_path}{[\code{character(1)}]\cr
+Path for the Leveranseregisteret. Defaults to the standard
+directory at the NVI network.}
 
 \item{\dots}{Other arguments to be passed to
 \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}.}
