@@ -2,7 +2,8 @@
 #' @rdname add_lokalitet
 
 read_sonetilhorighet <- function(filename = "sonetilhorighet.txt",
-                                 from_path = paste0(set_dir_NVI("EksterneDatakilder"), "Lokreg/FormaterteData/Soner/")) {
+                                 from_path = paste0(set_dir_NVI("EksterneDatakilder"), "Lokreg/FormaterteData/Soner/"),
+                                 ...) {
 
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
@@ -16,11 +17,18 @@ read_sonetilhorighet <- function(filename = "sonetilhorighet.txt",
   checkmate::reportAssertions(checks)
 
   # READ DATA ----
-  df1 <- read_csv_file(filename = filename,
-                       from_path = from_path,
-                       options = list(colClasses = c("LokNr" = "character"),
-                                      fileEncoding = "UTF-8"),
-                       sep = "\t")
+  # df1 <- read_csv_file(filename = filename,
+  #                      from_path = from_path,
+  #                      options = list(colClasses = c("LokNr" = "character"),
+  #                                     fileEncoding = "UTF-8"),
+  #                      sep = "\t")
+  df1 <- data.table::fread(file = file.path(from_path, filename),
+                           colClasses = c("LokNr" = "character"),
+                           encoding = "UTF-8",
+                           sep = "\t",
+                           showProgress = FALSE,
+                           data.table = FALSE,
+                           ...)
 
   return(df1)
 }

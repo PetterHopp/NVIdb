@@ -1,15 +1,23 @@
 #' @title Read Leveranseregisteret for slakt
 #' @description Functions to read Leveranseregisteret for slakt.
-#' @details The Leveranseregisteret for slakt includes information on carcasses delivered to slaughter. The register include identity of the farmer,
-#'     slaughterhouse, date of slaughter, animal species, category (age group and sex), and weight. For poultry the individual animal is not reported,
+#' @details The Leveranseregisteret for slakt includes information on carcasses
+#'     delivered to slaughter. The register include identity of the farmer,
+#'     slaughterhouse, date of slaughter, animal species, category (age group
+#'     and sex), and weight. For poultry the individual animal is not reported,
 #'     but number of slaughtered poultry per categories, slaughterhouse and date.
 #'
-#'     \code{read_leveransereg} reads the Leveranseregisteret for slakt into a data frame. The standard settings will read in the files from NVI's
-#'     internal network. If changing the \code{from_path}, the function can be used to read Leveranseregisteret from other directories. This can be useful
-#'     if having a stand alone app with no connection the NVI's internal network. In other cases, it should be avoided.
+#' \code{read_leveransereg} reads the Leveranseregisteret for slakt into a
+#'     data frame. The standard settings will read in the files from NVI's
+#'     internal network. If changing the \code{from_path}, the function can be
+#'     used to read Leveranseregisteret from other directories. This can be
+#'     useful if having a stand alone app with no connection the NVI's internal
+#'     network. In other cases, it should be avoided.
 #'
-#' @param from_path Path for Leveranseregisteret
-#' @param filename The name of the file with Leveranseregisteret
+#' @param filename [\code{character(1)}]\cr
+#'     Name of the file with Leveranseregisteret.
+#' @param from_path [\code{character(1)}]\cr
+#'     Path for the Leveranseregisteret. Defaults to the standard
+#'     directory at the NVI network.
 #' @param \dots	Other arguments to be passed to
 #'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}.
 #'
@@ -43,9 +51,18 @@ read_leveransereg <- function(filename,
   colclasses <- standardize_columns(data = file.path(from_path, filename), property = "colclasses")
 
   # Read leveranseregisteret
-  levreg <- read_csv_file(filename = filename,
-                          from_path = from_path,
-                          options = list(colClasses = colclasses, fileEncoding = "UTF-8"),
-                          dec = ",",
-                          ...)
+  # levreg <- read_csv_file(filename = filename,
+  #                         from_path = from_path,
+  #                         options = list(colClasses = colclasses, fileEncoding = "UTF-8"),
+  #                         dec = ",",
+  #                         ...)
+  df1 <- data.table::fread(file = file.path(from_path, filename),
+                           colClasses = colclasses,
+                           encoding = "UTF-8",
+                           dec = ",",
+                           showProgress = FALSE,
+                           data.table = FALSE,
+                           ...)
+
+  return(df1)
 }
