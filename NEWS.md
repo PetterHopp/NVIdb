@@ -14,6 +14,8 @@
 
 - Included a meaningful error message for `read_Prodtilskudd` if no versions of Produksjonstilskudd was available for the selected years and months.
 
+- Improved help by standardising parameter description for functions.
+
 
 ## BREAKING CHANGES:
 
