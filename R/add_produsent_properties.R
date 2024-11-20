@@ -1,44 +1,67 @@
 #' @title Manage translation from prodnr8 into different produsent properties
-#' @description Function to add a column with gjeldende_prodnr8. In addition there are
-#'    functions to read and copy the translation tables.
-#' @details \code{add_produsent_properties} can be used to translate the prodnr8 into gjeldende_prodnr8 and/or geo-coordinates.
+#' @description Function to add a column with gjeldende_prodnr8 and/or
+#'    geo-coordinates. In addition there are functions to read and copy the
+#'    translation tables.
+#' @details \code{add_produsent_properties} can be used to translate the
+#'     prodnr8 into gjeldende_prodnr8 and/or geo-coordinates.
 #'
-#'     \code{position} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
-#'     placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
-#'     code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
-#'     data frame. A special case occurs for \code{position = "keep"} which only has meaning when the new column has the same name as an existing
-#'     column and overwrite = TRUE. In these cases, the existing column will be overwritten with new data and have the same position.
+#'     \code{position} is used to give the place if the new columns in the
+#'     data frame. For \code{position = "right"} the new variables are
+#'     placed to the right of the code_variable. Likewise, for
+#'     \code{position = "left"} the new variables are placed to the left of
+#'     the code_variable. If \code{position = "first"} or
+#'     \code{position = "last"} the new columns are placed first or last,
+#'     respectively, in the data frame. A special case occurs for
+#'     \code{position = "keep"} which only has meaning when the new column
+#'     has the same name as an existing column and overwrite = TRUE. In these
+#'     cases, the existing column will be overwritten with new data and have
+#'     the same position.
 #'
-#'     \code{impute_old_when_missing = TRUE} is used to replace missing values in the \code{new_column} with the value in
-#'     \code{code_column}. This is useful when translating prodnr8 to gjeldende_prodnr8. It should not be used when translating
-#'     from prodnr8 to something where imputing the old prodnr8 in the new variables don't have any meaning, for example geo-coordinates.
+#'     \code{impute_old_when_missing = TRUE} is used to replace missing
+#'     values in the \code{new_column} with the value in \code{code_column}.
+#'     This is useful when translating prodnr8 to gjeldende_prodnr8 as in
+#'     the case where gjeldende_prodnr8 is not found, the value from prodnr8
+#'     is imputed. It should not be used when translating from prodnr8 to
+#'     something where imputing the old prodnr8 in the new variables don't
+#'     have any meaning, for example geo-coordinates.
 #'
-#'     \code{read_prodnr_2_current_prodnr} reads the file "Prodnr2GjeldendeProdnr.csv" into a data frame that can be used by
-#'     other routines. Standard setting will the file read in the latest updated file from NVI's internal network. If changing
-#'     the \code{from_path}, the function can be used to read the translation file from other directories. This can be useful if having a stand alone
-#'     app with no connection the NVI's internal network. In other cases, it should be avoided.
+#'     \code{read_prodnr_2_current_prodnr} reads the file
+#'     "Prodnr2GjeldendeProdnr.csv" into a data frame that can be used by
+#'     other routines. Standard setting will the file read in the latest
+#'     updated file from NVI's internal network. If changing the
+#'     \code{from_path}, the function can be used to read the translation
+#'     file from other directories. This can be useful if having a stand
+#'     alone app with no connection the NVI's internal network. In other
+#'     cases, it should be avoided.
 #'
-#'     \code{copy_prodnr_2_current_prodnr} copies the file "Prodnr2GjeldendeProdnr.csv" to a chosen directory.
+#'     \code{copy_prodnr_2_current_prodnr} copies the file
+#'     "Prodnr2GjeldendeProdnr.csv" to a chosen directory.
 #'
-#'     \code{read_prodnr_2_coodinates} reads the file "Prodnr2Koordinater.csv" into a data frame that can be used to merge with data frames with
-#'     prodnr8. Standard setting will the file read in the latest updated file from NVI's internal network. If changing the \code{from_path}, the function
-#'     can be used to read the translation file from other directories. This can be useful if having a stand alone app with no connection the
-#'     NVI's internal network. In other cases, it should be avoided.
+#'     \code{read_prodnr_2_coodinates} reads the file
+#'     "Prodnr2Koordinater.csv" into a data frame that can be used to merge
+#'     with data frames with prodnr8. Standard setting will the file read in
+#'     the latest updated file from NVI's internal network. If changing the
+#'     \code{from_path}, the function can be used to read the translation
+#'     file from other directories. This can be useful if having a stand
+#'     alone app with no connection the NVI's internal network. In other
+#'     cases, it should be avoided.
 #'
 #' @param data [\code{data.frame}]\cr
 #' Data with a column with produsentnummer (prodnr8).
 #' @param translation_table [\code{data.frame}]\cr
-#' The translation table for translating "prodnr8" to "gjeldende_prodnr8".
+#' The translation table for translating "prodnr8" to "gjeldende_prodnr8" or
+#'     the translation table for translating "prodnr8" to geo-coordinates.
 #' @param code_column [\code{character(1)}]\cr
-#' The name of the column with the code value. Valid value is "prodnr8". If the 
-#'     column in data has another name, it can be input as a named vector, see 
-#'     examples. 
+#' The name of the column with the code value. Standard value is "prodnr8". If the
+#'     column in data has another name, it can be input as a named vector, see
+#'     examples.
 #' @param new_column [\code{character}]\cr
 #' The name(s) of the new column(s) that should be added to the data, see examples.
 #' @template position
 #' @template overwrite
-#' @param impute_old_when_missing Should the ID-variable be used as value for the \code{new_column} if the
-#'     \code{new_column} value is missing? Default is \code{FALSE}. To be used for translating prodnr8 to
+#' @param impute_old_when_missing Should the ID-variable be used as value
+#'     for the \code{new_column} if the \code{new_column} value is missing?
+#'     Default is \code{FALSE}. To be used when translating prodnr8 to
 #'     gjeldende_prodnr8, see details.
 #' @param filename [\code{character(1)}]\cr
 #' File name of the source file for the translation table.
@@ -47,8 +70,8 @@
 #' @param \dots	Other arguments to be passed to
 #'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}.
 #'
-#' @return \code{add_produsent_properties} returns a data frame where the column with gjeldende_prodnr8 has been added to the
-#'     right of the column with prodnr8.
+#' @return \code{add_produsent_properties} returns a data frame where
+#'     the column with produsent properties has been added to the data.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @export
