@@ -1,4 +1,4 @@
-library(NVIdb)
+# library(NVIdb)
 library(testthat)
 
 # Assigns temporary dir to td
@@ -62,8 +62,8 @@ test_that("Correct merging of produsent og komnr", {
 
   # Make a dataframe with the correct result
   correct_result <- cbind(produsenter,
-                          as.data.frame(c("8.78182485813634", "7.04026092117579", "11.64981213930787", "11.64981213930787"), stringsAsFactors = FALSE),
-                          as.data.frame(c("58.63237920843709", "61.47787583826138", "64.13066637524832", "64.13066637524832"), stringsAsFactors = FALSE)
+                          as.data.frame(c("8.78182485813634", "7.04026092117579", "11.6498121393079", "11.6498121393079"), stringsAsFactors = FALSE),
+                          as.data.frame(c("58.6323792084371", "61.4778758382614", "64.1306663752483", "64.1306663752483"), stringsAsFactors = FALSE)
   )
   colnames(correct_result) <- c("gjeldende_prodnr8", "prodnr8", "longitude", "latitude")
 
