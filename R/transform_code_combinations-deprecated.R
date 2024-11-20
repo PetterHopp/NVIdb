@@ -86,14 +86,14 @@ NULL
 #' @details The old help pages can be found at \code{help("transform_code_combinations-deprecated")}.
 #'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
 #'
-#' @param data \[\code{data.frame}\]\cr
+#' @param data [\code{data.frame}]\cr
 #' Data with code values that should be transformed.
-#' @param from_values \[\code{list}\]\cr
+#' @param from_values [\code{list}]\cr
 #' List with named vector(s) of code values that should transformed, see details and examples.
-#' @param to_values \[\code{list}\]\cr
+#' @param to_values [\code{list}]\cr
 #' List with named vector(s) of code values that should be the results of the transformation,
 #'     see details and examples.
-#' @param impute_when_missing_from \[\code{character}\]\cr
+#' @param impute_when_missing_from [\code{character}]\cr
 #' Column names for the code variables from which code values should be copied if no
 #'     transformation is performed. Defaults to the original column names.
 #'

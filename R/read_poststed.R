@@ -2,9 +2,10 @@
 #' @rdname add_poststed
 
 read_poststed <- function(filename = "Poststed_UTF8.csv",
-                          from_path = paste0(set_dir_NVI("GrunndataLand"), "FormaterteData/")) {
+                          from_path = paste0(set_dir_NVI("GrunndataLand"), "FormaterteData/"),
+                          ...) {
 
-    # Removing ending "/" and "\\" from pathnames
+  # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
 
   # ARGUMENT CHECKING ----
@@ -16,9 +17,14 @@ read_poststed <- function(filename = "Poststed_UTF8.csv",
   checkmate::reportAssertions(checks)
 
   # READ DATA ----
-  read_csv_file(filename = filename,
-                from_path = from_path,
-                options = list(colClasses = c(postnr = "character", komnr = "character"),
-                               fileEncoding = "UTF-8"))
+  # read_csv_file(filename = filename,
+  #               from_path = from_path,
+  #               options = list(colClasses = c(postnr = "character", komnr = "character"),
+  #                              fileEncoding = "UTF-8"))
+  poststed <- utils::read.csv2(file = file.path(from_path, filename),
+                               colClasses = c("postnr" = "character", "komnr" = "character"),
+                               fileEncoding = "UTF-8",
+                               ...)
 
+  return(poststed)
 }

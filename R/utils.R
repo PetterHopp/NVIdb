@@ -246,66 +246,65 @@ add_new_column <- function(data,
 
 ### ----
 
-### read_csv_file ----
-#' @title Read csv-file
-#' @description Reads files with data .
-#' @details Used to read csv files with data for use in scripts.
-#'
-#' @param filename Filename of the file that should be read
-#' @param from_path Path for the source file
-#' @param columnclasses Predefine format (numeric or character) of the variables
-#' @param fileencoding usually UTF-8
-#' @param \dots	Other arguments to be passed to \code{data.table::fread}.
-
-#' @return A data.frame with the data from the source file.
-#' @author Petter Hopp Petter.Hopp@@vetinst.no
-#'
-#' @examples
-#' \dontrun{
-#' read_csv_file(filename, from_path, columnclasses, fileencoding)
-#' }
-#' @keywords internal
-
-read_csv_file <- function(filename, from_path, options = NULL, ...) {
-
-  # Removes trailing "/" and "\\".
-  from_path <- sub("/+$|\\\\+$", "", from_path)
-  # # Check if from_path ends in "/". If not, "/" is added.
-  # if (!endsWith(from_path, "/")) { from_path <- paste0(from_path, "/") }
-
-  # if (is.null(sep)) {sep <- ";"}
-  # if (!exists("dec")) {dec <- ","}
-
-  if (is.null(options)) {
-    options <- list(colClasses = NA, fileEncoding = "UTF-8", stringsAsFactors = FALSE)
-  } else {
-    if (is.null(options$colClasses)) {options$colClasses <- NA}
-    if (is.null(options$fileEncoding)) {options$fileEncoding <- "UTF-8"}
-    if (is.null(options$stringsAsFactors)) {options$stringsAsFactors <- FALSE}
-  }
-  # Get creation date of source file
-  if (dir.exists(from_path)) {
-    if (file.exists(file.path(from_path, filename))) {
-      df <- data.table::fread(file = file.path(from_path, filename),
-                              colClasses = options$colClasses,
-                              encoding = options$fileEncoding,
-                              stringsAsFactors = options$stringsAsFactors,
-                              showProgress = FALSE,
-                              data.table = FALSE,
-                              ...)
-      # df <- utils::read.table(file = file.path(from_path, filename),
-      #                         colClasses = options$colClasses,
-      #                        fileEncoding = options$fileEncoding,
-      #                         stringsAsFactors = options$stringsAsFactors,
-      #                        sep = sep,
-      #                        dec = dec,
-      #                        header = TRUE,
-      #                        ...)
-    }
-  }
-  return(df)
-  # return(as.data.frame(df))
-}
+# ### read_csv_file ----
+# #' @title Read csv-file
+# #' @description Reads files with data .
+# #' @details Used to read csv files with data for use in scripts.
+# #'
+# #' @param filename Filename of the file that should be read
+# #' @param from_path Path for the source file
+# #' @param options A list with the arguments colClasses and fileEncoding. If
+# #'    \code{options = NULL} it defaults to
+# #'    \code{list(colClasses = NA, fileEncoding = "UTF-8")}.
+# #' @param \dots	Other arguments to be passed to \code{data.table::fread}.
+#
+# #' @return A data.frame with the data from the source file.
+# #' @author Petter Hopp Petter.Hopp@@vetinst.no
+# #'
+# #' @examples
+# #' \dontrun{
+# #' read_csv_file(filename, from_path, columnclasses, fileencoding)
+# #' }
+# #' @keywords internal
+#
+# read_csv_file <- function(filename, from_path, options = NULL, ...) {
+#
+#   # Removes trailing "/" and "\\".
+#   from_path <- sub("/+$|\\\\+$", "", from_path)
+#   # # Check if from_path ends in "/". If not, "/" is added.
+#   # if (!endsWith(from_path, "/")) { from_path <- paste0(from_path, "/") }
+#
+#   # if (is.null(sep)) {sep <- ";"}
+#   # if (!exists("dec")) {dec <- ","}
+#
+#   if (is.null(options)) {
+#     options <- list(colClasses = NA, fileEncoding = "UTF-8")
+#   } else {
+#     if (is.null(options$colClasses)) {options$colClasses <- NA}
+#     if (is.null(options$fileEncoding)) {options$fileEncoding <- "UTF-8"}
+#   }
+#   # Get creation date of source file
+#   if (dir.exists(from_path)) {
+#     if (file.exists(file.path(from_path, filename))) {
+#       df <- data.table::fread(file = file.path(from_path, filename),
+#                               colClasses = options$colClasses,
+#                               encoding = options$fileEncoding,
+#                               showProgress = FALSE,
+#                               data.table = FALSE,
+#                               ...)
+#       # df <- utils::read.table(file = file.path(from_path, filename),
+#       #                         colClasses = options$colClasses,
+#       #                        fileEncoding = options$fileEncoding,
+#       #                         stringsAsFactors = options$stringsAsFactors,
+#       #                        sep = sep,
+#       #                        dec = dec,
+#       #                        header = TRUE,
+#       #                        ...)
+#     }
+#   }
+#   return(df)
+#   # return(as.data.frame(df))
+# }
 
 ###   ----
 
@@ -394,7 +393,8 @@ find_n_th_word <- function(x, position) {strsplit(x, " ")[[1]][position]}
 #'     in stead of
 #'     \ifelse{html}{\code{\link[base:paste0]{paste0}}}{\code{paste0}}.
 #'
-#' @param x Object with character strings.
+#' @param x  [\code{character}]\cr
+#'   Strings, typically file paths, where ending slash should be removed.
 #'
 #' @return Object without ending slash in character strings.
 #'
