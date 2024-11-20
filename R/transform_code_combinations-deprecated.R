@@ -45,7 +45,9 @@
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @md
-#' @export
+#' @name transform_code_combinations-deprecated
+#' @keywords internal
+#'
 #' @examples
 #' library(NVIdb)
 #'
@@ -74,55 +76,93 @@
 #'                                 "driftsform" = c("produksjonsdyr", "ville dyr", NA)),
 #'              to_values = list("art2" = c("oppdrettshjort", "villrein", "ukjent")),
 #'              impute_when_missing_from = "art")
+NULL
+
+#' @title transform_code_combinations is Deprecated
+#' @description \code{transform_code_combinations} was deprecated in NVIdb v0.13.0 released
+#'     2024-##-##. All PJS related functions have been moved to \code{NVIpjsr}.
+#'     Use \code{NVIpjsr::transform_code_combinations} instead. When attaching packages,
+#'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
+#' @details The old help pages can be found at \code{help("transform_code_combinations-deprecated")}.
+#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
+#'
+#' @param data [\code{data.frame}]\cr
+#' Data with code values that should be transformed.
+#' @param from_values [\code{list}]\cr
+#' List with named vector(s) of code values that should transformed, see details and examples.
+#' @param to_values [\code{list}]\cr
+#' List with named vector(s) of code values that should be the results of the transformation,
+#'     see details and examples.
+#' @param impute_when_missing_from [\code{character}]\cr
+#' Column names for the code variables from which code values should be copied if no
+#'     transformation is performed. Defaults to the original column names.
+#'
+#' @export
+#' @keywords internal
+#'
+
 transform_code_combinations <- function(data,
                                         from_values,
                                         to_values,
                                         impute_when_missing_from = NULL) {
-  # ARGUMENT CHECKING ----
-  # Object to store check-results
-  checks <- checkmate::makeAssertCollection()
-  # Perform checks
-  checkmate::assert_data_frame(data, add = checks)
-  checkmate::assert_list(from_values, min.len = 1, add = checks)
-  checkmate::assert_list(to_values, min.len = 1, add = checks)
-  # checkmate::assert_character(from_columns, min.len = 1, min.chars = 1, add = checks)
-  # checkmate::assert_character(to_columns, min.len = 1, min.chars = 1, add = checks)
-  checkmate::assert_character(impute_when_missing_from, max.len = length(to_values), null.ok = TRUE, add = checks)
-  checkmate::assert_subset(impute_when_missing_from, choices = names(from_values), add = checks)
-  # Report check-results
-  checkmate::reportAssertions(checks)
+  .Deprecated(new = "transform_code_combinations",
+              package = "NVIdb",
+              msg = paste("'transform_code_combinations' is replaced by
+                          'NVIpjsr::transform_code_combinations'"))
 
-  # CREATE TRANSLATION TABLE WITH FROM AND TO VALUES ----
-  to_columns_temp <- paste0(rep("tcc_V", length(to_values)), as.character(1:length(to_values)))
-  translation_table <- data.frame(to_values)
-  colnames(translation_table) <- to_columns_temp
-  translation_table <- cbind(data.frame(from_values), translation_table)
+  if (isTRUE(NVIcheckmate::check_package(x = "NVIpjsr", type = "installed"))) {
+    select_statement <- NVIpjsr::transform_code_combinations(data = data,
+                                                             from_values = from_values,
+                                                             to_values = to_values,
+                                                             impute_when_missing_from = impute_when_missing_from)
 
-  # CREATE SUBSET TO TRANSLATE ----
-  subdata <- as.data.frame(data[, names(from_values)])
-  colnames(subdata) <- names(from_values)
-  # subdata[is.na(subdata)] <- "_NA_"
-  subdata$sort_order <- 1:nrow(subdata)
+    return(select_statement)
+  } else {
+    # ARGUMENT CHECKING ----
+    # Object to store check-results
+    checks <- checkmate::makeAssertCollection()
+    # Perform checks
+    checkmate::assert_data_frame(data, add = checks)
+    checkmate::assert_list(from_values, min.len = 1, add = checks)
+    checkmate::assert_list(to_values, min.len = 1, add = checks)
+    # checkmate::assert_character(from_columns, min.len = 1, min.chars = 1, add = checks)
+    # checkmate::assert_character(to_columns, min.len = 1, min.chars = 1, add = checks)
+    checkmate::assert_character(impute_when_missing_from, max.len = length(to_values), null.ok = TRUE, add = checks)
+    checkmate::assert_subset(impute_when_missing_from, choices = names(from_values), add = checks)
+    # Report check-results
+    checkmate::reportAssertions(checks)
 
-  # PERFORM TRANSLATION ----
-  subdata <- merge(subdata, translation_table, by = names(from_values), all.x = TRUE)
+    # CREATE TRANSLATION TABLE WITH FROM AND TO VALUES ----
+    to_columns_temp <- paste0(rep("tcc_V", length(to_values)), as.character(1:length(to_values)))
+    translation_table <- data.frame(to_values)
+    colnames(translation_table) <- to_columns_temp
+    translation_table <- cbind(data.frame(from_values), translation_table)
 
-  if (!is.null(impute_when_missing_from)) {
-    if (length(to_columns_temp) == 1) {
-      subdata[is.na(subdata[, to_columns_temp]), to_columns_temp] <-
-        subdata[is.na(subdata[, to_columns_temp]), impute_when_missing_from]
-    } else {
-      subdata[rowSums(is.na(subdata[, to_columns_temp])) == length(to_columns_temp), to_columns_temp[1:length(impute_when_missing_from)]] <-
-        subdata[rowSums(is.na(subdata[, to_columns_temp])) == length(to_columns_temp), impute_when_missing_from]
+    # CREATE SUBSET TO TRANSLATE ----
+    subdata <- as.data.frame(data[, names(from_values)])
+    colnames(subdata) <- names(from_values)
+    # subdata[is.na(subdata)] <- "_NA_"
+    subdata$sort_order <- 1:nrow(subdata)
+
+    # PERFORM TRANSLATION ----
+    subdata <- merge(subdata, translation_table, by = names(from_values), all.x = TRUE)
+
+    if (!is.null(impute_when_missing_from)) {
+      if (length(to_columns_temp) == 1) {
+        subdata[is.na(subdata[, to_columns_temp]), to_columns_temp] <-
+          subdata[is.na(subdata[, to_columns_temp]), impute_when_missing_from]
+      } else {
+        subdata[rowSums(is.na(subdata[, to_columns_temp])) == length(to_columns_temp), to_columns_temp[1:length(impute_when_missing_from)]] <-
+          subdata[rowSums(is.na(subdata[, to_columns_temp])) == length(to_columns_temp), impute_when_missing_from]
+      }
     }
+    subdata <- subdata[order(subdata$sort_order), ]
+
+    # RETURN DATA WITH TRANSLATED COLUMNS
+    data[, names(to_values)] <- subdata[, to_columns_temp]
+    return(data)
   }
-  subdata <- subdata[order(subdata$sort_order), ]
-
-  # RETURN DATA WITH TRANSLATED COLUMNS
-  data[, names(to_values)] <- subdata[, to_columns_temp]
-  return(data)
 }
-
 #
 #
 # transform_code_combinations <- function(data,

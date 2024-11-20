@@ -44,9 +44,8 @@
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #'
-#' @export
-#' @rdname build_sql_modules
-#' @name build_sql_modules
+#' @keywords internal
+#' @name build_sql_modules-deprecated
 #'
 #' @examples
 #' # SQL-select module for selecting year from PJS
@@ -64,7 +63,33 @@
 #' build_sql_select_code(values = c("0100101", "0100101007", "0100102%", "0100202%"),
 #'                       varname = "hensiktkode",
 #'                       db = "PJS")
+#'
+NULL
+
+#' @title build_sql_select_year is Deprecated
+#' @description \code{build_sql_select_year} was deprecated in NVIdb v0.13.0 released
+#'     2024-##-##. All PJS related functions have been moved to \code{NVIpjsr}.
+#'     Use \code{NVIpjsr::build_sql_select_year} instead. When attaching packages,
+#'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
+#' @details The old help pages can be found at \code{help("build_sql_modules-deprecated")}.
+#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
+#'
+#' @template build_query_year
+#' @param varname [\code{character(1)}]\cr
+#'     The PJS variable name of the variable in PJS from which the
+#'     coded values should be selected.
+#' @template build_query_db
+#'
+#' @export
+#' @keywords internal
+#'
 build_sql_select_year <- function(year, varname, db = "PJS") {
+  # DEPRECATED ----
+  .Deprecated(new = "build_sql_select_year",
+              package = "NVIdb",
+              msg = paste("'build_sql_select_year' is replaced by
+                          'NVIpjsr::build_sql_select_year'"))
+
   # ARGUMENT CHECKING ----
 
   # Object to store check-results
@@ -106,12 +131,32 @@ build_sql_select_year <- function(year, varname, db = "PJS") {
 }
 
 
-
 # build_sql_select_code ----
+#' @title build_sql_select_code is Deprecated
+#' @description \code{build_sql_select_code} was deprecated in NVIdb v0.13.0 released
+#'     2024-##-##. All PJS related functions have been moved to \code{NVIpjsr}.
+#'     Use \code{NVIpjsr::build_sql_select_code} instead. When attaching packages,
+#'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
+#' @details The old help pages can be found at \code{help("build_sql_modules-deprecated")}.
+#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
+#'
+#' @param values [\code{character}]\cr
+#'     The value of the codes that should be selected. If sub-codes should be
+#'     included, add "\%" after the code, see example.
+#' @param varname [\code{character(1)}]\cr
+#'     The PJS variable name of the variable in PJS from which the
+#'     coded values should be selected.
+#' @template build_query_db
+#'
 #' @export
-#' @rdname build_sql_modules
+#' @keywords internal
 #'
 build_sql_select_code <- function(values, varname, db = "PJS") {
+  # DEPRECATED ----
+  .Deprecated(new = "build_sql_select_code",
+              package = "NVIdb",
+              msg = paste("'build_sql_select_code' is replaced by
+                          'NVIpjsr::build_sql_select_code'"))
 
   # cleaning values argument before argument checking
   if (!is.null(values)) {values <- trimws(values)}
