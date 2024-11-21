@@ -224,7 +224,7 @@ add_kommune_fylke <- function(data,
 
     code_2_new <- subset(code_2_new, code_2_new$max_antall == code_2_new$antall)
     code_2_new[, c("antall", "maxantall")] <- c(NULL, NULL)
-    # dplyr::filter(.data$maxantall == .data$antall) %>%
+    # dplyr::filter(.data$maxantall == .data$antall) |>
     # dplyr::select(-.data$antall, -.data$maxantall)
 
     # Removes tibble in case it makes trouble later
