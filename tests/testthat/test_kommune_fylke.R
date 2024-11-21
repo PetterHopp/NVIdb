@@ -1,4 +1,4 @@
-library(NVIdb)
+# library(NVIdb)
 library(testthat)
 
 # Assigns temporary dir to td
@@ -334,3 +334,4 @@ test_that("errors for read_kommune_fylke", {
 
   options(width = unlist(linewidth))
 })
+
