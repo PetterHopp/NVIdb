@@ -297,7 +297,7 @@ add_PJS_code_description <- function(data,
       if (isTRUE(backward)) {
         code_description_colname <- dplyr::rename(code_description_colname, new_column = code_colname, code_colname = new_column)
       }
-      PJS_types_selected <- as.data.frame(code_colname) %>%
+      PJS_types_selected <- as.data.frame(code_colname) |>
         dplyr::left_join(code_description_colname, by = "code_colname")
       PJS_types_selected <- subset(PJS_types_selected, !is.na(PJS_types_selected$type))
     }
@@ -420,17 +420,17 @@ add_PJS_code_description <- function(data,
         kode_nr <- which(column_names == "kode")
         column_names[c(navn_nr, kode_nr)] <- c("kode", "navn")
         colnames(code_2_description) <- column_names
-        code_2_description <- code_2_description %>%
+        code_2_description <- code_2_description |>
           dplyr::add_count(dplyr::across(c("type", "kode")), name = "antall")
 
 
-        # code_2_description <- code_2_description %>%
-        # dplyr::mutate(navn = tolower(.data$navn)) %>%
-        # dplyr::distinct() %>%
-        # dplyr::rename(kode = .data$navn, navn = .data$kode) %>%
-        # dplyr::filter(is.na(.data$utgatt_dato)) %>%
-        # dplyr::add_count(.data$type, .data$kode, name = "antall") %>%
-        # dplyr::filter(.data$antall == 1) %>%
+        # code_2_description <- code_2_description |>
+        # dplyr::mutate(navn = tolower(.data$navn)) |>
+        # dplyr::distinct() |>
+        # dplyr::rename(kode = .data$navn, navn = .data$kode) |>
+        # dplyr::filter(is.na(.data$utgatt_dato)) |>
+        # dplyr::add_count(.data$type, .data$kode, name = "antall") |>
+        # dplyr::filter(.data$antall == 1) |>
         # dplyr::select(-.data$antall)
         code_2_description <- subset(code_2_description, code_2_description$antall == 1)
         code_2_description$antall <- NULL
