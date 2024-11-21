@@ -514,7 +514,8 @@ copy_PJS_codes_2_text <- function(filename = "PJS_codes_2_text.csv",
 #' @rdname add_PJS_code_description
 
 read_PJS_codes_2_text <- function(filename = "PJS_codes_2_text.csv",
-                                  from_path = paste0(set_dir_NVI("Provedata_Rapportering"), "FormaterteData/")) {
+                                  from_path = file.path(NVIdb::set_dir_NVI("Provedata_Rapportering", slash = FALSE),
+                                                        "FormaterteData")) {
 
   # DEPRECATED ----
   .Deprecated(new = "read_PJS_codes_2_text",
@@ -540,9 +541,9 @@ read_PJS_codes_2_text <- function(filename = "PJS_codes_2_text.csv",
     checkmate::reportAssertions(checks)
 
     # READ DATA ----
-    PJS_codes_2_text <- read_csv_file(filename = filename,
-                                      from_path = from_path,
-                                      options = list(colClasses = "character", fileEncoding = "UTF-8"))
+    PJS_codes_2_text <- utils::read.csv2(file = file.path(from_path, filename),
+                                         colClasses = "character",
+                                         fileEncoding = "UTF-8")
 
     # Remove double "" that have replaced single when saving as csv-file
     PJS_codes_2_text$navn <- gsub('\"\"', "\"", PJS_codes_2_text$navn)
