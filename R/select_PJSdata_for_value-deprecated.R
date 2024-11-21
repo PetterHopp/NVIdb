@@ -125,8 +125,8 @@ select_PJSdata_for_value <- function(data,
 
 
     # Find records deviating from detected code values
-    ktr <- ktr %>%
-      dplyr::rowwise() %>%
+    ktr <- ktr |>
+      dplyr::rowwise() |>
       dplyr::mutate(select = max(unlist(lapply(value_2_check, grep, x = combined_codes)), 0))
 
     # if (!is.null(include_missing_for) & length(code_column == 1)) {

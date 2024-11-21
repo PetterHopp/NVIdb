@@ -176,8 +176,8 @@ standardize_eos_data <- function(data,
                          colnames(data))
     groupvar <- intersect(c("rekvirent", "rekvirentnr", "mt_avdelingnr", "mt_avdeling"),
                           colnames(data))
-    data <- data %>%
-      dplyr::add_count(dplyr::across(dplyr::all_of(proveid)), name = "ant_per_sak") %>%
+    data <- data |>
+      dplyr::add_count(dplyr::across(dplyr::all_of(proveid)), name = "ant_per_sak") |>
       dplyr::add_count(dplyr::across(dplyr::all_of(c(proveid, groupvar))), name = "ant_per_MT")
 
     rownums <- which(data$ant_per_sak == (2 * data$ant_per_MT))

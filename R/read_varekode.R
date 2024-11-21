@@ -125,10 +125,10 @@ read_varekode <- function(filename = "varekoder.csv",
     filnavn$n_days <- as.numeric(filnavn$til_dato - filnavn$fra_dato + 1)
     filnavn$aar <- as.numeric(format(filnavn$til_dato, "%Y"))
     # Order in decending order by date
-    # filnavn <- filnavn %>%
-    #   dplyr::group_by(.data$aar) %>%
-    #   dplyr::mutate(max_n_days = max(.data$n_days)) %>%
-    #   dplyr::ungroup() %>%
+    # filnavn <- filnavn |>
+    #   dplyr::group_by(.data$aar) |>
+    #   dplyr::mutate(max_n_days = max(.data$n_days)) |>
+    #   dplyr::ungroup() |>
     #   dplyr::arrange(dplyr::desc(.data$fra_dato), dplyr::desc(.data$til_dato))
     max_n_days <- stats::aggregate(n_days ~ aar, data = filnavn, FUN = max)
     colnames(max_n_days)[2] <- "max_n_days"
