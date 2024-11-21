@@ -33,7 +33,6 @@ Imports:
     DBI,
     dplyr,
     keyring,
-    magrittr,
     odbc,
     RODBC,
     RPostgreSQL,
