@@ -334,4 +334,3 @@ test_that("errors for read_kommune_fylke", {
 
   options(width = unlist(linewidth))
 })
-
