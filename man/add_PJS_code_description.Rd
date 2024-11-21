@@ -26,7 +26,8 @@ copy_PJS_codes_2_text(
 
 read_PJS_codes_2_text(
   filename = "PJS_codes_2_text.csv",
-  from_path = paste0(set_dir_NVI("Provedata_Rapportering"), "FormaterteData/")
+  from_path = file.path(NVIdb::set_dir_NVI("Provedata_Rapportering", slash = FALSE),
+    "FormaterteData")
 )
 }
 \arguments{
