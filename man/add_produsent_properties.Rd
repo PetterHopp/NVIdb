@@ -65,10 +65,11 @@ When the new column(s) already exist,
     \code{overwrite = TRUE}. If the new column(s) already exist and 
     \code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
 
-\item{impute_old_when_missing}{Should the ID-variable be used as value
-for the \code{new_column} if the \code{new_column} value is missing?
-Default is \code{FALSE}. To be used when translating prodnr8 to
-gjeldende_prodnr8, see details.}
+\item{impute_old_when_missing}{[\code{logical(1)}]\cr
+Should the ID-variable be used as value
+    for the \code{new_column} if the \code{new_column} value is missing?
+    Default is \code{FALSE}. To be used when translating prodnr8 to
+    gjeldende_prodnr8, see details.}
 
 \item{filename}{[\code{character(1)}]\cr
 File name of the source file for the translation table.}
