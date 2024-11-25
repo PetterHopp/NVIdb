@@ -59,7 +59,8 @@
 #' The name(s) of the new column(s) that should be added to the data, see examples.
 #' @template position
 #' @template overwrite
-#' @param impute_old_when_missing Should the ID-variable be used as value
+#' @param impute_old_when_missing [\code{logical(1)}]\cr
+#' Should the ID-variable be used as value
 #'     for the \code{new_column} if the \code{new_column} value is missing?
 #'     Default is \code{FALSE}. To be used when translating prodnr8 to
 #'     gjeldende_prodnr8, see details.
