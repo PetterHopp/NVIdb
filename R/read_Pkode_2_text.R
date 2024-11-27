@@ -77,7 +77,7 @@ read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder2_UTF8.csv",
   #                         from_path = from_path,
   #                         options = list(colClasses = colclasses, fileEncoding = "UTF-8"))
   Pkoder <- utils::read.csv2(file = file.path(from_path, filename),
-                             colClasses = "character",
+                             colClasses = colclasses,
                              fileEncoding = "UTF-8",
                              ...)
 
