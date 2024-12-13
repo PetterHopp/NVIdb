@@ -24,24 +24,28 @@ copy_MT_omrader(
 
 read_MT_omrader(
   filename = list("komnr_2_MT_avdeling.csv", "MT_omrader.csv"),
-  from_path = base::paste0(set_dir_NVI("GrunndataLand"), "FormaterteData/")
+  from_path = base::paste0(set_dir_NVI("GrunndataLand"), "FormaterteData/"),
+  ...
 )
 }
 \arguments{
-\item{data}{Data frame with data with a column with a komnr.}
+\item{data}{[\code{data.frame}]\cr
+Data with a column with kommunenummer (komnr).}
 
-\item{translation_table}{Data frame with the table for translating from
-komnr to MT_areas.}
+\item{translation_table}{[\code{data.frame}]\cr
+The translation table for translating komnr to MT-areas. Defaults
+    to \code{komnr_2_MT_omrader}.}
 
-\item{code_column}{The column with the coded value. Valid values are one
-of c("komnr", "MT_avdelingnr", "MT_regionnr"). If the column in data
-has another name, it can be input as a named vector, see examples.}
+\item{code_column}{[\code{character(1)}]\cr
+The column with the code value. Valid values are one
+    of c("komnr", "MT_avdelingnr", "MT_regionnr"). If the column in data
+    has another name, it can be input as a named vector, see examples.
+    Defaults to "komnr".}
 
-\item{new_column}{The new columns that should be included into the data
-frame. The new columns can be up to c("MT_avdelingnr", "MT_avdeling",
-"MT_regionnr", "MT_region") depending on \code{code_column}.
-If the new columns in the result data frame should have other names,
-\code{new_column} can be input as a named vector, see examples.}
+\item{new_column}{[\code{character}]\cr
+The name(s) of the new column(s) that should be added to the data,
+    see examples. Defaults to c("MT_avdelingnr", "MT_avdeling",
+    "MT_regionnr", "MT_region").}
 
 \item{position}{[\code{character(1)}]\cr
 The position for the new columns, can be one of c("first", 
@@ -55,11 +59,20 @@ When the new column(s) already exist,
     \code{overwrite = TRUE}. If the new column(s) already exist and 
     \code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
 
-\item{filename}{a list with the filenames of the source files with the tables for generating the translation table.}
+\item{filename}{[\code{list}]\cr
+File names of the source files for the translation table. Defaults to
+    list("komnr_2_MT_avdeling.csv", "MT_omrader.csv").}
 
-\item{from_path}{Path for the source files for the translation table.}
+\item{from_path}{[\code{character(1)}]\cr
+Path to the source file(s) used to generate the translation table. Defaults 
+    to their standard directory at NVI's internal network.}
 
-\item{to_path}{Path to where the source files for the translation table should be copied.}
+\item{to_path}{[\code{character(1)}]\cr
+Path to where the source file(s) used to generate the translation table should
+    be copied.}
+
+\item{\dots}{Other arguments to be passed to
+\ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.}
 }
 \value{
 \code{add_MT_omrader} A data frame where the MT_avdelingnr has been added in the column to the

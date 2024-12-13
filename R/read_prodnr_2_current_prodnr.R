@@ -2,7 +2,8 @@
 #' @rdname add_produsent_properties
 
 read_prodnr_2_current_prodnr <- function(filename = "Prodnr2GjeldendeProdnr.csv",
-                                         from_path = paste0(set_dir_NVI("Prodregister"), "FormaterteData/")) {
+                                         from_path = paste0(set_dir_NVI("Prodregister"), "FormaterteData/"),
+                                         ...) {
 
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
@@ -16,9 +17,15 @@ read_prodnr_2_current_prodnr <- function(filename = "Prodnr2GjeldendeProdnr.csv"
   checkmate::reportAssertions(checks)
 
   # READ DATA ----
-  df1 <- read_csv_file(filename = filename,
-                       from_path = from_path,
-                       options = list(colClasses = "character", fileEncoding = "UTF-8"))
+  # df1 <- read_csv_file(filename = filename,
+  #                      from_path = from_path,
+  #                      options = list(colClasses = "character", fileEncoding = "UTF-8"))
+  df1 <- data.table::fread(file = file.path(from_path, filename),
+                           colClasses = "character",
+                           encoding = "UTF-8",
+                           showProgress = FALSE,
+                           data.table = FALSE,
+                           ...)
 
   columnnames <- colnames(df1)
   columnnames <- sub("GjeldendeProdnr8", "gjeldende_prodnr8", columnnames)

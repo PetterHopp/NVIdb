@@ -1,7 +1,7 @@
 Package: NVIdb
 Title: Tools to facilitate the use of NVI's databases
-Version: 0.12.0
-Date: 2024-05-22
+Version: 0.13.0
+Date: 2024-12-13
 Authors@R: 
   c(person(given = "Petter",
            family = "Hopp",
@@ -14,18 +14,17 @@ Authors@R:
     person(given = "Norwegian Veterinary Institute",
            role = "cph"))
 Description: Provides tools to facilitate downloading and processing of data from 
-    the Norwegian Veterinary Institute's databases, in particular PJS and EOS. The 
-    package comprises several categories of functions: 
+    the Norwegian Veterinary Institute's databases. The package comprises several 
+    categories of functions. 
     1) Manage credentials (i.e. password and username), 
     2) Login functions for database services, 
-    3) Select PJS-data, 
-    4) Initial cleaning of PJS-data,
-    5) Read, copy and update various in-house data registers, 
-    6) Translate codes into descriptions. 
+    3) Read, copy and update various in-house data registers, 
+    4) Translate codes into descriptions. 
     NVIdb is dependant of NVIconfig which has to be installed manually from GitHub.
+    All PJS and EOS related functions are moved to NVIpjsr.
 URL: https://github.com/NorwegianVeterinaryInstitute/NVIdb
 BugReports: https://github.com/NorwegianVeterinaryInstitute/NVIdb/issues
-Depends: R (>= 3.5.0)
+Depends: R (>= 4.1.0)
 License: BSD_3_clause + file LICENSE
 Imports:
     askpass,
@@ -34,7 +33,6 @@ Imports:
     DBI,
     dplyr,
     keyring,
-    magrittr,
     odbc,
     RODBC,
     RPostgreSQL,

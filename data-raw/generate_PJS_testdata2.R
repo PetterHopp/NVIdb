@@ -14,28 +14,28 @@ PJS_testdata <- sqlQuery(journal_rapp,
 odbcClose(journal_rapp)
 
 # Count number of samples per sak. Used to exclude saker depending on number of samples
-sak <- PJS_testdata %>%
-  select(aar, ansvarlig_seksjon, innsendelsesnummer, provenummer) %>%
-  distinct() %>%
-  add_count(aar, ansvarlig_seksjon, innsendelsesnummer, name = "ant_prover_per_sak") %>%
-  select(-provenummer) %>%
+sak <- PJS_testdata |>
+  select(aar, ansvarlig_seksjon, innsendelsesnummer, provenummer) |>
+  distinct() |>
+  add_count(aar, ansvarlig_seksjon, innsendelsesnummer, name = "ant_prover_per_sak") |>
+  select(-provenummer) |>
   distinct()
 
-PJS_testdata <- PJS_testdata %>%
+PJS_testdata <- PJS_testdata |>
   left_join(sak, by = c("aar", "ansvarlig_seksjon", "innsendelsesnummer"))
 
 # Select journals
 # Define test categories
-PJS_selected <- PJS_testdata %>%
+PJS_selected <- PJS_testdata |>
   dplyr::mutate(category = case_when(!is.na(resultatnummer_sens) ~ "SUB",
-                                     TRUE ~ NA_character_)) %>%
+                                     TRUE ~ NA_character_)) |>
 
   # Filter journals
-  dplyr::filter(category %in% c("SUB")) %>%
-  dplyr::filter(ant_prover_per_sak <= 1) %>%
+  dplyr::filter(category %in% c("SUB")) |>
+  dplyr::filter(ant_prover_per_sak <= 1) |>
   # Unique journals
-  dplyr::select(aar, ansvarlig_seksjon, innsendelsesnummer, category) %>%
-  dplyr::distinct() %>%
+  dplyr::select(aar, ansvarlig_seksjon, innsendelsesnummer, category) |>
+  dplyr::distinct() |>
   dplyr::arrange(aar, ansvarlig_seksjon, innsendelsesnummer)
 
 # Make new column with random number. By initialising the seed this is reproducible
@@ -45,19 +45,19 @@ PJS_selected$innsnr <- round(stats::runif(n = dim(PJS_selected)[1], min = 1, max
 PJS_selected$weeknr <- round(stats::runif(n = dim(PJS_selected)[1], min = 1, max = 52))
 
 # Selects one journal per category
-PJS_selected <- PJS_selected %>%
-  dplyr::group_by(category) %>%
-  dplyr::slice_min(random) %>%
-  dplyr::ungroup() %>%
+PJS_selected <- PJS_selected |>
+  dplyr::group_by(category) |>
+  dplyr::slice_min(random) |>
+  dplyr::ungroup() |>
   dplyr::select(-c(random))
 
 
 # Prepare test data
-PJS_testdata <- PJS_testdata %>%
+PJS_testdata <- PJS_testdata |>
   # Select saker
-  dplyr::right_join(PJS_selected, by = c("aar", "ansvarlig_seksjon", "innsendelsesnummer")) %>%
+  dplyr::right_join(PJS_selected, by = c("aar", "ansvarlig_seksjon", "innsendelsesnummer")) |>
   # Anonymize names and ID's
-  dplyr::rowwise() %>%
+  dplyr::rowwise() |>
   dplyr::mutate(date_correction = (weeknr - as.numeric(substr(ISOweek::ISOweek(as.Date(mottatt_dato, "%d.%m.%y")), 7, 8))) * 7,
                 rekvirenttype = "TYPE",
                 rekvirentnr = substr("12345678901234567890", 1, nchar(rekvirentnr)),
@@ -92,7 +92,7 @@ PJS_testdata <- PJS_testdata %>%
                 id_nr = substr("12345678901234567890", 1, nchar(id_nr)),
                 stamme = NA_character_,
                 innsendelsesnummer = innsnr,
-                fagnr = ceiling(innsnr / 2)) %>%
+                fagnr = ceiling(innsnr / 2)) |>
   dplyr::select(-c(innsnr, weeknr, ant_prover_per_sak, category, date_correction))
 
 # Save testdata

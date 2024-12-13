@@ -45,22 +45,29 @@
 #'     available for \code{read_MT_omrader} if they should be read from
 #'     another directory.
 #'
-#' @param data Data frame with data with a column with a komnr.
-#' @param translation_table Data frame with the table for translating from
-#'     komnr to MT_areas.
-#' @param code_column The column with the coded value. Valid values are one
+#' @param data [\code{data.frame}]\cr
+#' Data with a column with kommunenummer (komnr).
+#' @param translation_table [\code{data.frame}]\cr
+#' The translation table for translating komnr to MT-areas. Defaults
+#'     to \code{komnr_2_MT_omrader}.
+#' @param code_column [\code{character(1)}]\cr
+#' The column with the code value. Valid values are one
 #'     of c("komnr", "MT_avdelingnr", "MT_regionnr"). If the column in data
 #'     has another name, it can be input as a named vector, see examples.
-#' @param new_column The new columns that should be included into the data
-#'     frame. The new columns can be up to c("MT_avdelingnr", "MT_avdeling",
-#'     "MT_regionnr", "MT_region") depending on \code{code_column}.
-#'     If the new columns in the result data frame should have other names,
-#'     \code{new_column} can be input as a named vector, see examples.
+#'     Defaults to "komnr".
+#' @param new_column [\code{character}]\cr
+#' The name(s) of the new column(s) that should be added to the data,
+#'     see examples. Defaults to c("MT_avdelingnr", "MT_avdeling",
+#'     "MT_regionnr", "MT_region").
 #' @template position
 #' @template overwrite
-#' @param filename a list with the filenames of the source files with the tables for generating the translation table.
-#' @param from_path Path for the source files for the translation table.
-#' @param to_path Path to where the source files for the translation table should be copied.
+#' @param filename [\code{list}]\cr
+#' File names of the source files for the translation table. Defaults to
+#'     list("komnr_2_MT_avdeling.csv", "MT_omrader.csv").
+#' @template from_path_add
+#' @template to_path_add
+#' @param \dots	Other arguments to be passed to
+#'     \ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.
 #'
 #' @return \code{add_MT_omrader} A data frame where the MT_avdelingnr has been added in the column to the
 #'     right of the column with the komnr.

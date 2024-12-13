@@ -24,17 +24,26 @@ copy_poststed(
 
 read_poststed(
   filename = "Poststed_UTF8.csv",
-  from_path = paste0(set_dir_NVI("GrunndataLand"), "FormaterteData/")
+  from_path = paste0(set_dir_NVI("GrunndataLand"), "FormaterteData/"),
+  ...
 )
 }
 \arguments{
-\item{data}{Data frame with data with a column with postnr}
+\item{data}{[\code{data.frame}]\cr
+Data with a column with postnummer (postnr).}
 
-\item{translation_table}{Data frame with the translation table for postnr to poststed and komnr}
+\item{translation_table}{[\code{data.frame}]\cr
+The translation table for translating postnr to poststed and komnr. Defaults
+    to \code{poststed}.}
 
-\item{code_column}{The name of the column with the postnr}
+\item{code_column}{[\code{character(1)}]\cr
+The name of the column with the code value. Valid value "postnr". If the
+    column in data has another name, it can be input as a named vector,
+    see examples. Defaults to "postnr".}
 
-\item{new_column}{The name of the new column that should contain the poststed and/or komnr}
+\item{new_column}{[\code{character}]\cr
+The name(s) of the new column(s) that should be added to the data. Defaults
+    to c("poststed", "komnr").}
 
 \item{position}{[\code{character(1)}]\cr
 The position for the new columns, can be one of c("first", 
@@ -48,51 +57,80 @@ When the new column(s) already exist,
     \code{overwrite = TRUE}. If the new column(s) already exist and 
     \code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
 
-\item{filename}{Filename of the translation table for postnr to poststed and komnr}
+\item{filename}{[\code{character(1)}]\cr
+File names of the source files for the translation table. Defaults to
+    "Poststed_UTF8.csv".}
 
-\item{from_path}{Path for the source translation table}
+\item{from_path}{[\code{character(1)}]\cr
+Path to the source file(s) used to generate the translation table. Defaults 
+    to their standard directory at NVI's internal network.}
 
-\item{to_path}{Path for the target translation table when copying the translation table}
+\item{to_path}{[\code{character(1)}]\cr
+Path to where the source file(s) used to generate the translation table should
+    be copied.}
+
+\item{\dots}{Other arguments to be passed to
+\ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.}
 }
 \value{
-\code{add_poststed} A data frame where one or more of the columns c("poststed", "komnr") have been added in the column(s) to the right
-    of the column with the postnr.
+\code{add_poststed} A data frame where one or more of the columns
+    c("poststed", "komnr") have been added in the column(s) to the right of
+    the column with the postnr.
 
-    \code{read_poststed} A data frame with the original postnr and the corresponding poststed and komnr. If not changing standard input to the
+    \code{read_poststed} A data frame with the original postnr and the
+    corresponding poststed and komnr. If not changing standard input to the
     function, the standard file at NVI's internal network is read.
 
-    \code{copy_poststed} copies the source translation table for postnr to poststed and komnr to given directory. If the target file already exists,
+    \code{copy_poststed} copies the source translation table for postnr to
+    poststed and komnr to given directory. If the target file already exists,
     the source file is copied only when it is newer than the target file.
 }
 \description{
-Function to add columns with poststed and komnr. In addition there are functions to read and copy the translation tables.
+Function to add columns with poststed and komnr. In addition
+    there are functions to read and copy the translation tables.
 }
 \details{
-Data sources may provide data with postnr. These functions manage translating postnr to poststed and komnr.
+Data sources may provide data with postnr. These functions manage
+    translating postnr to poststed and komnr.
 
     \code{add_poststed} can be used to translate postnr to poststed and komnr.
 
-    One has to ensure that the code in the data column represents a postnr. The function will translate any 4 digits that has the same ID as a postnr.
+    One has to ensure that the code in the data column represents a postnr.
+    The function will translate any 4 digits that has the same ID as a postnr.
 
-    Standard name for the postnr is postnr. If the column with the postnr that should be translated has another name, the
-    parameter \code{code_column} can be input as a named vector. Standard names for the new columns are c("poststed", "komnr"). Likewise, if the
-    new columns should be given other names than these, the parameter \code{new_column} can be input as a named vector, see examples.
+    Standard name for the postnr is postnr. If the column with the postnr
+    that should be translated has another name, the parameter
+    \code{code_column} can be input as a named vector. Standard names for the
+    new columns are c("poststed", "komnr"). Likewise, if the new columns
+    should be given other names than these, the parameter \code{new_column}
+    can be input as a named vector, see examples.
 
-    \code{add_poststed} uses a premade translation table ("Poststed_UTF8.csv"). These data need to be loaded by \code{read_poststed}
-    before running \code{add_poststed}, see example. "Poststed_UTF8.csv" is made based on information in PJS adresseregister.
-    The translation table is updated when we know there is a need.
+    \code{add_poststed} uses a premade translation table ("Poststed_UTF8.csv").
+    These data need to be loaded by \code{read_poststed} before running
+    \code{add_poststed}, see example. "Poststed_UTF8.csv" is made based on
+    information in PJS adresseregister. The translation table is updated when
+    we know there is a need.
 
-    \code{position} is used to give the place if the new columns in the data.frame. For \code{position = "right"} the new variables are
-    placed to the right of the code_variable. Likewise, for \code{position = "left"} the new variables are placed to the left of the
-    code_variable. If \code{position = "first"} or \code{position = "last"} the new columns are placed first or last, respectively, in the
-    data.frame. A special case occurs for \code{position = "keep"} which only has meaning when the new column has the same name as an existing
-    column and overwrite = TRUE. In these cases, the existing column will be overwritten with new data and have the same position.
+    \code{position} is used to give the place if the new columns in the data
+    frame. For \code{position = "right"} the new variables are placed to the
+    right of the code_variable. Likewise, for \code{position = "left"} the
+    new variables are placed to the left of the code_variable. If
+    \code{position = "first"} or \code{position = "last"} the new columns are
+    placed first or last, respectively, in the data frame. A special case
+    occurs for \code{position = "keep"} which only has meaning when the new
+    column has the same name as an existing column and \code{overwrite = TRUE}.
+    In these cases, the existing column will be overwritten with new data and
+    have the same position.
 
-    \code{read_poststed} read the file "Poststed_UTF8.csv" a data frame that can be used by \code{add_poststed}. Standard setting will read
-    the file from NVI's internal network. If changing the \code{from_path}, the function can be used to read the translation files from other directories.
-    This can be useful if having a stand alone app with no connection the NVI's internal network. In other cases, it should be avoided.
+    \code{read_poststed} read the file "Poststed_UTF8.csv" a data frame that
+    can be used by \code{add_poststed}. Standard setting will read the file
+    from NVI's internal network. If changing the \code{from_path}, the
+    function can be used to read the translation files from other directories.
+    This can be useful if having a stand alone app with no connection the
+    NVI's internal network. In other cases, it should be avoided.
 
-    \code{copy_poststed} copy the file "Poststed_UTF8.csv" to a given directory.
+    \code{copy_poststed} copy the file "Poststed_UTF8.csv" to a given
+    directory.
 }
 \examples{
 \dontrun{

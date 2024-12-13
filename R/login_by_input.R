@@ -129,32 +129,10 @@ login_by_input <- function(dbservice,
                                          port = dbport,
                                          dbname = db,
                                          # user = svDialogs::dlgInput(message = paste("Oppgi brukernavn for", dbtext))$res,
-                                         user = askpass::askpass(prompt = paste("Oppgi brukernavn (username) for", dbtext)), ,
+                                         user = askpass::askpass(prompt = paste("Oppgi brukernavn (username) for", dbtext)),
                                          # PWD = getPass::getPass(msg = paste("Oppgi passord for", dbtext)))
                                          PWD = askpass::askpass(prompt = paste("Oppgi passord for", dbtext)))
   }
 
   return(connection)
-}
-
-
-#' @export
-#' @rdname login
-
-login_by_input_PJS <- function(dbinterface = NULL, ...) {
-
-  # ARGUMENT CHECKING ----
-  # Object to store check-results
-  checks <- checkmate::makeAssertCollection()
-
-  # dbinterface
-  checkmate::assert_choice(dbinterface, choices = c("odbc", "RPostgreSQL", "RODBC"), null.ok = TRUE, add = checks)
-
-  # Report check-results
-  checkmate::reportAssertions(checks)
-
-  # Oppretterknytning mot journal_rapp
-  odbcConnection <- login_by_input(dbservice = "PJS", dbinterface = dbinterface, ...)
-
-  return(odbcConnection)
 }

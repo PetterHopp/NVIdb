@@ -1,20 +1,33 @@
 #' @title Manage translation table for produksjonstilskuddskoder (Pkoder)
-#' @description Read and copy the translation table for produksjonstilskuddskoder (Pkoder).
-#' @details The translation table for Pkoder contains the Pkode, descriptive text, unit of interest (Dyr), whether the code counts unique animals
-#'     or not (used when summarising number of animals), and sortering to order the Pkoder. The register covers 2017 and later.
+#' @description Read and copy the translation table for produksjonstilskuddskoder
+#'     (Pkoder).
+#' @details The translation table for Pkoder contains the Pkode, descriptive
+#'     text, unit of interest (Dyr), whether the code counts unique animals or
+#'     not (used when summarising number of animals), and sortering to order the
+#'     Pkoder. The register covers 2017 and later.
 #'
-#'     \code{read_Pkode_2_text} reads the file "Produksjonstilskuddskoder2_UTF8.csv" into a data frame. The standard settings will read
-#'     the file from NVI's internal network. If changing the from_path, the function can be used to read the translation file from other
-#'     directories. This can be useful if having a stand alone app with no connection the NVI's internal network. In other cases, it should
-#'     be avoided.
+#'     \code{read_Pkode_2_text} reads the file "Produksjonstilskuddskoder2_UTF8.csv"
+#'     into a data frame. The default is to read the file from NVI's internal
+#'     network. If changing the from_path, the function can be used to read the
+#'     translation file from other directories. This can be useful if having a
+#'     stand alone app with no connection the NVI's internal network. In other
+#'     cases, it should be avoided.
 #'
-#'     \code{copy_Pkode_2_text} copies the file "Produksjonstilskuddskoder2_UTF8.csv" to a given location.
+#'     \code{copy_Pkode_2_text} copies the file "Produksjonstilskuddskoder2_UTF8.csv"
+#'     to a given location.
 #'
-#' @param filename Name of the translation table, defaults to "Produksjonstilskuddskoder2_UTF8.csv"
-#' @param from_path Path for the translation table for produksjonstilskuddskoder
-#' @param to_path Path for the target translation table when copying produksjonstilskuddskoder
+#' @param filename [\code{character(1)}]\cr
+#' Name of the translation table. Defaults to "Produksjonstilskuddskoder2_UTF8.csv".
+#' @param from_path [\code{character(1)}]\cr
+#' Path for the translation table for produksjonstilskuddskoder. Defaults to
+#'     standard directory at the NVI network.
+#' @param to_path [\code{character(1)}]\cr
+#' Path for the target translation table when copying produksjonstilskuddskoder.
 #' @param keep_old_names [\code{logical(1)}]\cr
-#' Keep old column names as were used as standard in NVIdb <= v0.7.1. Defaults to \code{FALSE}.
+#' Keep old column names as were used as standard in NVIdb <= v0.7.1. Defaults
+#'     to \code{FALSE}.
+#' @param \dots	Other arguments to be passed to
+#'     \ifelse{html}{\code{\link[utils:read.csv2]{utils::read.csv2}}}{\code{utils::read.csv2}}.
 #'
 #' @return \code{read_Pkode_2_text} A data frame with the translation table for
 #'     Pkoder to description as read from the csv file. If not changing standard
@@ -41,7 +54,8 @@
 #'
 read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder2_UTF8.csv",
                               from_path = paste0(set_dir_NVI("Prodtilskudd"), "StotteData/"),
-                              keep_old_names = FALSE) {
+                              keep_old_names = FALSE,
+                              ...) {
 
   # Removing ending "/" and "\\" from pathnames
   from_path <- sub("/+$|\\\\+$", "", from_path)
@@ -59,9 +73,13 @@ read_Pkode_2_text <- function(filename = "Produksjonstilskuddskoder2_UTF8.csv",
   # reads header and identifies characters by using NVIdb::standardize_columns
   colclasses <- standardize_columns(data = file.path(from_path, filename), property = "colclasses")
 
-  Pkoder <- read_csv_file(filename = filename,
-                          from_path = from_path,
-                          options = list(colClasses = colclasses, fileEncoding = "UTF-8"))
+  # Pkoder <- read_csv_file(filename = filename,
+  #                         from_path = from_path,
+  #                         options = list(colClasses = colclasses, fileEncoding = "UTF-8"))
+  Pkoder <- utils::read.csv2(file = file.path(from_path, filename),
+                             colClasses = colclasses,
+                             fileEncoding = "UTF-8",
+                             ...)
 
   if (isTRUE(keep_old_names)) {
     standard_names <- c("soknadaar", "telledato", "Pkodeart", "Pkode",

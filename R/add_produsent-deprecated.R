@@ -32,9 +32,6 @@
 #' @param overwrite When the new column(s) already exist, the content in the
 #'     existing column(s) is replaced by new data if overwrite = TRUE. If the
 #'     new columns already exists and overwrite = FALSE, then an error is issued.
-#' @param filename a list with the filenames of the source files with the tables for generating the translation table.
-#' @param from_path Path for the source files for the translation table.
-#' @param to_path Path for the target translation table when copying the translation table.
 #'
 #' @return \code{add_produsentnr} A data frame where the gjeldende_prodnr8. has been added in the column to the
 #'     right of the column with the prodnr8.

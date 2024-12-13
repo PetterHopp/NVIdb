@@ -5,6 +5,7 @@
 ^nosync$
 ^man-roxygen$
 ^CONTRIBUTING.md
+^LICENSE.md
 ^README\.md
 ^README\.Rmd
 ^NVIdb.Rcheck\vign_test$

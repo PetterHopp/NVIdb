@@ -1,23 +1,29 @@
-library(NVIdb)
+# library(NVIdb)
 library(testthat)
 
 test_that("Log in to db services", {
   # skip if no connection to 'FAG' have been established
   skip_if_not(isTRUE(NVIcheckmate::check_credentials("PJS")))
 
-  odbc_connected <- login_PJS()
-  expect_true(as.vector(odbc_connected) >= 1)
-  RODBC::odbcClose(odbc_connected)
-
+  linewidth <- options("width")
+  options(width = 80)
+  
   odbc_connected <- login("PJS")
   expect_true(as.vector(odbc_connected) >= 1)
   RODBC::odbcClose(odbc_connected)
 
-  odbc_connected <- login_by_credentials_PJS()
+  odbc_connected <- expect_warning(login_PJS(),
+                                regexp = "'login_PJS' is replaced by 'login")
   expect_true(as.vector(odbc_connected) >= 1)
   RODBC::odbcClose(odbc_connected)
-})
 
+  odbc_connected <- expect_warning(login_by_credentials_PJS(),
+                                regexp = "'login_by_credentials_PJS' is replaced by 'login_by_credentials")
+  expect_true(as.vector(odbc_connected) >= 1)
+  RODBC::odbcClose(odbc_connected)
+  
+  options(width = unlist(linewidth))
+})
 
 test_that("Errors or warnings for login", {
   linewidth <- options("width")
@@ -35,25 +41,12 @@ test_that("Errors or warnings for login", {
                        dbinterface = NULL),
                  regexpr = "ODBC connection failed")
 
-  options(width = unlist(linewidth))
-})
+  expect_error(login(dbservice = "EOS", dbinterface = "noodbc"),
+               regexpr = "Variable 'dbinterface': Must be element of set")
 
-test_that("Errors or warnings for login_EOS", {
-  linewidth <- options("width")
-  options(width = 80)
-
-  expect_error(login_EOS(dbinterface = "noodbc"),
+  expect_error(login(dbservice = "PJS", dbinterface = "noodbc"),
                regexpr = "Variable 'dbinterface': Must be element of set")
 
   options(width = unlist(linewidth))
 })
 
-test_that("Errors or warnings for login_PJS", {
-  linewidth <- options("width")
-  options(width = 80)
-
-  expect_error(login_PJS(dbinterface = "noodbc"),
-               regexpr = "Variable 'dbinterface': Must be element of set")
-
-  options(width = unlist(linewidth))
-})

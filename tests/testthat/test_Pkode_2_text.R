@@ -1,4 +1,4 @@
-library(NVIdb)
+# library(NVIdb)
 library(testthat)
 library(checkmate)
 
@@ -37,6 +37,15 @@ test_that("Read Produksjonstilskuddskoder", {
   expect_subset(x = c("soknadaar", "soknadmnd", "telledato", "Pkode", "Pkodetype", "Pkodeart", "beskrivelse",
                                 "enhet", "unike_dyr", "sortering"),
                 choices = colnames(Pkoder))
+
+  # check class of variables
+  # numeric
+  expect_equal(colnames(Pkoder)[unlist(lapply(Pkoder, is.numeric), use.names = FALSE)],
+               c("soknadaar", "unike_dyr", "sortering"))
+  # character
+  expect_subset(colnames(Pkoder)[unlist(lapply(Pkoder, is.character), use.names = FALSE)],
+                choices = c("soknadmnd", "telledato", "Pkode", "Pkodetype", "Pkodeart", "beskrivelse", "enhet"))
+
 
   Pkoder <- read_Pkode_2_text(keep_old_names = TRUE)
 

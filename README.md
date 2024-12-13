@@ -11,13 +11,13 @@
 ## Overview
 
 `NVIdb`provides tools to facilitate downloading and processing of data
-from the Norwegian Veterinary Institute’s databases, in particular PJS
-and EOS. The package comprises several categories of functions: 1)
-Manage credentials (i.e. password and username), 2) Login functions for
-database services, 3) Select PJS-data, 4) Initial cleaning of PJS-data,
-5) Read, copy and update various in-house data registers, 6) Translate
+from the Norwegian Veterinary Institute’s databases. The package
+comprises several categories of functions. 1) Manage credentials
+(i.e. password and username), 2) Login functions for database services,
+3) Read, copy and update various in-house data registers, 4) Translate
 codes into descriptions. NVIdb is dependant of NVIconfig which has to be
-installed manually from GitHub.
+installed manually from GitHub. All PJS and EOS related functions are
+moved to NVIpjsr.
 
 `NVIdb` is part of `NVIverse`, a collection of R-packages with tools to
 facilitate data management and data reporting at the Norwegian
@@ -34,9 +34,9 @@ for more information.
 [GitHub](https://github.com/NorwegianVeterinaryInstitute). To install
 `NVIdb` you will need:
 
--   R version &gt; 4.0.0
+-   R version &gt; 4.1.0
 -   R package `remotes`
--   Rtools version 4.0, 4.2 or 4.3 depending on R version
+-   Rtools version 4.0, 4.2, 4.3 or 4.4 depending on R version
 
 First install and attach the `remotes` package.
 
@@ -52,12 +52,13 @@ following code:
         build_vignettes = FALSE)
 
 To install (or update) the `NVIdb` package with vignettes, you will need
-to first install some additional R-packages needed for creating the
+to first install some additional R-packages needed to build the
 vignettes. Check README below in the section [Vignettes](#vignettes) to
 see which vignettes are available. To install the package with the
 vignettes, first install the packages: `knitr`, `rmarkdown`, `R.rsp`,
-and `NVIrpackages` (from GitHub) if they are missing. Then run the
-following code:
+and `NVIrpackages` (from GitHub) if they are missing. If you don’t use
+R-studio, you will also need to install Pandoc. Then run the following
+code:
 
     remotes::install_github("NorwegianVeterinaryInstitute/NVIdb",
         upgrade = FALSE,
