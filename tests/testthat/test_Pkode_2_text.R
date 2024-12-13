@@ -45,7 +45,7 @@ test_that("Read Produksjonstilskuddskoder", {
   # character
   expect_subset(colnames(Pkoder)[unlist(lapply(Pkoder, is.character), use.names = FALSE)],
                 choices = c("soknadmnd", "telledato", "Pkode", "Pkodetype", "Pkodeart", "beskrivelse", "enhet"))
-  
+
 
   Pkoder <- read_Pkode_2_text(keep_old_names = TRUE)
 
