@@ -2,7 +2,7 @@
 #' @description Standardizes column names, labels, column width
 #'     for variables in external databases.
 #'
-#' @details The standardization table is under development. This
+#' @details The standardisation table is under development. This
 #'     function only works when being connected to the NVI network.
 #'
 #' Variables in internal and external data sources uses
@@ -15,6 +15,43 @@
 #'     and
 #'     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}
 #'     can be generated.
+#'
+#' \code{standards} gives the source file or the data.frame with the standards
+#'     for formatting the columns. Default is to give the general source csv
+#'     file. It can also be a data.frame as for example the
+#'     \ifelse{html}{\code{\link[OKplan:OK_column_standards]{OKplan::OK_column_standards}}}{\code{OKplan::OK_column_standards}}
+#'     giving the standards when generating
+#'     selection files for the Norwegian surveillance programmes. As this file
+#'     is embedded into OKplan-package, it may be convenient to update the
+#'     source file and load it as a csv file. On some occations, it may be most
+#'     easy to input the column standards directly using a list.
+#'
+#'     #' The list input to column_standards must follow a specific format.
+#'     It is a list with at least three named vectors:
+#' \itemize{
+#' \item \code{colname}: a vector of all columns in in the source file that
+#'     should be included in the Excel report with the selection list.
+#' \item \code{collabel}: A vector with the labels that should be used in the
+#'     Excel report.
+#' \item \code{colwidth}: A vector with the column width that should be used
+#'     in the Excel report.
+#' }
+#'
+#'     In addition one may input:
+#'
+#' \itemize{
+#' \item \code{colorder}: the order of the columns to be used in the Excel report.
+#'     The default is to use the same order as they are entered in the vectors.
+#' \item \code{column_db}: input added as a possibility to keep on the same format
+#'     as \ifelse{html}{\code{\link{column_standards}}}. 
+#'     Not necessary to input.
+#' \item \code{table_db}: input added as a possibility to keep on the same format
+#'     as \ifelse{html}{\code{\link{column_standards}}}. 
+#'     Must be the same as
+#'     \code{dbsource}. Not necessary to input.
+#' }
+#'
+#' All vectors must have the same order and the same length.
 #'
 #' \code{property = "colnames"} will replace the column names
 #'     in a data frame with standardized column names. All
@@ -78,8 +115,11 @@
 #' The database that is the source of data. Should be the name of
 #'     the data source as registered in column_standards table. Defaults
 #'     to \code{deparse(substitute(data))}.
-#' @param standards [\code{character(1)}]\cr
-#' For giving alternative standard tables to column_standards.
+#' @param standards [\code{data.frame} | \code{list} | \code{character(1)}]\cr
+#' For giving alternative standard tables to column_standards. See details.
+#'     Defaults to
+#'     file.path(NVIdb::set_dir_NVI("ProgrammeringR", slash = FALSE),
+#'               "standardization", "colnames", "column_standards.csv")
 #' @param property [\code{character(1)}]\cr
 #' Property of the column that should be standardized. Must be one
 #'     of c("colnames", "colclasses", "collabels", "colwidths_Excel",
@@ -135,12 +175,19 @@
 standardize_columns <- function(data,
                                 dbsource = deparse(substitute(data)),
                                 #   csvfile = NULL,
-                                standards = NULL,
+                                standards = file.path(NVIdb::set_dir_NVI("ProgrammeringR", slash = FALSE),
+                                                      "standardization", "colnames", "column_standards.csv"),
                                 property,
                                 language = "no",
                                 exclude = FALSE,
                                 ...) {
   # TO DO: replace reading column standards with including column standards in sysdata for the package.
+
+  # PREPARE ARGUMENTS BEFORE CHECKING ----
+  if (is.null(standards)) {
+    standards <- file.path(NVIdb::set_dir_NVI("ProgrammeringR", slash = FALSE),
+                           "standardization", "colnames", "column_standards.csv")
+  }
 
   # ARGUMENT CHECKING ----
   # Object to store check-results
@@ -158,14 +205,34 @@ standardize_columns <- function(data,
   }
   checkmate::assert_character(dbsource, len = 1, min.chars = 1, add = checks)
 
-  checkmate::assert_data_frame(standards, null.ok = TRUE, add = checks)
-
+  # standards
+  # checkmate::assert_data_frame(standards, null.ok = TRUE, add = checks)
+  checkmate::assert(checkmate::check_class(standards, classes = c("data.frame")),
+                    checkmate::check_class(standards, classes = c("list")),
+                    checkmate::check_class(standards, classes = c("character")),
+                    add = checks)
+  if (inherits(standards, what = "character")) {
+    checkmate::assert_file_exists(standards, add = checks)
+  }
+  if (inherits(standards, what = "list")) {
+    lengths_standard <- lengths(standards)
+    NVIcheckmate::assert_integer(lengths_standard, lower = lengths_standard[1], upper = lengths_standard[1],
+                                 min.len = 3, max.len = 6,
+                                 comment = "When input as a list, all elements must have the same length",
+                                 add = checks)
+    checkmate::assert_subset(names(standards), choices = c("table_db", "colname_db", "colname", "collabel", "colwidth", "colorder"),
+                             add = checks)
+  }
+  if (inherits(standards, what = "data.frame")) {
+    checkmate::assert_data_frame(standards, min.rows = 1, min.cols = 6, add = checks)
+  }
+# property
   checkmate::assert_subset(tolower(property),
                            choices = c("colnames", "colclasses",
                                        "collabels", "colwidths_excel",
                                        "colwidths_DT", "colorder"),
                            add = checks)
-
+  # language
   checkmate::assert_subset(language, choices = c("no", "en"), add = checks)
 
   checkmate::assert_logical(exclude, add = checks)
@@ -177,12 +244,36 @@ standardize_columns <- function(data,
   dbsource <- tolower(dbsource)
 
   # Reading column standards from a csv-file based on in an Excel file
-  if (is.null(standards)) {
-    column_standards <- utils::read.csv2(
-      file = paste0(NVIdb::set_dir_NVI("ProgrammeringR"), "standardization/column_standards.csv"),
-      fileEncoding = "UTF-8"
-    )
-  } else {
+  # if (is.null(standards)) {
+  #   column_standards <- utils::read.csv2(
+  #     file = file.path(NVIdb::set_dir_NVI("ProgrammeringR", slash = FALSE),
+  #                      "standardization", "column_standards.csv"),
+  #     fileEncoding = "UTF-8"
+  #   )
+  # } else {
+  #   column_standards <- standards
+  # }
+  if (inherits(standards, what = "character")) {
+    column_standards <- utils::read.csv2(file = standards, fileEncoding = "UTF-8")
+  }
+  if (inherits(standards, what = "list")) {
+    column_standards <- as.data.frame((standards))
+
+    if (!"table_db" %in% colnames(column_standards)) {
+      column_standards$table_db <- dbsource
+    }
+
+    if (!"colname_db" %in% colnames(column_standards)) {
+      column_standards$colname_db <- column_standards$colname
+    }
+
+    if (!"colorder" %in% colnames(column_standards)) {
+      column_standards$colorder <- c(1:dim(column_standards)[1])
+    }
+    colnames(column_standards)[which(colnames(column_standards) == "collabel")] <- "label_1_no"
+    colnames(column_standards)[which(colnames(column_standards) == "colwidth")] <- "colwidth_Excel"
+  }
+  if (inherits(standards, what = "data.frame")) {
     column_standards <- standards
   }
 
