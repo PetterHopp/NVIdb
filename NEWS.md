@@ -2,7 +2,7 @@
 
 ## New features:
 
--
+- `standardize_columns` now accepts list or filename and path as input to `standards`.
 
 
 ## Bug fixes:
