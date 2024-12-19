@@ -7,7 +7,8 @@
 standardize_columns(
   data,
   dbsource = deparse(substitute(data)),
-  standards = NULL,
+  standards = file.path(NVIdb::set_dir_NVI("ProgrammeringR", slash = FALSE),
+    "standardization", "colnames", "column_standards.csv"),
   property,
   language = "no",
   exclude = FALSE,
@@ -24,8 +25,11 @@ The database that is the source of data. Should be the name of
     the data source as registered in column_standards table. Defaults
     to \code{deparse(substitute(data))}.}
 
-\item{standards}{[\code{character(1)}]\cr
-For giving alternative standard tables to column_standards.}
+\item{standards}{[\code{data.frame} | \code{list} | \code{character(1)}]\cr
+For giving alternatives to the standard table for column_standards using
+    different formats, see details. Defaults to
+    file.path(NVIdb::set_dir_NVI("ProgrammeringR", slash = FALSE),
+              "standardization", "colnames", "column_standards.csv").}
 
 \item{property}{[\code{character(1)}]\cr
 Property of the column that should be standardized. Must be one
@@ -65,7 +69,7 @@ Standardizes column names, labels, column width
     for variables in external databases.
 }
 \details{
-The standardization table is under development. This
+The standardisation table is under development. This
     function only works when being connected to the NVI network.
 
 Variables in internal and external data sources uses
@@ -78,6 +82,43 @@ Variables in internal and external data sources uses
     and
     \ifelse{html}{\code{\link[data.table:fread]{data.table::fread}}}{\code{data.table::fread}}
     can be generated.
+
+\code{standards} gives the source file or the data.frame with the standards
+    for formatting the columns. Default is to give the general source csv
+    file. It can also be a data.frame as for example the
+    \ifelse{html}{\code{\link[OKplan:OK_column_standards]{OKplan::OK_column_standards}}}{\code{OKplan::OK_column_standards}}
+    giving the standards when generating
+    selection files for the Norwegian surveillance programmes. As this file
+    is embedded into OKplan-package, it may be convenient to update the
+    source file and load it as a csv file. On some occasions, it may be most
+    easy to input the column standards directly using a \code{list}.
+
+    #' The list input to column_standards must follow a specific format.
+    It is a \code{list} with at least three named vectors:
+\itemize{
+\item \code{colname}: a vector of all columns in in the source file that
+    should be included in the Excel report with the selection list.
+\item \code{collabel}: A vector with the labels that should be used in the
+    Excel report.
+\item \code{colwidth}: A vector with the column width that should be used
+    in the Excel report.
+}
+
+    In addition one may input:
+
+\itemize{
+\item \code{colorder}: the order of the columns to be used in the Excel report.
+    The default is to use the same order as they are entered in the vectors.
+\item \code{column_db}: input added as a possibility to keep on the same format
+    as \ifelse{html}{\code{\link{column_standards}}}.
+    Not necessary to input.
+\item \code{table_db}: input added as a possibility to keep on the same format
+    as \ifelse{html}{\code{\link{column_standards}}}.
+    Must be the same as
+    \code{dbsource}. Not necessary to input.
+}
+
+All vectors must have the same order and the same length.
 
 \code{property = "colnames"} will replace the column names
     in a data frame with standardized column names. All
