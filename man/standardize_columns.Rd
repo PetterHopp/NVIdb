@@ -26,10 +26,10 @@ The database that is the source of data. Should be the name of
     to \code{deparse(substitute(data))}.}
 
 \item{standards}{[\code{data.frame} | \code{list} | \code{character(1)}]\cr
-For giving alternative standard tables to column_standards. See details.
-    Defaults to
+For giving alternatives to the standard table for column_standards using
+    different formats, see details. Defaults to
     file.path(NVIdb::set_dir_NVI("ProgrammeringR", slash = FALSE),
-              "standardization", "colnames", "column_standards.csv")}
+              "standardization", "colnames", "column_standards.csv").}
 
 \item{property}{[\code{character(1)}]\cr
 Property of the column that should be standardized. Must be one
@@ -90,11 +90,11 @@ Variables in internal and external data sources uses
     giving the standards when generating
     selection files for the Norwegian surveillance programmes. As this file
     is embedded into OKplan-package, it may be convenient to update the
-    source file and load it as a csv file. On some occations, it may be most
-    easy to input the column standards directly using a list.
+    source file and load it as a csv file. On some occasions, it may be most
+    easy to input the column standards directly using a \code{list}.
 
     #' The list input to column_standards must follow a specific format.
-    It is a list with at least three named vectors:
+    It is a \code{list} with at least three named vectors:
 \itemize{
 \item \code{colname}: a vector of all columns in in the source file that
     should be included in the Excel report with the selection list.
@@ -110,9 +110,11 @@ Variables in internal and external data sources uses
 \item \code{colorder}: the order of the columns to be used in the Excel report.
     The default is to use the same order as they are entered in the vectors.
 \item \code{column_db}: input added as a possibility to keep on the same format
-    as \code{\link{OK_column_standards}}. Not necessary to input.
+    as \ifelse{html}{\code{\link{column_standards}}}.
+    Not necessary to input.
 \item \code{table_db}: input added as a possibility to keep on the same format
-    as \code{\link{OK_column_standards}}. Must be the same as
+    as \ifelse{html}{\code{\link{column_standards}}}.
+    Must be the same as
     \code{dbsource}. Not necessary to input.
 }
 
