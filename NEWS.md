@@ -1,3 +1,10 @@
+# NVIdb 0.13.1 - (2024-12-19)
+
+## New features:
+
+- `standardize_columns` now accepts list or filename and path as input to `standards`.
+
+
 # NVIdb 0.13.0 - (2024-12-13)
 
 ## Bug fixes:

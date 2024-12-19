@@ -32,6 +32,13 @@ test_that("Standardize colnames from PJS", {
                                                 property = "colnames")),
                    correct_result)
 
+  # Compare Add fylke, current fylkenr and current fylke with correct result
+  expect_identical(colnames(standardize_columns(data = df,
+                                                standards = file.path(NVIdb::set_dir_NVI("ProgrammeringR", slash = FALSE),
+                                                                      "standardization", "colnames", "column_standards.csv"),
+                                                property = "colnames")),
+                   correct_result)
+
 })
 
 
@@ -58,6 +65,14 @@ test_that("Standardize colnames from EOS scrapie", {
   # Compare Add fylke, current fylkenr and current fylke with correct result
   expect_identical(colnames(standardize_columns(data = df,
                                                 dbsource = "proveresultat_scrapie",
+                                                property = "colnames")),
+                   correct_result)
+
+  # Compare Add fylke, current fylkenr and current fylke with correct result
+  expect_identical(colnames(standardize_columns(data = df,
+                                                dbsource = "proveresultat_scrapie",
+                                                standards = file.path(NVIdb::set_dir_NVI("ProgrammeringR", slash = FALSE),
+                                                                      "standardization", "colnames", "column_standards.csv"),
                                                 property = "colnames")),
                    correct_result)
 
@@ -108,26 +123,26 @@ test_that("colClasses for csv-files", {
 
 
 test_that("Standardize colwidths for Excel", {
-# skip if no connection to 'FAG' have been established
-skip_if_not(dir.exists(set_dir_NVI("FAG")))
+  # skip if no connection to 'FAG' have been established
+  skip_if_not(dir.exists(set_dir_NVI("FAG")))
 
-PJStest <- readRDS(file.path(".", "PJS_testdata.rds"))
-# PJStest <- readRDS("./tests/testthat/PJS_testdata.rds")
+  PJStest <- readRDS(file.path(".", "PJS_testdata.rds"))
+  # PJStest <- readRDS("./tests/testthat/PJS_testdata.rds")
 
-#   # Make a vector with correct column names after translation
-correct_result <- c(5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.71, 10.71,
-                    10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
-                    10.71, 10.71, 10.71, 20.00, 20.00, 10.71, 10.71, 10.71, 10.71, 10.71,
-                    10.71, 11.00, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
-                    10.71, 10.71, 10.71, 11.00, 10.71,  8.00, 10.71, 10.71, 10.71, 10.71,
-                    30.00, 10.71, 10.71, 10.71, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71,
-                    10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
-                    10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
-                    10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
-                    10.71, 10.71, 10.71, 10.71, 8.00)
+  #   # Make a vector with correct column names after translation
+  correct_result <- c(5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 20.00, 20.00, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 11.00, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 11.00, 10.71,  8.00, 10.71, 10.71, 10.71, 10.71,
+                      30.00, 10.71, 10.71, 10.71, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      10.71, 10.71, 10.71, 10.71, 8.00)
 
   expect_equal(standardize_columns(data = PJStest, property = "colwidths_Excel"),
-                   correct_result)
+               correct_result)
 
 
   # Standardisere kolonnenavn
@@ -137,12 +152,12 @@ correct_result <- c(5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.71
   correct_result <- c(5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.00, 10.00, 10.00,
                       10.00, 10.71, 10.71, 5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.71, 10.71, 20.00, 20.00, 10.71, 10.71, 10.71, 10.71, 10.71,
-                       5.00, 11.00, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      5.00, 11.00, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.00, 10.00, 11.00, 10.71, 8.00, 10.71, 10.71, 10.71, 10.71,
                       30.00, 10.71, 10.71, 10.71, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
-                       8.00, 10.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      8.00, 10.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.71, 10.71, 30.00, 8.00)
 
   expect_equal(standardize_columns(data = PJStest, property = "colwidths_Excel"),
@@ -155,12 +170,12 @@ correct_result <- c(5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.71
   correct_result <- c(5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.00, 10.00, 10.00, 10.00,
                       10.00, 10.71, 10.71, 5.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.71, 10.71, 20.00, 20.00, 10.71, 10.71, 10.71, 10.71, 10.71,
-                       5.00, 11.00, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      5.00, 11.00, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.00, 10.00, 11.00, 10.71, 8.00, 10.71, 10.71, 10.71, 10.71,
                       30.00, 10.71, 10.71, 10.71, 11.00, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
-                       8.00, 10.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
+                      8.00, 10.00, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71, 10.71,
                       10.71, 10.71, 10.71, 30.00, 8.00)
 
   expect_equal(standardize_columns(data = PJStest, property = "colwidths_Excel"),
@@ -186,6 +201,13 @@ test_that("Standardize English collabels", {
 
   # Compare Add fylke, current fylkenr and current fylke with correct result
   expect_identical(standardize_columns(data = df,
+                                       property = "collabels",
+                                       language = "en"),
+                   correct_result)
+
+  expect_identical(standardize_columns(data = df,
+                                       standards = file.path(NVIdb::set_dir_NVI("ProgrammeringR", slash = FALSE),
+                                                             "standardization", "colnames", "column_standards.csv"),
                                        property = "collabels",
                                        language = "en"),
                    correct_result)
@@ -228,7 +250,54 @@ test_that("Column order", {
 })
 
 
+test_that("List input to standards", {
+  # Make example data
+  df <- as.data.frame(cbind("ok_aar" = 2021, "rapport" = "Brucellose hos geit, utvalgsliste",
+                            "mt_avdelingnr" = "M21150", "mt_avdeling" = "Romerike",
+                            "mt_regionnr" = "M21000", "mt_region" = "Region Stor-Oslo",
+                            "eier_lokalitetnr" = "30303030", "eier_lokalitet" = "XXX XXXXX", "orgnr" = 989989989,
+                            "postnr" = "0468", "poststed" = "OSLO", "ant_prover" = 26))
+  # Probably first makes a matrix, therefore "Antall prøver" is character.
+  df$ant_prover <- as.numeric(df$ant_prover)
+
+  df <- standardize_columns(data = df,
+                            standards =
+                              list("colname" = c("ok_aar", "rapport", "mt_regionnr", "mt_region", "mt_avdelingnr",
+                                                 "mt_avdeling", "eier_lokalitetnr", "orgnr", "eier_lokalitet", "postnr", "poststed",
+                                                 "ant_prover"),
+                                   "collabel" = c("År", "Rapport", "MT regionnr", "MT region", "MT avdelingsnr",
+                                                  "MT avdeling", "Produsentnr", "Virksomhetnr", "Virksomhet", "Postnr", "Poststed",
+                                                  "Antall prøver"),
+                                   "colwidth" = c(5, 9, 12.5, 16, 13, 30, 12, 12, 30, 8, 15, 8.5)),
+                            dbsource = "brucella_geit",
+                            property = "colorder",
+                            exclude = TRUE)
+
+  expect_equal(colnames(df),
+               c("ok_aar", "rapport", "mt_regionnr", "mt_region", "mt_avdelingnr", "mt_avdeling", "eier_lokalitetnr", "orgnr",
+                  "eier_lokalitet", "postnr", "poststed", "ant_prover"))
+
+  expect_equal(standardize_columns(data = df,
+                            standards =
+                              list("colname" = c("ok_aar", "rapport", "mt_regionnr", "mt_region", "mt_avdelingnr",
+                                                 "mt_avdeling", "eier_lokalitetnr", "orgnr", "eier_lokalitet", "postnr", "poststed",
+                                                 "ant_prover"),
+                                   "collabel" = c("År", "Rapport", "MT regionnr", "MT region", "MT avdelingsnr",
+                                                  "MT avdeling", "Produsentnr", "Virksomhetnr", "Virksomhet", "Postnr", "Poststed",
+                                                  "Antall prøver"),
+                                   "colwidth" = c(5, 9, 12.5, 16, 13, 30, 12, 12, 30, 8, 15, 8.5)),
+                            dbsource = "brucella_geit",
+                            property = "collabels",
+                            exclude = TRUE),
+               c("År", "Rapport",
+                 "MT regionnr", "MT region", "MT avdelingsnr", "MT avdeling",
+                 "Produsentnr", "Virksomhetnr", "Virksomhet",
+                 "Postnr", "Poststed", "Antall prøver"))
+})
+
 test_that("standardize_columns argument checking", {
+  linewidth <- options("width")
+  options(width = 80)
 
   PJStest <- readRDS(file.path(".", "PJS_testdata.rds"))
   # PJStest <- readRDS("./tests/testthat/PJS_testdata.rds")
@@ -239,6 +308,9 @@ test_that("standardize_columns argument checking", {
   expect_error(standardize_columns(data = PJStest, property = "columnNames", language = "no", exclude = FALSE),
                regexp = "property")
 
+  expect_error(standardize_columns(data = PJStest, standards = 1, property = "colNames", language = "no", exclude = FALSE),
+               regexp = "but has class 'numeric'")
+
   expect_error(standardize_columns(data = PJStest, property = "colClasses", language = "no", exclude = FALSE),
                regexp = "No file provided.")
 
@@ -248,4 +320,5 @@ test_that("standardize_columns argument checking", {
   expect_error(standardize_columns(data = PJStest, property = "colNames", language = "no", exclude = "FALSE"),
                regexp = "Variable 'exclude': Must be of type 'logical', not 'character'.")
 
+  options(width = unlist(linewidth))
 })
