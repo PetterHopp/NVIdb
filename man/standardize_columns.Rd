@@ -110,12 +110,10 @@ Variables in internal and external data sources uses
 \item \code{colorder}: the order of the columns to be used in the Excel report.
     The default is to use the same order as they are entered in the vectors.
 \item \code{column_db}: input added as a possibility to keep on the same format
-    as \ifelse{html}{\code{\link{column_standards}}}.
-    Not necessary to input.
+    as \code{column_standards}. Not necessary to input.
 \item \code{table_db}: input added as a possibility to keep on the same format
-    as \ifelse{html}{\code{\link{column_standards}}}.
-    Must be the same as
-    \code{dbsource}. Not necessary to input.
+    as \code{column_standards}. Must be the same as \code{dbsource}.
+    Not necessary to input.
 }
 
 All vectors must have the same order and the same length.
