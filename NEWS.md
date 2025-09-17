@@ -4,24 +4,14 @@
 
 - Created read_avlsgris to read the register of nucleus and multiplier pig herds.
 
-- Created read_purkeringer, to read the register of sow pools herds, i.e. the central herd and the satellite herds.
+- Created read_purkering, to read the register of sow pools herds, i.e. the central herd and the satellite herds.
 
 - Created find_file_near_date that finds the file nearest to a wanted date based on the date included in the file name. 
 
 
-## Bug fixes:
-
--
-
-
-## Other changes:
-
--
-
-
 ## BREAKING CHANGES:
 
--
+- `set_dir_NVI` is updated and require NVIconfig >= v0.10.0.
 
 
 # NVIdb 0.13.2 - (2025-06-23)
