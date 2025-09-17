@@ -4,7 +4,7 @@
 #' @details The purkering-register includes information on the herds in the sow
 #'     pools. The register is updated from the industry at least once a year.
 #'
-#' \code{read_purkeringer} reads the purkering-register into a \code{data.frame}. The
+#' \code{read_purkering} reads the purkering-register into a \code{data.frame}. The
 #'     default is to read the last updated version of the register. You may change
 #'     this by the input to wanted date or wanted year and month to read the
 #'     register nearest (either before or after) the wanted date. See help for
@@ -38,14 +38,14 @@
 #' @examples
 #' \dontrun{
 #' # Reading the last version from the standard directory at NVI's network
-#' purkering <- read_purkeringer()
+#' purkering <- read_purkering()
 #'
 #' # Reading from standard directory at NVI's network and
 #' #     selecting a specific version of the register
-#' purkering2021 <- read_purkeringer(wanted_year = 2021, wanted_month = "12")
+#' purkering2021 <- read_purkering(wanted_year = 2021, wanted_month = "12")
 #' }
 #'
-read_purkeringer <- function(from_path = file.path(set_dir_NVI("EksterneDatakilder", slash = FALSE),
+read_purkering <- function(from_path = file.path(set_dir_NVI("EksterneDatakilder", slash = FALSE),
                                                 "Purkeringer", "FormaterteData"),
                           wanted_date = Sys.Date(),
                           wanted_year = NULL,
