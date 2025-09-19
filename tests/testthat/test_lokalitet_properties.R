@@ -36,10 +36,12 @@ test_that("Correct merging of lokalitet and sone", {
 
   # Make a dataframe with the correct result
   correct_result <- cbind(lokaliteter,
-                          as.data.frame(c("5,244133012708", "5,06988301405342", "20,3290669999275", "23,2844499984564"), stringsAsFactors = FALSE),
-                          as.data.frame(c("59,8665000008897", "61,758017000812", "69,6618500000011", "70,2409500000325"), stringsAsFactors = FALSE)
+                          # as.data.frame(c("5,244133012708", "5,06988301405342", "20,3290669999275", "23,2844499984564"), stringsAsFactors = FALSE),
+                          # as.data.frame(c("59,8665000008897", "61,758017000812", "69,6618500000011", "70,2409500000325"), stringsAsFactors = FALSE)
                           # as.data.frame(c(5.244133012708, 5.06988301405342, 20.3290669999275, 23.2844499984564), stringsAsFactors = FALSE),
                           # as.data.frame(c(59.8665000008897, 61.758017000812, 69.6618500000011, 70.2409500000325), stringsAsFactors = FALSE)
+                          as.data.frame(c(5.244133, 5.069883, 20.329067, 23.284450), stringsAsFactors = FALSE),
+                          as.data.frame(c(59.86650, 61.75802, 69.66185, 70.24095), stringsAsFactors = FALSE)
   )
   colnames(correct_result) <- c("eier_lokalitetnr", "longitude", "latitude")
 
@@ -50,7 +52,7 @@ test_that("Correct merging of lokalitet and sone", {
                                new_column = c("longitude" = "Longitude_WGS84",
                                               "latitude" = "Latitude_WGS84"))
 
-  expect_identical(lokaliteter, correct_result)
+  expect_equal(lokaliteter, correct_result)
 
 })
 

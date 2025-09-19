@@ -1,3 +1,26 @@
+# NVIdb 0.14.0 - (2025-09-19)
+
+## New features:
+
+- Created read_avlsgris to read the register of nucleus and multiplier pig herds.
+
+- Created read_purkering, to read the register of sow pools herds, i.e. the central herd and the satellite herds.
+
+- Created find_file_near_date that finds the file nearest to a wanted date based on the date included in the file name. 
+
+
+## BREAKING CHANGES:
+
+- `set_dir_NVI` is updated and require NVIconfig >= v0.10.0.
+
+
+# NVIdb 0.13.2 - (2025-06-23)
+
+## New features:
+
+- `set_dir_NVI` is updated to give correct path also when working on Workbench
+
+
 # NVIdb 0.13.1 - (2024-12-19)
 
 ## New features:
