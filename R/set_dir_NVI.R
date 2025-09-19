@@ -53,9 +53,12 @@ set_dir_NVI <- function(datasource,
   # The paths are defined in the package NVIconfig
   pathname <- unname(NVIconfig:::path_NVI[datasource])
 
-  # To ensure that old versions of NVIconfig will still work
+  # To ensure that old versions of NVIconfig will still work if working locally
   if (!isTRUE(NVIcheckmate::check_package("NVIconfig", version = "0.9.0"))) {
     pathname <- sub(paste0(NVIconfig:::main_dir_win, "/"), "", pathname)
+  } else {
+    # NVIconfig v0.9.0 will not work anyhow
+    NVIcheckmate::assert_package("NVIconfig", version = "0.10.0")
   }
 
   # Path to StasjonK if on Windows
@@ -66,8 +69,11 @@ set_dir_NVI <- function(datasource,
     pathname <- file.path(Sys.getenv("HOME"), "windows", pathname)
   }
   # Remove slash
-  if (isFALSE(slash)) {
-    pathname <- cut_slash(pathname)
+  # if (isFALSE(slash)) {
+  #   pathname <- cut_slash(pathname)
+  # }
+  if (isTRUE(slash)) {
+    pathname <- paste0(pathname, "/")
   }
   return(pathname)
 }
