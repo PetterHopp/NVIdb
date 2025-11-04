@@ -277,8 +277,12 @@ standardize_columns <- function(data,
 
   # CHANGE DATABASE VARIABLE NAMES INTO STANDARD COLUMN NAMES FOR USE IN DATA FRAMES ----
   if (property == "colnames") {
+    new_column_value <- "colname"
+    org_column <-  "colname_db"
+    
     # Generate data frame with the column names in one column named V1
     columnnames <- as.data.frame(matrix(colnames(data), ncol = 1))
+    # columnnames <- as.data.frame(list(new_column_value = colnames(data)))
     # Generate column with original order of column names
     #  Necessary to avoid change in order when using merge
     columnnames$original_sort_order <- seq_len(nrow(columnnames))
@@ -632,3 +636,53 @@ standardize_columns <- function(data,
 
   # LAST PROPERTY ASSIGNED ----
 }
+
+
+#' #' # Generate data frame to be standardized
+#' df <- cbind("\u00C5r" = 2020, "Hensiktkode" = "01001", komnr = "5001")
+#' colnames(df)
+#' if (property = "colnames") {
+#'   new_column_value <- "colname"
+#'   org_column <-  "colname_db"
+#' }
+#' 
+#' 
+#' find_column_property <- function(column_names = column_names,
+#'                                      dbsource,
+#'                                      property = property,
+#'                                      org_column = org_column,
+#'                                      standard = column_standards) {
+#' 
+#'       # Filter to include only information for relevant column names and with property information
+#'   standard <- standard[which(standard[, org_column] %in% column_names[, property]), ]
+#'   # standard <- subset(standard, standard$colname_db %in% columnnames$V1)
+#'   standard <- standard[!is.na(standard[, property]), ]
+#'   # standard <- subset(standard, !is.na(standard$colname))
+#'   standard <- standard[, c("table_db", org_column, property)]
+#'   # standard <- unique(standard)
+#'   
+#'   # Keep information on relevant table name and combine information for all other tables
+#'   standard[which(standard$table_db != dbsource), "table_db"] <- NA
+#'   standard <- unique(standard)
+#'   
+#'   if (dim(standard)[1] > 0) {
+#'     # Identify column names with only one suggested value
+#'     aggregated_value <- stats::aggregate(stats::as.formula(paste("cbind(n = ", property, ")",
+#'                                                                  "~",
+#'                                                                  paste(c(org_column), collapse = " + "))),
+#'                                          data = standard,
+#'                                          FUN = function(x) {length(x)})
+#'     standard <- merge(x = standard, y = aggregated_value, by = org_column, all.x = TRUE)
+#'     # # Select column width either if only one suggested or for the current table
+#'     # dplyr::filter(.data$n == 1 | .data$table_db == dbsource & .data$n > 1) |>
+#'     # dplyr::select(.data$colname_db, .data$colname) |>
+#'     # dplyr::distinct()
+#'     # Select column width either if only one suggested or for the current table
+#'     standard <- subset(standard, standard$n == 1 | (standard$table_db == dbsource & standard$n > 1))
+#'     standard <- standard[, c(org_column, property)]
+#'     standard <- unique(standard)
+#'   }
+#'   
+#'   return(standard)
+#' }
+  
