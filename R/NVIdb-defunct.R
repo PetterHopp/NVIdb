@@ -32,6 +32,11 @@
 #'     2025-10-29 and had been deprecated from v0.13.0 released 2024-12-13. Use
 #'     the corresponding functions in \code{NVIpjsr}.
 #'
+#' The functions \code{exclude_from_PJSdata} have been
+#'     moved to \code{NVIpjsr}. These were defunct from v0.15.1 released
+#'     2025-##-## and had been deprecated from v0.13.0 released 2024-12-13. Use
+#'     the corresponding functions in \code{NVIpjsr}.
+#'
 #' @param \dots (arguments)
 #' @return (results)
 #' @name NVIdb-defunct
@@ -53,6 +58,7 @@
 #' login_by_credentials_PJS(...) ### -- use login_by_credentials("PJS") instead
 #' read_eos_data(...) ### -- use NVIpjsr::read_eos_data() instead
 #' standardize_eos_data(...) ### -- use NVIpjsr::standardize_eos_data() instead
+#' exclude_from_PJSdata(...) ### -- use NVIpjsr::exclude_from_PJSdata() instead
 #' }
 #'
 NULL

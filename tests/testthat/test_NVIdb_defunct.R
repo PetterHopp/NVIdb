@@ -54,5 +54,9 @@ test_that("errors for defunct functions", {
                regexp = "Use 'NVIpjsr::standardize_eos_data' instead.",
                fixed = TRUE)
 
+  expect_error(exclude_from_PJSdata(),
+               regexp = "Use 'NVIpjsr::exclude_from_PJSdata' instead.",
+               fixed = TRUE)
+
   options(width = unlist(linewidth))
 })
