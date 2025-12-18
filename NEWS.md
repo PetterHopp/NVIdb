@@ -2,7 +2,8 @@
 
 ## New features:
 
--
+- `add_MT_omrader` now accepts the argument `shortname`. A short version of the 
+MT unit name will be generated when `shortname = TRUE`.
 
 
 ## Bug fixes:
