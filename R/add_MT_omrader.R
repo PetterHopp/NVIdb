@@ -4,8 +4,8 @@
 #' @details \code{add_MT_omrader} can be used to translate the komnr into
 #'     MT-omrader. The organisation of MT in areas was revised in 2025. If the
 #'     input year >= 2025, the komnr will be translated to the structure from 2025:
-#'     MT_divisjonnr, MT_divisjon, MT_avdelingnr,MT_avdeling, MT_enhetrn,
-#'     MT_enhet. If the input year is between 2004 and 2024, the komnr will be
+#'     MT_divisjonnr, MT_divisjon, MT_avdelingnr,MT_avdeling, MT_seksjonnr,
+#'     MT_seksjon. If the input year is between 2004 and 2024, the komnr will be
 #'     translated to the structure from 2004 to 2024: MT_avdelingnr, MT_avdeling,
 #'     MT_regionnr and MT_region.
 #'
@@ -38,6 +38,11 @@
 #'     has the same name as an existing column and overwrite = TRUE. In these
 #'     cases, the existing column will be overwritten with new data and have
 #'     the same position.
+#'
+#' If \code{shortname = TRUE} a short version of the MT unit name is generated.
+#'     I.e. "Divisjon", "Avdeling" and "Seksjon" is removed from the unit name.
+#'     \code{shortname = TRUE} has only meaning for the MT units from 2025 and
+#'     onwards.
 #'
 #' \code{read_MT_omrader} reads the files "komnr_2_MT_avdeling.csv",
 #'     "MT_omrader.csv", and "komnr_2_MT_enhet.csv" into a data frame, usually
@@ -73,9 +78,12 @@
 #' @param new_column [\code{character}]\cr
 #' The name(s) of the new column(s) that should be added to the data,
 #'     see examples. Defaults to c("MT_avdelingnr", "MT_avdeling",
-#'     "MT_enhetnr", "MT_enhetnr").
+#'     "MT_seksjonnr", "MT_seksjon").
 #' @template position
 #' @template overwrite
+#' @param shortname [\code{logical(1)}]\cr
+#' If \code{TRUE}, a short version of the MT unit name is generated, see details.
+#'     Defaults to \code{FALSE}.
 #' @param filename [\code{list}]\cr
 #' File names of the source files for the translation table. Defaults to
 #'     list("komnr_2_MT_avdeling.csv", "MT_omrader.csv", "komnr_2_MT_enhet.csv").
@@ -142,9 +150,10 @@ add_MT_omrader <- function(data,
                            fag = NULL,
                            translation_table = komnr_2_MT_omrader,
                            code_column = c("komnr"),
-                           new_column = c("MT_avdelingnr", "MT_avdeling", "MT_enhetnr", "MT_enhet"),
+                           new_column = c("MT_avdelingnr", "MT_avdeling", "MT_seksjonnr", "MT_seksjon"),
                            position = "right",
-                           overwrite = FALSE) {
+                           overwrite = FALSE,
+                           shortname = FALSE) {
 
   # Ensure that code_column and new_column are named vectors by using the internal function set_name_vector()
   # Thereby, the following code can assume these to be named vectors
@@ -224,6 +233,8 @@ Drikkevann;Drikkevann"
                                any.missing = FALSE,
                                all.missing = FALSE,
                                add = checks)
+  # shortname
+  checkmate::assert_flag(shortname, add = checks)
   # fag
   if (!is.null(year) && !is.na(year) && year >= 2025) {
     checkmate::assert_choice(x = tolower(fag),
@@ -246,6 +257,24 @@ Drikkevann;Drikkevann"
 
   # unique() is necessary to avoid duplicate rows when code_column is not "komnr"
   code_2_new <- unique(translation_table[, c(unname(code_column), unname(new_column))])
+
+  if (year >= 2025 && isTRUE(shortname)) {
+    if ("MT_avdeling" %in% colnames(code_2_new)) {
+      code_2_new$MT_avdeling <- gsub("Avdeling ", "", code_2_new$MT_avdeling, ignore.case = TRUE)
+      code_2_new$MT_avdeling <- paste0(toupper(substr(code_2_new$MT_avdeling, 1, 1)),
+                                      substr(code_2_new$MT_avdeling, 2, nchar(code_2_new$MT_avdeling)))
+    }
+    if ("MT_seksjon" %in% colnames(code_2_new)) {
+      code_2_new$MT_seksjon <- gsub("Seksjon ", "", code_2_new$MT_seksjon, ignore.case = TRUE)
+      code_2_new$MT_seksjon <- paste0(toupper(substr(code_2_new$MT_seksjon, 1, 1)),
+                                      substr(code_2_new$MT_seksjon, 2, nchar(code_2_new$MT_seksjon)))
+    }
+    if ("MT_divisjon" %in% colnames(code_2_new)) {
+      code_2_new$MT_divisjon <- gsub("Tilsynsdivisjon ", "", code_2_new$MT_divisjon, ignore.case = TRUE)
+      code_2_new$MT_divisjon <- paste0(toupper(substr(code_2_new$MT_divisjon, 1, 1)),
+                                      substr(code_2_new$MT_divisjon, 2, nchar(code_2_new$MT_divisjon)))
+    }
+  }
 
   # ADD NEW COLUMN(S) ----
   # Set up of parameters for the internal function add_new_column(). names() is used to select the column names

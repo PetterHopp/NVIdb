@@ -13,9 +13,10 @@ add_MT_omrader(
   fag = NULL,
   translation_table = komnr_2_MT_omrader,
   code_column = c("komnr"),
-  new_column = c("MT_avdelingnr", "MT_avdeling", "MT_enhetnr", "MT_enhet"),
+  new_column = c("MT_avdelingnr", "MT_avdeling", "MT_seksjonnr", "MT_seksjon"),
   position = "right",
-  overwrite = FALSE
+  overwrite = FALSE,
+  shortname = FALSE
 )
 
 copy_MT_omrader(
@@ -55,7 +56,7 @@ The column with the code value. Valid values are one
 \item{new_column}{[\code{character}]\cr
 The name(s) of the new column(s) that should be added to the data,
     see examples. Defaults to c("MT_avdelingnr", "MT_avdeling",
-    "MT_enhetnr", "MT_enhetnr").}
+    "MT_seksjonnr", "MT_seksjon").}
 
 \item{position}{[\code{character(1)}]\cr
 The position for the new columns, can be one of c("first", 
@@ -68,6 +69,10 @@ When the new column(s) already exist,
     the content in the existing column(s) is replaced by new data if 
     \code{overwrite = TRUE}. If the new column(s) already exist and 
     \code{overwrite = FALSE}, an error is issued. Defaults to \code{FALSE}.}
+
+\item{shortname}{[\code{logical(1)}]\cr
+If \code{TRUE}, a short version of the MT unit name is generated, see details.
+    Defaults to \code{FALSE}.}
 
 \item{filename}{[\code{list}]\cr
 File names of the source files for the translation table. Defaults to
@@ -106,8 +111,8 @@ Function to add columns with the various MT-omrader. In addition,
 \code{add_MT_omrader} can be used to translate the komnr into
     MT-omrader. The organisation of MT in areas was revised in 2025. If the
     input year >= 2025, the komnr will be translated to the structure from 2025:
-    MT_divisjonnr, MT_divisjon, MT_avdelingnr,MT_avdeling, MT_enhetrn,
-    MT_enhet. If the input year is between 2004 and 2024, the komnr will be
+    MT_divisjonnr, MT_divisjon, MT_avdelingnr,MT_avdeling, MT_seksjonnr,
+    MT_seksjon. If the input year is between 2004 and 2024, the komnr will be
     translated to the structure from 2004 to 2024: MT_avdelingnr, MT_avdeling,
     MT_regionnr and MT_region.
 
@@ -140,6 +145,11 @@ When the \code{code_column} in the data frame is
     has the same name as an existing column and overwrite = TRUE. In these
     cases, the existing column will be overwritten with new data and have
     the same position.
+
+If \code{shortname = TRUE} a short version of the MT unit name is generated.
+    I.e. "Divisjon", "Avdeling" and "Seksjon" is removed from the unit name.
+    \code{shortname = TRUE} has only meaning for the MT units from 2025 and
+    onwards.
 
 \code{read_MT_omrader} reads the files "komnr_2_MT_avdeling.csv",
     "MT_omrader.csv", and "komnr_2_MT_enhet.csv" into a data frame, usually
