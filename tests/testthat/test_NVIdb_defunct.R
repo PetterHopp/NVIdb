@@ -58,5 +58,9 @@ test_that("errors for defunct functions", {
                regexp = "Use 'NVIpjsr::exclude_from_PJSdata' instead.",
                fixed = TRUE)
 
+  expect_error(transform_code_combinations(),
+               regexp = "Use 'NVIpjsr::transform_code_combinations' instead.",
+               fixed = TRUE)
+
   options(width = unlist(linewidth))
 })
