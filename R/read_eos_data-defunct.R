@@ -29,7 +29,7 @@
 #' @return A data frame with data from EOS.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
-#' @name read_eos_data-dedefunct
+#' @name read_eos_data-defunct
 #' @keywords internal
 #'
 NULL
