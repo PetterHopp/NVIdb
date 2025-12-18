@@ -1,8 +1,9 @@
-# NVIdb 0.15.0.9000 - (2025-##-##)
+# NVIdb 0.15.0.9001 - (2025-##-##)
 
 ## New features:
 
--
+- `add_MT_omrader` now accepts the argument `shortname`. A short version of the 
+MT unit name will be generated when `shortname = TRUE`.
 
 
 ## Bug fixes:
