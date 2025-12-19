@@ -54,5 +54,17 @@ test_that("errors for defunct functions", {
                regexp = "Use 'NVIpjsr::standardize_eos_data' instead.",
                fixed = TRUE)
 
+  expect_error(exclude_from_PJSdata(),
+               regexp = "Use 'NVIpjsr::exclude_from_PJSdata' instead.",
+               fixed = TRUE)
+
+  expect_error(transform_code_combinations(),
+               regexp = "Use 'NVIpjsr::transform_code_combinations' instead.",
+               fixed = TRUE)
+
+  expect_error(choose_PJS_levels(),
+               regexp = "Use 'NVIpjsr::choose_PJS_levels' instead.",
+               fixed = TRUE)
+
   options(width = unlist(linewidth))
 })
