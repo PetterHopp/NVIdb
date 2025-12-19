@@ -3,7 +3,7 @@
 %   R/exclude_from_PJSdata-defunct.R, R/login_EOS-defunct.R,
 %   R/login_PJS-defunct.R, R/read_eos_data-defunct.R, R/set_PAT-defunct.R,
 %   R/set_credentials_EOS-defunct.R, R/standardize_eos_data-defunct.R,
-%   R/transform_code_combinations-deprecated.R
+%   R/transform_code_combinations-defunct.R
 \name{NVIdb-defunct}
 \alias{NVIdb-defunct}
 \alias{exclude_from_PJSdata}
