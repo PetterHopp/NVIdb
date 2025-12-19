@@ -34,8 +34,7 @@
 #'
 #' The functions \code{exclude_from_PJSdata}, \code{transform_code_combinations},
 #'     \code{choose_PJS_levels},
-#'     have been
-#'     moved to \code{NVIpjsr}. These were defunct from v0.15.1 released
+#'     have been moved to \code{NVIpjsr}. These were defunct from v0.15.1 released
 #'     2025-##-## and had been deprecated from v0.13.0 released 2024-12-13. Use
 #'     the corresponding functions in \code{NVIpjsr}.
 #'
