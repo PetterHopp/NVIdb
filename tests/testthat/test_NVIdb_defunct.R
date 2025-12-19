@@ -62,5 +62,9 @@ test_that("errors for defunct functions", {
                regexp = "Use 'NVIpjsr::transform_code_combinations' instead.",
                fixed = TRUE)
 
+  expect_error(choose_PJS_levels(),
+               regexp = "Use 'NVIpjsr::choose_PJS_levels' instead.",
+               fixed = TRUE)
+
   options(width = unlist(linewidth))
 })
