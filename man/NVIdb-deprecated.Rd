@@ -64,7 +64,7 @@ All functions made especially to handle PJS data have been moved to \code{NVIpjs
 Of these, \code{read_eos_data} and \code{standardize_eos_data} were defunct
   from 2025-10-29, and \code{exclude_from_PJSdata},
   \code{transform_code_combinations}, \code{choose_PJS_levels}, \code{retrieve_PJSdata},
-  \code{select_PJSdata_for_value}, \code{set_disease_parameters},
+  \code{select_PJSdata_for_value}, \code{set_disease_parameters}, \code{standardize_PJSdata},
   were defunct from 2026-##-##.
 }
 \examples{
@@ -78,7 +78,6 @@ build_sql_select_code(...) ### -- use NVIpjsr::build_sql_select_code() instead
 build_sql_select_year(...) ### -- use NVIpjsr::build_sql_select_year() instead
 copy_PJS_code_2_text(...) ### -- use NVIpjsr::copy_PJS_code_2_text() instead
 read_PJS_code_2_text(...) ### -- use NVIpjsr::read_PJS_code_2_text() instead
-standardize_PJSdata(...) ### -- use NVIpjsr::standardize_PJSdata() instead
 }
 }
 \author{

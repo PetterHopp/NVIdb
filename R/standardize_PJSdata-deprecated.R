@@ -31,101 +31,80 @@
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
 #' @author Johan Åkerstedt Johan.Akerstedt@@vetinst.no
-#' @name standardize_PJSdata-deprecated
+#' @name standardize_PJSdata-defunct
 #' @keywords internal
-#'
-#' @examples
-#' \dontrun{
-#' # Standardizing sak_m_res
-#' sak_m_res <- standardize_PJSdata(PJSdata = sak_m_res)
-#' }
 #'
 NULL
 
-#' @title standardize_PJSdata is Deprecated
-#' @description \code{standardize_PJSdata} was deprecated in NVIdb v0.13.0 released
-#'     2024-##-##. All PJS related functions have been moved to \code{NVIpjsr}.
-#'     Use \code{NVIpjsr::standardize_PJSdata} instead. When attaching packages,
-#'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
-#' @details The old help pages can be found at \code{help("standardize_PJSdata-deprecated")}.
-#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
-#'
-#' @param PJSdata [\code{data.frame}]\cr
-#' Data retrieved from PJS.
-#' @param dbsource [\code{character(1)}]\cr
-#' The table that is the source of data. This will be used for fetching
-#'     standard column names by
-#'     \ifelse{html}{\code{\link{standardize_columns}}}{\code{standardize_columns}}
-#'     and should be the name of the data source as registered in the
-#'     "column_standards" table. Defaults to "v2_sak_m_res".
-#'
 #' @export
+#' @rdname NVIdb-defunct
 #' @keywords internal
 #'
+standardize_PJSdata <- function(...) {
 
-standardize_PJSdata <- function(PJSdata, dbsource = "v2_sak_m_res") {
+  .Defunct(new = "NVIpjsr::standardize_PJSdata", package = "NVIdb")
 
-  .Deprecated(new = "standardize_PJSdata",
-              package = "NVIdb",
-              msg = paste("'standardize_PJSdata' is replaced by
-                          'NVIpjsr::standardize_PJSdata'"))
-
-  if (isTRUE(NVIcheckmate::check_package(x = "NVIpjsr", type = "installed"))) {
-    select_statement <- NVIpjsr::standardize_PJSdata(PJSdata = PJSdata,
-                                                     dbsource = dbsource)
-
-    return(select_statement)
-  } else {
-    # ARGUMENT CHECKING ----
-    # Object to store check-results
-    checks <- checkmate::makeAssertCollection()
-
-    # Perform checks
-    # pjsDATA
-    checkmate::assert_data_frame(PJSdata, add = checks)
-    # dbsource
-    checkmate::assert_character(dbsource, len = 1, min.chars = 1, add = checks)
-
-    # Report check-results
-    checkmate::reportAssertions(checks)
-
-
-    # PERFORM STANDARDIZATION ----
-    # Remove unnecessary columns
-    PJSdata$konkl_provenr <- NULL
-    PJSdata$vet_distriktnr <- NULL
-
-    # Standardize column names
-    PJSdata <- NVIdb::standardize_columns(data = PJSdata, dbsource = dbsource, property = "colnames")
-
-    # Change to numeric for ID-numbers and counts
-    # Done before trimming character variables to reduce variables that needs to be trimmed
-    cols_2_modify <- intersect(colnames(PJSdata), c("aar", "innsendelsenr", "provenr", "delprovenr", "undnr",
-                                                    "resnr", "subundnr", "subresnr", "konklnr",
-                                                    "ant_prover", "ant_i_samleprove", "ant_delprover", "ant_i_samledelprove"))
-    PJSdata[, cols_2_modify] <- lapply(PJSdata[, cols_2_modify], as.numeric)
-
-    # Change to date for date-variables
-    # Done before trimming character variables to reduce variables that needs to be trimmed
-    cols_2_modify <- intersect(colnames(PJSdata), c("mottatt", "uttatt", "avsluttet", "sak_forst_avsluttet",
-                                                    "uttatt_parprove", "mottatt_parprove",
-                                                    "und_godkjent", "und_avsluttet",
-                                                    "subund_godkjent", "subund_avsluttet", "subund_startet"))
-    PJSdata[, cols_2_modify] <- lapply(PJSdata[, cols_2_modify], as.Date, format = "%d.%m.%y")
-
-    # Trim character variables
-    cols_2_modify <- names(PJSdata)[vapply(PJSdata, is.character, logical(1))]
-    PJSdata[, cols_2_modify] <- lapply(PJSdata[, cols_2_modify], trimws)
-
-    # Generate saksnr and fagnr
-    PJSdata$saksnr <- paste(PJSdata$aar, PJSdata$ansvarlig_seksjon, PJSdata$innsendelsenr, sep = "-")
-    if ("fagkode" %in% cols_2_modify & "fagnr" %in% cols_2_modify) {
-      PJSdata$fagnr <- paste(PJSdata$aar, PJSdata$ansvarlig_seksjon, paste0(PJSdata$fagkode, PJSdata$fagnr), sep = "-")
-    }
-
-    # Delete test data, i.e. saker with ansvarlig_seksjon in c("14", "99")
-    PJSdata <- subset(PJSdata, !PJSdata$ansvarlig_seksjon %in% c("14", "99"))
-
-    return(PJSdata)
-  }
+  # .Deprecated(new = "standardize_PJSdata",
+  #             package = "NVIdb",
+  #             msg = paste("'standardize_PJSdata' is replaced by
+  #                         'NVIpjsr::standardize_PJSdata'"))
+  #
+  # if (isTRUE(NVIcheckmate::check_package(x = "NVIpjsr", type = "installed"))) {
+  #   select_statement <- NVIpjsr::standardize_PJSdata(PJSdata = PJSdata,
+  #                                                    dbsource = dbsource)
+  #
+  #   return(select_statement)
+  # } else {
+  #   # ARGUMENT CHECKING ----
+  #   # Object to store check-results
+  #   checks <- checkmate::makeAssertCollection()
+  #
+  #   # Perform checks
+  #   # pjsDATA
+  #   checkmate::assert_data_frame(PJSdata, add = checks)
+  #   # dbsource
+  #   checkmate::assert_character(dbsource, len = 1, min.chars = 1, add = checks)
+  #
+  #   # Report check-results
+  #   checkmate::reportAssertions(checks)
+  #
+  #
+  #   # PERFORM STANDARDIZATION ----
+  #   # Remove unnecessary columns
+  #   PJSdata$konkl_provenr <- NULL
+  #   PJSdata$vet_distriktnr <- NULL
+  #
+  #   # Standardize column names
+  #   PJSdata <- NVIdb::standardize_columns(data = PJSdata, dbsource = dbsource, property = "colnames")
+  #
+  #   # Change to numeric for ID-numbers and counts
+  #   # Done before trimming character variables to reduce variables that needs to be trimmed
+  #   cols_2_modify <- intersect(colnames(PJSdata), c("aar", "innsendelsenr", "provenr", "delprovenr", "undnr",
+  #                                                   "resnr", "subundnr", "subresnr", "konklnr",
+  #                                                   "ant_prover", "ant_i_samleprove", "ant_delprover", "ant_i_samledelprove"))
+  #   PJSdata[, cols_2_modify] <- lapply(PJSdata[, cols_2_modify], as.numeric)
+  #
+  #   # Change to date for date-variables
+  #   # Done before trimming character variables to reduce variables that needs to be trimmed
+  #   cols_2_modify <- intersect(colnames(PJSdata), c("mottatt", "uttatt", "avsluttet", "sak_forst_avsluttet",
+  #                                                   "uttatt_parprove", "mottatt_parprove",
+  #                                                   "und_godkjent", "und_avsluttet",
+  #                                                   "subund_godkjent", "subund_avsluttet", "subund_startet"))
+  #   PJSdata[, cols_2_modify] <- lapply(PJSdata[, cols_2_modify], as.Date, format = "%d.%m.%y")
+  #
+  #   # Trim character variables
+  #   cols_2_modify <- names(PJSdata)[vapply(PJSdata, is.character, logical(1))]
+  #   PJSdata[, cols_2_modify] <- lapply(PJSdata[, cols_2_modify], trimws)
+  #
+  #   # Generate saksnr and fagnr
+  #   PJSdata$saksnr <- paste(PJSdata$aar, PJSdata$ansvarlig_seksjon, PJSdata$innsendelsenr, sep = "-")
+  #   if ("fagkode" %in% cols_2_modify & "fagnr" %in% cols_2_modify) {
+  #     PJSdata$fagnr <- paste(PJSdata$aar, PJSdata$ansvarlig_seksjon, paste0(PJSdata$fagkode, PJSdata$fagnr), sep = "-")
+  #   }
+  #
+  #   # Delete test data, i.e. saker with ansvarlig_seksjon in c("14", "99")
+  #   PJSdata <- subset(PJSdata, !PJSdata$ansvarlig_seksjon %in% c("14", "99"))
+  #
+  #   return(PJSdata)
+  # }
 }

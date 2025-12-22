@@ -4,8 +4,8 @@
 %   R/login_EOS-defunct.R, R/login_PJS-defunct.R, R/read_eos_data-defunct.R,
 %   R/retrieve_PJSdata-defunct.R, R/select_PJSdata_for_value-defunct.R,
 %   R/set_PAT-defunct.R, R/set_credentials_EOS-defunct.R,
-%   R/set_disease_parameters-defunct.R, R/standardize_eos_data-defunct.R,
-%   R/transform_code_combinations-defunct.R
+%   R/set_disease_parameters-defunct.R, R/standardize_PJSdata-deprecated.R,
+%   R/standardize_eos_data-defunct.R, R/transform_code_combinations-defunct.R
 \name{NVIdb-defunct}
 \alias{NVIdb-defunct}
 \alias{choose_PJS_levels}
@@ -24,6 +24,7 @@
 \alias{remove_PAT}
 \alias{set_credentials_EOS}
 \alias{set_disease_parameters}
+\alias{standardize_PJSdata}
 \alias{standardize_eos_data}
 \alias{transform_code_combinations}
 \title{Defunct Functions in Package NVIdb}
@@ -59,6 +60,8 @@ remove_PAT(...)
 set_credentials_EOS(...)
 
 set_disease_parameters(...)
+
+standardize_PJSdata(...)
 
 standardize_eos_data(...)
 
@@ -108,7 +111,7 @@ The functions \code{read_eos_data} and \code{standardize_eos_data} have been
 
 The functions \code{exclude_from_PJSdata}, \code{transform_code_combinations},
     \code{choose_PJS_levels}, \code{retrieve_PJSdata}, \code{select_PJSdata_for_value},
-    \code{set_disease_parameters},
+    \code{set_disease_parameters}, \code{standardize_PJSdata},
     have been moved to \code{NVIpjsr}. These were defunct from v0.15.1 released
     2025-##-## and had been deprecated from v0.13.0 released 2024-12-13. Use
     the corresponding functions in \code{NVIpjsr}.
@@ -132,6 +135,7 @@ choose_PJS_levels(...) ### -- use NVIpjsr::choose_PJS_levels() instead
 retrieve_PJSdata(...) ### -- use NVIpjsr::retrieve_PJSdata() instead
 select_PJSdata_for_value(...) ### -- use NVIpjsr::select_PJSdata_for_value() instead
 set_disease_parameters(...) ### -- use NVIpjsr::set_disease_parameters() instead
+standardize_PJSdata(...) ### -- use NVIpjsr::standardize_PJSdata() instead
 transform_code_combinations(...) ### -- use NVIpjsr::transform_code_combinations() instead
 }
 

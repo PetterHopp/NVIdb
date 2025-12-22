@@ -34,7 +34,7 @@
 #'
 #' The functions \code{exclude_from_PJSdata}, \code{transform_code_combinations},
 #'     \code{choose_PJS_levels}, \code{retrieve_PJSdata}, \code{select_PJSdata_for_value},
-#'     \code{set_disease_parameters},
+#'     \code{set_disease_parameters}, \code{standardize_PJSdata},
 #'     have been moved to \code{NVIpjsr}. These were defunct from v0.15.1 released
 #'     2025-##-## and had been deprecated from v0.13.0 released 2024-12-13. Use
 #'     the corresponding functions in \code{NVIpjsr}.
@@ -65,6 +65,7 @@
 #' retrieve_PJSdata(...) ### -- use NVIpjsr::retrieve_PJSdata() instead
 #' select_PJSdata_for_value(...) ### -- use NVIpjsr::select_PJSdata_for_value() instead
 #' set_disease_parameters(...) ### -- use NVIpjsr::set_disease_parameters() instead
+#' standardize_PJSdata(...) ### -- use NVIpjsr::standardize_PJSdata() instead
 #' transform_code_combinations(...) ### -- use NVIpjsr::transform_code_combinations() instead
 #' }
 #'
