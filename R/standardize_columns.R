@@ -172,7 +172,6 @@
 #'
 standardize_columns <- function(data,
                                 dbsource = deparse(substitute(data)),
-                                #   csvfile = NULL,
                                 standards = file.path(NVIdb::set_dir_NVI("ProgrammeringR", slash = FALSE),
                                                       "standardization", "colnames", "column_standards.csv"),
                                 property,
@@ -241,16 +240,6 @@ standardize_columns <- function(data,
   property <- tolower(property)
   dbsource <- tolower(dbsource)
 
-  # Reading column standards from a csv-file based on in an Excel file
-  # if (is.null(standards)) {
-  #   column_standards <- utils::read.csv2(
-  #     file = file.path(NVIdb::set_dir_NVI("ProgrammeringR", slash = FALSE),
-  #                      "standardization", "column_standards.csv"),
-  #     fileEncoding = "UTF-8"
-  #   )
-  # } else {
-  #   column_standards <- standards
-  # }
   if (inherits(standards, what = "character")) {
     column_standards <- utils::read.csv2(file = standards, fileEncoding = "UTF-8")
   }
@@ -680,6 +669,9 @@ standardize_columns <- function(data,
 #'     "colorder"). Defaults to \code{NULL}.
 #' @param standard [\code{data.frame}]\cr
 #' Table with column_standards. Defaults to column_standards.
+#' @param require_table [\code{logical(1)}]\cr
+#' If \code{TRUE}, only registrations in column_standards where table_db equals 
+#'     \code{dbsource} are included. Defaults to \code{FALSE}.
 
 #' @return A named vector where previously unnamed elements have been named with
 #'     the element value as name.
@@ -691,7 +683,8 @@ find_standard_values_for_property <- function(column_names,
                                               dbsource,
                                               org_values_in_column = NULL,
                                               new_values_in_column = NULL,
-                                              standard) {
+                                              standard,
+                                              require_table = FALSE) {
 
   # Generate data frame with the column names in one column named V1
   column_names <- as.data.frame(matrix(column_names, ncol = 1))
@@ -708,7 +701,9 @@ find_standard_values_for_property <- function(column_names,
   standard <- standard[, c("table_db", org_values_in_column, new_values_in_column)]
   # standard <- standard[, c("table_db", "colname_db", "colname")]
   # standard <- unique(standard)
-
+  if (isTRUE(require_table)) {
+    standard <- standard[which(standard[, "table_db"] == dbsource), ]
+  }
 
   # Keep information on relevant table name and combine information for all other tables
   standard[which(standard$table_db != dbsource), "table_db"] <- NA
