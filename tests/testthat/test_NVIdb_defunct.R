@@ -70,6 +70,10 @@ test_that("errors for defunct functions", {
                regexp = "Use 'NVIpjsr::select_PJSdata_for_value' instead.",
                fixed = TRUE)
 
+  expect_error(set_disease_parameters(),
+               regexp = "Use 'NVIpjsr::set_disease_parameters' instead.",
+               fixed = TRUE)
+
   expect_error(transform_code_combinations(),
                regexp = "Use 'NVIpjsr::transform_code_combinations' instead.",
                fixed = TRUE)
