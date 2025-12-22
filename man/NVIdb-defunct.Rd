@@ -4,7 +4,7 @@
 %   R/login_EOS-defunct.R, R/login_PJS-defunct.R, R/read_eos_data-defunct.R,
 %   R/retrieve_PJSdata-defunct.R, R/select_PJSdata_for_value-defunct.R,
 %   R/set_PAT-defunct.R, R/set_credentials_EOS-defunct.R,
-%   R/set_disease_parameters-deprecated.R, R/standardize_eos_data-defunct.R,
+%   R/set_disease_parameters-defunct.R, R/standardize_eos_data-defunct.R,
 %   R/transform_code_combinations-defunct.R
 \name{NVIdb-defunct}
 \alias{NVIdb-defunct}
