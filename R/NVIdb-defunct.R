@@ -33,7 +33,7 @@
 #'     the corresponding functions in \code{NVIpjsr}.
 #'
 #' The functions \code{exclude_from_PJSdata}, \code{transform_code_combinations},
-#'     \code{choose_PJS_levels}, \code{retrieve_PJSdata},
+#'     \code{choose_PJS_levels}, \code{retrieve_PJSdata}, \code{select_PJSdata_for_value},
 #'     have been moved to \code{NVIpjsr}. These were defunct from v0.15.1 released
 #'     2025-##-## and had been deprecated from v0.13.0 released 2024-12-13. Use
 #'     the corresponding functions in \code{NVIpjsr}.
@@ -61,8 +61,9 @@
 #' standardize_eos_data(...) ### -- use NVIpjsr::standardize_eos_data() instead
 #' exclude_from_PJSdata(...) ### -- use NVIpjsr::exclude_from_PJSdata() instead
 #' choose_PJS_levels(...) ### -- use NVIpjsr::choose_PJS_levels() instead
-#' transform_code_combinations(...) ### -- use NVIpjsr::transform_code_combinations() instead
 #' retrieve_PJSdata(...) ### -- use NVIpjsr::retrieve_PJSdata() instead
+#' select_PJSdata_for_value(...) ### -- use NVIpjsr::select_PJSdata_for_value() instead
+#' transform_code_combinations(...) ### -- use NVIpjsr::transform_code_combinations() instead
 #' }
 #'
 NULL

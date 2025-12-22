@@ -2,9 +2,9 @@
 % Please edit documentation in R/NVIdb-defunct.R,
 %   R/choose_PJS_levels-defunct.R, R/exclude_from_PJSdata-defunct.R,
 %   R/login_EOS-defunct.R, R/login_PJS-defunct.R, R/read_eos_data-defunct.R,
-%   R/retrieve_PJSdata-defunct.R, R/set_PAT-defunct.R,
-%   R/set_credentials_EOS-defunct.R, R/standardize_eos_data-defunct.R,
-%   R/transform_code_combinations-defunct.R
+%   R/retrieve_PJSdata-defunct.R, R/select_PJSdata_for_value-deprecated.R,
+%   R/set_PAT-defunct.R, R/set_credentials_EOS-defunct.R,
+%   R/standardize_eos_data-defunct.R, R/transform_code_combinations-defunct.R
 \name{NVIdb-defunct}
 \alias{NVIdb-defunct}
 \alias{choose_PJS_levels}
@@ -17,6 +17,7 @@
 \alias{login_by_credentials_PJS}
 \alias{read_eos_data}
 \alias{retrieve_PJSdata}
+\alias{select_PJSdata_for_value}
 \alias{set_PAT}
 \alias{get_PAT}
 \alias{remove_PAT}
@@ -44,6 +45,8 @@ login_by_credentials_PJS(...)
 read_eos_data(...)
 
 retrieve_PJSdata(...)
+
+select_PJSdata_for_value(...)
 
 set_PAT(...)
 
@@ -100,7 +103,7 @@ The functions \code{read_eos_data} and \code{standardize_eos_data} have been
     the corresponding functions in \code{NVIpjsr}.
 
 The functions \code{exclude_from_PJSdata}, \code{transform_code_combinations},
-    \code{choose_PJS_levels}, \code{retrieve_PJSdata},
+    \code{choose_PJS_levels}, \code{retrieve_PJSdata}, \code{select_PJSdata_for_value},
     have been moved to \code{NVIpjsr}. These were defunct from v0.15.1 released
     2025-##-## and had been deprecated from v0.13.0 released 2024-12-13. Use
     the corresponding functions in \code{NVIpjsr}.
@@ -121,8 +124,9 @@ read_eos_data(...) ### -- use NVIpjsr::read_eos_data() instead
 standardize_eos_data(...) ### -- use NVIpjsr::standardize_eos_data() instead
 exclude_from_PJSdata(...) ### -- use NVIpjsr::exclude_from_PJSdata() instead
 choose_PJS_levels(...) ### -- use NVIpjsr::choose_PJS_levels() instead
-transform_code_combinations(...) ### -- use NVIpjsr::transform_code_combinations() instead
 retrieve_PJSdata(...) ### -- use NVIpjsr::retrieve_PJSdata() instead
+select_PJSdata_for_value(...) ### -- use NVIpjsr::select_PJSdata_for_value() instead
+transform_code_combinations(...) ### -- use NVIpjsr::transform_code_combinations() instead
 }
 
 }
