@@ -50,7 +50,7 @@
 #'   }
 #' Of these, \code{read_eos_data} and \code{standardize_eos_data} were defunct
 #'   from 2025-10-29, and \code{exclude_from_PJSdata},
-#'   \code{transform_code_combinations}, \code{choose_PJS_levels}
+#'   \code{transform_code_combinations}, \code{choose_PJS_levels}, \code{retrieve_PJSdata}
 #'   were defunct from 2026-##-##.
 #'
 #' @param \dots (arguments)
@@ -71,7 +71,6 @@
 #' build_sql_select_year(...) ### -- use NVIpjsr::build_sql_select_year() instead
 #' copy_PJS_code_2_text(...) ### -- use NVIpjsr::copy_PJS_code_2_text() instead
 #' read_PJS_code_2_text(...) ### -- use NVIpjsr::read_PJS_code_2_text() instead
-#' retrieve_PJSdata(...) ### -- use NVIpjsr::retrieve_PJSdata() instead
 #' select_PJSdata_for_value(...) ### -- use NVIpjsr::select_PJSdata_for_value() instead
 #' set_disease_parameters(...) ### -- use NVIpjsr::set_disease_parameters() instead
 #' standardize_PJSdata(...) ### -- use NVIpjsr::standardize_PJSdata() instead
