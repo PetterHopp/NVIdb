@@ -62,6 +62,10 @@ test_that("errors for defunct functions", {
                regexp = "Use 'NVIpjsr::build_query_hensikt' instead.",
                fixed = TRUE)
 
+  expect_error(build_query_one_disease(),
+               regexp = "Use 'NVIpjsr::build_query_one_disease' instead.",
+               fixed = TRUE)
+
   expect_error(exclude_from_PJSdata(),
                regexp = "Use 'NVIpjsr::exclude_from_PJSdata' instead.",
                fixed = TRUE)
