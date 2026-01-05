@@ -32,7 +32,8 @@
 #'     2025-10-29 and had been deprecated from v0.13.0 released 2024-12-13. Use
 #'     the corresponding functions in \code{NVIpjsr}.
 #'
-#' The functions \code{exclude_from_PJSdata}, \code{transform_code_combinations},
+#' The functions \code{build_query_hensikt},
+#'     \code{exclude_from_PJSdata}, \code{transform_code_combinations},
 #'     \code{choose_PJS_levels}, \code{retrieve_PJSdata}, \code{select_PJSdata_for_value},
 #'     \code{set_disease_parameters}, \code{standardize_PJSdata},
 #'     have been moved to \code{NVIpjsr}. These were defunct from v0.15.1 released
@@ -60,6 +61,7 @@
 #' login_by_credentials_PJS(...) ### -- use login_by_credentials("PJS") instead
 #' read_eos_data(...) ### -- use NVIpjsr::read_eos_data() instead
 #' standardize_eos_data(...) ### -- use NVIpjsr::standardize_eos_data() instead
+#' build_query_hensikt(...) ### -- use NVIpjsr::build_query_hensikt() instead
 #' exclude_from_PJSdata(...) ### -- use NVIpjsr::exclude_from_PJSdata() instead
 #' choose_PJS_levels(...) ### -- use NVIpjsr::choose_PJS_levels() instead
 #' retrieve_PJSdata(...) ### -- use NVIpjsr::retrieve_PJSdata() instead

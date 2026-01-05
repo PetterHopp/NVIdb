@@ -58,6 +58,10 @@ test_that("errors for defunct functions", {
                regexp = "Use 'NVIpjsr::choose_PJS_levels' instead.",
                fixed = TRUE)
 
+  expect_error(build_query_hensikt(),
+               regexp = "Use 'NVIpjsr::build_query_hensikt' instead.",
+               fixed = TRUE)
+
   expect_error(exclude_from_PJSdata(),
                regexp = "Use 'NVIpjsr::exclude_from_PJSdata' instead.",
                fixed = TRUE)

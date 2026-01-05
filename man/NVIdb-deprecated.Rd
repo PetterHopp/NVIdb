@@ -62,7 +62,7 @@ All functions made especially to handle PJS data have been moved to \code{NVIpjs
   \item \code{transform_code_combinations}
   }
 Of these, \code{read_eos_data} and \code{standardize_eos_data} were defunct
-  from 2025-10-29, and \code{exclude_from_PJSdata},
+  from 2025-10-29, and \code{build_query_hensikt}, \code{exclude_from_PJSdata},
   \code{transform_code_combinations}, \code{choose_PJS_levels}, \code{retrieve_PJSdata},
   \code{select_PJSdata_for_value}, \code{set_disease_parameters}, \code{standardize_PJSdata},
   were defunct from 2026-##-##.
@@ -71,7 +71,6 @@ Of these, \code{read_eos_data} and \code{standardize_eos_data} were defunct
 \dontrun{
 add_produsent(...) ### -- use add_produsent_properties() instead.
 add_PJS_code_description(...) ### -- use NVIpjsr::add_PJS_code_description() instead
-build_query_hensikt(...) ### -- use NVIpjsr::build_query_hensikt() instead
 build_query_one_disease(...) ### -- use NVIpjsr:build_query_one_disease:() instead
 build_query_outbreak(...) ### -- use NVIpjsr::build_query_outbreak() instead
 build_sql_select_code(...) ### -- use NVIpjsr::build_sql_select_code() instead
