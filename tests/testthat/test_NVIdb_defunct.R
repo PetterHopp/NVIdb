@@ -70,6 +70,14 @@ test_that("errors for defunct functions", {
                regexp = "Use 'NVIpjsr::build_query_outbreak' instead.",
                fixed = TRUE)
 
+  expect_error(build_sql_select_code(),
+               regexp = "Use 'NVIpjsr::build_sql_select_code' instead.",
+               fixed = TRUE)
+
+  expect_error(build_sql_select_year(),
+               regexp = "Use 'NVIpjsr::build_sql_select_year' instead.",
+               fixed = TRUE)
+
   expect_error(exclude_from_PJSdata(),
                regexp = "Use 'NVIpjsr::exclude_from_PJSdata' instead.",
                fixed = TRUE)

@@ -43,91 +43,62 @@
 #' @return SQL-code to be included when building select-statements for PJS.
 #'
 #' @author Petter Hopp Petter.Hopp@@vetinst.no
-#'
+#' @name build_sql_modules-defunct
 #' @keywords internal
-#' @name build_sql_modules-deprecated
-#'
-#' @examples
-#' # SQL-select module for selecting year from PJS
-#' build_sql_select_year(year = 2020, varname = "aar")
-#'
-#' build_sql_select_year(year = c(2019, 2021), varname = "aar")
-#'
-#' build_sql_select_year(year = c(2019:2021), varname = "aar")
-#'
-#' # SQL-select module for selecting hensiktkode from PJS
-#' build_sql_select_code(values = "0100101", varname = "hensiktkode", db = "PJS")
-#'
-#' build_sql_select_code(values = "0100101%", varname = "hensiktkode", db = "PJS")
-#'
-#' build_sql_select_code(values = c("0100101", "0100101007", "0100102%", "0100202%"),
-#'                       varname = "hensiktkode",
-#'                       db = "PJS")
 #'
 NULL
 
-#' @title build_sql_select_year is Deprecated
-#' @description \code{build_sql_select_year} was deprecated in NVIdb v0.13.0 released
-#'     2024-##-##. All PJS related functions have been moved to \code{NVIpjsr}.
-#'     Use \code{NVIpjsr::build_sql_select_year} instead. When attaching packages,
-#'     remember to attach \code{NVIdb} before \code{NVIpjsr}.
-#' @details The old help pages can be found at \code{help("build_sql_modules-deprecated")}.
-#'     Information on deprecated functions can be found at \code{help("NVIdb-deprecated")}.
-#'
-#' @template build_query_year
-#' @param varname [\code{character(1)}]\cr
-#'     The PJS variable name of the variable in PJS from which the
-#'     coded values should be selected.
-#' @template build_query_db
-#'
 #' @export
+#' @rdname NVIdb-defunct
 #' @keywords internal
 #'
-build_sql_select_year <- function(year, varname, db = "PJS") {
-  # DEPRECATED ----
-  .Deprecated(new = "build_sql_select_year",
-              package = "NVIdb",
-              msg = paste("'build_sql_select_year' is replaced by
-                          'NVIpjsr::build_sql_select_year'"))
+build_sql_select_year <- function(...) {
 
-  # ARGUMENT CHECKING ----
-
-  # Object to store check-results
-  checks <- checkmate::makeAssertCollection()
-
-  # Perform checks
-  checkmate::assert_integerish(year,
-                               lower = 1990,
-                               upper = as.numeric(format(Sys.Date(), "%Y")),
-                               min.len = 1,
-                               any.missing = FALSE,
-                               add = checks)
-  checkmate::assert_character(varname, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
-  checkmate::assert_choice(db, choices = c("PJS"), add = checks)
-
-  # Report check-results
-  checkmate::reportAssertions(checks)
-
-  # CLEAN YEAR INPUT ----
-  # Ensure that year vector have unique values and are ordered
-  year <- unique(year[order(year)])
-
-  # GENERATE SQL STRING ----
-  # set equal if only one year
-  if (length(year) == 1) {
-    select_year <- paste(varname, "=", year)
-  }
-  # Use larger than and less than if from year to year
-  # The function does not include the possibility of selecting non-consecutive years.
-  if (length(year) > 1) {
-    if (year[length(year)] == as.numeric(format(Sys.Date(), "%Y"))) {
-      select_year <- paste(varname, ">=", year[1])
-    } else {
-      select_year <- paste(varname, ">=", year[1], "AND",
-                           varname, "<=", year[length(year)])
-    }
-  }
-  return(select_year)
+  .Defunct(new = "NVIpjsr::build_sql_select_year", package = "NVIdb")
+#   # DEPRECATED ----
+#   .Deprecated(new = "build_sql_select_year",
+#               package = "NVIdb",
+#               msg = paste("'build_sql_select_year' is replaced by
+#                           'NVIpjsr::build_sql_select_year'"))
+#
+#   # ARGUMENT CHECKING ----
+#
+#   # Object to store check-results
+#   checks <- checkmate::makeAssertCollection()
+#
+#   # Perform checks
+#   checkmate::assert_integerish(year,
+#                                lower = 1990,
+#                                upper = as.numeric(format(Sys.Date(), "%Y")),
+#                                min.len = 1,
+#                                any.missing = FALSE,
+#                                add = checks)
+#   checkmate::assert_character(varname, min.chars = 1, len = 1, any.missing = FALSE, add = checks)
+#   checkmate::assert_choice(db, choices = c("PJS"), add = checks)
+#
+#   # Report check-results
+#   checkmate::reportAssertions(checks)
+#
+#   # CLEAN YEAR INPUT ----
+#   # Ensure that year vector have unique values and are ordered
+#   year <- unique(year[order(year)])
+#
+#   # GENERATE SQL STRING ----
+#   # set equal if only one year
+#   if (length(year) == 1) {
+#     select_year <- paste(varname, "=", year)
+#   }
+#   # Use larger than and less than if from year to year
+#   # The function does not include the possibility of selecting non-consecutive years.
+#   if (length(year) > 1) {
+#     if (year[length(year)] == as.numeric(format(Sys.Date(), "%Y"))) {
+#       select_year <- paste(varname, ">=", year[1])
+#     } else {
+#       select_year <- paste(varname, ">=", year[1], "AND",
+#                            varname, "<=", year[length(year)])
+#     }
+#   }
+#   return(select_year)
 }
 
 
@@ -148,70 +119,78 @@ build_sql_select_year <- function(year, varname, db = "PJS") {
 #'     coded values should be selected.
 #' @template build_query_db
 #'
-#' @export
+#' @name build_sql_modules-defunct
 #' @keywords internal
 #'
-build_sql_select_code <- function(values, varname, db = "PJS") {
-  # DEPRECATED ----
-  .Deprecated(new = "build_sql_select_code",
-              package = "NVIdb",
-              msg = paste("'build_sql_select_code' is replaced by
-                          'NVIpjsr::build_sql_select_code'"))
+NULL
 
-  # cleaning values argument before argument checking
-  if (!is.null(values)) {values <- trimws(values)}
+#' @export
+#' @rdname NVIdb-defunct
+#' @keywords internal
+#'
+build_sql_select_code <- function(...) {
 
-  # ARGUMENT CHECKING ----
-  # Object to store check-results
-  checks <- checkmate::makeAssertCollection()
-
-  # Perform checks
-  checkmate::assert_character(values, null.ok = TRUE, all.missing = FALSE, min.chars = 1, add = checks)
-  checkmate::assert_character(varname, add = checks)
-  checkmate::assert_choice(db, choices = c("PJS"), add = checks)
-
-  # Report check-results
-  checkmate::reportAssertions(checks)
-
-  # # Removes NA to avoid problems with CMD check and generating sql string
-  # values <- subset(values, !is.na(values))
-
-  # GENERATE SQL STRING ----
-  # Generate empty string if values are NULL
-  select_code <- ""
-
-  if (!is.null(values) &&
-      (length(values) > 1 || (length(values) == 1 & trimws(values[1]) != ""))) {
-
-    # Include missing if any NA
-    if (any(is.na(values))) {
-      select_code <- paste(varname, "IS NULL OR ")
-      values <- subset(values, !is.na(values))
-    }
-
-    # use "=" in sql string for values where sub-codes shall not be included when one code
-    if (length(grep("%", values, invert = TRUE)) == 1) {
-      select_code <- paste0(select_code, varname, " = '", grep("%", values, value = TRUE, invert = TRUE), "'")
-    }
-
-    # use "IN" in sql string for values where sub-codes shall not be included when more than one code
-    if (length(grep("%", values, invert = TRUE)) > 1) {
-      select_code <- paste0(select_code, varname, " IN ('", paste(grep("%", values, value = TRUE, invert = TRUE), collapse = "', '"), "')")
-    }
-
-    # use "like" in sql string for values where sub-codes shall be included
-    values <- grep("%", values, value = TRUE, invert = FALSE)
-    if (length(values) > 0) {
-      for (i in 1:length(values)) {
-        if (select_code != "" & grepl("OR $", select_code) < 1) {
-          select_code <- paste(select_code, "OR")
-        }
-        # select_code <- paste(select_code, match.call()[1], varname, "LIKE", values[i])
-        select_code <- paste(select_code, varname, "LIKE", paste0("'", values[i], "'"))
-
-      }
-    }
-  }
-  # Removes leading space if only sub-codes are included
-  return(trimws(select_code))
+  .Defunct(new = "NVIpjsr::build_sql_select_code", package = "NVIdb")
+  # # DEPRECATED ----
+  # .Deprecated(new = "build_sql_select_code",
+  #             package = "NVIdb",
+  #             msg = paste("'build_sql_select_code' is replaced by
+  #                         'NVIpjsr::build_sql_select_code'"))
+  #
+  # # cleaning values argument before argument checking
+  # if (!is.null(values)) {values <- trimws(values)}
+  #
+  # # ARGUMENT CHECKING ----
+  # # Object to store check-results
+  # checks <- checkmate::makeAssertCollection()
+  #
+  # # Perform checks
+  # checkmate::assert_character(values, null.ok = TRUE, all.missing = FALSE, min.chars = 1, add = checks)
+  # checkmate::assert_character(varname, add = checks)
+  # checkmate::assert_choice(db, choices = c("PJS"), add = checks)
+  #
+  # # Report check-results
+  # checkmate::reportAssertions(checks)
+  #
+  # # # Removes NA to avoid problems with CMD check and generating sql string
+  # # values <- subset(values, !is.na(values))
+  #
+  # # GENERATE SQL STRING ----
+  # # Generate empty string if values are NULL
+  # select_code <- ""
+  #
+  # if (!is.null(values) &&
+  #     (length(values) > 1 || (length(values) == 1 & trimws(values[1]) != ""))) {
+  #
+  #   # Include missing if any NA
+  #   if (any(is.na(values))) {
+  #     select_code <- paste(varname, "IS NULL OR ")
+  #     values <- subset(values, !is.na(values))
+  #   }
+  #
+  #   # use "=" in sql string for values where sub-codes shall not be included when one code
+  #   if (length(grep("%", values, invert = TRUE)) == 1) {
+  #     select_code <- paste0(select_code, varname, " = '", grep("%", values, value = TRUE, invert = TRUE), "'")
+  #   }
+  #
+  #   # use "IN" in sql string for values where sub-codes shall not be included when more than one code
+  #   if (length(grep("%", values, invert = TRUE)) > 1) {
+  #     select_code <- paste0(select_code, varname, " IN ('", paste(grep("%", values, value = TRUE, invert = TRUE), collapse = "', '"), "')")
+  #   }
+  #
+  #   # use "like" in sql string for values where sub-codes shall be included
+  #   values <- grep("%", values, value = TRUE, invert = FALSE)
+  #   if (length(values) > 0) {
+  #     for (i in 1:length(values)) {
+  #       if (select_code != "" & grepl("OR $", select_code) < 1) {
+  #         select_code <- paste(select_code, "OR")
+  #       }
+  #       # select_code <- paste(select_code, match.call()[1], varname, "LIKE", values[i])
+  #       select_code <- paste(select_code, varname, "LIKE", paste0("'", values[i], "'"))
+  #
+  #     }
+  #   }
+  # }
+  # # Removes leading space if only sub-codes are included
+  # return(trimws(select_code))
 }

@@ -50,7 +50,7 @@
 #'   }
 #' Of these, \code{read_eos_data} and \code{standardize_eos_data} were defunct
 #'   from 2025-10-29, and \code{build_query_hensikt}, \code{build_query_one_disease},
-#'   \code{build_query_outbreak}, \code{exclude_from_PJSdata},
+#'   \code{build_query_outbreak}, \code{build_sql_select_code}, \code{build_sql_select_year}, \code{exclude_from_PJSdata},
 #'   \code{transform_code_combinations}, \code{choose_PJS_levels}, \code{retrieve_PJSdata},
 #'   \code{select_PJSdata_for_value}, \code{set_disease_parameters}, \code{standardize_PJSdata},
 #'   were defunct from 2026-##-##.
@@ -66,9 +66,6 @@
 #' \dontrun{
 #' add_produsent(...) ### -- use add_produsent_properties() instead.
 #' add_PJS_code_description(...) ### -- use NVIpjsr::add_PJS_code_description() instead
-#' build_query_outbreak(...) ### -- use NVIpjsr::build_query_outbreak() instead
-#' build_sql_select_code(...) ### -- use NVIpjsr::build_sql_select_code() instead
-#' build_sql_select_year(...) ### -- use NVIpjsr::build_sql_select_year() instead
 #' copy_PJS_code_2_text(...) ### -- use NVIpjsr::copy_PJS_code_2_text() instead
 #' read_PJS_code_2_text(...) ### -- use NVIpjsr::read_PJS_code_2_text() instead
 #' }
