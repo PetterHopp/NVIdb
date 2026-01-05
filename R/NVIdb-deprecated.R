@@ -49,7 +49,8 @@
 #'   \item \code{transform_code_combinations}
 #'   }
 #' Of these, \code{read_eos_data} and \code{standardize_eos_data} were defunct
-#'   from 2025-10-29, and \code{build_query_hensikt}, \code{build_query_one_disease}, \code{exclude_from_PJSdata},
+#'   from 2025-10-29, and \code{build_query_hensikt}, \code{build_query_one_disease},
+#'   \code{build_query_outbreak}, \code{exclude_from_PJSdata},
 #'   \code{transform_code_combinations}, \code{choose_PJS_levels}, \code{retrieve_PJSdata},
 #'   \code{select_PJSdata_for_value}, \code{set_disease_parameters}, \code{standardize_PJSdata},
 #'   were defunct from 2026-##-##.
