@@ -62,7 +62,8 @@ NULL
 #'
 build_query_one_disease <- function(...) {
 
-  .Defunct(new = "NVIpjsr::build_query_one_disease", package = "NVIdb") # DEPRECATED ----
+  .Defunct(new = "NVIpjsr::build_query_one_disease", package = "NVIdb")
+  # DEPRECATED ----
   # .Deprecated(new = "build_query_one_disease",
   #             package = "NVIdb",
   #             msg = paste("'build_query_one_disease' is replaced by
