@@ -38,42 +38,12 @@ The arguments \code{FUN} and \code{selection_statement} in \code{retrieve_PJSdat
     \code{selection_parameters}.
 
 All functions made especially to handle PJS data have been moved to \code{NVIpjsr}
-    and were deprecated from v0.13.0 released 2024-12-13. Further development
-    of these functions will only take place in \code{NVIpjsr}. The following
-    functions have been moved:
-\itemize{
-  \item \code{add_PJS_code_description}
-  \item \code{build_query_hensikt}
-  \item \code{build_query_one_disease}
-  \item \code{build_query_outbreak}
-  \item \code{build_sql_select_code}
-  \item \code{build_sql_select_year}
-  \item \code{choose_PJS_levels}
-  \item \code{copy_PJS_code_2_text}
-  \item \code{exclude_from_PJSdata}
-  \item \code{login_by_credentials_PJS}
-  \item \code{read_eos_data}
-  \item \code{read_PJS_code_2_text}
-  \item \code{retrieve_PJSdata}
-  \item \code{select_PJSdata_for_value}
-  \item \code{set_disease_parameters}
-  \item \code{standardize_eos_data}
-  \item \code{standardize_PJSdata}
-  \item \code{transform_code_combinations}
-  }
-Of these, \code{read_eos_data} and \code{standardize_eos_data} were defunct
-  from 2025-10-29, and \code{build_query_hensikt}, \code{build_query_one_disease},
-  \code{build_query_outbreak}, \code{build_sql_select_code}, \code{build_sql_select_year}, \code{exclude_from_PJSdata},
-  \code{transform_code_combinations}, \code{choose_PJS_levels}, \code{retrieve_PJSdata},
-  \code{select_PJSdata_for_value}, \code{set_disease_parameters}, \code{standardize_PJSdata},
-  were defunct from 2026-##-##.
+    These were deprecated from v0.13.0 released 2024-12-13 and have been
+    defunct from v0.15.2 released 2026-##-##.
 }
 \examples{
 \dontrun{
 add_produsent(...) ### -- use add_produsent_properties() instead.
-add_PJS_code_description(...) ### -- use NVIpjsr::add_PJS_code_description() instead
-copy_PJS_code_2_text(...) ### -- use NVIpjsr::copy_PJS_code_2_text() instead
-read_PJS_code_2_text(...) ### -- use NVIpjsr::read_PJS_code_2_text() instead
 }
 }
 \author{
