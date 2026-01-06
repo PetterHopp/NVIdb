@@ -54,8 +54,16 @@ test_that("errors for defunct functions", {
                regexp = "Use 'NVIpjsr::standardize_eos_data' instead.",
                fixed = TRUE)
 
-  expect_error(choose_PJS_levels(),
-               regexp = "Use 'NVIpjsr::choose_PJS_levels' instead.",
+  expect_error(add_PJS_code_description(),
+               regexp = "Use 'NVIpjsr::add_PJS_code_description' instead.",
+               fixed = TRUE)
+
+  expect_error(copy_PJS_codes_2_text(),
+               regexp = "Use 'NVIpjsr::copy_PJS_codes_2_text' instead.",
+               fixed = TRUE)
+
+  expect_error(read_PJS_codes_2_text(),
+               regexp = "Use 'NVIpjsr::read_PJS_codes_2_text' instead.",
                fixed = TRUE)
 
   expect_error(build_query_hensikt(),
@@ -76,6 +84,10 @@ test_that("errors for defunct functions", {
 
   expect_error(build_sql_select_year(),
                regexp = "Use 'NVIpjsr::build_sql_select_year' instead.",
+               fixed = TRUE)
+
+  expect_error(choose_PJS_levels(),
+               regexp = "Use 'NVIpjsr::choose_PJS_levels' instead.",
                fixed = TRUE)
 
   expect_error(exclude_from_PJSdata(),
