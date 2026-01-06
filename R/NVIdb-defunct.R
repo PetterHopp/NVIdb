@@ -32,10 +32,16 @@
 #'     2025-10-29 and had been deprecated from v0.13.0 released 2024-12-13. Use
 #'     the corresponding functions in \code{NVIpjsr}.
 #'
-#' The functions \code{exclude_from_PJSdata}, \code{transform_code_combinations},
-#'     \code{choose_PJS_levels},
+#' The functions \code{add_PJS_code_description}, \code{copy_PJS_code_2_text},
+#'     \code{read_PJS_code_2_text}, \code{build_query_hensikt},
+#'     \code{build_query_one_disease}, \code{build_query_one_outbreak},
+#'     \code{build_sql_select_code}, \code{build_sql_select_year},
+#'     \code{choose_PJS_levels}, \code{exclude_from_PJSdata},
+#'     \code{retrieve_PJSdata}, \code{select_PJSdata_for_value},
+#'     \code{set_disease_parameters}, \code{standardize_PJSdata}, and
+#'     \code{transform_code_combinations}
 #'     have been moved to \code{NVIpjsr}. These were defunct from v0.15.1 released
-#'     2025-##-## and had been deprecated from v0.13.0 released 2024-12-13. Use
+#'     2026-##-## and had been deprecated from v0.13.0 released 2024-12-13. Use
 #'     the corresponding functions in \code{NVIpjsr}.
 #'
 #' @param \dots (arguments)
@@ -59,9 +65,21 @@
 #' login_by_credentials_PJS(...) ### -- use login_by_credentials("PJS") instead
 #' read_eos_data(...) ### -- use NVIpjsr::read_eos_data() instead
 #' standardize_eos_data(...) ### -- use NVIpjsr::standardize_eos_data() instead
-#' exclude_from_PJSdata(...) ### -- use NVIpjsr::exclude_from_PJSdata() instead
-#' transform_code_combinations(...) ### -- use NVIpjsr::transform_code_combinations() instead
+#' add_PJS_code_description(...) ### -- use NVIpjsr::add_PJS_code_description() instead
+#' copy_PJS_code_2_text(...) ### -- use NVIpjsr::copy_PJS_code_2_text() instead
+#' read_PJS_code_2_text(...) ### -- use NVIpjsr::read_PJS_code_2_text() instead
+#' build_query_hensikt(...) ### -- use NVIpjsr::build_query_hensikt() instead
+#' build_query_one_disease(...) ### -- use NVIpjsr::build_query_one_disease() instead
+#' build_query_outbreak(...) ### -- use NVIpjsr::build_query_outbreak() instead
+#' build_sql_select_code(...) ### -- use NVIpjsr::build_sql_select_code() instead
+#' build_sql_select_year(...) ### -- use NVIpjsr::build_sql_select_year() instead
 #' choose_PJS_levels(...) ### -- use NVIpjsr::choose_PJS_levels() instead
+#' exclude_from_PJSdata(...) ### -- use NVIpjsr::exclude_from_PJSdata() instead
+#' retrieve_PJSdata(...) ### -- use NVIpjsr::retrieve_PJSdata() instead
+#' select_PJSdata_for_value(...) ### -- use NVIpjsr::select_PJSdata_for_value() instead
+#' set_disease_parameters(...) ### -- use NVIpjsr::set_disease_parameters() instead
+#' standardize_PJSdata(...) ### -- use NVIpjsr::standardize_PJSdata() instead
+#' transform_code_combinations(...) ### -- use NVIpjsr::transform_code_combinations() instead
 #' }
 #'
 NULL
