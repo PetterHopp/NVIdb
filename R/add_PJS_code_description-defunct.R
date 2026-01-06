@@ -171,204 +171,204 @@ NULL
 add_PJS_code_description <- function(...) {
 
   .Defunct(new = "NVIpjsr::add_PJS_code_description", package = "NVIdb")
-#'   # DEPRECATED ----
-#'   .Deprecated(new = "add_PJS_code_description",
-#'               package = "NVIdb",
-#'               msg = paste("'add_PJS_code_description' is replaced by
-#'                           'NVIpjsr::add_PJS_code_description'"))
-#'
-#'   if (isTRUE(NVIcheckmate::check_package(x = "NVIpjsr", type = "installed"))) {
-#'     data <- NVIpjsr::add_PJS_code_description(data = data,
-#'                                               translation_table = translation_table,
-#'                                               PJS_variable_type = PJS_variable_type,
-#'                                               code_colname = code_colname,
-#'                                               new_column = new_column,
-#'                                               position = position,
-#'                                               overwrite = overwrite,
-#'                                               backward = backward,
-#'                                               impute_old_when_missing = impute_old_when_missing)
-#'
-#'     return(data)
-#'   } else {
-#'     if (PJS_variable_type[1] == "auto" | new_column[1] == "auto") {
-#'       code_description_colname <- NVIdb::PJS_code_description_colname
-#'       if (isTRUE(backward)) {
-#'         code_description_colname <- dplyr::rename(code_description_colname, new_column = code_colname, code_colname = new_column)
-#'       }
-#'       PJS_types_selected <- as.data.frame(code_colname) |>
-#'         dplyr::left_join(code_description_colname, by = "code_colname")
-#'       PJS_types_selected <- subset(PJS_types_selected, !is.na(PJS_types_selected$type))
-#'     }
-#'
-#'     # ARGUMENT CHECKING ----
-#'     # Object to store check-results
-#'     checks <- checkmate::makeAssertCollection()
-#'
-#'     # Perform checks
-#'     # data
-#'     checkmate::assert_data_frame(data, add = checks)
-#'     # translation_table
-#'     checkmate::assert_data_frame(translation_table, add = checks)
-#'     # code_colname
-#'     checkmate::assert_vector(code_colname, any.missing = FALSE, min.len = 1, add = checks)
-#'     NVIcheckmate::assert_names(code_colname,
-#'                                type = "named",
-#'                                subset.of = colnames(data),
-#'                                comment = paste0("The code_colname must be a column in the data",
-#'                                                 # deparse(substitute(data)),
-#'                                                 ", but '",
-#'                                                 base::setdiff(code_colname, colnames(data)),
-#'                                                 "' is not a column in the data"),
-#'                                add = checks)
-#'     # auto and PJS_variable_type/new_column
-#'     if (PJS_variable_type[1] == "auto" | new_column[1] == "auto") {
-#'       NVIcheckmate::assert_subset_character(code_colname,
-#'                                             choices = unique(code_description_colname$code_colname),
-#'                                             comment = paste("when 'PJS_variable_type' or 'new_column' equals 'auto'",
-#'                                                             "the code_colnames must be standardized PJS column names.",
-#'                                                             "You can use NVIdb::standardize_PJSdata to standardize."),
-#'                                             add = checks)
-#'     }
-#'     # PJS_variable_type
-#'     if (PJS_variable_type[1] != "auto") {
-#'       checkmate::assert_subset(PJS_variable_type,
-#'                                choices = unique(translation_table$type),
-#'                                add = checks)
-#'     }
-#'     # new_column
-#'     checkmate::assert_vector(new_column, any.missing = FALSE, min.len = 1, add = checks)
-#'     if (new_column[1] == "auto") {
-#'       new_column <- PJS_types_selected$new_column
-#'     }
-#'     if (isFALSE(overwrite)) {
-#'       NVIcheckmate::assert_names(new_column,
-#'                                  type = "named",
-#'                                  disjunct.from = setdiff(colnames(data), code_colname),
-#'                                  comment = paste0("The column name(s): '",
-#'                                                   intersect(colnames(data), new_column),
-#'                                                   "' already exist in '",
-#'                                                   deparse(substitute(data)),
-#'                                                   "`. Either give new column name(s) for the column(s) called '",
-#'                                                   intersect(colnames(data), new_column),
-#'                                                   "' or specify overwrite = TRUE to replace values in the existing column(s) with new content"),
-#'                                  add = checks)
-#'     }
-#'     NVIcheckmate::assert_names(new_column,
-#'                                type = "named",
-#'                                disjunct.from = code_colname,
-#'                                comment = paste0("You cannot give any of the new column(s) the same name as the code_colname '",
-#'                                                 code_colname,
-#'                                                 "' in the data" # ,
-#'                                                 # deparse(substitute(data)), "`"
-#'                                ),
-#'                                add = checks)
-#'
-#'     # position
-#'     NVIcheckmate::assert_subset_character(x = unique(position), choices = c("first", "left", "right", "last", "keep"), add = checks)
-#'     # overwrite
-#'     checkmate::assert_flag(overwrite, add = checks)
-#'     # backward
-#'     checkmate::assert_flag(backward, add = checks)
-#'     # impute_old_when_missing
-#'     checkmate::assert_flag(impute_old_when_missing, add = checks)
-#'
-#'     # Report check-results
-#'     checkmate::reportAssertions(checks)
-#'
-#'     # PREPARE ARGUMENTS ----
-#'     # Generates PJS_variable_type if "auto".
-#'     # new_column was generated above because the new column names should be checked in the argument checking
-#'     if (PJS_variable_type[1] == "auto") {
-#'       PJS_variable_type <- PJS_types_selected$type
-#'     }
-#'
-#'
-#'     # Transforms position to a vector with the same length as number of PJS variables to be translated
-#'     if (length(position) == 1 & length(code_colname) > 1) {position <- rep(position, length(code_colname))}
-#'
-#'     # In bakcward translation, imputation of old if missing must be performed after original case have been restored,
-#'     #  i.e. it cannot be done by add_new_column, but must be done afterwards.
-#'     impute_old_when_missing_backward <- impute_old_when_missing
-#'     if (isTRUE(backward) & isTRUE(impute_old_when_missing)) {
-#'       impute_old_when_missing <- FALSE
-#'     }
-#'
-#'
-#'     # runs the translation for several PJS variables at a time if wanted
-#'     for (i in 1:length(code_colname)) {
-#'
-#'       # Make a subset with only the codes that is relevant for the actual variabel
-#'       code_2_description <- translation_table[base::which(translation_table$type == PJS_variable_type[i]), ]
-#'
-#'       # Transform the translation file in the case that backward translation should be used
-#'       if (isTRUE(backward)) {
-#'         # Removes breeds from table if type = "art"
-#'         if (PJS_variable_type[i] == "art") {
-#'           code_2_description[which(substr(code_2_description$kode, 1, 2) %in% c("03", "05") &
-#'                                      !substr(code_2_description$kode, 1, 8) %in% c("03100203")), "kode"] <-
-#'             substr(code_2_description[which(substr(code_2_description$kode, 1, 2) %in% c("03", "05") &
-#'                                               !substr(code_2_description$kode, 1, 8) %in% c("03100203")), "kode"], 1, 11)
-#'         }
-#'         # Removes non-unique description text, usually levels without name, i.e. "-"
-#'         # Swips navn - kode
-#'         code_2_description$navn <- tolower(code_2_description$navn)
-#'         code_2_description <- unique(code_2_description)
-#'         column_names <- colnames(code_2_description)
-#'         navn_nr <- which(column_names == "navn")
-#'         kode_nr <- which(column_names == "kode")
-#'         column_names[c(navn_nr, kode_nr)] <- c("kode", "navn")
-#'         colnames(code_2_description) <- column_names
-#'         code_2_description <- code_2_description |>
-#'           dplyr::add_count(dplyr::across(c("type", "kode")), name = "antall")
-#'
-#'
-#'         # code_2_description <- code_2_description |>
-#'         # dplyr::mutate(navn = tolower(.data$navn)) |>
-#'         # dplyr::distinct() |>
-#'         # dplyr::rename(kode = .data$navn, navn = .data$kode) |>
-#'         # dplyr::filter(is.na(.data$utgatt_dato)) |>
-#'         # dplyr::add_count(.data$type, .data$kode, name = "antall") |>
-#'         # dplyr::filter(.data$antall == 1) |>
-#'         # dplyr::select(-.data$antall)
-#'         code_2_description <- subset(code_2_description, code_2_description$antall == 1)
-#'         code_2_description$antall <- NULL
-#'
-#'         # Transforms code_colname in data to lower case.
-#'         data$code_colname_org_case <- data[, code_colname[i]]
-#'         data[, code_colname[i]] <- sapply(data[, code_colname[i]], FUN = tolower)
-#'       }
-#'
-#'       # code_2_description <- translation_table[base::which(translation_table$type == PJS_variable_type[i] & is.na(translation_table$utgatt_dato)), ]
-#'
-#'       # # Changes the name of navn to text wanted in the df (txtvarname)
-#'       # base::colnames(code_2_description)[base::which(base::colnames(code_2_description)=="navn")] <- new_column
-#'
-#'       # Calls function that adds description at the position = position in the relation to the code
-#'       data <- add_new_column(data,
-#'                              ID_column = code_colname[i],
-#'                              new_colname = new_column[i],
-#'                              translation_tables = list(code_2_description),
-#'                              ID_column_translation_table = c("kode"),
-#'                              to_column_translation_table = c("navn"),
-#'                              position = position[i],
-#'                              overwrite = overwrite,
-#'                              impute_old_when_missing = impute_old_when_missing)
-#'
-#'
-#'       if (isTRUE(backward)) {
-#'         # Restores original case in code_colname
-#'         data[, code_colname[i]] <- data$code_colname_org_case
-#'         data$code_colname_org_case <- NULL
-#'         # Imputes old if missing for backward translation
-#'         if (isTRUE(impute_old_when_missing_backward)) {
-#'           data[which(is.na(data[, new_column[i]])), new_column[i]] <- data[which(is.na(data[, new_column[i]])), code_colname[i]]
-#'         }
-#'         # Fix of difficulties translating NA correct. Should probably be fixed elsewhere
-#'         data[which(is.na(data[, code_colname[i]])), new_column[i]] <- NA
-#'       }
-#'     }
-#'     return(data)
-#'   }
+  # # DEPRECATED ----
+  # .Deprecated(new = "add_PJS_code_description",
+  #             package = "NVIdb",
+  #             msg = paste("'add_PJS_code_description' is replaced by
+  #                         'NVIpjsr::add_PJS_code_description'"))
+  #
+  # if (isTRUE(NVIcheckmate::check_package(x = "NVIpjsr", type = "installed"))) {
+  #   data <- NVIpjsr::add_PJS_code_description(data = data,
+  #                                             translation_table = translation_table,
+  #                                             PJS_variable_type = PJS_variable_type,
+  #                                             code_colname = code_colname,
+  #                                             new_column = new_column,
+  #                                             position = position,
+  #                                             overwrite = overwrite,
+  #                                             backward = backward,
+  #                                             impute_old_when_missing = impute_old_when_missing)
+  #
+  #   return(data)
+  # } else {
+  #   if (PJS_variable_type[1] == "auto" | new_column[1] == "auto") {
+  #     code_description_colname <- NVIdb::PJS_code_description_colname
+  #     if (isTRUE(backward)) {
+  #       code_description_colname <- dplyr::rename(code_description_colname, new_column = code_colname, code_colname = new_column)
+  #     }
+  #     PJS_types_selected <- as.data.frame(code_colname) |>
+  #       dplyr::left_join(code_description_colname, by = "code_colname")
+  #     PJS_types_selected <- subset(PJS_types_selected, !is.na(PJS_types_selected$type))
+  #   }
+  #
+  #   # ARGUMENT CHECKING ----
+  #   # Object to store check-results
+  #   checks <- checkmate::makeAssertCollection()
+  #
+  #   # Perform checks
+  #   # data
+  #   checkmate::assert_data_frame(data, add = checks)
+  #   # translation_table
+  #   checkmate::assert_data_frame(translation_table, add = checks)
+  #   # code_colname
+  #   checkmate::assert_vector(code_colname, any.missing = FALSE, min.len = 1, add = checks)
+  #   NVIcheckmate::assert_names(code_colname,
+  #                              type = "named",
+  #                              subset.of = colnames(data),
+  #                              comment = paste0("The code_colname must be a column in the data",
+  #                                               # deparse(substitute(data)),
+  #                                               ", but '",
+  #                                               base::setdiff(code_colname, colnames(data)),
+  #                                               "' is not a column in the data"),
+  #                              add = checks)
+  #   # auto and PJS_variable_type/new_column
+  #   if (PJS_variable_type[1] == "auto" | new_column[1] == "auto") {
+  #     NVIcheckmate::assert_subset_character(code_colname,
+  #                                           choices = unique(code_description_colname$code_colname),
+  #                                           comment = paste("when 'PJS_variable_type' or 'new_column' equals 'auto'",
+  #                                                           "the code_colnames must be standardized PJS column names.",
+  #                                                           "You can use NVIdb::standardize_PJSdata to standardize."),
+  #                                           add = checks)
+  #   }
+  #   # PJS_variable_type
+  #   if (PJS_variable_type[1] != "auto") {
+  #     checkmate::assert_subset(PJS_variable_type,
+  #                              choices = unique(translation_table$type),
+  #                              add = checks)
+  #   }
+  #   # new_column
+  #   checkmate::assert_vector(new_column, any.missing = FALSE, min.len = 1, add = checks)
+  #   if (new_column[1] == "auto") {
+  #     new_column <- PJS_types_selected$new_column
+  #   }
+  #   if (isFALSE(overwrite)) {
+  #     NVIcheckmate::assert_names(new_column,
+  #                                type = "named",
+  #                                disjunct.from = setdiff(colnames(data), code_colname),
+  #                                comment = paste0("The column name(s): '",
+  #                                                 intersect(colnames(data), new_column),
+  #                                                 "' already exist in '",
+  #                                                 deparse(substitute(data)),
+  #                                                 "`. Either give new column name(s) for the column(s) called '",
+  #                                                 intersect(colnames(data), new_column),
+  #                                                 "' or specify overwrite = TRUE to replace values in the existing column(s) with new content"),
+  #                                add = checks)
+  #   }
+  #   NVIcheckmate::assert_names(new_column,
+  #                              type = "named",
+  #                              disjunct.from = code_colname,
+  #                              comment = paste0("You cannot give any of the new column(s) the same name as the code_colname '",
+  #                                               code_colname,
+  #                                               "' in the data" # ,
+  #                                               # deparse(substitute(data)), "`"
+  #                              ),
+  #                              add = checks)
+  #
+  #   # position
+  #   NVIcheckmate::assert_subset_character(x = unique(position), choices = c("first", "left", "right", "last", "keep"), add = checks)
+  #   # overwrite
+  #   checkmate::assert_flag(overwrite, add = checks)
+  #   # backward
+  #   checkmate::assert_flag(backward, add = checks)
+  #   # impute_old_when_missing
+  #   checkmate::assert_flag(impute_old_when_missing, add = checks)
+  #
+  #   # Report check-results
+  #   checkmate::reportAssertions(checks)
+  #
+  #   # PREPARE ARGUMENTS ----
+  #   # Generates PJS_variable_type if "auto".
+  #   # new_column was generated above because the new column names should be checked in the argument checking
+  #   if (PJS_variable_type[1] == "auto") {
+  #     PJS_variable_type <- PJS_types_selected$type
+  #   }
+  #
+  #
+  #   # Transforms position to a vector with the same length as number of PJS variables to be translated
+  #   if (length(position) == 1 & length(code_colname) > 1) {position <- rep(position, length(code_colname))}
+  #
+  #   # In bakcward translation, imputation of old if missing must be performed after original case have been restored,
+  #   #  i.e. it cannot be done by add_new_column, but must be done afterwards.
+  #   impute_old_when_missing_backward <- impute_old_when_missing
+  #   if (isTRUE(backward) & isTRUE(impute_old_when_missing)) {
+  #     impute_old_when_missing <- FALSE
+  #   }
+  #
+  #
+  #   # runs the translation for several PJS variables at a time if wanted
+  #   for (i in 1:length(code_colname)) {
+  #
+  #     # Make a subset with only the codes that is relevant for the actual variabel
+  #     code_2_description <- translation_table[base::which(translation_table$type == PJS_variable_type[i]), ]
+  #
+  #     # Transform the translation file in the case that backward translation should be used
+  #     if (isTRUE(backward)) {
+  #       # Removes breeds from table if type = "art"
+  #       if (PJS_variable_type[i] == "art") {
+  #         code_2_description[which(substr(code_2_description$kode, 1, 2) %in% c("03", "05") &
+  #                                    !substr(code_2_description$kode, 1, 8) %in% c("03100203")), "kode"] <-
+  #           substr(code_2_description[which(substr(code_2_description$kode, 1, 2) %in% c("03", "05") &
+  #                                             !substr(code_2_description$kode, 1, 8) %in% c("03100203")), "kode"], 1, 11)
+  #       }
+  #       # Removes non-unique description text, usually levels without name, i.e. "-"
+  #       # Swips navn - kode
+  #       code_2_description$navn <- tolower(code_2_description$navn)
+  #       code_2_description <- unique(code_2_description)
+  #       column_names <- colnames(code_2_description)
+  #       navn_nr <- which(column_names == "navn")
+  #       kode_nr <- which(column_names == "kode")
+  #       column_names[c(navn_nr, kode_nr)] <- c("kode", "navn")
+  #       colnames(code_2_description) <- column_names
+  #       code_2_description <- code_2_description |>
+  #         dplyr::add_count(dplyr::across(c("type", "kode")), name = "antall")
+  #
+  #
+  #       # code_2_description <- code_2_description |>
+  #       # dplyr::mutate(navn = tolower(.data$navn)) |>
+  #       # dplyr::distinct() |>
+  #       # dplyr::rename(kode = .data$navn, navn = .data$kode) |>
+  #       # dplyr::filter(is.na(.data$utgatt_dato)) |>
+  #       # dplyr::add_count(.data$type, .data$kode, name = "antall") |>
+  #       # dplyr::filter(.data$antall == 1) |>
+  #       # dplyr::select(-.data$antall)
+  #       code_2_description <- subset(code_2_description, code_2_description$antall == 1)
+  #       code_2_description$antall <- NULL
+  #
+  #       # Transforms code_colname in data to lower case.
+  #       data$code_colname_org_case <- data[, code_colname[i]]
+  #       data[, code_colname[i]] <- sapply(data[, code_colname[i]], FUN = tolower)
+  #     }
+  #
+  #     # code_2_description <- translation_table[base::which(translation_table$type == PJS_variable_type[i] & is.na(translation_table$utgatt_dato)), ]
+  #
+  #     # # Changes the name of navn to text wanted in the df (txtvarname)
+  #     # base::colnames(code_2_description)[base::which(base::colnames(code_2_description)=="navn")] <- new_column
+  #
+  #     # Calls function that adds description at the position = position in the relation to the code
+  #     data <- add_new_column(data,
+  #                            ID_column = code_colname[i],
+  #                            new_colname = new_column[i],
+  #                            translation_tables = list(code_2_description),
+  #                            ID_column_translation_table = c("kode"),
+  #                            to_column_translation_table = c("navn"),
+  #                            position = position[i],
+  #                            overwrite = overwrite,
+  #                            impute_old_when_missing = impute_old_when_missing)
+  #
+  #
+  #     if (isTRUE(backward)) {
+  #       # Restores original case in code_colname
+  #       data[, code_colname[i]] <- data$code_colname_org_case
+  #       data$code_colname_org_case <- NULL
+  #       # Imputes old if missing for backward translation
+  #       if (isTRUE(impute_old_when_missing_backward)) {
+  #         data[which(is.na(data[, new_column[i]])), new_column[i]] <- data[which(is.na(data[, new_column[i]])), code_colname[i]]
+  #       }
+  #       # Fix of difficulties translating NA correct. Should probably be fixed elsewhere
+  #       data[which(is.na(data[, code_colname[i]])), new_column[i]] <- NA
+  #     }
+  #   }
+  #   return(data)
+  # }
 }
 
 #' @export
