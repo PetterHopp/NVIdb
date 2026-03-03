@@ -581,58 +581,69 @@ standardize_columns <- function(data,
     if (!dbsource %in% column_standards[which(!is.na(column_standards$colorder)), "table_db"]) {
       warning("No sorting done as column order is not known for this table. Please update column_standards or use another dbsource")
     } else {
-      # Generate data frame with the column names in one column named V1
-      columnorder <- as.data.frame(matrix(colnames(data), ncol = 1))
-      # Generate column with original order of column names
-      #  Necessary to avoid change in order when using merge
-      columnorder$original_sort_order <- seq_len(nrow(columnorder))
-
-      ## Norwegian column labels ----
-      # Standard labels in Norwegian is always generated as is used to impute missing labels in other languages
-      standard <- column_standards # |>
-      # Filter to include only information for relevant column names and with property information
-      # dplyr::filter(.data$table_db == dbsource) |>
-      # dplyr::filter(.data$colname %in% columnorder$V1) |>
-      # dplyr::filter(!is.na(.data$colorder)) |>
-      # dplyr::select(.data$colname, .data$colorder) |>
-      # dplyr::distinct() |>
-
-      standard <- subset(standard, standard$table_db == dbsource)
-      standard <- subset(standard, standard$colname %in% columnorder$V1)
-      standard <- subset(standard, !is.na(standard$colorder))
-      standard <- standard[, c("colname", "colorder")]
-      standard <- unique(standard)
-
-      # removes colorders with more than suggested position
-      # standard <- standard |>
-      #   dplyr::add_count(.data$colname, name = "n") |>
-      #   dplyr::ungroup() # |>
-      aggregated_value <- stats::aggregate(stats::as.formula(paste("cbind(n = colorder)",
-                                                                   "~",
-                                                                   paste(c("colname"), collapse = " + "))),
-                                           data = standard,
-                                           FUN = function(x) {length(x)})
-      standard <- merge(x = standard, y = aggregated_value, by = "colname", all.x = TRUE)
-      # dplyr::filter(.data$n == 1) |>
-      # dplyr::select(.data$colname, .data$colorder) |>
-      # # Sort according to first column
-      # dplyr::arrange(.data$colorder)
-
-      standard <- subset(standard, standard$n == 1)
-      standard <- standard[, c("colname", "colorder")]
+      
+      column_values <- find_standard_values_for_property(column_names = colnames(data),
+                                                         dbsource = dbsource,
+                                                         org_values_in_column = "colname",
+                                                         new_values_in_column = "colorder",
+                                                         standard = column_standards,
+                                                         require_table = TRUE)
+      
+      # # Generate data frame with the column names in one column named V1
+      # columnorder <- as.data.frame(matrix(colnames(data), ncol = 1))
+      # # Generate column with original order of column names
+      # #  Necessary to avoid change in order when using merge
+      # columnorder$original_sort_order <- seq_len(nrow(columnorder))
+      # 
+      # ## Norwegian column labels ----
+      # # Standard labels in Norwegian is always generated as is used to impute missing labels in other languages
+      # standard <- column_standards # |>
+      # # Filter to include only information for relevant column names and with property information
+      # # dplyr::filter(.data$table_db == dbsource) |>
+      # # dplyr::filter(.data$colname %in% columnorder$V1) |>
+      # # dplyr::filter(!is.na(.data$colorder)) |>
+      # # dplyr::select(.data$colname, .data$colorder) |>
+      # # dplyr::distinct() |>
+      # 
+      # standard <- subset(standard, standard$table_db == dbsource)
+      # standard <- subset(standard, standard$colname %in% columnorder$V1)
+      # standard <- subset(standard, !is.na(standard$colorder))
+      # standard <- standard[, c("colname", "colorder")]
+      # standard <- unique(standard)
+      # 
+      # # removes colorders with more than suggested position
+      # # standard <- standard |>
+      # #   dplyr::add_count(.data$colname, name = "n") |>
+      # #   dplyr::ungroup() # |>
+      # aggregated_value <- stats::aggregate(stats::as.formula(paste("cbind(n = colorder)",
+      #                                                              "~",
+      #                                                              paste(c("colname"), collapse = " + "))),
+      #                                      data = standard,
+      #                                      FUN = function(x) {length(x)})
+      # standard <- merge(x = standard, y = aggregated_value, by = "colname", all.x = TRUE)
+      # # dplyr::filter(.data$n == 1) |>
+      # # dplyr::select(.data$colname, .data$colorder) |>
+      # # # Sort according to first column
+      # # dplyr::arrange(.data$colorder)
+      # 
+      # standard <- subset(standard, standard$n == 1)
+      # standard <- standard[, c("colname", "colorder")]
+      
       # Sort according to colorder
-      standard <- standard[order(standard$colorder), ]
+      column_values <- column_values[order(column_values$colorder), ]
 
       # Order in accord with standard.
       # Keep non-ordered columns in last columns if exclude = FALSE
       if (exclude == FALSE) {
-        colorder <- c(standard$colname, base::setdiff(columnorder$V1, standard$colname))
+        # colorder <- c(standard$colname, base::setdiff(columnorder$V1, standard$colname))
+        colorder <- c(column_values[!is.na(column_values$colorder), "V1"], 
+                      base::setdiff(colnames(data), column_values[!is.na(column_values$colorder), "V1"]))
         # okweb[, ] <- NA
         # okweb <- okweb[, c(OK_kolonner, base::setdiff(colnames(okweb), OK_kolonner))]
       }
       # Exclude non-ordered columns if exclude = TRUE
       if (exclude == TRUE) {
-        colorder <- c(standard$colname)
+        colorder <- column_values[!is.na(column_values$colorder), "V1"]
       }
 
       # Change order of columns and eventually exclude non-selected columns
