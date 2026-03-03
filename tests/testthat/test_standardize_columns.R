@@ -220,8 +220,7 @@ test_that("Column order", {
   # Example with produksjonstilskudd in English
   df <- as.data.frame(cbind("soknadaar" = "2020", "gjeldende_prodnr8" = "30303030", "Orgnr" = 99999999,
                             "prodnr10" = "3030303030", "Fj\u00F8rfe" = 1, "prodnr8" = "30303030",
-                            "orgnr" = "988888888", "komnr" = "3030",
-                            "kommune" = "Nesbyen"))
+                            "komnr" = "3030", "kommune" = "Nesbyen"))
 
   df <- standardize_columns(data = df,
                             dbsource = "Produksjonstilskudd",
