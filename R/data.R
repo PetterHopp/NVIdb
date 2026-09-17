@@ -47,3 +47,56 @@
 #' }
 #' @source "./data-raw/generate_PJS_code_description_colname.R" in package \code{NVIdb}
 "PJS_code_description_colname"
+
+#' @title Data: Fylke sorted in logical order for reporting
+#' @description A vector of fylke names sorted in logical order for reporting. The vector
+#'     includes all fylker and areas used in statistic as well as historical fylker back to
+#'     1970.
+#' @details The sort order are from south - east, south and northwards. The sorting is an
+#'     adaption of the order implemented for fylker from 1960 to 2018 as reflected in the
+#'     fylke numbers for this period.
+#'
+#'     The vector is based on the different edition of fylke from Norwegian Statistics.
+#'     However, the fylke name does not include the sami part of the name.
+#'
+#'     If the order of fylker should be changed, one should edit the variable sortering_fylke
+#'     in the source file. The code for generating the vector is written in
+#'     "./data-raw/generate_ordered_fylke.R".
+#'
+#' @source "Norwegian Statistics"
+"order_fylke"
+
+#' @title Data: Fylke number sorted in logical order for reporting
+#' @description A vector of fylke numbers sorted in logical order for reporting. The vector
+#'     includes all fylker and areas used in statistic as well as historical fylker back to
+#'     1970.
+#' @details The sort order are from south - east, south and nortwards. The sorting is an
+#'     adaption of the order implemented for fylker from 1960 to 2018 as reflected in the
+#'     fylke numbers for this period.
+#'
+#'     The vector is based on the different edition of fylke from Norwegian Statistics.
+#'
+#'     If the order of fylker should be changed, one should edit the variable sortering_fylke
+#'     in the source file. The code for generating the vector is written in
+#'     "./data-raw/generate_ordered_fylke.R".
+#'
+#' @source "Norwegian Statistics"
+#'
+#' @examples
+#' \dontrun{
+#' #
+#' fylker <- data.frame(
+#'     list(fylkenr = c("03", "11", "15", "18", "20", "34", "42", "50", "56"),
+#'          fylke = c("Oslo", "Rogaland", "Møre og Romsdal", "Nordland", 
+#'            "Finnmark", "Innlandet", "Agder", "Trøndelag", "Finnmark")))
+#'
+#' # dplyr
+#' fylker2 <- fylker |>
+#'   mutate(fylkenr = factor(fylkenr, levels = NVIdb::order_fylkenr, ordered = TRUE)) |>
+#'   arrange(fylkenr)
+#'
+#' # base
+#' fylker$fylkenr <- factor(fylker$fylkenr, levels = NVIdb::order_fylkenr, ordered = TRUE)
+#' fylker <- fylker[order(fylker$fylkenr), ]
+#' }
+"order_fylkenr"
