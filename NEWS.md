@@ -18,7 +18,13 @@ MT unit name will be generated when `shortname = TRUE`.
 
 ## BREAKING CHANGES:
 
--
+- The functions `add_PJS_code_description`, `copy_PJS_code_2_text`, 
+`read_PJS_code_2_text`, `build_query_hensikt`, `build_query_one_disease`, 
+`build_query_one_outbreak`, `build_sql_select_code`, `build_sql_select_year`,
+`choose_PJS_levels`, `exclude_from_PJSdata`, `retrieve_PJSdata`, 
+`select_PJSdata_for_value`, `set_disease_parameters`, `standardize_PJSdata`, 
+and `transform_code_combinations` have been moved to `NVIpjsr` and are defunct. 
+Use the corresponding functions in `NVIpjsr`.
 
 
 # NVIdb 0.15.0 - (2025-12-03)
