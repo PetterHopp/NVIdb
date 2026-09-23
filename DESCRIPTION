@@ -6,11 +6,13 @@ Authors@R:
   c(person(given = "Petter",
            family = "Hopp",
            role = c("aut", "cre"),
-           email = "Petter.Hopp@vetinst.no"),
+           email = "Petter.Hopp@vetinst.no",
+           comment = c(ORCID = "0000-0002-8695-0378")),
     person(given = "Johan",
            family = "Åkerstedt",
            role = "aut",
-           email = "Johan.Akerstedt@vetinst.no"),
+           email = "Johan.Akerstedt@vetinst.no",
+           comment = c(ORCID = "0000-0001-7887-6887")),
     person(given = "Norwegian Veterinary Institute",
            role = "cph"))
 Description: Provides tools to facilitate downloading and processing of data from 
