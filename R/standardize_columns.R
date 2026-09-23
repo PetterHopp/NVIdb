@@ -227,7 +227,7 @@ standardize_columns <- function(data,
   checkmate::assert_subset(tolower(property),
                            choices = c("colnames", "colclasses",
                                        "collabels", "colwidths_excel",
-                                       "colwidths_DT", "colorder"),
+                                       "colwidths_dt", "colorder"),
                            add = checks)
   # language
   checkmate::assert_subset(language, choices = c("no", "en"), add = checks)
@@ -363,26 +363,38 @@ standardize_columns <- function(data,
 
   # READ FIRST LINE OF CSV-FILE, IDENTIFY COLUMN CLASSES AND PRODUCE A NAMED VECTOR FOR THE colclasses PARAMETER ----
   if (property == "colclasses") {
-    # Read standard colclasses for database variable names
-    stand_character <- unique(column_standards[which(!is.na(column_standards$colclasses)), c("colname_db", "colclasses")])
-
-    # Identifies columns that can look like numbers but should be treated as characters, usually because of leading zero
-    # Read first line of csv-file
-    if (!exists("fileEncoding")) {
+    # Read first row of csv-file into data.frame
+   if (!exists("fileEncoding")) {
       fileEncoding <- "UTF-8"
     }
-    colcharacter <- utils::read.csv2(file = data, header = FALSE, nrow = 1, fileEncoding = fileEncoding)
-    # Transform the header into a data frame with one column
-    colcharacter <- as.data.frame(matrix(colcharacter, ncol = 1))
-    # Merge (inner join) to identify variable names with colclass definition
-    colcharacter <- merge(stand_character, colcharacter, by.x = "colname_db", by.y = "V1")
-
-    # Make a named vector for the colclasses parameter in read.csv2
-    colcharacters <- colcharacter[, "colclasses"]
-    names(colcharacters) <- colcharacter[, "colname_db"]
+    dfx <- utils::read.csv2(file = data, header = TRUE, nrow = 1, fileEncoding = fileEncoding)
+    
+    # Read standard colclasses for database variable names
+    column_values <- find_standard_values_for_property(column_names = colnames(dfx),
+                                                       dbsource = dbsource,
+                                                       org_values_in_column = "colname_db",
+                                                       new_values_in_column = "colclasses",
+                                                       standard = column_standards)
+    
+    column_values <- column_values[!is.na(column_values$colclasses), ]
+    column_values <- stats::setNames(column_values$colclasses, column_values$V1)
+    
+    # stand_character <- unique(column_standards[which(!is.na(column_standards$colclasses)), c("colname_db", "colclasses")])
+    # 
+    # # Identifies columns that can look like numbers but should be treated as characters, usually because of leading zero
+    # # Read first line of csv-file
+    #  colcharacter <- utils::read.csv2(file = data, header = FALSE, nrow = 1, fileEncoding = fileEncoding)
+    # # Transform the header into a data frame with one column
+    # colcharacter <- as.data.frame(matrix(colcharacter, ncol = 1))
+    # # Merge (inner join) to identify variable names with colclass definition
+    # colcharacter <- merge(stand_character, colcharacter, by.x = "colname_db", by.y = "V1")
+    # 
+    # # Make a named vector for the colclasses parameter in read.csv2
+    # colcharacters <- colcharacter[, "colclasses"]
+    # names(colcharacters) <- colcharacter[, "colname_db"]
 
     # Return a named vector
-    return(colcharacters)
+    return(column_values)
   }
 
   # STANDARDIZE COLLABELS ----
